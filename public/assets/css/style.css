@@ -1405,6 +1405,9 @@ a.ms-confirm-trigger:hover{
   .ms-d-block-sm{
     display: block;
   }
+  .ms-aside-left.side-nav {
+    transform: translateX(0);
+  }
   .ms-aside-left-open  .ms-aside-left.side-nav{
     transform: translateX(-100%);
   }
@@ -1705,7 +1708,7 @@ a.ms-confirm-trigger:hover{
   padding-bottom: 0;
 }
 .ms-infographics-widget.has-graph-full-width canvas{
-  height: 60px !important;
+  height: 200px !important;
   width: 100% !important;
 }
 .has-graph-full-width .ms-chart-label{
@@ -3726,7 +3729,7 @@ a .badge[class*='badge-outline-']{
 }
 
 /* Preloaders */
-#preloader-wrap{
+/* #preloader-wrap{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -4338,7 +4341,7 @@ a .badge[class*='badge-outline-']{
 .spinner-11 .ms-circle12:before {
   -webkit-animation-delay: -0.1s;
           animation-delay: -0.1s;
-}
+} */
 
 /* Tabs */
 .nav-tabs{

@@ -1,0 +1,17 @@
+.arrow {
+    display: none;
+}
+
+h1, h2, h3, h4, h5, h6,th {
+    font-weight: 500 !important;
+}
+
+@media(max-width:1026px){
+    .arrow {
+        display: block;
+        text-align: right;
+    margin-right: 5px;
+    }
+  }
+
+ 

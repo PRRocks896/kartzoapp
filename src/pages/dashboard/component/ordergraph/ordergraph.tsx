@@ -3,7 +3,7 @@ import {
     MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
     MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon
 } from "mdbreact";
-import Constant from '../../constant/constant';
+// import Constant from '../../constant/constant';
 import { Bar, Line } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
 
@@ -13,12 +13,12 @@ class OrderGraph extends React.Component {
 
     state = {
         isOpen: true,
-        labels: ['12AM', '2PM', '4PM',
-            '6PM', '8PM', '10PM', '12PM', '2PM', '4PM',
-            '6PM', '8PM', '10PM'],
+        // labels: ['12AM', '2PM', '4PM',
+        //     '6PM', '8PM', '10PM', '12PM', '2PM', '4PM',
+        //     '6PM', '8PM', '10PM'],
         datasets: [
             {
-                label: 'Rainfall',
+                label: 'Graphs',
                 backgroundColor: 'rgba(75,192,192,1)',
                 borderColor: 'rgba(0,0,0,1)',
                 borderWidth: 2,
@@ -45,7 +45,7 @@ class OrderGraph extends React.Component {
                             options={{
                                 title: {
                                     display: true,
-                                    text: 'Average Rainfall per month',
+                                    text: 'Sells Graph',
                                     fontSize: 20
                                 },
                                 legend: {
@@ -71,7 +71,7 @@ class OrderGraph extends React.Component {
                             options={{
                                 title: {
                                     display: true,
-                                    text: 'Average Rainfall per month',
+                                    text: 'Total Visitors',
                                     fontSize: 20
                                 },
                                 legend: {
@@ -97,7 +97,7 @@ class OrderGraph extends React.Component {
                             options={{
                                 title: {
                                     display: true,
-                                    text: 'Average Rainfall per month',
+                                    text: 'New Users',
                                     fontSize: 20
                                 },
                                 legend: {
@@ -123,7 +123,7 @@ class OrderGraph extends React.Component {
                             options={{
                                 title: {
                                     display: true,
-                                    text: 'Average Rainfall per month',
+                                    text: 'Total Orders',
                                     fontSize: 20
                                 },
                                 legend: {
