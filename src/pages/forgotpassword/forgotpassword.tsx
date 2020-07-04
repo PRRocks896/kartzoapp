@@ -1,11 +1,4 @@
 import React from 'react';
-import {
-    MDBContainer,
-    MDBRow,
-    MDBCol,
-    MDBBtn
-} from "mdbreact";
-import Constant from '../../constant/constant';
 import { Link } from 'react-router-dom';
 
 class ForgotPassword extends React.Component {

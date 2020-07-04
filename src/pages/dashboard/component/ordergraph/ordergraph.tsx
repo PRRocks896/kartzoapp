@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
-    MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon
-} from "mdbreact";
-// import Constant from '../../constant/constant';
-import { Bar, Line } from 'react-chartjs-2';
-import { Link } from 'react-router-dom';
-
+import { Line } from 'react-chartjs-2';
 
 
 class OrderGraph extends React.Component {

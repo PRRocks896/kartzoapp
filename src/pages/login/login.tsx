@@ -1,13 +1,6 @@
 import React from 'react';
 import './login.css';
-import {
-    MDBContainer,
-    MDBRow,
-    MDBCol,
-    MDBBtn
-} from "mdbreact";
 import { Link } from 'react-router-dom';
-import Constant from '../../constant/constant';
 
 class Login extends React.Component {
     render() {
