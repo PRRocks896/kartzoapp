@@ -28,106 +28,112 @@ import NavBar from '../../navbar/navbar';
 
 class UserRole extends React.Component {
 
-    // state = {
-    //     count: '',
-    //     currentPage: "1",
-    //     items_per_page: "2",
-    //     perpage: '',
-    //     paginationdata: '',
-    //     isFetch: false,
-    //     data: '',
-    //     allRecords: '',
-    //     upperPageBound: "3",
-    //     lowerPageBound: "0",
-    //     pageBound: "3",
-    //     isPrevBtnActive: 'disabled',
-    //     isNextBtnActive: '',
-    //     onClickPage: "1"
-    // }
+    state = {
+        count: 10,
+        currentPage: 1,
+        items_per_page: 2,
+        perpage: 2,
+        paginationdata: '',
+        isFetch: false,
+        data: '',
+        allRecords: '',
+        upperPageBound: 3,
+        lowerPageBound: 0,
+        pageBound: 3,
+        isPrevBtnActive: 'disabled',
+        isNextBtnActive: '',
+        onClickPage: 1,
+        activePage: 15
+    }
 
-    // constructor(props: any) {
-    //     super(props);
-    //     // this.handleClick = this.handleClick.bind(this);
-    //     this.btnIncrementClick = this.btnIncrementClick.bind(this);
-    //     this.btnDecrementClick = this.btnDecrementClick.bind(this);
+    constructor(props: any) {
+        super(props);
+        // this.handleClick = this.handleClick.bind(this);
+        this.btnIncrementClick = this.btnIncrementClick.bind(this);
+        this.btnDecrementClick = this.btnDecrementClick.bind(this);
+        this.handlePageChange = this.handlePageChange.bind(this);
 
-    // }
+    }
+
+    handlePageChange(pageNumber: number) {
+        console.log(`active page is ${pageNumber}`);
+        this.setState({ activePage: pageNumber });
+    }
 
 
-    // btnIncrementClick() {
-    //     this.setState({ upperPageBound: this.state.upperPageBound + this.state.pageBound });
-    //     this.setState({ lowerPageBound: this.state.lowerPageBound + this.state.pageBound });
-    //     let listid = this.state.upperPageBound + 1;
-    //     this.setState({ currentPage: listid });
-    // }
+    btnIncrementClick() {
+        this.setState({ upperPageBound: this.state.upperPageBound + this.state.pageBound });
+        this.setState({ lowerPageBound: this.state.lowerPageBound + this.state.pageBound });
+        let listid = this.state.upperPageBound + 1;
+        this.setState({ currentPage: listid });
+    }
 
-    // btnDecrementClick() {
-    //     this.setState({ upperPageBound: this.state.upperPageBound - this.state.pageBound });
-    //     this.setState({ lowerPageBound: this.state.lowerPageBound - this.state.pageBound });
-    //     let listid = this.state.upperPageBound - this.state.pageBound;
-    //     this.setState({ currentPage: listid });
-    // }
-
+    btnDecrementClick() {
+        this.setState({ upperPageBound: this.state.upperPageBound - this.state.pageBound });
+        this.setState({ lowerPageBound: this.state.lowerPageBound - this.state.pageBound });
+        let listid = this.state.upperPageBound - this.state.pageBound;
+        this.setState({ currentPage: listid });
+    }
 
     render() {
-        // var pageNumbers = [];
-        // for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
-        //     pageNumbers.push(i);
-        // }
-        // var renderPageNumbers = pageNumbers.map(number => {
-        //     if (number === 1 && this.state.currentPage === 1) {
-        //         return (
-        //             <li
-        //                 key={number}
-        //                 id={number}
-        //                 className={this.state.currentPage === number ? 'active' : 'page-item'}
-        //             >
-        //                 <a className="page-link" onClick={this.handleClick}>{number}</a>
-        //             </li>
-        //         );
-        //     }
-        //     else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
-        //         return (
-        //             <li
-        //                 key={number}
-        //                 id={number}
-        //                 className={this.state.currentPage === number ? 'active' : 'page-item'}
-        //             >
-        //                 <a className="page-link" id={number} onClick={this.handleClick}>{number}</a>
-        //             </li>
-        //         )
-        //     }
-        // });
+        var pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
+            pageNumbers.push(i);
+        }
+        var renderPageNumbers = pageNumbers.map((number: any) => {
+            if (number === 1 && this.state.currentPage === 1) {
+                return (
+                    <li
+                        key={number}
+                        id={number}
+                        className={this.state.currentPage === number ? 'active' : 'page-item'}
+                    >
+                        <a className="page-link">{number}</a>
+                    </li>
+                );
+            }
+            else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
+                return (
+                    <li
+                        key={number}
+                        id={number}
+                        className={this.state.currentPage === number ? 'active' : 'page-item'}
+                    >
+                        <a className="page-link" id={number}>{number}</a>
+                    </li>
+                )
+            }
+        });
 
-        // let pageIncrementBtn = null;
-        // if (pageNumbers.length > this.state.upperPageBound) {
-        //     pageIncrementBtn =
-        //         <li
-        //             className='page-item'
-        //         >
-        //             <a
-        //                 className='page-link'
-        //                 onClick={this.btnIncrementClick}
-        //             >
-        //                 &hellip;
-        //   </a>
-        //         </li>
-        // }
+        let pageIncrementBtn = null;
+        if (pageNumbers.length > this.state.upperPageBound) {
+            pageIncrementBtn =
+                <li
+                    className='page-item'
+                >
+                    <a
+                        className='page-link'
+                        onClick={this.btnIncrementClick}
+                    >
+                        &hellip;
+          </a>
+                </li>
+        }
 
-        // let pageDecrementBtn = null;
-        // if (this.state.lowerPageBound >= 1) {
-        //     pageDecrementBtn =
-        //         <li
-        //             className='page-item'
-        //         >
-        //             <a
-        //                 className='page-link'
-        //                 onClick={this.btnDecrementClick}
-        //             >
-        //                 &hellip;
-        //   </a>
-        //         </li>
-        // }
+        let pageDecrementBtn = null;
+        if (this.state.lowerPageBound >= 1) {
+            pageDecrementBtn =
+                <li
+                    className='page-item'
+                >
+                    <a
+                        className='page-link'
+                        onClick={this.btnDecrementClick}
+                    >
+                        &hellip;
+          </a>
+                </li>
+        }
 
         return (
             <>
@@ -214,13 +220,13 @@ class UserRole extends React.Component {
                                                 </tr>
                                             </tbody>
                                         </Table>
-                                        {/* <div>
+                                        <div>
                                             <ul className="pagination" id="page-numbers">
                                                 {pageDecrementBtn}
                                                 {renderPageNumbers}
                                                 {pageIncrementBtn}
                                             </ul>
-                                        </div> */}
+                                        </div>
                                     </CardBody>
                                 </Card>
                             </Col>
