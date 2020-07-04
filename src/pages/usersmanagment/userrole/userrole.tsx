@@ -141,7 +141,7 @@ class UserRole extends React.Component {
                     <div className="ms-content-wrapper">
                         <div className="row">
                             <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                                <Card className="main-card mb-12">
+                                <Card className="main-card mb-12"> 
                                     <CardHeader>
                                         <CardTitle
                                             className="font"
@@ -178,7 +178,7 @@ class UserRole extends React.Component {
                                             </Row>
                                         </div>
                                         <br />
-                                        <Table hover className="mb-0" bordered>
+                                        <Table hover className="mb-0 table_responsive" bordered>
                                             <thead>
                                                 <tr>
                                                     <th>Name</th>

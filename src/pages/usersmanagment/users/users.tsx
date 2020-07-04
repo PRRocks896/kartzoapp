@@ -181,7 +181,7 @@ class Users extends React.Component {
                                             </Row>
                                         </div>
                                         <br />
-                                        <Table hover className="mb-0" bordered>
+                                        <Table hover className="mb-0 table_responsive" bordered>
                                             <thead>
                                                 <tr>
                                                     <th>Name</th>

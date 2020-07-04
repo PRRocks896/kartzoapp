@@ -187,7 +187,7 @@ class UserRoleToRights extends React.Component {
                                                             <CardTitle className="font">User Role To Right</CardTitle>
                                                         </CardHeader>
                                                         <CardBody>
-                                                            <Table hover className="mb-0" bordered>
+                                                            <Table hover className="mb-0 table_responsive" bordered>
                                                                 <thead>
                                                                     <tr>
                                                                         <th className="centers">
