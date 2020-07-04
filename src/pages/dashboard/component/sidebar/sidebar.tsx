@@ -77,7 +77,7 @@ class SideBar extends React.Component {
                     </div>
 
                     <ul className="accordion ms-main-aside fs-14" id="side-nav-accordion">
-                    <a href="#" className="arrow" data-toggle="collapse" data-target="#product" aria-expanded="false" aria-controls="product"> <span style={{color: '#fff',fontSize: '25px',margin: '15px'}} onClick={this.closeNav}>x</span>
+                    <a href="#" className="arrow"> <span style={{color: '#fff',fontSize: '25px',margin: '15px'}} onClick={this.closeNav}>x</span>
                             </a>
                 
                         <li className="menu-item">
