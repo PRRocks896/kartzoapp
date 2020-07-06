@@ -1,10 +1,5 @@
-/* .login {
-    position: absolute;
-    top: 136px;
-    left: 300px;
-    right: 0;
+.text-danger{
+    font-size: 12; 
+    color: red;
+    margin-top: -8px;
 }
-
-.color{
-    background-color: aquamarine;
-} */

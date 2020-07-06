@@ -1,7 +1,100 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import API from '../../service/service';
+import Swal from 'sweetalert2';
+import history from '../../history';
+import Constant from '../../constant/constant';
 
-class Signup extends React.Component {
+class Signup extends React.Component<{ history: any }> {
+
+    state = {
+        firstname: '',
+        firstnameerror: '',
+        lastname: '',
+        lastnameerror: '',
+        email: '',
+        emailerror: '',
+        password: '',
+        passworderror: ''
+    }
+
+    constructor(props: any) {
+        super(props);
+        this.handleChangeEvent = this.handleChangeEvent.bind(this);
+        this.signup = this.signup.bind(this);
+    }
+
+    handleChangeEvent(event: any) {
+        event.preventDefault();
+        const state: any = this.state;
+        state[event.target.name] = event.target.value;
+        this.setState(state);
+    }
+
+    validate() {
+        let firstnameerror = "";
+        let lastnameerror = "";
+        let emailerror = "";
+        let passworderror = "";
+
+        if (!this.state.firstname) {
+            firstnameerror = "please enter firstname";
+        }
+
+        if (!this.state.lastname) {
+            lastnameerror = "please enter lastname";
+        }
+
+        const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        if (!this.state.email) {
+            emailerror = "please enter email";
+        } else if (!reg.test(this.state.email)) {
+            emailerror = "please enter valid email";
+        }
+
+        if (!this.state.password) {
+            passworderror = "please enter password";
+        }
+
+        if (firstnameerror || lastnameerror || emailerror || passworderror) {
+            this.setState({ firstnameerror, lastnameerror, emailerror, passworderror });
+            return false;
+        }
+        return true;
+    };
+
+    signup() {
+        const isValid = this.validate();
+        if (isValid) {
+            this.setState({
+                firstnameerror: this.state.firstnameerror = '',
+                lastnameerror: this.state.lastnameerror = '',
+                emailerror: this.state.emailerror = '',
+                passworderror: this.state.passworderror = ''
+            })
+            if (this.state.firstname && this.state.lastname && this.state.email && this.state.password) {
+                const obj = {
+                    firstname: this.state.firstname,
+                    lastname: this.state.lastname,
+                    email: this.state.email,
+                    password: this.state.password
+                }
+
+                // var signupUser = await API.signupUser(obj);
+                // console.log("signupUser",signupUser);
+
+                if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.password === obj.password) {
+                    Swal.fire({
+                        text: "SignUp Successfully",
+                        icon: 'success'
+                    });
+                    this.props.history.push('/login');
+                }
+            }
+        };
+    }
+
+
     render() {
         return (
             <div className="ms-body ms-primary-theme ms-logged-out">
@@ -32,45 +125,81 @@ class Signup extends React.Component {
                             <div className="ms-auth-col">
                                 <div className="ms-auth-form">
                                     <form className="needs-validation">
-                                        <h3><b>Create Account</b></h3>
-                                        <p> Please enter personal information to continue</p>
+                                        <h3><b>{Constant.signup}</b></h3>
+                                        <p>{Constant.signuppage} </p>
                                         <div className="form-row">
                                             <div className="col-md-6 ">
-                                                <label><b>First name</b></label>
+                                                <label><b>{Constant.firstname}</b></label>
                                                 <div className="input-group">
-                                                    <input type="text" className="form-control" id="validationCustom01" placeholder="First name" value="John" required />
+                                                    <input
+                                                        type="text"
+                                                        name="firstname"
+                                                        className="form-control"
+                                                        id="validationCustom01"
+                                                        placeholder="First name"
+                                                        onChange={this.handleChangeEvent}
+                                                    />
                                                     <div className="valid-feedback">
                                                         Looks good!
                     </div>
                                                 </div>
+                                                <div className="mb-4 text-danger">
+                                                    {this.state.firstnameerror}
+                                                </div>
                                             </div>
                                             <div className="col-md-6 ">
-                                                <label><b>Last name</b></label>
+                                                <label><b>{Constant.lastname}</b></label>
                                                 <div className="input-group">
-                                                    <input type="text" className="form-control" id="validationCustom02" placeholder="Last name" value="Doe" required />
+                                                    <input
+                                                        type="text"
+                                                        name="lastname"
+                                                        className="form-control"
+                                                        id="validationCustom02"
+                                                        placeholder="Last name"
+                                                        onChange={this.handleChangeEvent}
+                                                    />
                                                     <div className="valid-feedback">
                                                         Looks good!
                     </div>
+                                                </div>
+                                                <div className="mb-4 text-danger">
+                                                    {this.state.lastnameerror}
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="form-row">
                                             <div className="col-md-12 ">
-                                                <label><b>Email Address</b></label>
+                                                <label><b>{Constant.email}</b></label>
                                                 <div className="input-group">
-                                                    <input type="email" className="form-control" id="validationCustom03" placeholder="Email Address" required />
-                                                    <div className="invalid-feedback">
-                                                        Please provide a valid email.
-                    </div>
+                                                    <input
+                                                        type="email"
+                                                        name="email"
+                                                        className="form-control"
+                                                        id="validationCustom03"
+                                                        placeholder="Email Address"
+                                                        onChange={this.handleChangeEvent}
+                                                    />
+
+                                                </div>
+                                                <div className="mb-4 text-danger">
+                                                    {this.state.emailerror}
                                                 </div>
                                             </div>
                                             <div className="col-md-12 ">
-                                                <label><b>Password</b></label>
+                                                <label><b>{Constant.password}</b></label>
                                                 <div className="input-group">
-                                                    <input type="password" className="form-control" id="validationCustom04" placeholder="Password" required />
-                                                    <div className="invalid-feedback">
-                                                        Please provide a password.
-                    </div>
+                                                    <input
+                                                        type="password"
+                                                        name="password"
+                                                        className="form-control"
+                                                        id="validationCustom04"
+                                                        placeholder="Password"
+                                                        onChange={this.handleChangeEvent}
+                                                    />
+
+                                                </div>
+                                                <div className="mb-4 text-danger">
+                                                    {this.state.passworderror}
                                                 </div>
                                             </div>
                                         </div>
@@ -83,8 +212,15 @@ class Signup extends React.Component {
                                                 <span> <b>Agree to terms and conditions </b></span>
                                             </div>
                                         </div>
-                                        <button className="btn mt-4 d-block w-100" type="button" style={{ backgroundColor: '#eea218', color: '#fff' }}>Create Account</button>
-                                        <p className="mb-0 mt-3 text-center">Already have an account?<Link className="btn-link" style={{color: '#eea218' }} to="/login"> Login</Link></p>
+                                        <button
+                                            className="btn mt-4 d-block w-100"
+                                            type="button"
+                                            style={{ backgroundColor: '#eea218', color: '#fff' }}
+                                            onClick={this.signup}
+                                        >
+                                            {Constant.signup}
+                                        </button>
+                                        <p className="mb-0 mt-3 text-center">Already have an account?<Link className="btn-link" style={{ color: '#eea218' }} to="/login"> {Constant.login}</Link></p>
                                     </form>
                                 </div>
                             </div>

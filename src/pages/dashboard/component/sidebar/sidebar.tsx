@@ -57,9 +57,7 @@ class SideBar extends React.Component {
                 <aside id="ms-side-nav" className="side-nav fixed ms-aside-scrollable ms-aside-left">
 
                     <div className="logo-sn ms-d-block-lg">
-                        <a className="pl-0 ml-0 text-center" href="index-2.html">
-                            <img src="./assets/images/kartzo-logo-216x62.png" alt="logo" />
-                        </a>
+                    <Link className="pl-0 ml-0 text-center" to="/dashboard"><img src="./assets/images/kartzo-logo-216x62.png" alt="logo" /></Link>
                     </div>
 
                     <ul className="accordion ms-main-aside fs-14" id="side-nav-accordion">
@@ -432,8 +430,7 @@ class SideBar extends React.Component {
                                     </li>
                                     <li className="dropdown-divider"></li>
                                     <li className="ms-dropdown-list">
-                                        <a className="media fs-14 p-2" href="pages/prebuilt-pages/user-profile.html"> <span><i className="flaticon-user mr-2"></i> Profile</span>
-                                        </a>
+                                    <Link className="media fs-14 p-2" to="/profile"> <span><i className="flaticon-user mr-2"></i> Profile</span></Link>
                                         <a className="media fs-14 p-2" href="pages/apps/email.html"> <span><i className="flaticon-mail mr-2"></i> Inbox</span> <span className="badge badge-pill badge-info">3</span>
                                         </a>
                                         <a className="media fs-14 p-2" href="pages/prebuilt-pages/user-profile.html"> <span><i className="flaticon-gear mr-2"></i> Account Settings</span>

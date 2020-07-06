@@ -1,32 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Badge,
     Button,
     Card,
     CardBody,
-    CardFooter,
     CardHeader,
     Col,
     CardTitle,
-    Form,
-    CustomInput,
-    FormGroup,
-    FormText,
-    FormFeedback,
-    Input,
     Table,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupButtonDropdown,
-    InputGroupText,
-    Label,
     Row,
 } from 'reactstrap';
 import './users.css';
 import NavBar from '../../navbar/navbar';
-import Pagination from "react-js-pagination";
-import "bootstrap-less";
 
 class Users extends React.Component {
 
