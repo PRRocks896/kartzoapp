@@ -28,9 +28,7 @@ class NavBar extends React.Component {
                 <aside id="ms-side-nav" className="side-nav fixed ms-aside-scrollable ms-aside-left">
 
                     <div className="logo-sn ms-d-block-lg">
-                       
                             <Link className="pl-0 ml-0 text-center" to="/dashboard"><img src="./assets/images/kartzo-logo-216x62.png" alt="logo" /></Link>
-                       
                     </div>
 
                     <ul className="accordion ms-main-aside fs-14" id="side-nav-accordion">
@@ -384,7 +382,7 @@ class NavBar extends React.Component {
                                 <img src="./assets/images/kartzo-logo-84x41.png" alt="logo" /> </a>
                         </div>
 
-                        <ul className={this.state.side == true ? "ms-nav-list ms-inline mb-0" : "ms-nav-list ms-inline mb-0 ms-slide-down"} id="ms-nav-options">
+                        <ul className={this.state.side === true ? "ms-nav-list ms-inline mb-0" : "ms-nav-list ms-inline mb-0 ms-slide-down"} id="ms-nav-options">
                             {/* <li className="ms-nav-item ms-search-form pb-0 py-0">
             <form className="ms-form" method="post">
                 <div className="ms-form-group my-0 mb-0 has-icon fs-14">
