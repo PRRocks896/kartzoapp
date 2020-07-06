@@ -1,25 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Badge,
     Button,
     Card,
     CardBody,
-    CardFooter,
     CardHeader,
-    Col,
-    CardTitle,
-    Form,
-    CustomInput,
-    FormGroup,
-    FormText,
-    FormFeedback,
     Input,
-    Table,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupButtonDropdown,
-    InputGroupText,
+    Col,
+    FormGroup,
     Label,
     Row,
 } from 'reactstrap';

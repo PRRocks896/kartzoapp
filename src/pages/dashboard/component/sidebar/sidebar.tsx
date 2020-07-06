@@ -33,7 +33,7 @@ class SideBar extends React.Component {
 
     render() {
         return (
-            <div  className={this.state.isOpen == true ? "ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" : "ms-body ms-primary-theme ms-has-quickbar"}>
+            <div  className={this.state.isOpen === true ? "ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" : "ms-body ms-primary-theme ms-has-quickbar"}>
                 {/* <div id="preloader-wrap">
                     <div className="spinner spinner-8">
                         <div className="ms-circle1 ms-child"></div>
@@ -430,19 +430,11 @@ class SideBar extends React.Component {
                                     </li>
                                     <li className="dropdown-divider"></li>
                                     <li className="ms-dropdown-list">
-                                    <Link className="media fs-14 p-2" to="/profile"> <span><i className="flaticon-user mr-2"></i> Profile</span></Link>
-                                        <a className="media fs-14 p-2" href="pages/apps/email.html"> <span><i className="flaticon-mail mr-2"></i> Inbox</span> <span className="badge badge-pill badge-info">3</span>
-                                        </a>
-                                        <a className="media fs-14 p-2" href="pages/prebuilt-pages/user-profile.html"> <span><i className="flaticon-gear mr-2"></i> Account Settings</span>
-                                        </a>
+                                    <Link className="media fs-14 p-2" to="/profile"> <span><i className="fa fa-user mr-2"></i> Profile</span></Link>
                                     </li>
                                     <li className="dropdown-divider"></li>
                                     <li className="dropdown-menu-footer">
-                                        <a className="media fs-14 p-2" href="pages/prebuilt-pages/lock-screen.html"> <span><i className="flaticon-security mr-2"></i> Lock</span>
-                                        </a>
-                                    </li>
-                                    <li className="dropdown-menu-footer">
-                                        <Link className="media fs-14 p-2" to="/"><span ><i className="flaticon-shut-down mr-2"></i>Logout</span></Link>
+                                        <Link className="media fs-14 p-2" to="/"><span ><i className="fa fa-chevron-circle-right mr-2"></i>Logout</span></Link>
 
                                     </li>
                                 </ul>

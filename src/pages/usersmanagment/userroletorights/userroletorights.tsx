@@ -212,6 +212,7 @@ class UserRoleToRights extends React.Component {
                                                                                 name="all"
                                                                                 // value={this.state.selectroledata[index]['read'] == true ? 1 : 0}
                                                                                 type="checkbox"
+                                                                                id="1"
                                                                                 // id={data.id + 'read'}
                                                                                 data_type="read"
                                                                             // onChange={(e) => this.handleChange(data, 'read', e)}
@@ -223,6 +224,7 @@ class UserRoleToRights extends React.Component {
                                                                                 name="view"
                                                                                 // value={this.state.selectroledata[index]['write'] == true ? 1 : 0}
                                                                                 type="checkbox"
+                                                                                id="2"
                                                                                 // id={data.id + 'write'}
                                                                                 data_type="write"
                                                                             // onChange={(e) => this.handleChange(data, 'write', e)}
@@ -232,6 +234,7 @@ class UserRoleToRights extends React.Component {
                                                                         <td className="centers">
                                                                             <CustomInput
                                                                                 name="add"
+                                                                                id="3"
                                                                                 // value={this.state.selectroledata[index]['delete'] == true ? 1 : 0}
                                                                                 type="checkbox"
                                                                                 // id={data.id + 'delete'}
@@ -243,6 +246,7 @@ class UserRoleToRights extends React.Component {
                                                                         <td className="centers">
                                                                             <CustomInput
                                                                                 name="edit"
+                                                                                id="4"
                                                                                 // value={this.state.selectroledata[index]['import'] == true ? 1 : 0}
                                                                                 type="checkbox"
                                                                                 // id={data.id + 'import'}
@@ -254,6 +258,7 @@ class UserRoleToRights extends React.Component {
                                                                         <td className="centers">
                                                                             <CustomInput
                                                                                 name="delete"
+                                                                                id="5"
                                                                                 // value={this.state.selectroledata[index]['read'] == true ? 1 : 0}
                                                                                 type="checkbox"
                                                                                 // id={data.id + 'read'}

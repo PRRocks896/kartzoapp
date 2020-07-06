@@ -935,6 +935,7 @@ body:not(.ms-aside-left-open) .ms-aside-toggler .ms-toggler-bar{
   display: flex;
   flex-direction: column;
   width: 255px;
+  height:100%;
   margin: 0;
   float: left;
   padding-bottom: 3.75rem;

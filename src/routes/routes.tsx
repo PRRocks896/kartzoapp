@@ -1,22 +1,12 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch } from 'react-router-dom';
 import history from '../history';
-// import createBrowserHistory from 'history/createBrowserHistory';
-// const history = createBrowserHistory();
-// import Login from '../pages/login/login';
-// import Signup from '../pages/signup/signup';
-// import Dashboard from '../pages/dashboard/dashboard';
-// import ForgotPassword from '../pages/forgotpassword/forgotpassword';
-// import Users from '../pages/usersmanagment/users/users';
-// import UserRole from '../pages/usersmanagment/userrole/userrole';
-// import UserRoleToRights from '../pages/usersmanagment/userroletorights/userroletorights';
 
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
   </div>
 )
-
 
 const Login = React.lazy(() => import('../pages/login/login'));
 const Signup = React.lazy(() => import('../pages/signup/signup'));
