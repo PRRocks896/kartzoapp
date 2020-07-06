@@ -141,7 +141,7 @@ class UserRole extends React.Component {
                     <div className="ms-content-wrapper">
                         <div className="row">
                             <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                                <Card className="main-card mb-12"> 
+                                <Card className="main-card mb-12">
                                     <CardHeader>
                                         <CardTitle
                                             className="font"
@@ -185,7 +185,7 @@ class UserRole extends React.Component {
                                                     <th>Email</th>
                                                     <th>PhoneNumber</th>
                                                     <th>Address</th>
-                                                    <th style={{textAlign:"center"}}>Status</th>
+                                                    <th style={{ textAlign: "center" }}>Status</th>
                                                     <th className="action">Action</th>
                                                 </tr>
                                             </thead>
@@ -195,7 +195,7 @@ class UserRole extends React.Component {
                                                     <td>user1@gmail.com</td>
                                                     <td>7878787878</td>
                                                     <td>Digital Vichar Technology</td>
-                                                    <td style={{textAlign:"center"}}><i className="fa fa-check"></i></td>
+                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
                                                     <td className="action">
                                                         <span className="padding">
                                                             <i className="fa fa-eye"></i>
@@ -209,7 +209,7 @@ class UserRole extends React.Component {
                                                     <td>user2@gmail.com</td>
                                                     <td>7878787878</td>
                                                     <td>Digital Vichar Technology</td>
-                                                    <td style={{textAlign:"center"}}><i className="fa fa-check"></i></td>
+                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
                                                     <td className="action">
                                                         <span className="padding">
                                                             <i className="fa fa-eye"></i>
