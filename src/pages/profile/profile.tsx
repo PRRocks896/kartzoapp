@@ -23,20 +23,19 @@ import {
     Label,
     Row,
 } from 'reactstrap';
-// import './users.css';
+import './profile.css';
 import NavBar from '../navbar/navbar';
 
 class Profile extends React.Component {
 
     state = {
-
+        selectedFile: null
     }
 
     constructor(props: any) {
         super(props);
 
     }
-
 
     render() {
 
@@ -51,63 +50,24 @@ class Profile extends React.Component {
                                         <strong>My Profile</strong>
                                     </CardHeader>
                                     <CardBody>
-                                        {/* <Row>
+                                        <Row>
                                             <Col xs="12" sm="12" md="12" lg="12" xl="12">
                                                 <FormGroup className="img-upload">
-                                                    {
-                                                        this.state.selectedFile != null ? (
-                                                            <div>
-                                                                {
-                                                                    this.state.selectedFile ? (
-                                                                        <div>
-                                                                            <img className="pic" src={config.REMOTE_URL + this.state.selectedFile} />
-                                                                            <i className="fa fa-remove fa-lg cursor" onClick={() => this.removeIcon(this.props.profile.avatar)}></i>
-                                                                        </div>
-                                                                    ) : (null)
-                                                                }
-                                                            </div>
-                                                        ) : (
-                                                                <div>
-                                                                    {
-                                                                        this.props.profile.avatar ? (
-                                                                            <div>
-                                                                                <img className="pic" src={config.REMOTE_URL + this.props.profile.avatar} />
-                                                                                <i className="fa fa-remove fa-lg cursor" onClick={() => this.removeIcon(this.props.profile.avatar)}></i>
-                                                                            </div>
-                                                                        ) : (
-                                                                                <div>
-                                                                                    <p>Select File:</p>
-                                                                                    <Label className="imag" for="file-input"><i className="fa fa-upload fa-lg"></i></Label>
-                                                                                    <span className="ml-20"> <b>Or</b> Enter URL</span>
-                                                                                    <Input
-                                                                                        type="url"
-                                                                                        id="image"
-                                                                                        name="filename"
-                                                                                        className="form-control profile_search"
-                                                                                        // defaultValue={this.state.filename}
-                                                                                      
-                                                                                        placeholder="Please Enter URL"
-                                                                                        required
-                                                                                    />
-                                                                                    <Button className="mt-0 ml-15" type="button" size="sm" color="primary" onClick={this.onURLChangeHandler.bind(this)}>Upload</Button>
-                                                                                    <Input
-                                                                                        id="file-input"
-                                                                                        type="file"
-                                                                                        className="form-control"
-                                                                                        name="file"
-                                                                                        // onChange={this.onChangeHandler.bind(this)}
-                                                                                    />
+                                                    <div>
+                                                        <p>Select File:</p>
+                                                        <Label className="imag" for="file-input"><i className="fa fa-upload fa-lg"></i></Label>
+                                                        <Input
+                                                            id="file-input"
+                                                            type="file"
+                                                            className="form-control"
+                                                            name="file"
+                                                        // onChange={this.onChangeHandler.bind(this)}
+                                                        />
 
-                                                                                </div>
-                                                                            )
-                                                                    }
-                                                                </div>
-                                                            )
-                                                    }
-
+                                                    </div>
                                                 </FormGroup>
                                             </Col>
-                                        </Row> */}
+                                        </Row>
                                         <Row>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>

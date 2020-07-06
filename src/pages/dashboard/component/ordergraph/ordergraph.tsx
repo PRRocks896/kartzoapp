@@ -2,6 +2,7 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 
 
+
 class OrderGraph extends React.Component {
 
     state = {
@@ -38,7 +39,6 @@ class OrderGraph extends React.Component {
                             options={{
                                 title: {
                                     display: true,
-                                    text: 'Sells Graph',
                                     fontSize: 20
                                 },
                                 legend: {
@@ -64,7 +64,6 @@ class OrderGraph extends React.Component {
                             options={{
                                 title: {
                                     display: true,
-                                    text: 'Total Visitors',
                                     fontSize: 20
                                 },
                                 legend: {
@@ -90,7 +89,6 @@ class OrderGraph extends React.Component {
                             options={{
                                 title: {
                                     display: true,
-                                    text: 'New Users',
                                     fontSize: 20
                                 },
                                 legend: {
@@ -116,7 +114,6 @@ class OrderGraph extends React.Component {
                             options={{
                                 title: {
                                     display: true,
-                                    text: 'Total Orders',
                                     fontSize: 20
                                 },
                                 legend: {

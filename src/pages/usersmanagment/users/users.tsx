@@ -173,7 +173,7 @@ class Users extends React.Component {
                                                     <th>Email</th>
                                                     <th>PhoneNumber</th>
                                                     <th>Address</th>
-                                                    <th>Status</th>
+                                                    <th style={{textAlign:"center"}}>Status</th>
                                                     <th className="action">Action</th>
                                                 </tr>
                                             </thead>
@@ -183,7 +183,7 @@ class Users extends React.Component {
                                                     <td>user1@gmail.com</td>
                                                     <td>7878787878</td>
                                                     <td>Digital Vichar Technology</td>
-                                                    <td><i className="fa fa-check"></i></td>
+                                                    <td style={{textAlign:"center"}}><i className="fa fa-check"></i></td>
                                                     <td className="action">
                                                         <span className="padding">
                                                             <i className="fa fa-eye"></i>
@@ -197,7 +197,7 @@ class Users extends React.Component {
                                                     <td>user2@gmail.com</td>
                                                     <td>7878787878</td>
                                                     <td>Digital Vichar Technology</td>
-                                                    <td><i className="fa fa-check"></i></td>
+                                                    <td style={{textAlign:"center"}}><i className="fa fa-check"></i></td>
                                                     <td className="action">
                                                         <span className="padding">
                                                             <i className="fa fa-eye"></i>
