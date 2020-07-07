@@ -211,18 +211,18 @@ class City extends React.Component<{ history: any }> {
                                         <Table hover className="mb-0 table_responsive" bordered>
                                             <thead>
                                                 <tr>
-                                                    <th>Country Name</th>
-                                                    <th>State Name</th>
                                                     <th>City Name</th>
+                                                    <th>State Name</th>
+                                                    <th>Country Name</th>
                                                     <th style={{ textAlign: "center" }}>Status</th>
                                                     <th className="action">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>INDIA</td>
-                                                    <td>GUJRAT</td>
                                                     <td>Rajkot</td>
+                                                    <td>GUJRAT</td>
+                                                    <td>INDIA</td>
                                                     <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
                                                     <td className="action">
                                                         <span className="padding">
@@ -233,9 +233,9 @@ class City extends React.Component<{ history: any }> {
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                <td>INDIA</td>
-                                                    <td>GUJRAT</td>
                                                     <td>Ahmedabad</td>
+                                                    <td>GUJRAT</td>
+                                                <td>INDIA</td>
                                                     <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
                                                     <td className="action">
                                                         <span className="padding">
