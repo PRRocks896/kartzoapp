@@ -211,8 +211,8 @@ class SubCategory extends React.Component<{ history: any }> {
                                         <Table hover className="mb-0 table_responsive" bordered>
                                             <thead>
                                                 <tr>
-                                                    <th>Category Name</th>
                                                     <th>SubCategory Name</th>
+                                                    <th>Category Name</th>
                                                     <th>Image</th>
                                                     <th style={{ textAlign: "center" }}>Status</th>
                                                     <th className="action">Action</th>
@@ -220,8 +220,8 @@ class SubCategory extends React.Component<{ history: any }> {
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <th>FOOD</th>
                                                     <td>Pizza</td>
+                                                    <th>FOOD</th>
                                                     <td>Pizza Image</td>
                                                     <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
                                                     <td className="action">
@@ -233,8 +233,8 @@ class SubCategory extends React.Component<{ history: any }> {
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th>FOOD</th>
                                                     <td>Burger</td>
+                                                    <th>FOOD</th>
                                                     <td>Burger Image</td>
                                                     <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
                                                     <td className="action">
