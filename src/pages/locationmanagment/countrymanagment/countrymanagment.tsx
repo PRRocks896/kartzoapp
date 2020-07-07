@@ -1,35 +1,40 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import {
-    Badge,
     Button,
     Card,
     CardBody,
-    CardFooter,
     CardHeader,
-    Col,
     CardTitle,
-    Form,
-    CustomInput,
-    FormGroup,
-    FormText,
-    FormFeedback,
-    Input,
     Table,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupButtonDropdown,
-    InputGroupText,
+    Input,
+    Col,
+    FormGroup,
     Label,
     Row,
 } from 'reactstrap';
-// import './users.css';
+// import './adduser.css';
 import NavBar from '../../navbar/navbar';
-import Swal from 'sweetalert2';
+import API from '../../../service/location.service';
+import Switch from "react-switch";
 
-class UserRole extends React.Component<{history:any}> {
+class CountryManagment extends React.Component<{ history: any }> {
 
     state = {
+        selectedFile: null,
+        firstname: '',
+        firstnameerror: '',
+        lastname: '',
+        lastnameerror: '',
+        email: '',
+        emailerror: '',
+        mobilenumber: '',
+        mobilenumbererror: '',
+        password: '',
+        passworderror: '',
+        checked: false,
+        selectedFileerror: '',
         count: 10,
         currentPage: 1,
         items_per_page: 2,
@@ -49,19 +54,11 @@ class UserRole extends React.Component<{history:any}> {
 
     constructor(props: any) {
         super(props);
-        this.editRole = this.editRole.bind(this);
+        this.deleteCountry = this.deleteCountry.bind(this);
+        this.editCountry = this.editCountry.bind(this);
         this.btnIncrementClick = this.btnIncrementClick.bind(this);
         this.btnDecrementClick = this.btnDecrementClick.bind(this);
-        this.handlePageChange = this.handlePageChange.bind(this);
-        this.deleteRole = this.deleteRole.bind(this);
-
     }
-
-    handlePageChange(pageNumber: number) {
-        console.log(`active page is ${pageNumber}`);
-        this.setState({ activePage: pageNumber });
-    }
-
 
     btnIncrementClick() {
         this.setState({ upperPageBound: this.state.upperPageBound + this.state.pageBound });
@@ -77,24 +74,24 @@ class UserRole extends React.Component<{history:any}> {
         this.setState({ currentPage: listid });
     }
 
-    editRole() {
-        this.props.history.push('/edituserrole');
+    editCountry() {
+        this.props.history.push('/editcountry');
     }
 
-    deleteRole() {
+    deleteCountry() {
         Swal.fire({
             title: 'Are you sure?',
-            text: 'You should be remove role!',
+            text: 'You should be remove country!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',
             cancelButtonText: 'No, keep it'
         }).then(async (result) => {
             if (result.value) {
-                // var deleteCategory = await API.deleteCategory(id);
+                // var deleteCountry = await API.deleteCountry(id);
                 Swal.fire(
                     'Deleted!',
-                    'UserRole has been deleted.',
+                    'Your country has been deleted.',
                     'success'
                 )
                 // this.componentDidMount();
@@ -179,8 +176,8 @@ class UserRole extends React.Component<{history:any}> {
                                         <CardTitle
                                             className="font"
                                         >
-                                            UserRole
-                                            </CardTitle>
+                                            Country List
+                                        </CardTitle>
                                     </CardHeader>
                                     <CardBody>
                                         <div>
@@ -198,13 +195,13 @@ class UserRole extends React.Component<{history:any}> {
                                                 </Col>
                                                 <Col md="6">
                                                     <div className="right">
-                                                        <Link to="/adduserrole">
+                                                        <Link to="/addcountry">
                                                             <Button
                                                                 className="mb-2 mr-2 custom-button"
                                                                 color="primary"
                                                             >
                                                                 Add
-                                                            </Button>
+                                                        </Button>
                                                         </Link>
                                                     </div>
                                                 </Col>
@@ -214,43 +211,49 @@ class UserRole extends React.Component<{history:any}> {
                                         <Table hover className="mb-0 table_responsive" bordered>
                                             <thead>
                                                 <tr>
-                                                    <th>Role Name</th>
+                                                    <th>Country Name</th>
+                                                    <th>Country Code</th>
+                                                    <th>Country Flag</th>
                                                     <th style={{ textAlign: "center" }}>Status</th>
                                                     <th className="action">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>Admin</td>
+                                                    <td>INDIA</td>
+                                                    <td>+91</td>
+                                                    <td><i className="fa fa-flag"></i> icon-flag</td>
                                                     <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
                                                     <td className="action">
                                                         <span className="padding">
                                                             <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editRole}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteRole}></i>
+                                                            <i className="fas fa-edit" onClick={this.editCountry}></i>
+                                                            <i className="far fa-trash-alt" onClick={this.deleteCountry}></i>
                                                         </span>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Customer</td>
+                                                <td>INDIA</td>
+                                                    <td>+91</td>
+                                                    <td><i className="fa fa-flag"></i> icon-flag</td>
                                                     <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
                                                     <td className="action">
                                                         <span className="padding">
                                                             <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editRole}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteRole}></i>
+                                                            <i className="fas fa-edit" onClick={this.editCountry}></i>
+                                                            <i className="far fa-trash-alt" onClick={this.deleteCountry}></i>
                                                         </span>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </Table>
                                         <div>
-                                            <ul className="pagination" id="page-numbers">
-                                                {pageDecrementBtn}
-                                                {renderPageNumbers}
-                                                {pageIncrementBtn}
-                                            </ul>
-                                        </div>
+                                        <ul className="pagination" id="page-numbers">
+                                            {pageDecrementBtn}
+                                            {renderPageNumbers}
+                                            {pageIncrementBtn}
+                                        </ul>
+                                    </div>
                                     </CardBody>
                                 </Card>
                             </Col>
@@ -262,4 +265,4 @@ class UserRole extends React.Component<{history:any}> {
     }
 }
 
-export default UserRole;
+export default CountryManagment;

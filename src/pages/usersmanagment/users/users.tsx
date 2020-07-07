@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import {
     Button,
     Card,
@@ -13,7 +14,7 @@ import {
 import './users.css';
 import NavBar from '../../navbar/navbar';
 
-class Users extends React.Component {
+class Users extends React.Component<{ history: any }> {
 
     state = {
         count: 10,
@@ -39,6 +40,7 @@ class Users extends React.Component {
         this.btnIncrementClick = this.btnIncrementClick.bind(this);
         this.btnDecrementClick = this.btnDecrementClick.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.edituser = this.edituser.bind(this);
 
     }
 
@@ -60,6 +62,37 @@ class Users extends React.Component {
         this.setState({ lowerPageBound: this.state.lowerPageBound - this.state.pageBound });
         let listid = this.state.upperPageBound - this.state.pageBound;
         this.setState({ currentPage: listid });
+    }
+
+    edituser(){
+        this.props.history.push("/edituser");
+    }
+
+    deleteuser() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You should be remove user!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, keep it'
+        }).then(async (result) => {
+            if (result.value) {
+                // var deleteCategory = await API.deleteCategory(id);
+                Swal.fire(
+                    'Deleted!',
+                    'User has been deleted.',
+                    'success'
+                )
+                // this.componentDidMount();
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire(
+                    'Cancelled',
+                    'Your state is safe :)',
+                    'error'
+                )
+            }
+        })
     }
 
 
@@ -153,9 +186,9 @@ class Users extends React.Component {
                                                 </Col>
                                                 <Col md="6">
                                                     <div className="right">
-                                                        <Link to="/CreateApp">
+                                                        <Link to="/adduser">
                                                             <Button
-                                                                className="mb-2 mr-2"
+                                                                className="mb-2 mr-2 custom-button"
                                                                 color="primary"
                                                             >
                                                                 Add
@@ -187,8 +220,8 @@ class Users extends React.Component {
                                                     <td className="action">
                                                         <span className="padding">
                                                             <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit"></i>
-                                                            <i className="far fa-trash-alt"></i>
+                                                            <i className="fas fa-edit" onClick={this.edituser}></i>
+                                                            <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -201,8 +234,8 @@ class Users extends React.Component {
                                                     <td className="action">
                                                         <span className="padding">
                                                             <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit"></i>
-                                                            <i className="far fa-trash-alt"></i>
+                                                            <i className="fas fa-edit" onClick={this.edituser}></i>
+                                                            <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
                                                         </span>
                                                     </td>
                                                 </tr>

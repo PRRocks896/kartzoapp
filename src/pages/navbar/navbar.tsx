@@ -28,7 +28,7 @@ class NavBar extends React.Component {
                 <aside id="ms-side-nav" className="side-nav fixed ms-aside-scrollable ms-aside-left">
 
                     <div className="logo-sn ms-d-block-lg">
-                            <Link className="pl-0 ml-0 text-center" to="/dashboard"><img src="./assets/images/kartzo-logo-216x62.png" alt="logo" /></Link>
+                        <Link className="pl-0 ml-0 text-center" to="/dashboard"><img src="./assets/images/kartzo-logo-216x62.png" alt="logo" /></Link>
                     </div>
 
                     <ul className="accordion ms-main-aside fs-14" id="side-nav-accordion">
@@ -53,6 +53,30 @@ class NavBar extends React.Component {
                                 <li> <Link to="/userrole">User Roles</Link>
                                 </li>
                                 <li> <Link to="/userroletorights">User Role to Rights</Link>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li className="menu-item">
+                            <a href="#" className="has-chevron" data-toggle="collapse" data-target="#categorymanagment" aria-expanded="false" aria-controls="categorymanagment"> <span><i className="fa fa-list fs-16"></i>Category Management </span>
+                            </a>
+                            <ul id="categorymanagment" className="collapse" aria-labelledby="categorymanagment" data-parent="#side-nav-accordion">
+                                <li><Link to="/category">Category</Link>
+                                </li>
+                                <li> <Link to="/subcategory">Sub-Category</Link>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li className="menu-item">
+                            <a href="#" className="has-chevron" data-toggle="collapse" data-target="#locationmanagment" aria-expanded="false" aria-controls="locationmanagment"> <span><i className="fa fa-location-arrow fs-16"></i>Location Management </span>
+                            </a>
+                            <ul id="locationmanagment" className="collapse" aria-labelledby="locationmanagment" data-parent="#side-nav-accordion">
+                                <li><Link to="/country">Country Management</Link>
+                                </li>
+                                <li><Link to="/state">State Management</Link>
+                                </li>
+                                <li> <Link to="/city">City Management</Link>
                                 </li>
                             </ul>
                         </li>

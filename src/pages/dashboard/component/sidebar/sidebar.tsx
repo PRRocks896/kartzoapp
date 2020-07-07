@@ -14,7 +14,7 @@ import './sidebar.css';
 class SideBar extends React.Component {
     state = {
         isOpen: true,
-        side:true
+        side: true
     };
 
     toggleCollapse = () => {
@@ -25,7 +25,7 @@ class SideBar extends React.Component {
         this.setState({ side: !this.state.side });
     }
 
-    
+
 
     closeNav = () => {
         this.setState({ isOpen: !this.state.isOpen });
@@ -33,7 +33,7 @@ class SideBar extends React.Component {
 
     render() {
         return (
-            <div  className={this.state.isOpen === true ? "ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" : "ms-body ms-primary-theme ms-has-quickbar"}>
+            <div className={this.state.isOpen === true ? "ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" : "ms-body ms-primary-theme ms-has-quickbar"}>
                 {/* <div id="preloader-wrap">
                     <div className="spinner spinner-8">
                         <div className="ms-circle1 ms-child"></div>
@@ -57,13 +57,13 @@ class SideBar extends React.Component {
                 <aside id="ms-side-nav" className="side-nav fixed ms-aside-scrollable ms-aside-left">
 
                     <div className="logo-sn ms-d-block-lg">
-                    <Link className="pl-0 ml-0 text-center" to="/dashboard"><img src="./assets/images/kartzo-logo-216x62.png" alt="logo" /></Link>
+                        <Link className="pl-0 ml-0 text-center" to="/dashboard"><img src="./assets/images/kartzo-logo-216x62.png" alt="logo" /></Link>
                     </div>
 
                     <ul className="accordion ms-main-aside fs-14" id="side-nav-accordion">
-                    <a href="#" className="arrow"> <span style={{color: '#fff',fontSize: '25px',margin: '15px'}} onClick={this.closeNav}>x</span>
-                            </a>
-                
+                        <a href="#" className="arrow"> <span style={{ color: '#fff', fontSize: '25px', margin: '15px' }} onClick={this.closeNav}>x</span>
+                        </a>
+
                         <li className="menu-item">
                             <a href="#" className="has-chevron" data-toggle="collapse" data-target="#dashboard" aria-expanded="false" aria-controls="dashboard"> <span><i className="material-icons fs-16">dashboard</i>Dashboard </span>
                             </a>
@@ -82,6 +82,30 @@ class SideBar extends React.Component {
                                 <li> <Link to="/userrole">User Roles</Link>
                                 </li>
                                 <li> <Link to="/userroletorights">User Role to Rights</Link>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li className="menu-item">
+                            <a href="#" className="has-chevron" data-toggle="collapse" data-target="#categorymanagment" aria-expanded="false" aria-controls="categorymanagment"> <span><i className="fa fa-list fs-16"></i>Category Management </span>
+                            </a>
+                            <ul id="categorymanagment" className="collapse" aria-labelledby="categorymanagment" data-parent="#side-nav-accordion">
+                                <li><Link to="/category">Category</Link>
+                                </li>
+                                <li> <Link to="/subcategory">Sub-Category</Link>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li className="menu-item">
+                            <a href="#" className="has-chevron" data-toggle="collapse" data-target="#locationmanagment" aria-expanded="false" aria-controls="locationmanagment"> <span><i className="fa fa-location-arrow fs-16"></i>Location Management </span>
+                            </a>
+                            <ul id="locationmanagment" className="collapse" aria-labelledby="locationmanagment" data-parent="#side-nav-accordion">
+                                <li><Link to="/country">Country Management</Link>
+                                </li>
+                                <li><Link to="/state">State Management</Link>
+                                </li>
+                                <li> <Link to="/city">City Management</Link>
                                 </li>
                             </ul>
                         </li>
@@ -410,8 +434,8 @@ class SideBar extends React.Component {
                             <a className="pl-0 ml-0 text-center navbar-brand mr-0" href="index-2.html">
                                 <img src="./assets/images/kartzo-logo-84x41.png" alt="logo" /> </a>
                         </div>
-                       
-                        <ul  className={this.state.side == true ? "ms-nav-list ms-inline mb-0" : "ms-nav-list ms-inline mb-0 ms-slide-down"} id="ms-nav-options">
+
+                        <ul className={this.state.side == true ? "ms-nav-list ms-inline mb-0" : "ms-nav-list ms-inline mb-0 ms-slide-down"} id="ms-nav-options">
                             {/* <li className="ms-nav-item ms-search-form pb-0 py-0">
                                 <form className="ms-form" method="post">
                                     <div className="ms-form-group my-0 mb-0 has-icon fs-14">
@@ -430,7 +454,7 @@ class SideBar extends React.Component {
                                     </li>
                                     <li className="dropdown-divider"></li>
                                     <li className="ms-dropdown-list">
-                                    <Link className="media fs-14 p-2" to="/profile"> <span><i className="fa fa-user mr-2"></i> Profile</span></Link>
+                                        <Link className="media fs-14 p-2" to="/profile"> <span><i className="fa fa-user mr-2"></i> Profile</span></Link>
                                     </li>
                                     <li className="dropdown-divider"></li>
                                     <li className="dropdown-menu-footer">
@@ -629,7 +653,7 @@ class SideBar extends React.Component {
                                                     <li className="ms-chat-vn"><i className="material-icons">mic</i>
                                                     </li>
                                                     <li className="ms-chat-input">
-                                                        <input type="text" name="msg" placeholder="Enter Message"/>
+                                                        <input type="text" name="msg" placeholder="Enter Message" />
                                                     </li>
                                                     <li className="ms-chat-text-controls ms-list-flex"> <span> <i className="material-icons">tag_faces</i> </span>
                                                         <span> <i className="material-icons">attach_file</i> </span>

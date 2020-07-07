@@ -24,6 +24,7 @@
     "react-js-pagination": "^3.0.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-switch": "^5.0.1",
     "reactstrap": "^8.5.1",
     "sweetalert2": "^9.15.2",
     "typescript": "^3.7.5"

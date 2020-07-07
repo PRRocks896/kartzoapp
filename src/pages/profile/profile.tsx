@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import {
     Button,
     Card,
@@ -13,16 +14,100 @@ import {
 } from 'reactstrap';
 import './profile.css';
 import NavBar from '../navbar/navbar';
+import API from '../../service/service';
 
 class Profile extends React.Component {
 
     state = {
-        selectedFile: null
+        selectedFile: null,
+        firstname: '',
+        firstnameerror: '',
+        lastname: '',
+        lastnameerror: '',
+        email: '',
+        emailerror: '',
+        mobilenumber: '',
+        mobilenumbererror: ''
     }
 
     constructor(props: any) {
         super(props);
+        this.Profile = this.Profile.bind(this);
+        this.handleChangeEvent = this.handleChangeEvent.bind(this);
+    }
 
+    async componentDidMount() {
+        // const getProfile = await API.getProfile();
+        // console.log("getprofile",getProfile);
+    }
+
+    validate() {
+        let firstnameerror = "";
+        let lastnameerror = "";
+        let emailerror = "";
+        let mobilenumbererror = "";
+
+        if (!this.state.firstname) {
+            firstnameerror = "please enter firstname";
+        }
+
+        if (!this.state.lastname) {
+            lastnameerror = "please enter lastname";
+        }
+
+        const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        if (!this.state.email) {
+            emailerror = "please enter email";
+        } else if (!reg.test(this.state.email)) {
+            emailerror = "please enter valid email";
+        }
+
+        if (!this.state.mobilenumber) {
+            mobilenumbererror = "please enter mobile number";
+        }
+
+        if (firstnameerror || lastnameerror || emailerror || mobilenumbererror) {
+            this.setState({ firstnameerror, lastnameerror, emailerror, mobilenumbererror });
+            return false;
+        }
+        return true;
+    };
+
+    handleChangeEvent(event: any) {
+        event.preventDefault();
+        const state: any = this.state;
+        state[event.target.name] = event.target.value;
+        this.setState(state);
+    }
+
+    async Profile() {
+        const isValid = this.validate();
+        if (isValid) {
+            this.setState({
+                firstnameerror: '',
+                lastnameerror: '',
+                emailerror: '',
+                mobilenumbererror: ''
+            })
+            if (this.state.firstname && this.state.lastname && this.state.email && this.state.mobilenumber) {
+                const obj = {
+                    firstname: this.state.firstname,
+                    lastname: this.state.lastname,
+                    email: this.state.email,
+                    mobilenumber: this.state.mobilenumber
+                }
+
+                // const updateProfile = await API.updateProfile(obj);
+                // console.log("updateProfile",updateProfile);
+
+                if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.mobilenumber === obj.mobilenumber) {
+                    Swal.fire({
+                        text: "Profile Updated Successfully",
+                        icon: 'success'
+                    });
+                }
+            }
+        };
     }
 
     render() {
@@ -51,7 +136,6 @@ class Profile extends React.Component {
                                                             name="file"
                                                         // onChange={this.onChangeHandler.bind(this)}
                                                         />
-
                                                     </div>
                                                 </FormGroup>
                                             </Col>
@@ -63,15 +147,17 @@ class Profile extends React.Component {
                                                     <Input
                                                         type="text"
                                                         id="first_name"
-                                                        name="first_name"
+                                                        name="firstname"
                                                         className="form-control"
-                                                        // defaultValue={this.state.first_name}
-                                                        // onChange={this.Profile.bind(this)}
+                                                        value={this.state.firstname}
+                                                        onChange={this.handleChangeEvent}
 
-                                                        placeholder="Enter your firstname"
+                                                        placeholder="Enter your first name"
                                                         required
                                                     />
-
+                                                    <div className="mb-4 text-danger">
+                                                        {this.state.firstnameerror}
+                                                    </div>
                                                 </FormGroup>
                                             </Col>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
@@ -80,16 +166,16 @@ class Profile extends React.Component {
                                                     <Input
                                                         type="text"
                                                         id="last_name"
-                                                        name="last_name"
+                                                        name="lastname"
                                                         className="form-control"
-                                                        // defaultValue={this.state.last_name}
-                                                        // onChange={this.Profile.bind(this)}
-
-                                                        // value={this.state.last_name}
-                                                        placeholder="Enter your lastname"
+                                                        value={this.state.lastname}
+                                                        onChange={this.handleChangeEvent}
+                                                        placeholder="Enter your last name"
                                                         required
                                                     />
-
+                                                    <div className="mb-4 text-danger">
+                                                        {this.state.lastnameerror}
+                                                    </div>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
@@ -100,16 +186,13 @@ class Profile extends React.Component {
                                                     <Input
                                                         type="email"
                                                         id="profile"
-                                                        name="email_id"
+                                                        name="email"
                                                         className="profile form-control"
-                                                        // defaultValue={this.state.email_id}
-                                                        // onChange={this.Profile.bind(this)}
-
-
+                                                        value={this.state.email}
+                                                        onChange={this.handleChangeEvent}
                                                         placeholder="Enter your email"
-                                                        required
+                                                        disabled
                                                     />
-
                                                 </FormGroup>
                                             </Col>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
@@ -118,18 +201,27 @@ class Profile extends React.Component {
                                                     <Input
                                                         type="text"
                                                         id="mobile_no"
-                                                        name="mobile_no"
+                                                        name="mobilenumber"
                                                         className="form-control"
-                                                        // defaultValue={this.state.mobile_no}
-
-                                                        placeholder="Enter your mobilenumber"
-                                                        required
+                                                        value={this.state.mobilenumber}
+                                                        onChange={this.handleChangeEvent}
+                                                        placeholder="Enter your mobile number"
                                                     />
-
+                                                    <div className="mb-4 text-danger">
+                                                        {this.state.mobilenumbererror}
+                                                    </div>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-                                        <Button type="button" size="sm" color="primary">Update</Button>
+                                     
+                                        <Button
+                                            type="button"
+                                            size="sm"
+                                            color="primary"
+                                            onClick={this.Profile}
+                                        >
+                                            Update
+                                        </Button>
                                     </CardBody>
                                 </Card>
                             </Col>

@@ -162,7 +162,7 @@ class UserRoleToRights extends React.Component {
                                                     <div className="right">
                                                         <Link to="/">
                                                             <Button
-                                                                className="mb-2 mr-2"
+                                                                className="mb-2 mr-2 custom-button"
                                                                 color="primary"
                                                             >
                                                                 Export Details
@@ -276,7 +276,7 @@ class UserRoleToRights extends React.Component {
                                             </Row>
                                             <Row>
                                                 <Button
-                                                    className="mb-2 mr-2"
+                                                    className="mb-2 mr-2 cutom-button"
                                                     color="primary"
                                                     style={{margin:'15px'}}
                                                 >

@@ -235,10 +235,10 @@ td.action i {
 padding: 6px !important;
 }
 
-.table tbody tr td:first-child, .table thead tr th:first-child {
+/* .table tbody tr td:first-child, .table thead tr th:first-child {
 width: 100px !important;
 text-align: center;
-}
+} */
 
 .fa-lg {
 font-size: 25px !important;
@@ -246,10 +246,3 @@ line-height: .75em;
 vertical-align: -15%;
 }
 
-.right{
-  text-align: right;
-}
-
-.padding{
-  display: flex;
-}
