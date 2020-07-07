@@ -27,13 +27,16 @@ class Profile extends React.Component {
         email: '',
         emailerror: '',
         mobilenumber: '',
-        mobilenumbererror: ''
+        mobilenumbererror: '',
+        selectedFileerror:''
     }
 
     constructor(props: any) {
         super(props);
         this.Profile = this.Profile.bind(this);
         this.handleChangeEvent = this.handleChangeEvent.bind(this);
+        this.onChangeHandler = this.onChangeHandler.bind(this);
+        this.removeIcon = this.removeIcon.bind(this);
     }
 
     async componentDidMount() {
@@ -46,6 +49,7 @@ class Profile extends React.Component {
         let lastnameerror = "";
         let emailerror = "";
         let mobilenumbererror = "";
+        let selectedFileerror = "";
 
         if (!this.state.firstname) {
             firstnameerror = "please enter firstname";
@@ -66,8 +70,12 @@ class Profile extends React.Component {
             mobilenumbererror = "please enter mobile number";
         }
 
-        if (firstnameerror || lastnameerror || emailerror || mobilenumbererror) {
-            this.setState({ firstnameerror, lastnameerror, emailerror, mobilenumbererror });
+        if (!this.state.selectedFile) {
+            selectedFileerror = "please select file";
+        }
+
+        if (firstnameerror || lastnameerror || emailerror || mobilenumbererror || selectedFileerror) {
+            this.setState({ firstnameerror, lastnameerror, emailerror, mobilenumbererror,selectedFileerror});
             return false;
         }
         return true;
@@ -87,20 +95,22 @@ class Profile extends React.Component {
                 firstnameerror: '',
                 lastnameerror: '',
                 emailerror: '',
-                mobilenumbererror: ''
+                mobilenumbererror: '',
+                selectedFileerror:''
             })
-            if (this.state.firstname && this.state.lastname && this.state.email && this.state.mobilenumber) {
+            if (this.state.firstname && this.state.lastname && this.state.email && this.state.mobilenumber && this.state.selectedFile) {
                 const obj = {
                     firstname: this.state.firstname,
                     lastname: this.state.lastname,
                     email: this.state.email,
-                    mobilenumber: this.state.mobilenumber
+                    mobilenumber: this.state.mobilenumber,
+                    selectedFile: this.state.selectedFile
                 }
 
                 // const updateProfile = await API.updateProfile(obj);
                 // console.log("updateProfile",updateProfile);
 
-                if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.mobilenumber === obj.mobilenumber) {
+                if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.mobilenumber === obj.mobilenumber && this.state.selectedFile === obj.selectedFile) {
                     Swal.fire({
                         text: "Profile Updated Successfully",
                         icon: 'success'
@@ -108,6 +118,21 @@ class Profile extends React.Component {
                 }
             }
         };
+    }
+
+    onChangeHandler(event: any) {
+        // let data = new FormData();
+        // data.append('file_name', event.target.files[0]);
+        // console.log("event",event.target.files[0].name);
+        this.setState({
+            selectedFile: this.state.selectedFile = event.target.files[0].name
+        })
+    }
+
+    removeIcon() {
+        this.setState({
+            selectedFile: this.state.selectedFile = null
+        })
     }
 
     render() {
@@ -124,18 +149,37 @@ class Profile extends React.Component {
                                     </CardHeader>
                                     <CardBody>
                                         <Row>
-                                            <Col xs="12" sm="12" md="12" lg="12" xl="12">
+                                        <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup className="img-upload">
-                                                    <div>
-                                                        <p>Select File:</p>
-                                                        <Label className="imag" for="file-input"><i className="fa fa-upload fa-lg"></i></Label>
-                                                        <Input
-                                                            id="file-input"
-                                                            type="file"
-                                                            className="form-control"
-                                                            name="file"
-                                                        // onChange={this.onChangeHandler.bind(this)}
-                                                        />
+                                                    {
+                                                        this.state.selectedFile != null ? (
+                                                            <div>
+                                                                {
+                                                                    this.state.selectedFile ? (
+                                                                        <div>
+                                                                            <img className="picture" src={require('../dashboard/assets/images/login-img.png')} />
+                                                                            <i className="fa fa-trash cursor" onClick={() => this.removeIcon()}></i>
+                                                                        </div>
+                                                                    ) : (null)
+                                                                }
+                                                            </div>
+                                                        ) : (
+                                                                <div className="">
+                                                                    <p><b>User Image:</b></p>
+                                                                    <Label className="imag" for="file-input"><i className="fa fa-upload fa-lg" style={{ color: '#20a8d8' }}></i></Label>
+                                                                    <Input
+                                                                        id="file-input"
+                                                                        type="file"
+                                                                        className="form-control"
+                                                                        name="file"
+                                                                        onChange={this.onChangeHandler.bind(this)}
+                                                                    />
+
+                                                                </div>
+                                                            )
+                                                    }
+                                                    <div className="text-danger">
+                                                        {this.state.selectedFileerror}
                                                     </div>
                                                 </FormGroup>
                                             </Col>
@@ -217,6 +261,7 @@ class Profile extends React.Component {
                                         <Button
                                             type="button"
                                             size="sm"
+                                            className="mb-2 mr-2 custom-button"
                                             color="primary"
                                             onClick={this.Profile}
                                         >
