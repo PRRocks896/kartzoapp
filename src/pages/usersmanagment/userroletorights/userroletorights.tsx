@@ -276,7 +276,7 @@ class UserRoleToRights extends React.Component {
                                             </Row>
                                             <Row>
                                                 <Button
-                                                    className="mb-2 mr-2 cutom-button"
+                                                    className="mb-2 mr-2 custom-button"
                                                     color="primary"
                                                     style={{margin:'15px'}}
                                                 >
