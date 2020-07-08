@@ -1,6 +1,29 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import history from '../history';
+import Users from '../pages/usersmanagment/users/users';
+import UserRole from '../pages/usersmanagment/userrole/userrole';
+import Login from '../pages/login/login';
+import Signup from '../pages/signup/signup';
+import Dashboard from '../pages/dashboard/dashboard';
+import UserRoleToRights from '../pages/usersmanagment/userroletorights/userroletorights';
+import Profile from '../pages/profile/profile';
+import AddUser from '../pages/usersmanagment/adduser/adduser';
+import Category from '../pages/categorymanagment/category/category';
+import SubCategory from '../pages/categorymanagment/subcategory/subcategory';
+import AddCategory from '../pages/categorymanagment/addcategory/addcategory';
+import AddSubCategory from '../pages/categorymanagment/addsubcategory/addsubcategory';
+import AddUserRole from '../pages/usersmanagment/adduserrole/adduserrole';
+import CountryManagment from '../pages/locationmanagment/countrymanagment/countrymanagment';
+import AddCountry from '../pages/locationmanagment/addcountry/addcountry';
+import StateManagment from '../pages/locationmanagment/statemanagment/statemanagment';
+import AddState from '../pages/locationmanagment/addstate/addstate';
+import City from '../pages/locationmanagment/citymanagment/city';
+import AddCity from '../pages/locationmanagment/addcity/addcity';
+
+
+
+
 
 const loading = (
   <div className="pt-3 text-center">
@@ -8,26 +31,26 @@ const loading = (
   </div>
 )
 
-const Login = React.lazy(() => import('../pages/login/login'));
-const Signup = React.lazy(() => import('../pages/signup/signup'));
-const Dashboard = React.lazy(() => import('../pages/dashboard/dashboard'));
-const Users = React.lazy(() => import('../pages/usersmanagment/users/users'));
-const UserRole = React.lazy(() => import('../pages/usersmanagment/userrole/userrole'));
-const ForgotPassword = React.lazy(() => import('../pages/forgotpassword/forgotpassword'));
-const UserRoleToRights = React.lazy(() => import('../pages/usersmanagment/userroletorights/userroletorights'));
-const Profile = React.lazy(() => import('../pages/profile/profile'));
-const AddUser = React.lazy(() => import('../pages/usersmanagment/adduser/adduser'));
-const Category = React.lazy(() => import('../pages/categorymanagment/category/category'));
-const SubCategory = React.lazy(() => import('../pages/categorymanagment/subcategory/subcategory'));
-const AddCategory = React.lazy(() => import('../pages/categorymanagment/addcategory/addcategory'));
-const AddSubCategory = React.lazy(() => import('../pages/categorymanagment/addsubcategory/addsubcategory'));
-const AddUserRole = React.lazy(() => import('../pages/usersmanagment/adduserrole/adduserrole'));
-const CountryManagment = React.lazy(() => import('../pages/locationmanagment/countrymanagment/countrymanagment'));
-const AddCountry = React.lazy(() => import('../pages/locationmanagment/addcountry/addcountry'));
-const StateManagment = React.lazy(() => import('../pages/locationmanagment/statemanagment/statemanagment'));
-const AddState = React.lazy(() => import('../pages/locationmanagment/addstate/addstate'));
-const City = React.lazy(() => import('../pages/locationmanagment/citymanagment/city'));
-const AddCity = React.lazy(() => import('../pages/locationmanagment/addcity/addcity'));
+// const Login = React.lazy(() => import('../pages/login/login'));
+// const Signup = React.lazy(() => import('../pages/signup/signup'));
+// const Dashboard = React.lazy(() => import('../pages/dashboard/dashboard'));
+// const Users = React.lazy(() => import('../pages/usersmanagment/users/users'));
+// const UserRole = React.lazy(() => import('../pages/usersmanagment/userrole/userrole'));
+// const ForgotPassword = React.lazy(() => import('../pages/forgotpassword/forgotpassword'));
+// const UserRoleToRights = React.lazy(() => import('../pages/usersmanagment/userroletorights/userroletorights'));
+// const Profile = React.lazy(() => import('../pages/profile/profile'));
+// const AddUser = React.lazy(() => import('../pages/usersmanagment/adduser/adduser'));
+// const Category = React.lazy(() => import('../pages/categorymanagment/category/category'));
+// const SubCategory = React.lazy(() => import('../pages/categorymanagment/subcategory/subcategory'));
+// const AddCategory = React.lazy(() => import('../pages/categorymanagment/addcategory/addcategory'));
+// const AddSubCategory = React.lazy(() => import('../pages/categorymanagment/addsubcategory/addsubcategory'));
+// const AddUserRole = React.lazy(() => import('../pages/usersmanagment/adduserrole/adduserrole'));
+// const CountryManagment = React.lazy(() => import('../pages/locationmanagment/countrymanagment/countrymanagment'));
+// const AddCountry = React.lazy(() => import('../pages/locationmanagment/addcountry/addcountry'));
+// const StateManagment = React.lazy(() => import('../pages/locationmanagment/statemanagment/statemanagment'));
+// const AddState = React.lazy(() => import('../pages/locationmanagment/addstate/addstate'));
+// const City = React.lazy(() => import('../pages/locationmanagment/citymanagment/city'));
+// const AddCity = React.lazy(() => import('../pages/locationmanagment/addcity/addcity'));
 
 const createRoutes = (
   <BrowserRouter>
@@ -37,7 +60,7 @@ const createRoutes = (
         <Route exact path='/login' render={(props: any) => <Login {...props} />} />
         <Route exact path='/dashboard' name='Dashboard' render={(props: any) => <Dashboard {...props} />} />
         <Route exact path='/signup' render={(props: any) => <Signup {...props} />} />
-        <Route exact path='/forgotpassword' render={(props: any) => <ForgotPassword {...props} />} />
+        {/* <Route exact path='/forgotpassword' render={(props: any) => <ForgotPassword {...props} />} /> */}
         <Route exact path='/users' render={(props: any) => <Users {...props} />} />
         <Route exact path='/userrole' render={(props: any) => <UserRole {...props} />} />
         <Route exact path='/userroletorights' render={(props: any) => <UserRoleToRights {...props} />} />

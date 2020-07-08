@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import sweetAlert from '../../../utils';
 import {
     Button,
     Card,
@@ -109,11 +109,12 @@ class AddCountry extends React.Component<{ history: any }> {
                 // console.log("editCountry",editCountry);
 
                 if (this.state.countryname === obj.countryname && this.state.selectedFile === obj.selectedFile && this.state.countrycode === obj.countrycode) {
-                    Swal.fire({
-                        text: "Country Added Successfully",
-                        icon: 'success'
-                    });
+                    const msg = "Country Added Successfully";
+                    sweetAlert.showSuccess(msg);
                     this.props.history.push('/country');
+                } else {
+                    const msg1 = "Error";
+                    sweetAlert.showError(msg1);
                 }
             }
         };

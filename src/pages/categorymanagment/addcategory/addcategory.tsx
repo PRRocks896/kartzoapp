@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import sweetAlert from '../../../utils';
 import {
     Button,
     Card,
@@ -100,11 +100,12 @@ class AddCategory extends React.Component<{ history: any }> {
                 // console.log("editCategory",editCategory);
 
                 if (this.state.categoryname === obj.categoryname && this.state.selectedFile === obj.selectedFile) {
-                    Swal.fire({
-                        text: "Category Added Successfully",
-                        icon: 'success'
-                    });
-                    this.props.history.push('/users');
+                    const msg = "Category Added Successfully";
+                    sweetAlert.showSuccess(msg);
+                    this.props.history.push('/category');
+                } else {
+                    const msg1 = "Error";
+                    sweetAlert.showError(msg1);
                 }
             }
         };

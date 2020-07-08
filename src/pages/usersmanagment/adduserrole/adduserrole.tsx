@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import sweetAlert from '../../../utils';
 import {
     Button,
     Card,
@@ -67,11 +67,12 @@ class AddUserRole extends React.Component<{ history: any }> {
                 // console.log("addUserRole",addUserRole);
 
                 if (this.state.rolename === obj.rolename) {
-                    Swal.fire({
-                        text: "UserRole Added Successfully",
-                        icon: 'success'
-                    });
+                    const msg = "UserRole Added Successfully";
+                    sweetAlert.showSuccess(msg);
                     this.props.history.push('/userrole');
+                } else {
+                    const msg1 = "Error";
+                    sweetAlert.showError(msg1);
                 }
             }
         };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import API from '../../service/service';
-import Swal from 'sweetalert2';
+import sweetAlert from '../../utils';
 import history from '../../history';
 import Constant from '../../constant/constant';
 
@@ -84,11 +84,12 @@ class Signup extends React.Component<{ history: any }> {
                 // console.log("signupUser",signupUser);
 
                 if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.password === obj.password) {
-                    Swal.fire({
-                        text: "SignUp Successfully",
-                        icon: 'success'
-                    });
+                    const msg = "Signup Successfully";
+                    sweetAlert.showSuccess(msg);
                     this.props.history.push('/login');
+                } else {
+                    const msg1 = "Error";
+                    sweetAlert.showError(msg1);
                 }
             }
         };

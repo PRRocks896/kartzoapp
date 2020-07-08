@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import sweetAlert from '../../../utils';
 import {
     Button,
     Card,
@@ -94,11 +94,12 @@ class AddState extends React.Component<{ history: any }> {
                 // console.log("editState",editState);
 
                 if (this.state.statename === obj.statename && this.state.selectedFile === obj.selectedFile) {
-                    Swal.fire({
-                        text: "State Added Successfully",
-                        icon: 'success'
-                    });
+                    const msg = "State Added Successfully";
+                    sweetAlert.showSuccess(msg);
                     this.props.history.push('/state');
+                } else {
+                    const msg1 = "Error";
+                    sweetAlert.showError(msg1);
                 }
             }
         };

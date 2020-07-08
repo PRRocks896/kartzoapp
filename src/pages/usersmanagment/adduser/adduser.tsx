@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import sweetAlert from '../../../utils';
 import {
     Button,
     Card,
@@ -38,7 +38,7 @@ class AddUser extends React.Component<{ history: any }> {
     constructor(props: any) {
         super(props);
         // this.Profile = this.Profile.bind(this);
-        // this.handleChangeEvent = this.handleChangeEvent.bind(this);
+        this.handleChangeEvent = this.handleChangeEvent.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.removeIcon = this.removeIcon.bind(this);
         this.addUser = this.addUser.bind(this);
@@ -135,11 +135,12 @@ class AddUser extends React.Component<{ history: any }> {
                 // console.log("updateProfile",updateProfile);
 
                 if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.mobilenumber === obj.mobilenumber && this.state.password === obj.password) {
-                    Swal.fire({
-                        text: "User Added Successfully",
-                        icon: 'success'
-                    });
+                    const msg = "User Added Successfully";
+                    sweetAlert.showSuccess(msg);
                     this.props.history.push('/users');
+                } else {
+                    const msg1 = "Error";
+                    sweetAlert.showError(msg1);
                 }
             }
         };
@@ -195,7 +196,7 @@ class AddUser extends React.Component<{ history: any }> {
                                                         name="firstname"
                                                         className="form-control"
                                                         value={this.state.firstname}
-                                                        // onChange={this.handleChangeEvent}
+                                                        onChange={this.handleChangeEvent}
 
                                                         placeholder="Enter your first name"
                                                         required
@@ -214,7 +215,7 @@ class AddUser extends React.Component<{ history: any }> {
                                                         name="lastname"
                                                         className="form-control"
                                                         value={this.state.lastname}
-                                                        // onChange={this.handleChangeEvent}
+                                                        onChange={this.handleChangeEvent}
                                                         placeholder="Enter your last name"
                                                         required
                                                     />
@@ -227,15 +228,16 @@ class AddUser extends React.Component<{ history: any }> {
                                         <Row>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
-                                                    <Label htmlFor="profile">E-Mail</Label>
+                                                    <Label htmlFor="email">E-Mail</Label>
                                                     <Input
                                                         type="email"
-                                                        id="profile"
+                                                        id="email"
                                                         name="email"
-                                                        className="profile form-control"
+                                                        className="form-control"
                                                         value={this.state.email}
-                                                        // onChange={this.handleChangeEvent}
+                                                        onChange={this.handleChangeEvent}
                                                         placeholder="Enter your email"
+                                                        required
                                                     />
                                                     <div className="mb-4 text-danger">
                                                         {this.state.emailerror}
@@ -251,7 +253,7 @@ class AddUser extends React.Component<{ history: any }> {
                                                         name="mobilenumber"
                                                         className="form-control"
                                                         value={this.state.mobilenumber}
-                                                        // onChange={this.handleChangeEvent}
+                                                        onChange={this.handleChangeEvent}
                                                         placeholder="Enter your mobile number"
                                                     />
                                                     <div className="mb-4 text-danger">
@@ -269,7 +271,7 @@ class AddUser extends React.Component<{ history: any }> {
                                                     name="password"
                                                     className="form-control"
                                                     value={this.state.password}
-                                                    // onChange={this.handleChangeEvent}
+                                                    onChange={this.handleChangeEvent}
                                                     placeholder="Enter your password"
                                                 />
                                                 <div className="mb-4 text-danger">

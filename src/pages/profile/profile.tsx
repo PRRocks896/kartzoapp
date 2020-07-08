@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import sweetAlert from '../../utils';
 import {
     Button,
     Card,
@@ -111,10 +111,11 @@ class Profile extends React.Component {
                 // console.log("updateProfile",updateProfile);
 
                 if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.mobilenumber === obj.mobilenumber && this.state.selectedFile === obj.selectedFile) {
-                    Swal.fire({
-                        text: "Profile Updated Successfully",
-                        icon: 'success'
-                    });
+                    const msg = "Profile Updated Successfully";
+                    sweetAlert.showSuccess(msg);
+                } else {
+                    const msg1 = "Error";
+                    sweetAlert.showError(msg1);
                 }
             }
         };
