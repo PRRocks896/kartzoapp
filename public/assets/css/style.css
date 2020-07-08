@@ -7786,5 +7786,8 @@ img.picture {
   color: #000000;
 }
 
+span.ms-toggler-bar.bg-primary.l-color {
+  background-color: #eea218 !important;
+}
 
 

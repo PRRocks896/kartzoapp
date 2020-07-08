@@ -426,9 +426,10 @@ class SideBar extends React.Component {
                 <main className="body-content">
 
                     <nav className="navbar ms-navbar">
-                        <div className="ms-aside-toggler ms-toggler pl-0" data-target="#ms-side-nav" data-toggle="slideLeft" onClick={this.toggleCollapse}> <span className="ms-toggler-bar bg-primary" onClick={this.toggleCollapse}></span>
-                            <span className="ms-toggler-bar bg-primary"></span>
-                            <span className="ms-toggler-bar bg-primary"></span>
+                        <div className="ms-aside-toggler ms-toggler pl-0" data-target="#ms-side-nav" data-toggle="slideLeft" onClick={this.toggleCollapse}>
+                            <span className="ms-toggler-bar bg-primary l-color"></span>
+                            <span className="ms-toggler-bar bg-primary l-color"></span>
+                            <span className="ms-toggler-bar bg-primary l-color"></span>
                         </div>
                         <div className="logo-sn logo-sm ms-d-block-sm">
                             <a className="pl-0 ml-0 text-center navbar-brand mr-0" href="index-2.html">
@@ -464,9 +465,10 @@ class SideBar extends React.Component {
                                 </ul>
                             </li>
                         </ul>
-                        <div className="ms-toggler ms-d-block-sm pr-0 ms-nav-toggler" data-toggle="slideDown" data-target="#ms-nav-options" onClick={this.toggleCollapseRight}> <span className="ms-toggler-bar bg-primary" onClick={this.toggleCollapseRight}></span>
-                            <span className="ms-toggler-bar bg-primary"></span>
-                            <span className="ms-toggler-bar bg-primary"></span>
+                        <div className="ms-toggler ms-d-block-sm pr-0 ms-nav-toggler" data-toggle="slideDown" data-target="#ms-nav-options" onClick={this.toggleCollapseRight}>
+                            <span className="ms-toggler-bar bg-primary l-color"></span>
+                            <span className="ms-toggler-bar bg-primary l-color"></span>
+                            <span className="ms-toggler-bar bg-primary l-color"></span>
                         </div>
                     </nav>
                     <div className="ms-content-wrapper">
