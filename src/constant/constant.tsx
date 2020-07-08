@@ -27,5 +27,32 @@ export default {
         'Access-Control-Allow-Origin': true
     },
     firstname:'Firstname',
-    lastname:'Lastname'
+    lastname:'Lastname',
+
+    dashboardTitle: 'Dashboard',
+    userTitle: 'User Management',
+    addUserTitle: 'Add User',
+    viewUserTitle: 'View User',
+    userRoleTitle: 'Role Management',
+    viewUserRoleTitle: 'View Role',
+    adduserRoleTitle: 'Add Role',
+    rolePrivilegesTitle: 'Role Privileges',
+    countryTitle: 'Country Management',
+    stateTitle:'State Management',
+    cityTitle:'City Management',
+    addCountryTitle:'Add Country',
+    addStateTitle:'Add State',
+    addCityTitle:'Add City',
+    viewCityTitle:'View City',
+    viewStateTitle:'View State',
+    viewCountryTitle:'View Country',
+    categoryTitle:'Category Management',
+    addCategoryTitle:'Add Category',
+    viewCategoryTitle:'View Category',
+    subcategoryTitle:'Sub Category Management',
+    addSubCategoryTitle:'Add SubCategory',
+    viewSubCategoryTitle:'View SubCategory',
+    profileTitle:'Profile',
+    loginTitle:'Login',
+    signupTitle:'Signup'
 }

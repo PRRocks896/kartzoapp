@@ -79,9 +79,9 @@ class SideBar extends React.Component {
                             <ul id="usermanagment" className="collapse" aria-labelledby="usermanagment" data-parent="#side-nav-accordion">
                                 <li><Link to="/users">User</Link>
                                 </li>
-                                <li> <Link to="/userrole">User Roles</Link>
+                                <li> <Link to="/userrole">Role</Link>
                                 </li>
-                                <li> <Link to="/userroletorights">User Role to Rights</Link>
+                                <li> <Link to="/userroletorights">Role Privileges</Link>
                                 </li>
                             </ul>
                         </li>
@@ -92,7 +92,7 @@ class SideBar extends React.Component {
                             <ul id="categorymanagment" className="collapse" aria-labelledby="categorymanagment" data-parent="#side-nav-accordion">
                                 <li><Link to="/category">Category</Link>
                                 </li>
-                                <li> <Link to="/subcategory">Sub-Category</Link>
+                                <li> <Link to="/subcategory">Sub Category</Link>
                                 </li>
                             </ul>
                         </li>

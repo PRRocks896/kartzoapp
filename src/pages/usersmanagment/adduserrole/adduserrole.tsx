@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import sweetAlert from '../../../utils';
+import utils from '../../../utils';
 import {
     Button,
     Card,
@@ -16,6 +16,7 @@ import {
 import NavBar from '../../navbar/navbar';
 import API from '../../../service/role.service';
 import Switch from "react-switch";
+import constant from '../../../constant/constant';
 
 class AddUserRole extends React.Component<{ history: any }> {
 
@@ -29,6 +30,11 @@ class AddUserRole extends React.Component<{ history: any }> {
         // this.Profile = this.Profile.bind(this);
         this.handleChangeEvent = this.handleChangeEvent.bind(this);
         this.addUserRole = this.addUserRole.bind(this);
+    }
+
+    async componentDidMount() {
+        document.title = constant.adduserRoleTitle + utils.getAppName();
+
     }
  
     validate() {
@@ -68,11 +74,11 @@ class AddUserRole extends React.Component<{ history: any }> {
 
                 if (this.state.rolename === obj.rolename) {
                     const msg = "UserRole Added Successfully";
-                    sweetAlert.showSuccess(msg);
+                    utils.showSuccess(msg);
                     this.props.history.push('/userrole');
                 } else {
                     const msg1 = "Error";
-                    sweetAlert.showError(msg1);
+                    utils.showError(msg1);
                 }
             }
         };
@@ -91,7 +97,7 @@ class AddUserRole extends React.Component<{ history: any }> {
                                     <CardHeader>
                                         <Row>
                                             <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                                                <h1>Add UserRole</h1>
+                                                <h1>Add Role</h1>
                                             </Col>
                                             <Col xs="12" sm="6" md="3" lg="3" xl="3" style={{textAlign:"right"}}>
                                                 <Link to="/userrole">
@@ -112,7 +118,7 @@ class AddUserRole extends React.Component<{ history: any }> {
                                         <Row>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
-                                                    <Label htmlFor="role_name"><b>Role Name</b></Label>
+                                                    <Label htmlFor="role_name">Role Name</Label>
                                                     <Input
                                                         type="text"
                                                         id="role_name"
@@ -136,7 +142,7 @@ class AddUserRole extends React.Component<{ history: any }> {
                                             className="mb-2 mr-2 custom-button"
                                             onClick={this.addUserRole}
                                         >
-                                            Add
+                                            Save
                                         </Button>
                                     </CardBody>
                                 </Card>

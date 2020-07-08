@@ -20,6 +20,13 @@ import StateManagment from '../pages/locationmanagment/statemanagment/statemanag
 import AddState from '../pages/locationmanagment/addstate/addstate';
 import City from '../pages/locationmanagment/citymanagment/city';
 import AddCity from '../pages/locationmanagment/addcity/addcity';
+import ViewUser from '../pages/usersmanagment/viewuser/viewuser';
+import ViewUserRole from '../pages/usersmanagment/viewuserrole/viewuserrole';
+import ViewCategory from '../pages/categorymanagment/viewcategory/viewcategory';
+import ViewSubCategory from '../pages/categorymanagment/viewsubcategory/viewsubcategory';
+import ViewCity from '../pages/locationmanagment/viewcity/viewcity';
+import ViewState from '../pages/locationmanagment/viewstate/viewstate';
+import ViewCountry from '../pages/locationmanagment/viewcountry/viewcountry';
 
 
 
@@ -84,6 +91,13 @@ const createRoutes = (
         <Route exact path='/city' render={(props: any) => <City {...props} />} />
         <Route exact path='/addcity' render={(props: any) => <AddCity {...props} />} />
         <Route exact path='/editcity' render={(props: any) => <AddCity {...props} />} />
+        <Route exact path='/viewuser' render={(props: any) => <ViewUser {...props} />} />
+        <Route exact path='/viewuserrole' render={(props: any) => <ViewUserRole {...props} />} />
+        <Route exact path='/viewcategory' render={(props: any) => <ViewCategory {...props} />} />
+        <Route exact path='/viewsubcategory' render={(props: any) => <ViewSubCategory {...props} />} />
+        <Route exact path='/viewcity' render={(props: any) => <ViewCity {...props} />} />
+        <Route exact path='/viewstate' render={(props: any) => <ViewState {...props} />} />
+        <Route exact path='/viewcountry' render={(props: any) => <ViewCountry {...props} />} />
       </React.Suspense>
     </Switch>
   </BrowserRouter>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import sweetAlert from '../../../utils';
+import utils from '../../../utils';
+import { MDBDataTable } from 'mdbreact';
 import {
     Button,
     Card,
@@ -19,6 +20,7 @@ import {
 import NavBar from '../../navbar/navbar';
 import API from '../../../service/location.service';
 import Switch from "react-switch";
+import constant from '../../../constant/constant';
 
 class StateManagment extends React.Component<{ history: any }> {
 
@@ -59,6 +61,11 @@ class StateManagment extends React.Component<{ history: any }> {
         this.editState = this.editState.bind(this);
         this.btnIncrementClick = this.btnIncrementClick.bind(this);
         this.btnDecrementClick = this.btnDecrementClick.bind(this);
+        this.viewState = this.viewState.bind(this);
+    }
+
+    async componentDidMount() {
+        document.title = constant.stateTitle + utils.getAppName();
     }
 
     btnIncrementClick() {
@@ -79,6 +86,10 @@ class StateManagment extends React.Component<{ history: any }> {
         this.props.history.push('/editstate');
     }
 
+    viewState() {
+        this.props.history.push('/viewstate');
+    }
+
     deleteState() {
         Swal.fire({
             title: 'Are you sure?',
@@ -91,74 +102,67 @@ class StateManagment extends React.Component<{ history: any }> {
             if (result.value) {
                 // var deleteState = await API.deleteState(id);
                 const msg = "Your State has been deleted";
-                sweetAlert.showSuccess(msg);
+                utils.showSuccess(msg);
                 // this.componentDidMount();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 const msg1 = "State is safe :";
-                sweetAlert.showError(msg1);
+                utils.showError(msg1);
             }
         })
     }
 
     render() {
-        var pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
-            pageNumbers.push(i);
-        }
-        var renderPageNumbers = pageNumbers.map((number: any) => {
-            if (number === 1 && this.state.currentPage === 1) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link">{number}</a>
-                    </li>
-                );
-            }
-            else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link" id={number}>{number}</a>
-                    </li>
-                )
-            }
-        });
+        const data = ({
+            columns: [
+                {
+                    label: 'State Name',
+                    field: 'statename',
+                    sort: 'asc',
+                    width: 150
+                },
+                {
+                    label: 'Country Name',
+                    field: 'countryname',
+                    sort: 'asc',
+                    width: 150
+                },
+                {
+                    label: 'Status',
+                    field: 'status',
+                    sort: 'asc',
+                    width: 150
+                },
+                {
+                    label: 'Action',
+                    field: 'action',
+                    sort: 'asc',
+                    width: 100
+                }
+            ],
+            rows: [
+                {
+                    statename: 'Gujarat',
+                    countryname: 'INDIA',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewState}></i>
+                        <i className="fas fa-edit" onClick={this.editState}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteState}></i>
+                    </span>)
 
-        let pageIncrementBtn = null;
-        if (pageNumbers.length > this.state.upperPageBound) {
-            pageIncrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnIncrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
-
-        let pageDecrementBtn = null;
-        if (this.state.lowerPageBound >= 1) {
-            pageDecrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnDecrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
+                },
+                {
+                    statename: 'Rajshathan',
+                    countryname: 'INDIA',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewState}></i>
+                        <i className="fas fa-edit" onClick={this.editState}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteState}></i>
+                    </span>)
+                }
+            ]
+        })
 
         return (
             <>
@@ -168,14 +172,36 @@ class StateManagment extends React.Component<{ history: any }> {
                             <Col xs="12" sm="12" md="12" lg="12" xl="12">
                                 <Card className="main-card mb-12">
                                     <CardHeader>
-                                        <CardTitle
+                                    <Row>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                            <CardTitle
                                             className="font"
                                         >
-                                            State List
+                                            State Management
                                         </CardTitle>
+                                            </Col>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                                <div className="right">
+                                                    <Link to="/addstate">
+                                                        <Button
+                                                            className="mb-2 mr-2 custom-button"
+                                                            color="primary"
+                                                        >
+                                                            Add
+                                                            </Button>
+                                                    </Link>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                       
                                     </CardHeader>
                                     <CardBody>
-                                        <div>
+                                        <MDBDataTable
+                                            striped
+                                            hover
+                                            data={data}
+                                        />
+                                        {/* <div>
                                             <Row>
                                                 <Col md="6">
                                                     <div>
@@ -245,7 +271,7 @@ class StateManagment extends React.Component<{ history: any }> {
                                                 {renderPageNumbers}
                                                 {pageIncrementBtn}
                                             </ul>
-                                        </div>
+                                        </div> */}
                                     </CardBody>
                                 </Card>
                             </Col>

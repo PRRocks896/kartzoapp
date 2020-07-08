@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import sweetAlert from '../../../utils';
+import utils from '../../../utils';
 import {
     Button,
     Card,
@@ -14,8 +14,13 @@ import {
 } from 'reactstrap';
 import './users.css';
 import NavBar from '../../navbar/navbar';
+import { MDBDataTable } from 'mdbreact';
+import constant from '../../../constant/constant';
+
+
 
 class Users extends React.Component<{ history: any }> {
+
 
     state = {
         count: 10,
@@ -42,7 +47,12 @@ class Users extends React.Component<{ history: any }> {
         this.btnDecrementClick = this.btnDecrementClick.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
         this.edituser = this.edituser.bind(this);
+        this.viewuser = this.viewuser.bind(this);
 
+    }
+
+    componentDidMount() {
+        document.title = constant.userTitle + utils.getAppName();
     }
 
     handlePageChange(pageNumber: number) {
@@ -65,8 +75,12 @@ class Users extends React.Component<{ history: any }> {
         this.setState({ currentPage: listid });
     }
 
-    edituser(){
+    edituser() {
         this.props.history.push("/edituser");
+    }
+
+    viewuser() {
+        this.props.history.push("/viewuser");
     }
 
     deleteuser() {
@@ -81,75 +95,264 @@ class Users extends React.Component<{ history: any }> {
             if (result.value) {
                 // var deleteCategory = await API.deleteCategory(id);
                 const msg = "User has been deleted";
-                sweetAlert.showSuccess(msg);
+                utils.showSuccess(msg);
                 // this.componentDidMount();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 const msg1 = "User is safe :";
-                sweetAlert.showError(msg1);
+                utils.showError(msg1);
             }
         })
     }
 
 
     render() {
-        var pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
-            pageNumbers.push(i);
+        const data = {
+            columns: [
+                {
+                    label: 'Name',
+                    field: 'name',
+                    sort: 'asc',
+                    width: 150
+                },
+                {
+                    label: 'Email',
+                    field: 'email',
+                    sort: 'asc',
+                    width: 270
+                },
+                {
+                    label: 'PhoneNumber',
+                    field: 'phonenumber',
+                    sort: 'asc',
+                    width: 200
+                },
+                {
+                    label: 'Address',
+                    field: 'address',
+                    sort: 'asc',
+                    width: 100
+                },
+                {
+                    label: 'Status',
+                    field: 'status',
+                    sort: 'asc',
+                    width: 150
+                },
+                {
+                    label: 'Action',
+                    field: 'action',
+                    sort: 'asc',
+                    width: 100
+                }
+            ],
+            rows: [
+                {
+                    name: 'User-1',
+                    email: 'user1@gmail.com',
+                    phonenumber: '9797979797',
+                    address: 'digital vichar technology',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewuser}></i>
+                        <i className="fas fa-edit" onClick={this.edituser}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
+                    </span>),
+                },
+                {
+                    name: 'User-1',
+                    email: 'user1@gmail.com',
+                    phonenumber: '9797979797',
+                    address: 'digital vichar technology',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewuser}></i>
+                        <i className="fas fa-edit" onClick={this.edituser}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
+                    </span>),
+                },
+                {
+                    name: 'User-1',
+                    email: 'user1@gmail.com',
+                    phonenumber: '9797979797',
+                    address: 'digital vichar technology',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewuser}></i>
+                        <i className="fas fa-edit" onClick={this.edituser}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
+                    </span>),
+                },
+                {
+                    name: 'User-1',
+                    email: 'user1@gmail.com',
+                    phonenumber: '9797979797',
+                    address: 'digital vichar technology',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewuser}></i>
+                        <i className="fas fa-edit" onClick={this.edituser}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
+                    </span>),
+                },
+                {
+                    name: 'User-1',
+                    email: 'user1@gmail.com',
+                    phonenumber: '9797979797',
+                    address: 'digital vichar technology',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewuser}></i>
+                        <i className="fas fa-edit" onClick={this.edituser}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
+                    </span>),
+                },
+                {
+                    name: 'User-1',
+                    email: 'user1@gmail.com',
+                    phonenumber: '9797979797',
+                    address: 'digital vichar technology',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewuser}></i>
+                        <i className="fas fa-edit" onClick={this.edituser}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
+                    </span>),
+                },
+                {
+                    name: 'User-1',
+                    email: 'user1@gmail.com',
+                    phonenumber: '9797979797',
+                    address: 'digital vichar technology',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewuser}></i>
+                        <i className="fas fa-edit" onClick={this.edituser}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
+                    </span>),
+                },
+                {
+                    name: 'User-1',
+                    email: 'user1@gmail.com',
+                    phonenumber: '9797979797',
+                    address: 'digital vichar technology',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewuser}></i>
+                        <i className="fas fa-edit" onClick={this.edituser}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
+                    </span>),
+                },
+                
+                {
+                    name: 'User-2',
+                    email: 'user2@gmail.com',
+                    phonenumber: '9797979797',
+                    address: 'digital vichar technology',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewuser}></i>
+                        <i className="fas fa-edit" onClick={this.edituser}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
+                    </span>),
+                },
+                {
+                    name: 'User-3',
+                    email: 'user3@gmail.com',
+                    phonenumber: '9797979797',
+                    address: 'digital vichar technology',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewuser}></i>
+                        <i className="fas fa-edit" onClick={this.edituser}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
+                    </span>),
+                },
+                {
+                    name: 'User-4',
+                    email: 'user4@gmail.com',
+                    phonenumber: '9797979797',
+                    address: 'digital vichar technology',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewuser}></i>
+                        <i className="fas fa-edit" onClick={this.edituser}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
+                    </span>),
+                },
+                {
+                    name: 'User-5',
+                    email: 'user5@gmail.com',
+                    phonenumber: '9797979797',
+                    address: 'digital vichar technology',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewuser}></i>
+                        <i className="fas fa-edit" onClick={this.edituser}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
+                    </span>),
+                },
+            ]
         }
-        var renderPageNumbers = pageNumbers.map((number: any) => {
-            if (number === 1 && this.state.currentPage === 1) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link">{number}</a>
-                    </li>
-                );
-            }
-            else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link" id={number}>{number}</a>
-                    </li>
-                )
-            }
-        });
 
-        let pageIncrementBtn = null;
-        if (pageNumbers.length > this.state.upperPageBound) {
-            pageIncrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnIncrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
+        // var pageNumbers = [];
+        // for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
+        //     pageNumbers.push(i);
+        // }
+        // var renderPageNumbers = pageNumbers.map((number: any) => {
+        //     if (number === 1 && this.state.currentPage === 1) {
+        //         return (
+        //             <li
+        //                 key={number}
+        //                 id={number}
+        //                 className={this.state.currentPage === number ? 'active' : 'page-item'}
+        //             >
+        //                 <a className="page-link">{number}</a>
+        //             </li>
+        //         );
+        //     }
+        //     else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
+        //         return (
+        //             <li
+        //                 key={number}
+        //                 id={number}
+        //                 className={this.state.currentPage === number ? 'active' : 'page-item'}
+        //             >
+        //                 <a className="page-link" id={number}>{number}</a>
+        //             </li>
+        //         )
+        //     }
+        // });
 
-        let pageDecrementBtn = null;
-        if (this.state.lowerPageBound >= 1) {
-            pageDecrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnDecrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
+        // let pageIncrementBtn = null;
+        // if (pageNumbers.length > this.state.upperPageBound) {
+        //     pageIncrementBtn =
+        //         <li
+        //             className='page-item'
+        //         >
+        //             <a
+        //                 className='page-link'
+        //                 onClick={this.btnIncrementClick}
+        //             >
+        //                 &hellip;
+        //   </a>
+        //         </li>
+        // }
+
+        // let pageDecrementBtn = null;
+        // if (this.state.lowerPageBound >= 1) {
+        //     pageDecrementBtn =
+        //         <li
+        //             className='page-item'
+        //         >
+        //             <a
+        //                 className='page-link'
+        //                 onClick={this.btnDecrementClick}
+        //             >
+        //                 &hellip;
+        //   </a>
+        //         </li>
+        // }
+
 
         return (
             <>
@@ -159,14 +362,36 @@ class Users extends React.Component<{ history: any }> {
                             <Col xs="12" sm="12" md="12" lg="12" xl="12">
                                 <Card className="main-card mb-12">
                                     <CardHeader>
-                                        <CardTitle
-                                            className="font"
-                                        >
-                                            Users
+                                        <Row>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                                <CardTitle
+                                                    className="font"
+                                                >
+                                                    User Management
                                             </CardTitle>
+                                            </Col>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                                <div className="right">
+                                                    <Link to="/adduser">
+                                                        <Button
+                                                            className="mb-2 mr-2 custom-button"
+                                                            color="primary"
+                                                        >
+                                                            Add
+                                                            </Button>
+                                                    </Link>
+                                                </div>
+                                            </Col>
+                                        </Row>
                                     </CardHeader>
                                     <CardBody>
-                                        <div>
+                                        <MDBDataTable
+                                            striped
+                                            bordered
+                                            hover
+                                            data={data}
+                                        />
+                                        {/* <div>
                                             <Row>
                                                 <Col md="6">
                                                     <div>
@@ -193,8 +418,8 @@ class Users extends React.Component<{ history: any }> {
                                                 </Col>
                                             </Row>
                                         </div>
-                                        <br />
-                                        <Table hover className="mb-0 table_responsive" bordered>
+                                        <br /> */}
+                                        {/* <Table hover className="mb-0 table_responsive" bordered>
                                             <thead>
                                                 <tr>
                                                     <th>Name</th>
@@ -242,7 +467,7 @@ class Users extends React.Component<{ history: any }> {
                                                 {renderPageNumbers}
                                                 {pageIncrementBtn}
                                             </ul>
-                                        </div>
+                                        </div> */}
                                     </CardBody>
                                 </Card>
                             </Col>

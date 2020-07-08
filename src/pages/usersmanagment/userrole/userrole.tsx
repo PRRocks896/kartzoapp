@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { MDBDataTable } from 'mdbreact';
 import {
     Badge,
     Button,
@@ -26,9 +27,10 @@ import {
 // import './users.css';
 import NavBar from '../../navbar/navbar';
 import Swal from 'sweetalert2';
-import sweetAlert from '../../../utils';
+import utils from '../../../utils';
+import constant from '../../../constant/constant';
 
-class UserRole extends React.Component<{history:any}> {
+class UserRole extends React.Component<{ history: any }> {
 
     state = {
         count: 10,
@@ -55,8 +57,14 @@ class UserRole extends React.Component<{history:any}> {
         this.btnDecrementClick = this.btnDecrementClick.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
         this.deleteRole = this.deleteRole.bind(this);
+        this.viewRole = this.viewRole.bind(this);
 
     }
+
+    componentDidMount() {
+        document.title = constant.userRoleTitle + utils.getAppName();
+    }
+
 
     handlePageChange(pageNumber: number) {
         console.log(`active page is ${pageNumber}`);
@@ -82,6 +90,10 @@ class UserRole extends React.Component<{history:any}> {
         this.props.history.push('/edituserrole');
     }
 
+    viewRole() {
+        this.props.history.push('/viewuserrole');
+    }
+
     deleteRole() {
         Swal.fire({
             title: 'Are you sure?',
@@ -94,74 +106,117 @@ class UserRole extends React.Component<{history:any}> {
             if (result.value) {
                 // var deleteCategory = await API.deleteCategory(id);
                 const msg = "UserRole has been deleted";
-                sweetAlert.showSuccess(msg);
+                utils.showSuccess(msg);
                 // this.componentDidMount();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 const msg1 = "UserRole is safe :";
-                sweetAlert.showError(msg1);
+                utils.showError(msg1);
             }
         })
     }
 
     render() {
-        var pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
-            pageNumbers.push(i);
-        }
-        var renderPageNumbers = pageNumbers.map((number: any) => {
-            if (number === 1 && this.state.currentPage === 1) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link">{number}</a>
-                    </li>
-                );
-            }
-            else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link" id={number}>{number}</a>
-                    </li>
-                )
-            }
-        });
+        const data = ({
+            columns: [
+                {
+                    label: 'Role Name',
+                    field: 'rolename',
+                    sort: 'asc',
+                    width: 150
+                },
+                {
+                    label: 'Status',
+                    field: 'status',
+                    sort: 'asc',
+                    width: 150
+                },
+                {
+                    label: 'Action',
+                    field: 'action',
+                    sort: 'asc',
+                    width: 100
+                }
+            ],
+            rows: [
+                {
+                    rolename: 'Admin',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewRole}></i>
+                        <i className="fas fa-edit" onClick={this.editRole}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteRole}></i>
+                    </span>),
 
-        let pageIncrementBtn = null;
-        if (pageNumbers.length > this.state.upperPageBound) {
-            pageIncrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnIncrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
+                },
+                {
+                    rolename: 'User',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewRole}></i>
+                        <i className="fas fa-edit" onClick={this.editRole}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteRole}></i>
+                    </span>),
+                }
+            ]
+        })
+        // var pageNumbers = [];
+        // for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
+        //     pageNumbers.push(i);
+        // }
+        // var renderPageNumbers = pageNumbers.map((number: any) => {
+        //     if (number === 1 && this.state.currentPage === 1) {
+        //         return (
+        //             <li
+        //                 key={number}
+        //                 id={number}
+        //                 className={this.state.currentPage === number ? 'active' : 'page-item'}
+        //             >
+        //                 <a className="page-link">{number}</a>
+        //             </li>
+        //         );
+        //     }
+        //     else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
+        //         return (
+        //             <li
+        //                 key={number}
+        //                 id={number}
+        //                 className={this.state.currentPage === number ? 'active' : 'page-item'}
+        //             >
+        //                 <a className="page-link" id={number}>{number}</a>
+        //             </li>
+        //         )
+        //     }
+        // });
 
-        let pageDecrementBtn = null;
-        if (this.state.lowerPageBound >= 1) {
-            pageDecrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnDecrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
+        // let pageIncrementBtn = null;
+        // if (pageNumbers.length > this.state.upperPageBound) {
+        //     pageIncrementBtn =
+        //         <li
+        //             className='page-item'
+        //         >
+        //             <a
+        //                 className='page-link'
+        //                 onClick={this.btnIncrementClick}
+        //             >
+        //                 &hellip;
+        //   </a>
+        //         </li>
+        // }
+
+        // let pageDecrementBtn = null;
+        // if (this.state.lowerPageBound >= 1) {
+        //     pageDecrementBtn =
+        //         <li
+        //             className='page-item'
+        //         >
+        //             <a
+        //                 className='page-link'
+        //                 onClick={this.btnDecrementClick}
+        //             >
+        //                 &hellip;
+        //   </a>
+        //         </li>
+        // }
 
         return (
             <>
@@ -171,14 +226,36 @@ class UserRole extends React.Component<{history:any}> {
                             <Col xs="12" sm="12" md="12" lg="12" xl="12">
                                 <Card className="main-card mb-12">
                                     <CardHeader>
-                                        <CardTitle
-                                            className="font"
-                                        >
-                                            UserRole
+                                        <Row>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                                <CardTitle
+                                                    className="font"
+                                                >
+                                                    Role Management
                                             </CardTitle>
+                                            </Col>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                                <div className="right">
+                                                    <Link to="/adduserrole">
+                                                        <Button
+                                                            className="mb-2 mr-2 custom-button"
+                                                            color="primary"
+                                                        >
+                                                            Add
+                                                            </Button>
+                                                    </Link>
+                                                </div>
+                                            </Col>
+                                        </Row>
+
                                     </CardHeader>
                                     <CardBody>
-                                        <div>
+                                        <MDBDataTable
+                                            striped
+                                            hover
+                                            data={data}
+                                        />
+                                        {/* <div>
                                             <Row>
                                                 <Col md="6">
                                                     <div>
@@ -205,8 +282,8 @@ class UserRole extends React.Component<{history:any}> {
                                                 </Col>
                                             </Row>
                                         </div>
-                                        <br />
-                                        <Table hover className="mb-0 table_responsive" bordered>
+                                        <br /> */}
+                                        {/* <Table hover className="mb-0 table_responsive" bordered>
                                             <thead>
                                                 <tr>
                                                     <th>Role Name</th>
@@ -245,7 +322,7 @@ class UserRole extends React.Component<{history:any}> {
                                                 {renderPageNumbers}
                                                 {pageIncrementBtn}
                                             </ul>
-                                        </div>
+                                        </div> */}
                                     </CardBody>
                                 </Card>
                             </Col>

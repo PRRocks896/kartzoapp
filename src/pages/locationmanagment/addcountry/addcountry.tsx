@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import sweetAlert from '../../../utils';
+import utils from '../../../utils';
 import {
     Button,
     Card,
@@ -18,6 +18,7 @@ import {
 import NavBar from '../../navbar/navbar';
 import API from '../../../service/service';
 import Switch from "react-switch";
+import constant from '../../../constant/constant';
 
 class AddCountry extends React.Component<{ history: any }> {
 
@@ -40,6 +41,7 @@ class AddCountry extends React.Component<{ history: any }> {
     }
 
     async componentDidMount() {
+        document.title = constant.addCountryTitle + utils.getAppName();
         // const getProfile = await API.getProfile();
         // console.log("getprofile",getProfile);
     }
@@ -110,11 +112,11 @@ class AddCountry extends React.Component<{ history: any }> {
 
                 if (this.state.countryname === obj.countryname && this.state.selectedFile === obj.selectedFile && this.state.countrycode === obj.countrycode) {
                     const msg = "Country Added Successfully";
-                    sweetAlert.showSuccess(msg);
+                    utils.showSuccess(msg);
                     this.props.history.push('/country');
                 } else {
                     const msg1 = "Error";
-                    sweetAlert.showError(msg1);
+                    utils.showError(msg1);
                 }
             }
         };
@@ -158,7 +160,7 @@ class AddCountry extends React.Component<{ history: any }> {
                                         <Row>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
-                                                    <Label htmlFor="country_name"><b>Country Name</b></Label>
+                                                    <Label htmlFor="country_name">Country Name</Label>
                                                     <Input
                                                         type="text"
                                                         id="country_name"
@@ -179,7 +181,7 @@ class AddCountry extends React.Component<{ history: any }> {
                                         <Row>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
-                                                    <Label htmlFor="country_code"><b>Country Code</b></Label>
+                                                    <Label htmlFor="country_code">Country Code</Label>
                                                     <Input
                                                         type="text"
                                                         id="country_code"
@@ -214,7 +216,7 @@ class AddCountry extends React.Component<{ history: any }> {
                                                             </div>
                                                         ) : (
                                                                 <div className="">
-                                                                    <p><b>Country Flag:</b></p>
+                                                                    <p style={{fontSize:'16px'}}>Country Flag</p>
                                                                     <Label className="imag" for="file-input"><i className="fa fa-upload fa-lg" style={{ color: '#20a8d8' }}></i></Label>
                                                                     <Input
                                                                         id="file-input"
@@ -241,7 +243,7 @@ class AddCountry extends React.Component<{ history: any }> {
                                             className="mb-2 mr-2 custom-button"
                                             onClick={this.addCountry}
                                         >
-                                            Add
+                                            Save
                                     </Button>
                                     </CardBody>
                                 </Card>

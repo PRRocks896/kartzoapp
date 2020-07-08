@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 
-const sweetAlert = {
+const utils = {
     showSuccess :(msg:string) => {
         Swal.fire({
             text: msg,
@@ -13,7 +13,10 @@ const sweetAlert = {
             text: msg,
             icon: 'error'
         });
+    },
+    getAppName:() => {
+        return ' | Kartzoo App'
     }
 }
 
-export default sweetAlert;
+export default utils;

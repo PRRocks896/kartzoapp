@@ -17,6 +17,8 @@ import {
 } from 'reactstrap';
 // import './users.css';
 import NavBar from '../../navbar/navbar';
+import constant from '../../../constant/constant';
+import utils from '../../../utils';
 
 class UserRoleToRights extends React.Component {
 
@@ -59,6 +61,10 @@ class UserRoleToRights extends React.Component {
     //     let listid = this.state.upperPageBound - this.state.pageBound;
     //     this.setState({ currentPage: listid });
     // }
+
+    componentDidMount() {
+        document.title = constant.rolePrivilegesTitle + utils.getAppName();
+    }
 
 
     render() {
@@ -132,7 +138,7 @@ class UserRoleToRights extends React.Component {
                                         <CardTitle
                                             className="font"
                                         >
-                                            UserRoleToRights
+                                            Role Privileges Management
                                             </CardTitle>
                                     </CardHeader>
                                     <CardBody>
@@ -176,7 +182,7 @@ class UserRoleToRights extends React.Component {
 
                                                     <Card className="main-card mb-8">
                                                         <CardHeader>
-                                                            <CardTitle className="font">User Role To Right</CardTitle>
+                                                            <CardTitle className="font">Role Privileges</CardTitle>
                                                         </CardHeader>
                                                         <CardBody>
                                                             <Table hover className="mb-0 table_responsive" bordered>

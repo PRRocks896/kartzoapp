@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import sweetAlert from '../../../utils';
+import utils from '../../../utils';
 import {
     Button,
     Card,
@@ -20,6 +20,7 @@ import {
 import NavBar from '../../navbar/navbar';
 import API from '../../../service/service';
 import Switch from "react-switch";
+import constant from '../../../constant/constant';
 
 class AddSubCategory extends React.Component<{ history: any }> {
 
@@ -43,6 +44,8 @@ class AddSubCategory extends React.Component<{ history: any }> {
     }
 
     async componentDidMount() {
+        document.title = constant.addSubCategoryTitle + utils.getAppName();
+
         // const getAllCategory = await API.getAllCategory();
         // console.log("getAllCategory",getAllCategory);
     }
@@ -115,11 +118,11 @@ class AddSubCategory extends React.Component<{ history: any }> {
 
                 if (this.state.categoryname === obj.categoryname && this.state.selectedFile === obj.selectedFile) {
                     const msg = "SubCategory Added Successfully";
-                    sweetAlert.showSuccess(msg);
+                    utils.showSuccess(msg);
                     this.props.history.push('/subcategory');
                 } else {
                     const msg1 = "Error";
-                    sweetAlert.showError(msg1);
+                    utils.showError(msg1);
                 }
             }
         };
@@ -142,7 +145,7 @@ class AddSubCategory extends React.Component<{ history: any }> {
                                     <CardHeader>
                                         <Row>
                                             <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                                                <h1>Add SubCategory</h1>
+                                                <h1>Add Sub Category</h1>
                                             </Col>
                                             <Col xs="12" sm="6" md="3" lg="3" xl="3" style={{ textAlign: "right" }}>
                                                 <Link to="/subcategory">
@@ -163,7 +166,7 @@ class AddSubCategory extends React.Component<{ history: any }> {
                                         <Row>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
-                                                    <Label htmlFor="category_name"><b>SubCategory Name</b></Label>
+                                                    <Label htmlFor="category_name">Sub Category Name</Label>
                                                     <Input
                                                         type="text"
                                                         id="category_name"
@@ -185,14 +188,14 @@ class AddSubCategory extends React.Component<{ history: any }> {
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <Form>
                                                     <FormGroup>
-                                                        <Label for="exampleCustomSelect"><b>Select Category:</b></Label>
+                                                        <Label for="exampleCustomSelect">Select Category</Label>
                                                         <CustomInput
                                                             type="select"
                                                             id="exampleCustomSelect"
                                                             name="customSelect"
                                                         onChange={this.onItemSelect}
                                                         >
-                                                            <option value="">Select Category:</option>
+                                                            <option value="">Select Category</option>
                                                             <option value="Food">Food</option>
                                                             <option value="Sweet">Sweet</option>
                                                             {/* {
@@ -225,7 +228,7 @@ class AddSubCategory extends React.Component<{ history: any }> {
                                                             </div>
                                                         ) : (
                                                                 <div className="">
-                                                                    <p><b>Category Image:</b></p>
+                                                                    <p style={{fontSize:'16px'}}>Category Image</p>
                                                                     <Label className="imag" for="file-input"><i className="fa fa-upload fa-lg" style={{ color: '#20a8d8' }}></i></Label>
                                                                     <Input
                                                                         id="file-input"
@@ -252,7 +255,7 @@ class AddSubCategory extends React.Component<{ history: any }> {
                                             className="mb-2 mr-2 custom-button"
                                             onClick={this.addSubCategory}
                                         >
-                                            Add
+                                            Save
                                     </Button>
                                     </CardBody>
                                 </Card>

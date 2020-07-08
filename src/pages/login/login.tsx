@@ -2,10 +2,11 @@ import React from 'react';
 import './login.css';
 import { Link } from 'react-router-dom';
 import API from '../../service/service';
-import sweetAlert from '../../utils';
+import utils from '../../utils';
 import history from '../../history';
 import Constant from '../../constant/constant';
 import $ from "jquery";
+import constant from '../../constant/constant';
 
 class Login extends React.Component<{ history: any }> {
 
@@ -22,6 +23,11 @@ class Login extends React.Component<{ history: any }> {
         this.handleChangeEventPassword = this.handleChangeEventPassword.bind(this);
         this.login = this.login.bind(this);
         this.forgotpassword = this.forgotpassword.bind(this);
+    }
+
+    async componentDidMount() {
+        document.title = constant.loginTitle + utils.getAppName();
+    
     }
 
     handleChangeEvent(event: any) {
@@ -93,12 +99,12 @@ class Login extends React.Component<{ history: any }> {
 
                 if (this.state.email === obj.email) {
                     const msg = "Password Reset Successfully";
-                    sweetAlert.showSuccess(msg);
+                    utils.showSuccess(msg);
                     // $('#modal-12').modal('hide');
                     // this.props.history.push('/');
                 } else {
                     const msg1 = "Error";
-                    sweetAlert.showError(msg1);
+                    utils.showError(msg1);
                 }
             }
         };
@@ -122,11 +128,11 @@ class Login extends React.Component<{ history: any }> {
 
                 if (this.state.email === obj.email && this.state.password === obj.password) {
                     const msg = "Login Successfully";
-                    sweetAlert.showSuccess(msg);
+                    utils.showSuccess(msg);
                     this.props.history.push('/dashboard');
                 } else {
                     const msg1 = "Error";
-                    sweetAlert.showError(msg1);
+                    utils.showError(msg1);
                 }
             }
         };

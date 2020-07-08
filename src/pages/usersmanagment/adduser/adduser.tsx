@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import sweetAlert from '../../../utils';
+import utils from '../../../utils';
 import {
     Button,
     Card,
@@ -16,6 +16,7 @@ import './adduser.css';
 import NavBar from '../../navbar/navbar';
 import API from '../../../service/service';
 import Switch from "react-switch";
+import constant from '../../../constant/constant';
 
 class AddUser extends React.Component<{ history: any }> {
 
@@ -44,11 +45,14 @@ class AddUser extends React.Component<{ history: any }> {
         this.addUser = this.addUser.bind(this);
     }
 
+
     handleChange(checked: boolean) {
         this.setState({ checked });
     }
 
     async componentDidMount() {
+        document.title = constant.addUserTitle + utils.getAppName();
+
         // const getProfile = await API.getProfile();
         // console.log("getprofile",getProfile);
     }
@@ -136,11 +140,11 @@ class AddUser extends React.Component<{ history: any }> {
 
                 if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.mobilenumber === obj.mobilenumber && this.state.password === obj.password) {
                     const msg = "User Added Successfully";
-                    sweetAlert.showSuccess(msg);
+                    utils.showSuccess(msg);
                     this.props.history.push('/users');
                 } else {
                     const msg1 = "Error";
-                    sweetAlert.showError(msg1);
+                    utils.showError(msg1);
                 }
             }
         };
@@ -294,7 +298,7 @@ class AddUser extends React.Component<{ history: any }> {
                                                             </div>
                                                         ) : (
                                                                 <div className="">
-                                                                    <p><b>User Image:</b></p>
+                                                                    <p style={{fontSize:'16px'}}>User Image</p>
                                                                     <Label className="imag" for="file-input"><i className="fa fa-upload fa-lg" style={{ color: '#20a8d8' }}></i></Label>
                                                                     <Input
                                                                         id="file-input"
@@ -320,7 +324,7 @@ class AddUser extends React.Component<{ history: any }> {
                                             className="mb-2 mr-2 custom-button"
                                             onClick={this.addUser}
                                         >
-                                            Add
+                                            Save
                                         </Button>
                                     </CardBody>
                                 </Card>

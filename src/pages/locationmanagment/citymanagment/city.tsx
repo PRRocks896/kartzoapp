@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import sweetAlert from '../../../utils';
+import utils from '../../../utils';
+import { MDBDataTable } from 'mdbreact';
 import {
     Button,
     Card,
@@ -19,6 +20,7 @@ import {
 import NavBar from '../../navbar/navbar';
 import API from '../../../service/location.service';
 import Switch from "react-switch";
+import constant from '../../../constant/constant';
 
 class City extends React.Component<{ history: any }> {
 
@@ -59,6 +61,11 @@ class City extends React.Component<{ history: any }> {
         this.editCity = this.editCity.bind(this);
         this.btnIncrementClick = this.btnIncrementClick.bind(this);
         this.btnDecrementClick = this.btnDecrementClick.bind(this);
+        this.viewCity = this.viewCity.bind(this);
+    }
+
+    async componentDidMount() {
+        document.title = constant.cityTitle + utils.getAppName();
     }
 
     btnIncrementClick() {
@@ -79,6 +86,10 @@ class City extends React.Component<{ history: any }> {
         this.props.history.push('/editcity');
     }
 
+    viewCity() {
+        this.props.history.push('/viewcity');
+    }
+
     deleteCity() {
         Swal.fire({
             title: 'Are you sure?',
@@ -91,74 +102,66 @@ class City extends React.Component<{ history: any }> {
             if (result.value) {
                 // var deleteCity = await API.deleteCity(id);
                 const msg = "Your City has been deleted";
-                sweetAlert.showSuccess(msg);
+                utils.showSuccess(msg);
                 // this.componentDidMount();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 const msg1 = "City is safe :";
-                sweetAlert.showError(msg1);
+                utils.showError(msg1);
             }
         })
     }
 
     render() {
-        var pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
-            pageNumbers.push(i);
-        }
-        var renderPageNumbers = pageNumbers.map((number: any) => {
-            if (number === 1 && this.state.currentPage === 1) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link">{number}</a>
-                    </li>
-                );
-            }
-            else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link" id={number}>{number}</a>
-                    </li>
-                )
-            }
-        });
-
-        let pageIncrementBtn = null;
-        if (pageNumbers.length > this.state.upperPageBound) {
-            pageIncrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnIncrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
-
-        let pageDecrementBtn = null;
-        if (this.state.lowerPageBound >= 1) {
-            pageDecrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnDecrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
+        const data = ({
+            columns: [
+                {
+                    label: 'City Name',
+                    field: 'cityname',
+                    sort: 'asc',
+                    width: 150
+                },
+                {
+                    label: 'State Name',
+                    field: 'statename',
+                    sort: 'asc',
+                    width: 150
+                },
+                {
+                    label: 'Status',
+                    field: 'status',
+                    sort: 'asc',
+                    width: 150
+                },
+                {
+                    label: 'Action',
+                    field: 'action',
+                    sort: 'asc',
+                    width: 100
+                }
+            ],
+            rows: [
+                {
+                    cityname: 'Rajkot',
+                    statename: 'Gujarat',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewCity}></i>
+                        <i className="fas fa-edit" onClick={this.editCity}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteCity}></i>
+                    </span>)
+                },
+                {
+                    cityname: 'Ahmedabad',
+                    statename: 'Gujarat',
+                    status: (<i className="fa fa-check"></i>),
+                    action: (<span className="padding">
+                        <i className="fa fa-eye" onClick={this.viewCity}></i>
+                        <i className="fas fa-edit" onClick={this.editCity}></i>
+                        <i className="far fa-trash-alt" onClick={this.deleteCity}></i>
+                    </span>)
+                }
+            ]
+        })
 
         return (
             <>
@@ -168,14 +171,36 @@ class City extends React.Component<{ history: any }> {
                             <Col xs="12" sm="12" md="12" lg="12" xl="12">
                                 <Card className="main-card mb-12">
                                     <CardHeader>
-                                        <CardTitle
+                                    <Row>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                            <CardTitle
                                             className="font"
                                         >
-                                            City List
+                                            City Management
                                         </CardTitle>
+                                            </Col>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                                <div className="right">
+                                                    <Link to="/addcity">
+                                                        <Button
+                                                            className="mb-2 mr-2 custom-button"
+                                                            color="primary"
+                                                        >
+                                                            Add
+                                                            </Button>
+                                                    </Link>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                      
                                     </CardHeader>
                                     <CardBody>
-                                        <div>
+                                        <MDBDataTable
+                                            striped
+                                            hover
+                                            data={data}
+                                        />
+                                        {/* <div>
                                             <Row>
                                                 <Col md="6">
                                                     <div>
@@ -208,7 +233,7 @@ class City extends React.Component<{ history: any }> {
                                                 <tr>
                                                     <th>City Name</th>
                                                     <th>State Name</th>
-                                                    <th>Country Name</th>
+                                                
                                                     <th style={{ textAlign: "center" }}>Status</th>
                                                     <th className="action">Action</th>
                                                 </tr>
@@ -217,7 +242,7 @@ class City extends React.Component<{ history: any }> {
                                                 <tr>
                                                     <td>Rajkot</td>
                                                     <td>GUJRAT</td>
-                                                    <td>INDIA</td>
+                                                 
                                                     <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
                                                     <td className="action">
                                                         <span className="padding">
@@ -230,7 +255,7 @@ class City extends React.Component<{ history: any }> {
                                                 <tr>
                                                     <td>Ahmedabad</td>
                                                     <td>GUJRAT</td>
-                                                <td>INDIA</td>
+                                                
                                                     <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
                                                     <td className="action">
                                                         <span className="padding">
@@ -248,7 +273,7 @@ class City extends React.Component<{ history: any }> {
                                                 {renderPageNumbers}
                                                 {pageIncrementBtn}
                                             </ul>
-                                        </div>
+                                        </div> */}
                                     </CardBody>
                                 </Card>
                             </Col>

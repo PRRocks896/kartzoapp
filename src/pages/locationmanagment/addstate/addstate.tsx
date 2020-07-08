@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import sweetAlert from '../../../utils';
+import utils from '../../../utils';
 import {
     Button,
     Card,
@@ -20,6 +20,7 @@ import {
 import NavBar from '../../navbar/navbar';
 import API from '../../../service/location.service';
 import Switch from "react-switch";
+import constant from '../../../constant/constant';
 
 class AddState extends React.Component<{ history: any }> {
 
@@ -38,6 +39,7 @@ class AddState extends React.Component<{ history: any }> {
     }
 
     async componentDidMount() {
+        document.title = constant.addStateTitle + utils.getAppName();
         // const getCountry = await API.getCountry();
         // console.log("getCountry",getCountry);
     }
@@ -95,11 +97,11 @@ class AddState extends React.Component<{ history: any }> {
 
                 if (this.state.statename === obj.statename && this.state.selectedFile === obj.selectedFile) {
                     const msg = "State Added Successfully";
-                    sweetAlert.showSuccess(msg);
+                    utils.showSuccess(msg);
                     this.props.history.push('/state');
                 } else {
                     const msg1 = "Error";
-                    sweetAlert.showError(msg1);
+                    utils.showError(msg1);
                 }
             }
         };
@@ -137,7 +139,7 @@ class AddState extends React.Component<{ history: any }> {
                                         <Row>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
-                                                    <Label htmlFor="state_name"><b>State Name</b></Label>
+                                                    <Label htmlFor="state_name">State Name</Label>
                                                     <Input
                                                         type="text"
                                                         id="state_name"
@@ -159,14 +161,14 @@ class AddState extends React.Component<{ history: any }> {
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <Form>
                                                     <FormGroup>
-                                                        <Label for="exampleCustomSelect"><b>Select Country:</b></Label>
+                                                        <Label for="exampleCustomSelect">Select Country</Label>
                                                         <CustomInput
                                                             type="select"
                                                             id="exampleCustomSelect"
                                                             name="customSelect"
                                                             onChange={this.onItemSelect}
                                                         >
-                                                            <option value="">Select Country:</option>
+                                                            <option value="">Select Country</option>
                                                             <option value="India">India</option>
                                                             <option value="USA">USA</option>
                                                             {/* {
@@ -189,7 +191,7 @@ class AddState extends React.Component<{ history: any }> {
                                             className="mb-2 mr-2 custom-button"
                                             onClick={this.addState}
                                         >
-                                            Add
+                                            Save
                                     </Button>
                                     </CardBody>
                                 </Card>

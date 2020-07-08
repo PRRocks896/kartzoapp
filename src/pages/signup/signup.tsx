@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import API from '../../service/service';
-import sweetAlert from '../../utils';
+import utils from '../../utils';
 import history from '../../history';
 import Constant from '../../constant/constant';
+import constant from '../../constant/constant';
 
 class Signup extends React.Component<{ history: any }> {
 
@@ -22,6 +23,11 @@ class Signup extends React.Component<{ history: any }> {
         super(props);
         this.handleChangeEvent = this.handleChangeEvent.bind(this);
         this.signup = this.signup.bind(this);
+    }
+
+    async componentDidMount() {
+        document.title = constant.signupTitle + utils.getAppName();
+    
     }
 
     handleChangeEvent(event: any) {
@@ -85,11 +91,11 @@ class Signup extends React.Component<{ history: any }> {
 
                 if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.password === obj.password) {
                     const msg = "Signup Successfully";
-                    sweetAlert.showSuccess(msg);
+                    utils.showSuccess(msg);
                     this.props.history.push('/login');
                 } else {
                     const msg1 = "Error";
-                    sweetAlert.showError(msg1);
+                    utils.showError(msg1);
                 }
             }
         };

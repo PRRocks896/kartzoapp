@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import sweetAlert from '../../../utils';
+import utils from '../../../utils';
 import {
     Button,
     Card,
@@ -18,6 +18,7 @@ import {
 import NavBar from '../../navbar/navbar';
 import API from '../../../service/service';
 import Switch from "react-switch";
+import constant from '../../../constant/constant';
 
 class AddCategory extends React.Component<{ history: any }> {
 
@@ -38,7 +39,9 @@ class AddCategory extends React.Component<{ history: any }> {
     }
 
     async componentDidMount() {
-        // const getProfile = await API.getProfile();
+        document.title = constant.addCategoryTitle + utils.getAppName();
+        
+          // const getProfile = await API.getProfile();
         // console.log("getprofile",getProfile);
     }
 
@@ -101,11 +104,11 @@ class AddCategory extends React.Component<{ history: any }> {
 
                 if (this.state.categoryname === obj.categoryname && this.state.selectedFile === obj.selectedFile) {
                     const msg = "Category Added Successfully";
-                    sweetAlert.showSuccess(msg);
+                    utils.showSuccess(msg);
                     this.props.history.push('/category');
                 } else {
                     const msg1 = "Error";
-                    sweetAlert.showError(msg1);
+                    utils.showError(msg1);
                 }
             }
         };
@@ -149,7 +152,7 @@ class AddCategory extends React.Component<{ history: any }> {
                                         <Row>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
-                                                    <Label htmlFor="category_name"><b>Category Name</b></Label>
+                                                    <Label htmlFor="category_name">Category Name</Label>
                                                     <Input
                                                         type="text"
                                                         id="category_name"
@@ -184,7 +187,7 @@ class AddCategory extends React.Component<{ history: any }> {
                                                             </div>
                                                         ) : (
                                                                 <div className="">
-                                                                    <p><b>Category Image:</b></p>
+                                                                    <p style={{fontSize:'16px'}}>Category Image</p>
                                                                     <Label className="imag" for="file-input"><i className="fa fa-upload fa-lg" style={{ color: '#20a8d8' }}></i></Label>
                                                                     <Input
                                                                         id="file-input"
@@ -211,7 +214,7 @@ class AddCategory extends React.Component<{ history: any }> {
                                             className="mb-2 mr-2 custom-button"
                                             onClick={this.addCategory}
                                         >
-                                            Add
+                                            Save
                                     </Button>
                                     </CardBody>
                                 </Card>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import sweetAlert from '../../../utils';
+import utils from '../../../utils';
 import {
     Button,
     Card,
@@ -20,6 +20,7 @@ import {
 import NavBar from '../../navbar/navbar';
 import API from '../../../service/location.service';
 import Switch from "react-switch";
+import constant from '../../../constant/constant';
 
 class AddCity extends React.Component<{ history: any }> {
 
@@ -41,6 +42,7 @@ class AddCity extends React.Component<{ history: any }> {
     }
 
     async componentDidMount() {
+        document.title = constant.addCityTitle + utils.getAppName();
         // const getCountry = await API.getCountry();
         // console.log("getCountry",getCountry);
 
@@ -112,11 +114,11 @@ class AddCity extends React.Component<{ history: any }> {
 
                 if (this.state.cityname === obj.cityname && this.state.selectedFile === obj.selectedFile && this.state.selectedState === obj.selectedState) {
                     const msg = "City Added Successfully";
-                    sweetAlert.showSuccess(msg);
+                    utils.showSuccess(msg);
                     this.props.history.push('/city');
                 } else {
                     const msg1 = "Error";
-                    sweetAlert.showError(msg1);
+                    utils.showError(msg1);
                 }
             }
         };
@@ -154,7 +156,7 @@ class AddCity extends React.Component<{ history: any }> {
                                         <Row>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
-                                                    <Label htmlFor="city_name"><b>City Name</b></Label>
+                                                    <Label htmlFor="city_name">City Name</Label>
                                                     <Input
                                                         type="text"
                                                         id="city_name"
@@ -176,14 +178,14 @@ class AddCity extends React.Component<{ history: any }> {
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <Form>
                                                     <FormGroup>
-                                                        <Label for="exampleCustomSelect"><b>Select State:</b></Label>
+                                                        <Label for="exampleCustomSelect">Select State</Label>
                                                         <CustomInput
                                                             type="select"
                                                             id="exampleCustomSelect"
                                                             name="customSelect"
                                                             onChange={this.onItemStateSelect}
                                                         >
-                                                            <option value="">Select State:</option>
+                                                            <option value="">Select State</option>
                                                             <option value="Gujarat">Gujarat</option>
                                                             <option value="Rajasthan">Rajasthan</option>
                                                             {/* {
@@ -199,33 +201,6 @@ class AddCity extends React.Component<{ history: any }> {
                                                 </Form>
                                             </Col>
                                         </Row>
-                                        <Row>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <Form>
-                                                    <FormGroup>
-                                                        <Label for="exampleCustomSelect"><b>Select Country:</b></Label>
-                                                        <CustomInput
-                                                            type="select"
-                                                            id="exampleCustomSelect"
-                                                            name="customSelect"
-                                                            onChange={this.onItemSelect}
-                                                        >
-                                                            <option value="">Select Country:</option>
-                                                            <option value="India">India</option>
-                                                            <option value="USA">USA</option>
-                                                            {/* {
-                                                                        this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-                                                                            <option key={data.id} value={data.id}>{data.name}</option>
-                                                                        ) : ''
-                                                                    } */}
-                                                        </CustomInput>
-                                                        <div className="mb-4 text-danger">
-                                                            {this.state.selectedFileerror}
-                                                        </div>
-                                                    </FormGroup>
-                                                </Form>
-                                            </Col>
-                                        </Row>
                                         <Button
                                             type="button"
                                             size="sm"
@@ -233,7 +208,7 @@ class AddCity extends React.Component<{ history: any }> {
                                             className="mb-2 mr-2 custom-button"
                                             onClick={this.addCity}
                                         >
-                                            Add
+                                            Save
                                     </Button>
                                     </CardBody>
                                 </Card>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import sweetAlert from '../../utils';
+import utils from '../../utils';
 import {
     Button,
     Card,
@@ -15,6 +15,7 @@ import {
 import './profile.css';
 import NavBar from '../navbar/navbar';
 import API from '../../service/service';
+import constant from '../../constant/constant';
 
 class Profile extends React.Component {
 
@@ -40,6 +41,8 @@ class Profile extends React.Component {
     }
 
     async componentDidMount() {
+        document.title = constant.profileTitle + utils.getAppName();
+
         // const getProfile = await API.getProfile();
         // console.log("getprofile",getProfile);
     }
@@ -112,10 +115,10 @@ class Profile extends React.Component {
 
                 if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.mobilenumber === obj.mobilenumber && this.state.selectedFile === obj.selectedFile) {
                     const msg = "Profile Updated Successfully";
-                    sweetAlert.showSuccess(msg);
+                    utils.showSuccess(msg);
                 } else {
                     const msg1 = "Error";
-                    sweetAlert.showError(msg1);
+                    utils.showError(msg1);
                 }
             }
         };
