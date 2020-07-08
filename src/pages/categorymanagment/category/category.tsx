@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import sweetAlert from '../../../utils';
 import {
     Button,
     Card,
@@ -89,18 +90,12 @@ class Category extends React.Component<{ history: any }> {
         }).then(async (result) => {
             if (result.value) {
                 // var deleteCategory = await API.deleteCategory(id);
-                Swal.fire(
-                    'Deleted!',
-                    'Your category has been deleted.',
-                    'success'
-                )
+                const msg = "Your Category has been deleted";
+                sweetAlert.showSuccess(msg);
                 // this.componentDidMount();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire(
-                    'Cancelled',
-                    'Your state is safe :)',
-                    'error'
-                )
+                const msg1 = "Category is safe :";
+                sweetAlert.showError(msg1);
             }
         })
     }

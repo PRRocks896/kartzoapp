@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import sweetAlert from '../../../utils';
 import {
     Button,
     Card,
@@ -89,18 +90,12 @@ class StateManagment extends React.Component<{ history: any }> {
         }).then(async (result) => {
             if (result.value) {
                 // var deleteState = await API.deleteState(id);
-                Swal.fire(
-                    'Deleted!',
-                    'Your state has been deleted.',
-                    'success'
-                )
+                const msg = "Your State has been deleted";
+                sweetAlert.showSuccess(msg);
                 // this.componentDidMount();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire(
-                    'Cancelled',
-                    'Your state is safe :)',
-                    'error'
-                )
+                const msg1 = "State is safe :";
+                sweetAlert.showError(msg1);
             }
         })
     }

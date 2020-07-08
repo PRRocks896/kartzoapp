@@ -9,6 +9,7 @@ const sweetAlert = {
     },
     showError:(msg:string) => {
         Swal.fire({
+            title: 'Cancelled',
             text: msg,
             icon: 'error'
         });

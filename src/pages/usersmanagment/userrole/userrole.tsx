@@ -26,6 +26,7 @@ import {
 // import './users.css';
 import NavBar from '../../navbar/navbar';
 import Swal from 'sweetalert2';
+import sweetAlert from '../../../utils';
 
 class UserRole extends React.Component<{history:any}> {
 
@@ -92,18 +93,12 @@ class UserRole extends React.Component<{history:any}> {
         }).then(async (result) => {
             if (result.value) {
                 // var deleteCategory = await API.deleteCategory(id);
-                Swal.fire(
-                    'Deleted!',
-                    'UserRole has been deleted.',
-                    'success'
-                )
+                const msg = "UserRole has been deleted";
+                sweetAlert.showSuccess(msg);
                 // this.componentDidMount();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire(
-                    'Cancelled',
-                    'Your state is safe :)',
-                    'error'
-                )
+                const msg1 = "UserRole is safe :";
+                sweetAlert.showError(msg1);
             }
         })
     }

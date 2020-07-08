@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import sweetAlert from '../../../utils';
 import {
     Button,
     Card,
@@ -89,18 +90,12 @@ class CountryManagment extends React.Component<{ history: any }> {
         }).then(async (result) => {
             if (result.value) {
                 // var deleteCountry = await API.deleteCountry(id);
-                Swal.fire(
-                    'Deleted!',
-                    'Your country has been deleted.',
-                    'success'
-                )
+                const msg = "Your Country has been deleted";
+                sweetAlert.showSuccess(msg);
                 // this.componentDidMount();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire(
-                    'Cancelled',
-                    'Your state is safe :)',
-                    'error'
-                )
+                const msg1 = "Country is safe :";
+                sweetAlert.showError(msg1);
             }
         })
     }
