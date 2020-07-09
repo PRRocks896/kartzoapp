@@ -54,5 +54,16 @@ export default {
     viewSubCategoryTitle:'View SubCategory',
     profileTitle:'Profile',
     loginTitle:'Login',
-    signupTitle:'Signup'
+    signupTitle:'Signup',
+
+    userTableColumn: [
+        'Name','Email','Number','Address','Status','Action'
+    ],
+    roleTableColumn: [
+        'Role Name','Status','Action'
+    ],
+    // roleTableColumn: [
+    //     'Role Name','Status','Action'
+    // ],
+
 }

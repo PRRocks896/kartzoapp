@@ -27,6 +27,7 @@ import ViewSubCategory from '../pages/categorymanagment/viewsubcategory/viewsubc
 import ViewCity from '../pages/locationmanagment/viewcity/viewcity';
 import ViewState from '../pages/locationmanagment/viewstate/viewstate';
 import ViewCountry from '../pages/locationmanagment/viewcountry/viewcountry';
+import Tables from '../component/tables/table';
 
 
 
@@ -98,6 +99,7 @@ const createRoutes = (
         <Route exact path='/viewcity' render={(props: any) => <ViewCity {...props} />} />
         <Route exact path='/viewstate' render={(props: any) => <ViewState {...props} />} />
         <Route exact path='/viewcountry' render={(props: any) => <ViewCountry {...props} />} />
+        <Route exact path='/table' render={(props: any) => <Tables {...props} />} />
       </React.Suspense>
     </Switch>
   </BrowserRouter>

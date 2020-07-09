@@ -88,3 +88,73 @@ ul.dropdown-menu.dropdown-menu-right.user-dropdown.show {
     top: 5px;
     right: 5px;
   }
+
+  table.dataTable thead .sorting:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_desc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:before {
+bottom: .5em;
+}
+
+/* div#dtBasicExample_wrapper {
+    position: relative;
+}
+
+div#dtBasicExample_wrapper .row {
+	position: absolute;
+    top: -39px;
+    right: 100px;
+} */
+.selectDiv {
+    width: 222px;
+    position: absolute;
+}
+.selectDiv select#exampleCustomSelect {
+    margin-top: 7px;
+}
+.dataTables_filter label input {
+    border-radius: .25rem;
+    padding: 11px 14px;
+    border: 1px solid #ced4da;
+    height: calc(1.5em + .75rem + 2px);
+}
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .25rem;
+    justify-content: flex-end;
+    padding-top: 11px;
+}
+table.dataTable.table-sm .sorting:after, table.dataTable.table-sm .sorting_asc:after, table.dataTable.table-sm .sorting_desc:after {
+    top: 5px;
+    right: 13px;
+}
+table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting,
+table.table-bordered.dataTable tbody th, table.table-bordered.dataTable tbody td {
+    padding-left: 14px;
+}
+thead {
+    background: #fbb132;
+}
+.pagination .active .page-link {
+	background-color: #ffb637 !important;
+	color: #000 !important;
+}
+.pagination .page-item .page-link{
+	color: #000 !important;
+}
+.pagination .page-item .page-link:hover{
+	background-color: #f8bc53 !important;
+	color: #fff !important;
+}
+.pagination .active .page-link:hover {
+	background-color: #f8bc53 !important;
+	color: #fff !important;
+  }

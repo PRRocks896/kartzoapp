@@ -3202,9 +3202,13 @@ background-color: #d9534f;
 }
 
 button.mb-2.mr-2.custom-button.btn.btn-primary {
-  color: rgb(238, 162, 24) !important;
-  background-color: #000!important;
+  color: #000 !important;
+  background-color: rgb(238, 162, 24)!important;
   font-size: 16px !important;
+  font-weight: 600;
+  padding: 0px;
+  height: 40px;
+  line-height: 40px;
 }
 
 .ms-dark-theme .btn-primary{
@@ -5031,10 +5035,11 @@ table.dataTable thead .sorting_desc_disabled:after{
   bottom: 0.4em;
 }
 
-.dataTables_filter label input{
+/* .dataTables_filter label input{
   border-radius: 25px;
   padding: 11px 14px;
-}
+} */
+
 
 /* Maps */
 .map-container{
@@ -7528,7 +7533,7 @@ th.center {
 }
 
 .pagination .active .page-link {
-  background-color: #007bff !important;
+  /* background-color: #007bff; */
   color: #fff !important;
   border: 1px solid #dee2e6 !important;
   padding: .5rem .75rem !important;
@@ -7536,8 +7541,8 @@ th.center {
   font-weight: bold !important;
 }
 .pagination .active .page-link:hover {
-  background-color: #e9ecef !important;
-  color: #007bff !important;
+  background-color: #e9ecef;
+  color: #007bff;
 }
 .space {
   display: flex;
