@@ -72,3 +72,19 @@ a:hover, a:active, a:focus, .btn-link, .modal-min .modal-body i::before {
 	background: #f7b337;
 
 }
+
+ul.dropdown-menu.dropdown-menu-right.user-dropdown.show {
+	left: unset !important;
+	right: 0px !important;
+  }
+
+  .img-size{
+	position: relative;
+    width: 100px;
+  }
+
+  .img-size i.fa.fa-times.cursor{
+	position: absolute;
+    top: 5px;
+    right: 5px;
+  }

@@ -204,12 +204,12 @@ class AddCountry extends React.Component<{ history: any }> {
                                                 <FormGroup className="img-upload">
                                                     {
                                                         this.state.selectedFile != null ? (
-                                                            <div>
+                                                            <div className="img-size">
                                                                 {
                                                                     this.state.selectedFile ? (
                                                                         <div>
                                                                             <img className="picture" src={require('../../dashboard/assets/images/login-img.png')} />
-                                                                            <i className="fa fa-trash cursor" onClick={() => this.removeIcon()}></i>
+                                                                            <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i>
                                                                         </div>
                                                                     ) : (null)
                                                                 }

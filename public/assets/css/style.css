@@ -1525,8 +1525,11 @@ a.ms-confirm-trigger:hover{
 }
 .dropdown-menu-right{
   right: 0;
-  left: auto;
+  left: 0;
 }
+
+
+
 .ms-dropdown-list{
   max-height: 18rem;
 }
@@ -7755,7 +7758,7 @@ input#profile {
 img.picture {
   height: 75px;
   width: 100px;
-  margin-top: 10px;
+  margin-top: 0px !important;
 }
 
 .fa .fa-remove .fa-lg .cursor {
