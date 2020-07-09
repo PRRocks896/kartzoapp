@@ -119,56 +119,6 @@ class Category extends React.Component<{ history: any }> {
     }
 
     render() {
-        // const data = ({
-        //     columns: [
-        //         {
-        //             label: 'Category Name',
-        //             field: 'categoryname',
-        //             sort: 'asc',
-        //             width: 150
-        //         },
-        //         {
-        //             label: 'Image',
-        //             field: 'image',
-        //             sort: 'asc',
-        //             width: 150
-        //         },
-        //         {
-        //             label: 'Status',
-        //             field: 'status',
-        //             sort: 'asc',
-        //             width: 150
-        //         },
-        //         {
-        //             label: 'Action',
-        //             field: 'action',
-        //             sort: 'asc',
-        //             width: 100
-        //         }
-        //     ],
-        //     rows: [
-        //         {
-        //             categoryname: 'FOOD',
-        //             image: 'FOOD IMAGE',
-        //             status: (<i className="fa fa-check"></i>),
-        //             action: (<span className="padding">
-        //                 <i className="fa fa-eye" onClick={this.viewCategory}></i>
-        //                 <i className="fas fa-edit" onClick={this.editCategory}></i>
-        //                 <i className="far fa-trash-alt" onClick={this.deleteCategory}></i>
-        //             </span>),
-        //         },
-        //         {
-        //             categoryname: 'SWEET',
-        //             image: 'SWEET IMAGE',
-        //             status: (<i className="fa fa-check"></i>),
-        //             action: (<span className="padding">
-        //                 <i className="fa fa-eye" onClick={this.viewCategory}></i>
-        //                 <i className="fas fa-edit" onClick={this.editCategory}></i>
-        //                 <i className="far fa-trash-alt" onClick={this.deleteCategory}></i>
-        //             </span>),
-        //         }
-        //     ]
-        // })
         var pageNumbers = [];
         for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
             pageNumbers.push(i);

@@ -123,49 +123,7 @@ class UserRole extends React.Component<{ history: any }> {
     }
 
     render() {
-        // const data = ({
-        //     columns: [
-        //         {
-        //             label: 'Role Name',
-        //             field: 'rolename',
-        //             sort: 'asc',
-        //             width: 150
-        //         },
-        //         {
-        //             label: 'Status',
-        //             field: 'status',
-        //             sort: 'asc',
-        //             width: 150
-        //         },
-        //         {
-        //             label: 'Action',
-        //             field: 'action',
-        //             sort: 'asc',
-        //             width: 100
-        //         }
-        //     ],
-        //     rows: [
-        //         {
-        //             rolename: 'Admin',
-        //             status: (<i className="fa fa-check"></i>),
-        //             action: (<span className="padding">
-        //                 <i className="fa fa-eye" onClick={this.viewRole}></i>
-        //                 <i className="fas fa-edit" onClick={this.editRole}></i>
-        //                 <i className="far fa-trash-alt" onClick={this.deleteRole}></i>
-        //             </span>),
 
-        //         },
-        //         {
-        //             rolename: 'User',
-        //             status: (<i className="fa fa-check"></i>),
-        //             action: (<span className="padding">
-        //                 <i className="fa fa-eye" onClick={this.viewRole}></i>
-        //                 <i className="fas fa-edit" onClick={this.editRole}></i>
-        //                 <i className="far fa-trash-alt" onClick={this.deleteRole}></i>
-        //             </span>),
-        //         }
-        //     ]
-        // })
         var pageNumbers = [];
         for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
             pageNumbers.push(i);
