@@ -17,5 +17,11 @@ export default {
     },
     updateProfile: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.updateData, data);
+    },
+    getUserCount: async function () {
+        return await WebReqUrl.get(Constant.apiUrl + apiUrl.userController.getCount);
+    },
+    getUserDataPagination: async function () {
+        return await WebReqUrl.get(Constant.apiUrl + apiUrl.userController.getUserPaginationData);
     }
 }

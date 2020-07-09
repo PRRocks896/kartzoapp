@@ -4,7 +4,10 @@ const apiUrl = {
         getData:'user',
         getDataById:'user/',
         forgotpassword:'',
-        updateData:'user'
+        updateData:'user',
+        getCount:'user',
+        getUserPaginationData:'user'
+
     },
     userRoleController: {
         addRole:'role',

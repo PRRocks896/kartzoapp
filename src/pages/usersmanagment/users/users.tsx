@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import utils from '../../../utils';
+import API from '../../../service/service';
 import {
     Button,
     Card,
@@ -21,10 +22,7 @@ import NavBar from '../../navbar/navbar';
 import { MDBDataTable } from 'mdbreact';
 import constant from '../../../constant/constant';
 import TableComponent from '../../../component/tables/table';
-// import '../../../assets/js/data-tables';
-// import '../../../assets/js/datata'
-// import "datatables.net-dt/js/dataTables.dataTables"
-// import "datatables.net-dt/css/jquery.dataTables.min.css"
+import apiUrl from '../../../apicontroller/apicontrollers';
 const $ = require('jquery');
 $.DataTable = require('datatables.net')
 
@@ -51,30 +49,25 @@ class Users extends React.Component<{ history: any }> {
 
     constructor(props: any) {
         super(props);
-        // this.handleClick = this.handleClick.bind(this);
+        this.handleClick = this.handleClick.bind(this);
         this.btnIncrementClick = this.btnIncrementClick.bind(this);
         this.btnDecrementClick = this.btnDecrementClick.bind(this);
-        this.handlePageChange = this.handlePageChange.bind(this);
         this.edituser = this.edituser.bind(this);
         this.viewuser = this.viewuser.bind(this);
 
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         document.title = constant.userTitle + utils.getAppName();
-
         $('#dtBasicExample').DataTable({
             "paging": false,
             "info": false
         });
         // $('.dataTables_length').addClass('bs-select');
+        this.getUserCountData();
+        this.getApplicationPageData();
+       
     }
-
-    handlePageChange(pageNumber: number) {
-        console.log(`active page is ${pageNumber}`);
-        this.setState({ activePage: pageNumber });
-    }
-
 
     btnIncrementClick() {
         this.setState({ upperPageBound: this.state.upperPageBound + this.state.pageBound });
@@ -119,6 +112,34 @@ class Users extends React.Component<{ history: any }> {
         })
     }
 
+    async getUserCountData() {
+
+        // var getuserCount = await API.getUserCount();
+        // console.log("getUsercount",getuserCount);
+      
+    }
+
+    async getApplicationPageData() {
+        // const obj = {
+        //     page_no: "1",
+        //     items_per_page: this.state.items_per_page
+        // }
+
+        // var getUserDataPagination = await API.getUserDataPagination();
+        // console.log("getUserDataPagination",getUserDataPagination);
+      
+    }
+
+    handleClick(event:any) {
+        const obj = {
+            page_no: '' + event.target.id,
+            items_per_page: this.state.items_per_page
+        }
+        // var getUserDataPagination = await API.getUserDataPagination();
+        // console.log("getUserDataPagination",getUserDataPagination);
+    }
+
+
 
     render() {
 
@@ -134,7 +155,7 @@ class Users extends React.Component<{ history: any }> {
                         id={number}
                         className={this.state.currentPage === number ? 'active' : 'page-item'}
                     >
-                        <a className="page-link">{number}</a>
+                        <a className="page-link" onClick={this.handleClick}>{number}</a>
                     </li>
                 );
             }
@@ -145,7 +166,7 @@ class Users extends React.Component<{ history: any }> {
                         id={number}
                         className={this.state.currentPage === number ? 'active' : 'page-item'}
                     >
-                        <a className="page-link" id={number}>{number}</a>
+                        <a className="page-link" id={number} onClick={this.handleClick}>{number}</a>
                     </li>
                 )
             }
