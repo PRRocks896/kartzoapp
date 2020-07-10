@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, HashRouter } from 'react-router-dom';
 import history from '../history';
 import Users from '../pages/usersmanagment/users/users';
 import UserRole from '../pages/usersmanagment/userrole/userrole';
@@ -61,7 +61,7 @@ const loading = (
 // const AddCity = React.lazy(() => import('../pages/locationmanagment/addcity/addcity'));
 
 const createRoutes = (
-  <BrowserRouter>
+  <HashRouter>
     <Switch>
       <React.Suspense fallback={loading}>
         <Route exact path='/' render={(props: any) => <Login {...props} />} />
@@ -102,7 +102,7 @@ const createRoutes = (
         <Route exact path='/table' render={(props: any) => <Tables {...props} />} />
       </React.Suspense>
     </Switch>
-  </BrowserRouter>
+  </HashRouter>
 )
 
 export default createRoutes;

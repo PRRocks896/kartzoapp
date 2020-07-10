@@ -111,6 +111,7 @@ class Login extends React.Component<{ history: any }> {
     }
 
     login() {
+        this.props.history.push('/dashboard');
         const isValid = this.validate();
         if (isValid) {
             this.setState({
