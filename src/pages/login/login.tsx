@@ -111,7 +111,7 @@ class Login extends React.Component<{ history: any }> {
     }
 
     login() {
-        this.props.history.push('/dashboard');
+        // this.props.history.push('/dashboard');
         const isValid = this.validate();
         if (isValid) {
             this.setState({
@@ -223,12 +223,12 @@ class Login extends React.Component<{ history: any }> {
                                         <button
                                             className="btn mt-4 d-block w-100"
                                             type="button"
-                                            style={{ backgroundColor: '#eea218', color: '#fff' }}
+                                            style={{ backgroundColor: '#eea218', color: '#fff',fontWeight: 500 }}
                                             onClick={this.login}
                                         >
                                             {Constant.signin}
                                         </button>
-                                        <p className="mb-0 mt-3 text-center">{Constant.notmember} <b className="btn-link" style={{ color: '#eea218' }}><Link to="/signup">{Constant.signup}</Link></b>
+                                        <p className="mb-0 mt-3 text-center">{Constant.notmember} <b className="btn-link"><Link to="/signup" style={{ color: 'rgb(238, 162, 24)',fontWeight:600 }}>{Constant.signup}</Link></b>
                                         </p>
                                     </form>
                                 </div>
@@ -243,7 +243,7 @@ class Login extends React.Component<{ history: any }> {
                                     <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                                     </button> <i className="flaticon-secure-shield d-block"></i>
                                     <h1><b>{Constant.reset}</b></h1>
-                                    <p>Enter your email to recover your password</p>
+                                    <p><b>Enter your email to recover your password</b></p>
                                     <form method="post">
                                         <div className="ms-form-group has-icon">
                                             <input

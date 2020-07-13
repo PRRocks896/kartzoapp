@@ -222,7 +222,7 @@ class Signup extends React.Component<{ history: any }> {
                                         <button
                                             className="btn mt-4 d-block w-100"
                                             type="button"
-                                            style={{ backgroundColor: '#eea218', color: '#fff' }}
+                                            style={{ backgroundColor: '#eea218', color: '#fff',fontWeight: 500 }}
                                             onClick={this.signup}
                                         >
                                             {Constant.signup}

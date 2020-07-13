@@ -986,7 +986,7 @@ body:not(.ms-aside-left-open) .ms-aside-toggler .ms-toggler-bar{
   padding: 17px 0;
 }
 .logo-sn a img {
-  max-width: 150px;
+  max-width: 157px;
 }
 .side-nav ul li.menu-item {
   padding: 0;
@@ -1715,15 +1715,16 @@ a.ms-confirm-trigger:hover{
   height: 200px !important;
   width: 100% !important;
 }
-.has-graph-full-width .ms-chart-label{
+.has-graph-full-width .ms-chart-label {
   position: absolute;
   top: 1rem;
   right: 1rem;
   border-radius: 25px;
   color: #fff;
+  font-weight: 500;
   font-size: 12px;
   padding: 0.25rem 0.75rem;
-}
+}}
 .ms-infographics-widget.has-graph .ms-card-body + p{
   margin: 1rem;
   margin-top: 0;
@@ -3206,8 +3207,8 @@ button.mb-2.mr-2.custom-button.btn.btn-primary {
   background-color: rgb(238, 162, 24)!important;
   font-size: 16px !important;
   font-weight: 600;
-  padding: 0px;
-  height: 40px;
+  padding: 6px;
+  height: 51px;
   line-height: 40px;
 }
 

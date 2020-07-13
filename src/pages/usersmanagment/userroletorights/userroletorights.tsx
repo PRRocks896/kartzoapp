@@ -19,6 +19,7 @@ import {
 import NavBar from '../../navbar/navbar';
 import constant from '../../../constant/constant';
 import utils from '../../../utils';
+import './userroletorights.css';
 
 class UserRoleToRights extends React.Component {
 
@@ -280,7 +281,7 @@ class UserRoleToRights extends React.Component {
                                                     </Card>
                                                 </Col>
                                             </Row>
-                                            <Row>
+                                            <Row className="button_top">
                                                 <Button
                                                     className="mb-2 mr-2 custom-button"
                                                     color="primary"

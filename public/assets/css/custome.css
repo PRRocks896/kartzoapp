@@ -27,7 +27,8 @@
 	background-color: #FBB330;
 }
 .side-nav .menu-item a {
-	color: #fff;
+    color: #fff;
+    font-weight: 500;
 }
 .side-nav li.menu-item a:hover {
 	color: #fff;
@@ -158,3 +159,7 @@ thead {
 	background-color: #f8bc53 !important;
 	color: #fff !important;
   }
+
+  .btn {
+    margin: 0px !important;
+}

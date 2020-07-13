@@ -28,12 +28,12 @@ class NavBar extends React.Component {
                 <aside id="ms-side-nav" className="side-nav fixed ms-aside-scrollable ms-aside-left">
 
                     <div className="logo-sn ms-d-block-lg">
-                        <Link className="pl-0 ml-0 text-center" to="/dashboard"><img src="./assets/images/kartzo-logo-216x62.png" alt="logo" /></Link>
+                        <Link className="pl-0 ml-0 text-center" to="/dashboard"><img src="./assets/images/logo1.svg" alt="logo" /></Link>
                     </div>
 
                     <ul className="accordion ms-main-aside fs-14" id="side-nav-accordion">
-                        <a href="#" className="arrow"> <span style={{ color: '#fff', fontSize: '25px', margin: '15px' }} onClick={this.closeNav}>x</span>
-                        </a>
+                         <span className="arrow" style={{ color: '#fb3', fontSize: '25px', margin: '15px',fontWeight:600 }} onClick={this.closeNav}>x</span>
+                        
 
                         <li className="menu-item">
                             <a href="#" className="has-chevron" data-toggle="collapse" data-target="#dashboard" aria-expanded="false" aria-controls="dashboard"> <span><i className="material-icons fs-16">dashboard</i>Dashboard </span>

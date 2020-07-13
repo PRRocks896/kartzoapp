@@ -39,7 +39,7 @@ class OrderGraph extends React.Component {
                             options={{
                                 title: {
                                     display: true,
-                                    fontSize: 20
+                                    fontSize: 24
                                 },
                                 legend: {
                                     display: true,
@@ -64,7 +64,7 @@ class OrderGraph extends React.Component {
                             options={{
                                 title: {
                                     display: true,
-                                    fontSize: 20
+                                    fontSize: 24
                                 },
                                 legend: {
                                     display: true,
@@ -89,7 +89,7 @@ class OrderGraph extends React.Component {
                             options={{
                                 title: {
                                     display: true,
-                                    fontSize: 20
+                                    fontSize: 24
                                 },
                                 legend: {
                                     display: true,
@@ -114,7 +114,7 @@ class OrderGraph extends React.Component {
                             options={{
                                 title: {
                                     display: true,
-                                    fontSize: 20
+                                    fontSize: 24
                                 },
                                 legend: {
                                     display: true,
