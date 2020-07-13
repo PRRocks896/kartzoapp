@@ -35,6 +35,12 @@ const apiUrl = {
         editCategory:'category',
         deleteCategory:'category',
         addsubCategory:'subcategory'
+    },
+    couponController: {
+        addCoupon:'coupon',
+        getCoupon:'coupon',
+        editCoupon:'coupon',
+        deleteCoupon:'coupon'
     }
 }
 

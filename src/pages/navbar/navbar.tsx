@@ -32,8 +32,8 @@ class NavBar extends React.Component {
                     </div>
 
                     <ul className="accordion ms-main-aside fs-14" id="side-nav-accordion">
-                         <span className="arrow" style={{ color: '#fb3', fontSize: '25px', margin: '15px',fontWeight:600 }} onClick={this.closeNav}>x</span>
-                        
+                        <span className="arrow" style={{ color: '#fb3', fontSize: '25px', margin: '15px', fontWeight: 600 }} onClick={this.closeNav}>x</span>
+
 
                         <li className="menu-item">
                             <a href="#" className="has-chevron" data-toggle="collapse" data-target="#dashboard" aria-expanded="false" aria-controls="dashboard"> <span><i className="material-icons fs-16">dashboard</i>Dashboard </span>
@@ -77,6 +77,21 @@ class NavBar extends React.Component {
                                 <li><Link to="/state">State Management</Link>
                                 </li>
                                 <li> <Link to="/city">City Management</Link>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li className="menu-item">
+                            <Link to="/coupon"><span><i className="fa fa-gift fs-16"></i>Coupon Management </span></Link>
+                        </li>
+
+                        <li className="menu-item">
+                            <a href="#" className="has-chevron" data-toggle="collapse" data-target="#merchantmanagment" aria-expanded="false" aria-controls="merchantmanagment"> <span><i className="fa fa-location-arrow fs-16"></i>Merchant Management </span>
+                            </a>
+                            <ul id="merchantmanagment" className="collapse" aria-labelledby="merchantmanagment" data-parent="#side-nav-accordion">
+                                <li><Link to="/merchant">Merchant Management</Link>
+                                </li>
+                                <li><Link to="/merchant-business">Business Management</Link>
                                 </li>
                             </ul>
                         </li>
@@ -403,8 +418,8 @@ class NavBar extends React.Component {
                             <span className="ms-toggler-bar bg-primary l-color"></span>
                         </div>
                         <div className="logo-sn logo-sm ms-d-block-sm">
-                            <a className="pl-0 ml-0 text-center navbar-brand mr-0" href="index-2.html">
-                                <img src="./assets/images/kartzo-logo-84x41.png" alt="logo" /> </a>
+                            <a className="pl-0 ml-0 text-center navbar-brand mr-0" href="">
+                                <img src="./assets/images/logo2.svg" alt="logo" /> </a>
                         </div>
 
                         <ul className={this.state.side === true ? "ms-nav-list ms-inline mb-0" : "ms-nav-list ms-inline mb-0 ms-slide-down"} id="ms-nav-options">
@@ -445,7 +460,7 @@ class NavBar extends React.Component {
                     {this.props.children}
                 </main>
             </div>
-       );
+        );
     }
 }
 

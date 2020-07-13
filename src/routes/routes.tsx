@@ -28,37 +28,15 @@ import ViewCity from '../pages/locationmanagment/viewcity/viewcity';
 import ViewState from '../pages/locationmanagment/viewstate/viewstate';
 import ViewCountry from '../pages/locationmanagment/viewcountry/viewcountry';
 import Tables from '../component/tables/table';
-
-
-
-
+import Coupon from '../pages/couponmanagment/couponmanagment';
+import Merchant from '../pages/merchantmanagment/merchant/merchant';
+import MerchantBusiness from '../pages/merchantmanagment/business-management/business';
 
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
   </div>
 )
-
-// const Login = React.lazy(() => import('../pages/login/login'));
-// const Signup = React.lazy(() => import('../pages/signup/signup'));
-// const Dashboard = React.lazy(() => import('../pages/dashboard/dashboard'));
-// const Users = React.lazy(() => import('../pages/usersmanagment/users/users'));
-// const UserRole = React.lazy(() => import('../pages/usersmanagment/userrole/userrole'));
-// const ForgotPassword = React.lazy(() => import('../pages/forgotpassword/forgotpassword'));
-// const UserRoleToRights = React.lazy(() => import('../pages/usersmanagment/userroletorights/userroletorights'));
-// const Profile = React.lazy(() => import('../pages/profile/profile'));
-// const AddUser = React.lazy(() => import('../pages/usersmanagment/adduser/adduser'));
-// const Category = React.lazy(() => import('../pages/categorymanagment/category/category'));
-// const SubCategory = React.lazy(() => import('../pages/categorymanagment/subcategory/subcategory'));
-// const AddCategory = React.lazy(() => import('../pages/categorymanagment/addcategory/addcategory'));
-// const AddSubCategory = React.lazy(() => import('../pages/categorymanagment/addsubcategory/addsubcategory'));
-// const AddUserRole = React.lazy(() => import('../pages/usersmanagment/adduserrole/adduserrole'));
-// const CountryManagment = React.lazy(() => import('../pages/locationmanagment/countrymanagment/countrymanagment'));
-// const AddCountry = React.lazy(() => import('../pages/locationmanagment/addcountry/addcountry'));
-// const StateManagment = React.lazy(() => import('../pages/locationmanagment/statemanagment/statemanagment'));
-// const AddState = React.lazy(() => import('../pages/locationmanagment/addstate/addstate'));
-// const City = React.lazy(() => import('../pages/locationmanagment/citymanagment/city'));
-// const AddCity = React.lazy(() => import('../pages/locationmanagment/addcity/addcity'));
 
 const createRoutes = (
   <HashRouter>
@@ -100,6 +78,9 @@ const createRoutes = (
         <Route exact path='/viewstate' render={(props: any) => <ViewState {...props} />} />
         <Route exact path='/viewcountry' render={(props: any) => <ViewCountry {...props} />} />
         <Route exact path='/table' render={(props: any) => <Tables {...props} />} />
+        <Route exact path='/coupon' render={(props: any) => <Coupon {...props} />} />
+        <Route exact path='/merchant' render={(props: any) => <Merchant {...props} />} />
+        <Route exact path='/merchant-business' render={(props: any) => <MerchantBusiness {...props} />} />
       </React.Suspense>
     </Switch>
   </HashRouter>

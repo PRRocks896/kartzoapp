@@ -55,6 +55,7 @@ export default {
     profileTitle:'Profile',
     loginTitle:'Login',
     signupTitle:'Signup',
+    couponManagement:'Coupon Management',
 
     userTableColumn: [
         'Name','Email','Number','Address','Status','Action'
