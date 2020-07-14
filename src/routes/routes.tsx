@@ -39,6 +39,9 @@ import ListProduct from '../pages/productmanagment/listproduct/listproduct';
 import ViewProduct from '../pages/productmanagment/viewproduct/viewproduct';
 import ProductReview from '../pages/productmanagment/reviewproduct/reviewproduct';
 import AddOnProduct from '../pages/productmanagment/addonmanagment/addonmanagment';
+import DeliveryManagement from '../pages/deliverymanagment/deliverymanagment';
+import AddDelivery from '../pages/deliverymanagment/adddelivery/adddelivery';
+import ViewDelivery from '../pages/deliverymanagment/viewdelivery/viewdelivery';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -98,6 +101,10 @@ const createRoutes = (
         <Route exact path='/list-product' render={(props: any) => <ListProduct {...props} />} />
         <Route exact path='/product-review' render={(props: any) => <ProductReview {...props} />} />
         <Route exact path='/product-addondetail' render={(props: any) => <AddOnProduct {...props} />} />
+        <Route exact path='/delivery' render={(props: any) => <DeliveryManagement {...props} />} />
+        <Route exact path='/add-delivery' render={(props: any) => <AddDelivery {...props} />} />
+        <Route exact path='/editdelivery' render={(props: any) => <AddDelivery {...props} />} />
+        <Route exact path='/viewdelivery' render={(props: any) => <ViewDelivery {...props} />} />
       </React.Suspense>
     </Switch>
   </HashRouter>

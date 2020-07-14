@@ -66,6 +66,9 @@ export default {
     inventoryProduct:'Inventory Product',
     reviewProduct:'Review Product',
     addonProduct:'AddOn Product',
+    delivery:'Delivery Mnagement',
+    addDelivery:'Add Delivery',
+    viewDelivery:'View Delivery',
 
     userTableColumn: [
         'Name','Email','Number','Address','Status','Action'

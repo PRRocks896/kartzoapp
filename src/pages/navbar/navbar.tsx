@@ -116,6 +116,10 @@ class NavBar extends React.Component {
                         </li>
 
                         <li className="menu-item">
+                            <Link to="/delivery"><span><i className="fa fa-truck fs-16"></i>Delivery Management </span></Link>
+                        </li>
+
+                        <li className="menu-item">
                             <a href="#" className="has-chevron" data-toggle="collapse" data-target="#product" aria-expanded="false" aria-controls="product"> <span><i className="fa fa-archive fs-16"></i>Menus </span>
                             </a>
                             <ul id="product" className="collapse" aria-labelledby="product" data-parent="#side-nav-accordion">
