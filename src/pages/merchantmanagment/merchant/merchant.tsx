@@ -258,7 +258,8 @@ class Merchant extends React.Component<{ history: any }> {
                 cityerror: ''
 
             })
-            if (this.state.firstname && this.state.lastname && this.state.email && this.state.mobilenumber && this.state.selectedProofFile && this.state.selectedFile) {
+            if (this.state.firstname && this.state.lastname && this.state.email && this.state.mobilenumber && this.state.selectedFile) {
+                
                 // const obj = {
                 //     firstname: this.state.firstname,
                 //     lastname: this.state.lastname,
