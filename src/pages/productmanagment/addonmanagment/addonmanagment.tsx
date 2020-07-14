@@ -174,44 +174,44 @@ class AddOnProduct extends React.Component<{ history: any }> {
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <div>
                                                     <p style={{ fontSize: '16px' }}>Add On Details</p>
+                                                    <input id="my-file4" type="file" name="my-file4" style={{display:'none'}}/>
                                                     <Editor
                                                         initialValue="<p>This is the initial content of the editor</p>"
                                                         init={{
                                                             height: 200,
                                                             menubar: false,
-                                                            images_upload_credentials: true,
+                                                           
                                                             plugins: [
-                                                                'advlist autolink lists link image code imagetools charmap print preview anchor',
+                                                                'advlist autolink lists link image imagetools charmap print preview anchor',
                                                                 'searchreplace visualblocks code fullscreen',
                                                                 'insertdatetime media table paste code help wordcount'
                                                             ],
                                                             toolbar:
-                                                                'undo redo | formatselect | bold italic backcolor | image | code | media |\
+                                                                'undo redo | formatselect | bold italic backcolor | image |\
                                                     alignleft aligncenter alignright alignjustify | \
                                                     bullist numlist outdent indent | removeformat | help',
                                                             images_upload_handler: function (blobInfo: any, success: any, failure: any) {
                                                                 setTimeout(function (blobInfo) {
                                                                     /* no matter what you upload, we will turn it into TinyMCE logo :)*/
-                                                                    success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
+                                                                    success();
                                                                 }, 2000);
+                                                            },
+                                                            file_picker_callback: function (callback:any, value:any, meta:any) {
+                                                                if (meta.filetype == 'image') {
+                                                                    var input:any = document.getElementById('my-file4');
+                                                                    input.click();
+                                                                    input.onchange = function () {
+                                                                        var file = input.files[0];
+                                                                        var reader = new FileReader();
+                                                                        reader.onload = function (e:any) {
+                                                                            callback(e.target.result, {
+                                                                                alt: file.name
+                                                                            });
+                                                                        };
+                                                                        reader.readAsDataURL(file);
+                                                                    };
+                                                                }
                                                             }
-                                                            // file_picker_callback: function (callback:any, value:any, meta:any) {
-                                                            //     if (meta.filetype == 'image') {
-                                                            //         var input = document.getElementById('my-file');
-                                                            //         input.click();
-                                                            //         input.onchange = function () {
-                                                            //             var file = input.files[0];
-                                                            //             var reader = new FileReader();
-                                                            //             reader.onload = function (e) {
-                                                            //                 console.log('name',e.target.result);
-                                                            //                 callback(e.target.result, {
-                                                            //                     alt: file.name
-                                                            //                 });
-                                                            //             };
-                                                            //             reader.readAsDataURL(file);
-                                                            //         };
-                                                            //     }
-                                                            // },
 
                                                         }
 

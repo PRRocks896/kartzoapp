@@ -720,6 +720,7 @@ class Merchant extends React.Component<{ history: any }> {
                                             <Col xs="12" sm="12" md="4" lg="4" xl="4">
                                                 <div>
                                                     <p style={{ fontSize: '16px' }}>Shipping Policy</p>
+                                                    <input id="my-file1" type="file" name="my-file1" style={{display:'none'}}/>
                                                     <Editor
                                                         initialValue="<p>This is the initial content of the editor</p>"
                                                         init={{
@@ -738,26 +739,26 @@ class Merchant extends React.Component<{ history: any }> {
                                                             images_upload_handler: function (blobInfo: any, success: any, failure: any) {
                                                                 setTimeout(function (blobInfo) {
                                                                     /* no matter what you upload, we will turn it into TinyMCE logo :)*/
-                                                                    success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
+                                                                    success();
                                                                 }, 2000);
+                                                            },
+                                                            file_picker_callback: function (callback:any, value:any, meta:any) {
+                                                                if (meta.filetype == 'image') {
+                                                                    var input:any = document.getElementById('my-file1');
+                                                                    input.click();
+                                                                    input.onchange = function () {
+                                                                        var file = input.files[0];
+                                                                        var reader = new FileReader();
+                                                                        reader.onload = function (e:any) {
+                                                                            callback(e.target.result, {
+                                                                                alt: file.name
+                                                                            });
+                                                                        };
+                                                                        reader.readAsDataURL(file);
+                                                                    };
+                                                                }
                                                             }
-                                                            // file_picker_callback: function (callback:any, value:any, meta:any) {
-                                                            //     if (meta.filetype == 'image') {
-                                                            //         var input = document.getElementById('my-file');
-                                                            //         input.click();
-                                                            //         input.onchange = function () {
-                                                            //             var file = input.files[0];
-                                                            //             var reader = new FileReader();
-                                                            //             reader.onload = function (e) {
-                                                            //                 console.log('name',e.target.result);
-                                                            //                 callback(e.target.result, {
-                                                            //                     alt: file.name
-                                                            //                 });
-                                                            //             };
-                                                            //             reader.readAsDataURL(file);
-                                                            //         };
-                                                            //     }
-                                                            // },
+
 
                                                         }
 
@@ -772,6 +773,7 @@ class Merchant extends React.Component<{ history: any }> {
                                             <Col xs="12" sm="12" md="4" lg="4" xl="4">
                                                 <div>
                                                     <p style={{ fontSize: '16px' }}>Refund Policy</p>
+                                                    <input id="my-file2" type="file" name="my-file2" style={{display:'none'}}/>
                                                     <Editor
                                                         initialValue="<p>This is the initial content of the editor</p>"
                                                         init={{
@@ -790,29 +792,26 @@ class Merchant extends React.Component<{ history: any }> {
                                                             images_upload_handler: function (blobInfo: any, success: any, failure: any) {
                                                                 setTimeout(function (blobInfo) {
                                                                     /* no matter what you upload, we will turn it into TinyMCE logo :)*/
-                                                                    success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
+                                                                    success();
                                                                 }, 2000);
+                                                            },
+                                                            file_picker_callback: function (callback:any, value:any, meta:any) {
+                                                                if (meta.filetype == 'image') {
+                                                                    var input:any = document.getElementById('my-file2');
+                                                                    input.click();
+                                                                    input.onchange = function () {
+                                                                        var file = input.files[0];
+                                                                        var reader = new FileReader();
+                                                                        reader.onload = function (e:any) {
+                                                                            callback(e.target.result, {
+                                                                                alt: file.name
+                                                                            });
+                                                                        };
+                                                                        reader.readAsDataURL(file);
+                                                                    };
+                                                                }
                                                             }
-                                                            // file_picker_callback: function (callback:any, value:any, meta:any) {
-                                                            //     if (meta.filetype == 'image') {
-                                                            //         var input = document.getElementById('my-file');
-                                                            //         input.click();
-                                                            //         input.onchange = function () {
-                                                            //             var file = input.files[0];
-                                                            //             var reader = new FileReader();
-                                                            //             reader.onload = function (e) {
-                                                            //                 console.log('name',e.target.result);
-                                                            //                 callback(e.target.result, {
-                                                            //                     alt: file.name
-                                                            //                 });
-                                                            //             };
-                                                            //             reader.readAsDataURL(file);
-                                                            //         };
-                                                            //     }
-                                                            // },
-
                                                         }
-
                                                         }
                                                         onEditorChange={this.handleEditorChange}
                                                     />
@@ -824,6 +823,7 @@ class Merchant extends React.Component<{ history: any }> {
                                             <Col xs="12" sm="12" md="4" lg="4" xl="4">
                                                 <div>
                                                     <p style={{ fontSize: '16px' }}>Cancellation Policy</p>
+                                                    <input id="my-file3" type="file" name="my-file3" style={{display:'none'}}/>
                                                     <Editor
                                                         initialValue="<p>This is the initial content of the editor</p>"
                                                         init={{
@@ -842,26 +842,25 @@ class Merchant extends React.Component<{ history: any }> {
                                                             images_upload_handler: function (blobInfo: any, success: any, failure: any) {
                                                                 setTimeout(function (blobInfo) {
                                                                     /* no matter what you upload, we will turn it into TinyMCE logo :)*/
-                                                                    success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
+                                                                    success();
                                                                 }, 2000);
+                                                            },
+                                                            file_picker_callback: function (callback:any, value:any, meta:any) {
+                                                                if (meta.filetype == 'image') {
+                                                                    var input:any = document.getElementById('my-file3');
+                                                                    input.click();
+                                                                    input.onchange = function () {
+                                                                        var file = input.files[0];
+                                                                        var reader = new FileReader();
+                                                                        reader.onload = function (e:any) {
+                                                                            callback(e.target.result, {
+                                                                                alt: file.name
+                                                                            });
+                                                                        };
+                                                                        reader.readAsDataURL(file);
+                                                                    };
+                                                                }
                                                             }
-                                                            // file_picker_callback: function (callback:any, value:any, meta:any) {
-                                                            //     if (meta.filetype == 'image') {
-                                                            //         var input = document.getElementById('my-file');
-                                                            //         input.click();
-                                                            //         input.onchange = function () {
-                                                            //             var file = input.files[0];
-                                                            //             var reader = new FileReader();
-                                                            //             reader.onload = function (e) {
-                                                            //                 console.log('name',e.target.result);
-                                                            //                 callback(e.target.result, {
-                                                            //                     alt: file.name
-                                                            //                 });
-                                                            //             };
-                                                            //             reader.readAsDataURL(file);
-                                                            //         };
-                                                            //     }
-                                                            // },
 
                                                         }
 

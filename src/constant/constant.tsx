@@ -66,7 +66,7 @@ export default {
     inventoryProduct:'Inventory Product',
     reviewProduct:'Review Product',
     addonProduct:'AddOn Product',
-    delivery:'Delivery Mnagement',
+    delivery:'Delivery Management',
     addDelivery:'Add Delivery',
     viewDelivery:'View Delivery',
 
