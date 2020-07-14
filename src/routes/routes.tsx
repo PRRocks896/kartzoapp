@@ -42,6 +42,8 @@ import AddOnProduct from '../pages/productmanagment/addonmanagment/addonmanagmen
 import DeliveryManagement from '../pages/deliverymanagment/deliverymanagment';
 import AddDelivery from '../pages/deliverymanagment/adddelivery/adddelivery';
 import ViewDelivery from '../pages/deliverymanagment/viewdelivery/viewdelivery';
+import ListProductImage from '../pages/productmanagment/listimageproduct/listimageproduct';
+import ViewProductImage from '../pages/productmanagment/viewproductimage/viewproductimage';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -105,6 +107,9 @@ const createRoutes = (
         <Route exact path='/add-delivery' render={(props: any) => <AddDelivery {...props} />} />
         <Route exact path='/editdelivery' render={(props: any) => <AddDelivery {...props} />} />
         <Route exact path='/viewdelivery' render={(props: any) => <ViewDelivery {...props} />} />
+        <Route exact path='/list-product-image' render={(props: any) => <ListProductImage {...props} />} />
+        <Route exact path='/edit-product-image' render={(props: any) => <ImageProduct {...props} />} />
+        <Route exact path='/view-product-image' render={(props: any) => <ViewProductImage {...props} />} />
       </React.Suspense>
     </Switch>
   </HashRouter>

@@ -155,8 +155,8 @@ class ImageProduct extends React.Component<{ history: any }> {
                                             <Col xs="12" sm="6" md="9" lg="9" xl="9">
                                                 <h1>Product Image Management</h1>
                                             </Col>
-                                            {/* <Col xs="12" sm="6" md="3" lg="3" xl="3" style={{textAlign:"right"}}>
-                                                <Link to="/users">
+                                            <Col xs="12" sm="6" md="3" lg="3" xl="3" style={{textAlign:"right"}}>
+                                                <Link to="/list-product-image">
                                                     <Button
                                                         type="button"
                                                         size="sm"
@@ -166,7 +166,7 @@ class ImageProduct extends React.Component<{ history: any }> {
                                                         Back
                                         </Button>
                                                 </Link>
-                                            </Col> */}
+                                            </Col>
                                         </Row>
 
                                     </CardHeader>

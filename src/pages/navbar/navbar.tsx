@@ -104,7 +104,7 @@ class NavBar extends React.Component {
                             <ul id="productmanagment" className="collapse" aria-labelledby="productmanagment" data-parent="#side-nav-accordion">
                                 <li><Link to="/list-product">Product Management</Link>
                                 </li>
-                                <li><Link to="/product-image">Image Management</Link>
+                                <li><Link to="/list-product-image">Image Management</Link>
                                 </li>
                                 <li><Link to="/product-inventory">Inventory Management</Link>
                                 </li>
