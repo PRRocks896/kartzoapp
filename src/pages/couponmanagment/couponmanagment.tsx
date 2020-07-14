@@ -14,7 +14,7 @@ import {
 } from 'reactstrap';
 import './couponmanagment.css';
 import NavBar from '../navbar/navbar';
-// import API from '../../../service/service';
+import API from '../../service/coupon.service';
 import Switch from "react-switch";
 import constant from '../../constant/constant';
 import { format } from "date-fns";

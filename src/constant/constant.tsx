@@ -56,6 +56,16 @@ export default {
     loginTitle:'Login',
     signupTitle:'Signup',
     couponManagement:'Coupon Management',
+    merchantManagement:'Merchant Management',
+    merchantBusinessManagement:'Merchant Business Management',
+    merchantReviewManagement:'Merchant Review Management',
+    viewProductManagement:'View Product',
+    listProduct:'List Product',
+    addProduct:'Add Product',
+    imageProduct:'Image Product',
+    inventoryProduct:'Inventory Product',
+    reviewProduct:'Review Product',
+    addonProduct:'AddOn Product',
 
     userTableColumn: [
         'Name','Email','Number','Address','Status','Action'

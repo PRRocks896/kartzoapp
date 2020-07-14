@@ -41,6 +41,34 @@ const apiUrl = {
         getCoupon:'coupon',
         editCoupon:'coupon',
         deleteCoupon:'coupon'
+    },
+    merchantController: {
+        addMerchant:'merchant',
+        getMerchant:'merchant',
+        editMerchant:'merchant',
+        deleteMerchant:'merchant'
+    },
+    merchantBusinessController: {
+        addMerchantBusiness:'merchant',
+        getMerchantBusiness:'merchant',
+        editMerchantBusiness:'merchant',
+        deleteMerchantBusiness:'merchant'
+    },
+    merchantReviewController: {
+        addMerchantReview:'merchant',
+        getMerchantReview:'merchant',
+        editMerchantReview:'merchant',
+        deleteMerchantReview:'merchant'
+    },
+    productController: {
+        addproduct:'product',
+        getproduct:'product',
+        editproduct:'product',
+        deleteproduct:'product',
+        addImage:'product',
+        addInventory:'product',
+        addReview:'product',
+        addOnProduct:'product'
     }
 }
 

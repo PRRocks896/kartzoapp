@@ -93,6 +93,25 @@ class NavBar extends React.Component {
                                 </li>
                                 <li><Link to="/merchant-business">Business Management</Link>
                                 </li>
+                                <li><Link to="/merchant-review">Review Management</Link>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li className="menu-item">
+                            <a href="#" className="has-chevron" data-toggle="collapse" data-target="#productmanagment" aria-expanded="false" aria-controls="productmanagment"> <span><i className="fa fa-shopping-cart fs-16"></i>Product Management </span>
+                            </a>
+                            <ul id="productmanagment" className="collapse" aria-labelledby="productmanagment" data-parent="#side-nav-accordion">
+                                <li><Link to="/list-product">Product Management</Link>
+                                </li>
+                                <li><Link to="/product-image">Image Management</Link>
+                                </li>
+                                <li><Link to="/product-inventory">Inventory Management</Link>
+                                </li>
+                                <li><Link to="/product-review">Review Management</Link>
+                                </li>
+                                <li><Link to="/product-addondetail">AddOn Management</Link>
+                                </li>
                             </ul>
                         </li>
 

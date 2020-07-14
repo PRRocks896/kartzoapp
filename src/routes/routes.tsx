@@ -31,6 +31,14 @@ import Tables from '../component/tables/table';
 import Coupon from '../pages/couponmanagment/couponmanagment';
 import Merchant from '../pages/merchantmanagment/merchant/merchant';
 import MerchantBusiness from '../pages/merchantmanagment/business-management/business';
+import MerchantReview from '../pages/merchantmanagment/review-management/reviewmanagement';
+import AddProduct from '../pages/productmanagment/addproduct/addproduct';
+import ImageProduct from '../pages/productmanagment/imageproduct/imageproduct';
+import InventoryProduct from '../pages/productmanagment/inventoryproduct/inventoryproduct';
+import ListProduct from '../pages/productmanagment/listproduct/listproduct';
+import ViewProduct from '../pages/productmanagment/viewproduct/viewproduct';
+import ProductReview from '../pages/productmanagment/reviewproduct/reviewproduct';
+import AddOnProduct from '../pages/productmanagment/addonmanagment/addonmanagment';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -81,6 +89,15 @@ const createRoutes = (
         <Route exact path='/coupon' render={(props: any) => <Coupon {...props} />} />
         <Route exact path='/merchant' render={(props: any) => <Merchant {...props} />} />
         <Route exact path='/merchant-business' render={(props: any) => <MerchantBusiness {...props} />} />
+        <Route exact path='/merchant-review' render={(props: any) => <MerchantReview {...props} />} />
+        <Route exact path='/product' render={(props: any) => <AddProduct {...props} />} />
+        <Route exact path='/edit-product' render={(props: any) => <AddProduct {...props} />} />
+        <Route exact path='/view-product' render={(props: any) => <ViewProduct {...props} />} />
+        <Route exact path='/product-image' render={(props: any) => <ImageProduct {...props} />} />
+        <Route exact path='/product-inventory' render={(props: any) => <InventoryProduct {...props} />} />
+        <Route exact path='/list-product' render={(props: any) => <ListProduct {...props} />} />
+        <Route exact path='/product-review' render={(props: any) => <ProductReview {...props} />} />
+        <Route exact path='/product-addondetail' render={(props: any) => <AddOnProduct {...props} />} />
       </React.Suspense>
     </Switch>
   </HashRouter>

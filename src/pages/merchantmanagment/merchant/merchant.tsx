@@ -16,7 +16,7 @@ import {
 } from 'reactstrap';
 import './merchant.css';
 import NavBar from '../../navbar/navbar';
-import API from '../../../service/service';
+import API from '../../../service/merchant.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { Editor } from '@tinymce/tinymce-react';
@@ -74,15 +74,20 @@ class Merchant extends React.Component<{ history: any }> {
         this.onChangeIDProof = this.onChangeIDProof.bind(this);
         this.onChangeDocumentHandler = this.onChangeDocumentHandler.bind(this);
         this.onUserSelect = this.onUserSelect.bind(this);
+        this.handleEditorChange = this.handleEditorChange.bind(this);
+        this.handleEditorMainChange = this.handleEditorMainChange.bind(this);
+        this.handleEditorUpChange = this.handleEditorUpChange.bind(this);
+        this.removeDocumentIcon = this.removeDocumentIcon.bind(this);
+        this.removeProofIcon = this.removeProofIcon.bind(this);
     }
 
 
     handleChange(checked: boolean) {
-        this.setState({ isOpen:this.state.isOpen = checked });
+        this.setState({ isOpen: this.state.isOpen = checked });
     }
 
     async componentDidMount() {
-        document.title = constant.addUserTitle + utils.getAppName();
+        document.title = constant.merchantManagement + utils.getAppName();
 
         // const getProfile = await API.getProfile();
         // console.log("getprofile",getProfile);
@@ -127,7 +132,27 @@ class Merchant extends React.Component<{ history: any }> {
         })
     }
 
+    handleEditorChange = (content: any, editor: any) => {
+        console.log('handleEditorChange Content was updated:', content);
+        this.setState({
+            refundpolicy: this.state.refundpolicy = content
+        })
 
+    }
+
+    handleEditorMainChange = (content: any, editor: any) => {
+        console.log('handleEditorMainChange Content was updated:', content);
+        this.setState({
+            shoppingpolicy: this.state.shoppingpolicy = content
+        })
+    }
+
+    handleEditorUpChange = (content: any, editor: any) => {
+        console.log('handleEditorMainChange Content was updated:', content);
+        this.setState({
+            cancellationpolicy: this.state.cancellationpolicy = content
+        })
+    }
 
     validate() {
         let firstnameerror = "";
@@ -258,28 +283,40 @@ class Merchant extends React.Component<{ history: any }> {
                 cityerror: ''
 
             })
-            if (this.state.firstname && this.state.lastname && this.state.email && this.state.mobilenumber && this.state.selectedFile) {
-                
-                // const obj = {
-                //     firstname: this.state.firstname,
-                //     lastname: this.state.lastname,
-                //     email: this.state.email,
-                //     mobilenumber: this.state.mobilenumber,
-                //     password: this.state.password,
-                //     selectedFile: this.state.selectedFile
-                // }
+            if (this.state.firstname && this.state.lastname && this.state.email && this.state.mobilenumber && this.state.selectedFile && this.state.selectedDocumentFile && this.state.selectedProofFile && this.state.latitude && this.state.longitude) {
 
-                // // const updateProfile = await API.updateProfile(obj);
-                // // console.log("updateProfile",updateProfile);
+                const obj = {
+                    firstname: this.state.firstname,
+                    lastname: this.state.lastname,
+                    email: this.state.email,
+                    mobilenumber: this.state.mobilenumber,
+                    selectedDocumentFile: this.state.selectedDocumentFile,
+                    selectedProofFile: this.state.selectedProofFile,
+                    selectedFile: this.state.selectedFile,
+                    latitude:this.state.latitude,
+                    longitude:this.state.longitude,
+                    address:this.state.address,
+                    zipcode:this.state.zipcode,
+                    shopname:this.state.shopname,
+                    shoppingpolicy:this.state.shoppingpolicy,
+                    refundpolicy:this.state.refundpolicy,
+                    cancellationpolicy:this.state.cancellationpolicy,
+                    city:this.state.city,
+                    user:this.state.user
+                }
 
-                // if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.mobilenumber === obj.mobilenumber && this.state.password === obj.password) {
-                //     const msg = "User Added Successfully";
-                //     utils.showSuccess(msg);
-                //     this.props.history.push('/users');
-                // } else {
-                //     const msg1 = "Error";
-                //     utils.showError(msg1);
-                // }
+                // const addMerchant = await API.addMerchant(obj);
+                // console.log("addMerchant",addMerchant);
+
+                if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.mobilenumber === obj.mobilenumber 
+                    && this.state.selectedFile === obj.selectedFile) {
+                    const msg = "Merchant Added Successfully";
+                    utils.showSuccess(msg);
+                    // this.props.history.push('/users');
+                } else {
+                    const msg1 = "Error";
+                    utils.showError(msg1);
+                }
             }
         };
     }
@@ -291,6 +328,26 @@ class Merchant extends React.Component<{ history: any }> {
         // }
         this.setState({
             selectedFile: this.state.selectedFile = null
+        })
+    }
+
+    removeDocumentIcon() {
+        // const obj = {
+        //     id: this.props.auth.auth_data.id,
+        //     image_path: data
+        // }
+        this.setState({
+            selectedDocumentFile: this.state.selectedDocumentFile = null
+        })
+    }
+
+    removeProofIcon() {
+        // const obj = {
+        //     id: this.props.auth.auth_data.id,
+        //     image_path: data
+        // }
+        this.setState({
+            selectedProofFile: this.state.selectedProofFile = null
         })
     }
 
@@ -600,7 +657,7 @@ class Merchant extends React.Component<{ history: any }> {
                                                                     this.state.selectedProofFile ? (
                                                                         <div>
                                                                             <img className="picture" src={require('../../dashboard/assets/images/login-img.png')} />
-                                                                            <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i>
+                                                                            <i className="fa fa-times cursor" onClick={() => this.removeProofIcon()}></i>
                                                                         </div>
                                                                     ) : (null)
                                                                 }
@@ -634,7 +691,7 @@ class Merchant extends React.Component<{ history: any }> {
                                                                     this.state.selectedDocumentFile ? (
                                                                         <div>
                                                                             <img className="picture" src={require('../../dashboard/assets/images/login-img.png')} />
-                                                                            <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i>
+                                                                            <i className="fa fa-times cursor" onClick={() => this.removeDocumentIcon()}></i>
                                                                         </div>
                                                                     ) : (null)
                                                                 }
@@ -650,7 +707,6 @@ class Merchant extends React.Component<{ history: any }> {
                                                                         name="file"
                                                                         onChange={this.onChangeDocumentHandler.bind(this)}
                                                                     />
-
                                                                 </div>
                                                             )
                                                     }
@@ -667,7 +723,7 @@ class Merchant extends React.Component<{ history: any }> {
                                                     <Editor
                                                         initialValue="<p>This is the initial content of the editor</p>"
                                                         init={{
-                                                            height: 500,
+                                                            height: 200,
                                                             menubar: false,
                                                             images_upload_credentials: true,
                                                             plugins: [
@@ -706,8 +762,11 @@ class Merchant extends React.Component<{ history: any }> {
                                                         }
 
                                                         }
-                                                    // onEditorChange={this.handleEditorChange}
+                                                        onEditorChange={this.handleEditorMainChange}
                                                     />
+                                                </div>
+                                                <div className="text-danger">
+                                                    {this.state.shoppingpolicyerror}
                                                 </div>
                                             </Col>
                                             <Col xs="12" sm="12" md="4" lg="4" xl="4">
@@ -716,7 +775,7 @@ class Merchant extends React.Component<{ history: any }> {
                                                     <Editor
                                                         initialValue="<p>This is the initial content of the editor</p>"
                                                         init={{
-                                                            height: 500,
+                                                            height: 200,
                                                             menubar: false,
                                                             images_upload_credentials: true,
                                                             plugins: [
@@ -755,8 +814,11 @@ class Merchant extends React.Component<{ history: any }> {
                                                         }
 
                                                         }
-                                                    // onEditorChange={this.handleEditorChange}
+                                                        onEditorChange={this.handleEditorChange}
                                                     />
+                                                </div>
+                                                <div className="text-danger">
+                                                    {this.state.refundpolicyerror}
                                                 </div>
                                             </Col>
                                             <Col xs="12" sm="12" md="4" lg="4" xl="4">
@@ -765,7 +827,7 @@ class Merchant extends React.Component<{ history: any }> {
                                                     <Editor
                                                         initialValue="<p>This is the initial content of the editor</p>"
                                                         init={{
-                                                            height: 500,
+                                                            height: 200,
                                                             menubar: false,
                                                             images_upload_credentials: true,
                                                             plugins: [
@@ -804,12 +866,15 @@ class Merchant extends React.Component<{ history: any }> {
                                                         }
 
                                                         }
-                                                    // onEditorChange={this.handleEditorChange}
+                                                        onEditorChange={this.handleEditorUpChange}
                                                     />
+                                                </div>
+                                                <div className="text-danger">
+                                                    {this.state.cancellationpolicyerror}
                                                 </div>
                                             </Col>
                                         </Row>
-                                        <Row>
+                                        <Row style={{ marginTop: '20px' }}>
                                             <Col xs="12" sm="12" md="4" lg="4" xl="4">
                                                 <label>
                                                     <span>IsOpen</span>
