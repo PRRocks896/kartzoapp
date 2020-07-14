@@ -68,7 +68,9 @@ const apiUrl = {
         addImage:'product',
         addInventory:'product',
         addReview:'product',
-        addOnProduct:'product'
+        addOnProduct:'product',
+        deleteproductImage:'product',
+        editproductImage:'product',
     },
     deliveryController: {
         addDelivery:'delivery',

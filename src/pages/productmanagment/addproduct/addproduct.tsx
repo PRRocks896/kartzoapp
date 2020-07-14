@@ -237,7 +237,7 @@ class AddProduct extends React.Component<{ history: any }> {
                     && this.state.metatitle === obj.metatitle && this.state.metakeyword === obj.metakeyword && this.state.sortorder === obj.sortorder) {
                     const msg = "Product Added Successfully";
                     utils.showSuccess(msg);
-                    // this.props.history.push('/users');
+                    this.props.history.push('/product');
                 } else {
                     const msg1 = "Error";
                     utils.showError(msg1);

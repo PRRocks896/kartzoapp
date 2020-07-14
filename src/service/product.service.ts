@@ -26,7 +26,15 @@ export default {
     },
     addOnProduct: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.productController.addOnProduct,data);
-    }
+    },
+    deleteImageProduct: async function () {
+        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.productController.deleteproductImage);
+    },
+    editProductImage: async function (data: any) {
+        return await WebReqUrl.put(Constant.apiUrl + apiUrl.productController.editproductImage,data);
+    },
+    
+    
     
     
     

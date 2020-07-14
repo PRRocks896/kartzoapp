@@ -107,7 +107,7 @@ class ListProductImage extends React.Component<{ history: any }> {
             cancelButtonText: 'No, keep it'
         }).then(async (result) => {
             if (result.value) {
-                // var deleteProduct = await API.deleteProduct(id);
+                // var deleteImageProduct = await API.deleteImageProduct(id);
                 const msg = "Your Image has been deleted";
                 utils.showSuccess(msg);
                 // this.componentDidMount();

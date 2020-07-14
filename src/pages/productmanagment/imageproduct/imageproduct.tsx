@@ -109,10 +109,13 @@ class ImageProduct extends React.Component<{ history: any }> {
                 // const addProductImage = await API.addProductImage(obj);
                 // console.log("addProductImage",addProductImage);
 
+                 // const editProductImage = await API.editProductImage(obj);
+                // console.log("editProductImage",editProductImage);
+
                 if (this.state.productid === obj.productid && this.state.imagename === obj.imagename && this.state.altertag === obj.altertag && this.state.sortorder === obj.sortorder) {
                     const msg = "Product Image Added Successfully";
                     utils.showSuccess(msg);
-                    // this.props.history.push('/users');
+                    this.props.history.push('/list-product-image');
                 } else {
                     const msg1 = "Error";
                     utils.showError(msg1);
@@ -153,7 +156,7 @@ class ImageProduct extends React.Component<{ history: any }> {
                                     <CardHeader>
                                         <Row>
                                             <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                                                <h1>Product Image Management</h1>
+                                                <h1>Add Product Image</h1>
                                             </Col>
                                             <Col xs="12" sm="6" md="3" lg="3" xl="3" style={{textAlign:"right"}}>
                                                 <Link to="/list-product-image">
