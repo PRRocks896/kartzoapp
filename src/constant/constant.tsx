@@ -76,6 +76,10 @@ export default {
     viewInventoryProduct:'View Inventory',
     viewProductReview:'View Product Review',
     ViewMerchantReview:'View Merchant Review',
+    listOrderManagement:'Order Management',
+    viewOrderManagement:'View Order',
+    addCartOrder:'Order Cart Management',
+    addOrder:'Add Order',
 
     userTableColumn: [
         'Name','Email','Number','Address','Status','Action'

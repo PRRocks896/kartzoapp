@@ -78,6 +78,13 @@ const apiUrl = {
         editDelivery:'delivery',
         deleteDelivery:'delivery'
     },
+    orderController: {
+        addOrder:'order',
+        getOrder:'order',
+        editOrder:'order',
+        deleteOrder:'order',
+        addOrderCart:'order'
+    },
 }
 
 export default apiUrl;

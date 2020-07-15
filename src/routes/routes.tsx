@@ -50,6 +50,10 @@ import ViewProductInventory from '../pages/productmanagment/viewproductinventory
 import ListProductReview from '../pages/productmanagment/listproductreview/listproductreview';
 import ViewProductReview from '../pages/productmanagment/viewproductreview/viewproductreview';
 import ViewMerchantReview from '../pages/merchantmanagment/viewmerchantreview/viewmerchantreview';
+import OrderManagement from '../pages/ordermanagment/order/order';
+import ListOrderManagement from '../pages/ordermanagment/listorder/listorder';
+import OrderCartManagement from '../pages/ordermanagment/cart/cart';
+import ViewOrderManagement from '../pages/ordermanagment/vieworder/vieworder';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -123,6 +127,11 @@ const createRoutes = (
         <Route exact path='/list-product-review' render={(props: any) => <ListProductReview {...props} />} />
         <Route exact path='/view-product-review' render={(props: any) => <ViewProductReview {...props} />} />
         <Route exact path='/view-merchant-review' render={(props: any) => <ViewMerchantReview {...props} />} />
+        <Route exact path='/list-order' render={(props: any) => <ListOrderManagement {...props} />} />
+        <Route exact path='/add-order' render={(props: any) => <OrderManagement {...props} />} />
+        <Route exact path='/edit-order-details' render={(props: any) => <OrderManagement {...props} />} />
+        <Route exact path='/view-order-details' render={(props: any) => <ViewOrderManagement {...props} />} />
+        <Route exact path='/order-cart' render={(props: any) => <OrderCartManagement {...props} />} />
       </React.Suspense>
     </Switch>
   </HashRouter>
