@@ -93,7 +93,7 @@ class NavBar extends React.Component {
                                 </li>
                                 <li><Link to="/merchant-business">Business Management</Link>
                                 </li>
-                                <li><Link to="/merchant-review">Review Management</Link>
+                                <li><Link to="/list-merchant-review">Review Management</Link>
                                 </li>
                             </ul>
                         </li>
@@ -106,9 +106,9 @@ class NavBar extends React.Component {
                                 </li>
                                 <li><Link to="/list-product-image">Image Management</Link>
                                 </li>
-                                <li><Link to="/product-inventory">Inventory Management</Link>
+                                <li><Link to="/list-product-inventory">Inventory Management</Link>
                                 </li>
-                                <li><Link to="/product-review">Review Management</Link>
+                                <li><Link to="/list-product-review">Review Management</Link>
                                 </li>
                                 <li><Link to="/product-addondetail">AddOn Management</Link>
                                 </li>

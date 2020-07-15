@@ -64,13 +64,18 @@ export default {
     addProduct:'Add Product',
     imageProduct:'Image Product',
     listImageProduct:'List Image Product',
-    inventoryProduct:'Inventory Product',
+    inventoryProduct:'Add Inventory Product',
     viewImageProduct:'View Image Product',
     reviewProduct:'Review Product',
     addonProduct:'AddOn Product',
     delivery:'Delivery Management',
     addDelivery:'Add Delivery',
     viewDelivery:'View Delivery',
+    listMerchantReview:'Merchant Review',
+    listInventoryProduct:'Inventory Management',
+    viewInventoryProduct:'View Inventory',
+    viewProductReview:'View Product Review',
+    ViewMerchantReview:'View Merchant Review',
 
     userTableColumn: [
         'Name','Email','Number','Address','Status','Action'

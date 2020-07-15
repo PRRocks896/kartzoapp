@@ -117,10 +117,10 @@ class InventoryProduct extends React.Component<{ history: any }> {
                                     <CardHeader>
                                         <Row>
                                             <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                                                <h1>Product Inventory Management</h1>
+                                                <h1>Add Product Inventory</h1>
                                             </Col>
-                                            {/* <Col xs="12" sm="6" md="3" lg="3" xl="3" style={{textAlign:"right"}}>
-                                                <Link to="/users">
+                                            <Col xs="12" sm="6" md="3" lg="3" xl="3" style={{textAlign:"right"}}>
+                                                <Link to="/list-product-inventory">
                                                     <Button
                                                         type="button"
                                                         size="sm"
@@ -130,7 +130,7 @@ class InventoryProduct extends React.Component<{ history: any }> {
                                                         Back
                                         </Button>
                                                 </Link>
-                                            </Col> */}
+                                            </Col>
                                         </Row>
 
                                     </CardHeader>
