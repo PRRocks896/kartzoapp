@@ -134,9 +134,29 @@ export default {
           },
           {
             name: 'Cart Management',
-            url: '/order-cart'
+            url: '/list-cart'
           }
         ]
       },
+      {
+        name: 'Customer Management',
+        id: 'customermanagement',
+        icon: 'fa fa-users fs-16',
+        type: 'dropdown',
+        children: [
+          {
+            name: 'User Management',
+            url: '/list-user'
+          },
+          {
+            name: 'Address Management',
+            url: '/list-address'
+          },
+          {
+            name: 'Card Management',
+            url: '/list-card'
+          }
+        ]
+      }
     ],
   };

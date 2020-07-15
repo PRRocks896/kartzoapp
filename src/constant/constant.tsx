@@ -80,6 +80,11 @@ export default {
     viewOrderManagement:'View Order',
     addCartOrder:'Order Cart Management',
     addOrder:'Add Order',
+    listCartManagement: 'Cart Management',
+    viewCartManagement:'View Order Cart',
+    addCustomerTitle:'Add Customer',
+    viewCustomerTitle:'View Customer',
+    listCustomer:'Customer Management',
 
     userTableColumn: [
         'Name','Email','Number','Address','Status','Action'
