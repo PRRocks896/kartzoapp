@@ -9,6 +9,17 @@ const apiUrl = {
         getUserPaginationData:'user'
 
     },
+    customerController: {
+        createData:'user',
+        getData:'user',
+        getDataById:'user/',
+        forgotpassword:'',
+        updateData:'user',
+        getCount:'user',
+        getUserPaginationData:'user',
+        deleteCustomer:'user'
+
+    },
     userRoleController: {
         addRole:'role',
         getRole:'role',
@@ -77,6 +88,13 @@ const apiUrl = {
         getDelivery:'delivery',
         editDelivery:'delivery',
         deleteDelivery:'delivery'
+    },
+    orderController: {
+        addOrder:'order',
+        getOrder:'order',
+        editOrder:'order',
+        deleteOrder:'order',
+        addOrderCart:'order'
     },
 }
 

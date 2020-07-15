@@ -15,7 +15,7 @@
 	color: #fff;
 }
 .side-nav li.menu-item a:hover, .side-nav li.menu-item a:hover span, .side-nav li.menu-item a.active, .side-nav li.menu-item a.active span, .side-nav li.menu-item ul li a.active {
-	color: #FBB330;
+    color: #fff;
 }
 .side-nav .has-chevron::after {
 	color: #fff;

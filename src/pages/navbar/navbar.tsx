@@ -1,11 +1,30 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink,Link } from 'react-router-dom';
+// import { NavLink } from 'react-router-dom';
+import nav from '../../navbar.service';
+import { Badge, Nav, NavItem, NavLink as RsNavLink } from 'reactstrap';
+import classNames from 'classnames';
 
 class NavBar extends React.Component {
     state = {
         isOpen: true,
         side: true
     };
+
+    constructor(props:any) {
+        super(props);
+    }
+
+    activeRoute(routeName:any, props:any) {
+        const route = window.location.hash.split('#')[1];
+        return route === routeName ? `nav-item nav-dropdown open` : `nav-item nav-dropdown`;
+    
+      }
+
+      handleClick(e:any) {
+        e.preventDefault();
+        e.target.parentElement.classList.toggle('open');
+      }
 
     toggleCollapse = () => {
         this.setState({ isOpen: !this.state.isOpen });
@@ -20,6 +39,119 @@ class NavBar extends React.Component {
     }
 
     render() {
+        const badge = (badge:any) => {
+            if (badge) {
+              const classes = classNames(badge.class);
+              return (<Badge className={classes} color={badge.variant}>{badge.text}</Badge>)
+            }
+          };
+      
+          // simple wrapper for nav-title item
+          const wrapper = (item:any) => { return (item.wrapper && item.wrapper.element ? (React.createElement(item.wrapper.element, item.wrapper.attributes, item.name)) : item.name) };
+      
+          // nav list section title
+          const title = (title:any, key:any) => {
+            const classes = classNames('nav-title', title.class);
+            return (<li key={key} className={classes}>{wrapper(title)} </li>);
+          };
+      
+          // nav list divider
+          const divider = (divider:any, key:any) => {
+            const classes = classNames('divider', divider.class);
+            return (<li key={key} className={classes}></li>);
+          };
+      
+          // nav item with nav link
+          const navItem = (item:any, key:any) => {
+            const classes = {
+              item: classNames(item.class),
+              link: classNames('nav-link', item.variant ? `nav-link-${item.variant}` : ''),
+              icon: classNames(item.icon)
+            };
+            return (
+              navLink(item, key, classes)
+            )
+          };
+      
+          // nav link
+          const navLink = (item:any, key:any, classes:any) => { 
+            const url = item.url ? item.url : '';
+            return (
+              <NavItem key={key} className={classes.item}>
+                {isExternal(url) ?
+                  <RsNavLink href={url} className={classes.link} active>
+                    <i className={classes.icon}></i>{item.name}{badge(item.badge)}
+                  </RsNavLink>
+                  :
+                  <NavLink to={url} className={classes.link} activeClassName="active">
+                    <i className={classes.icon}></i>{item.name}{badge(item.badge)}
+                  </NavLink>
+                }
+              </NavItem>
+            )
+          };
+      
+          // nav dropdown
+          const navDropdown = (item:any, key:any) => {
+            return (
+              <li key={key} className={this.activeRoute(item.url, this.props)}>
+                  {item?.type === 'link' && 
+                    <a href="#" className="has-chevron" data-toggle="collapse"> <span><i className={item.icon}></i>{item.name} </span>
+                    </a>
+                  }
+                    {item?.type !== 'link' && 
+                        <>
+                            <a href="#" className="has-chevron  nav-dropdown-toggle" data-toggle="collapse" data-target={`#${item.id}`} aria-expanded="false" aria-controls={`${item.id}`}  onClick={this.handleClick.bind(this)}> <span><i className={item.icon}></i>{item.name} </span>
+                            </a>
+                            <ul id={`${item.id}`} className="collapse" aria-labelledby={`${item.id}`} data-parent="#side-nav-accordion">
+                                {navChildList(item.children)}
+                            </ul>
+                        </>
+                  }
+                   
+                   
+                {/* <a className="nav-link " href="#" onClick={handleClick.bind(this)}><i className={item.icon}></i>{item.name}</a> */}
+                
+              </li>)
+          };
+      
+          // nav type
+          const navType = (item:any, idx:any) =>
+            item.title ? title(item, idx) :
+              item.divider ? divider(item, idx) :
+                item.children ? navDropdown(item, idx)
+                  : navItem(item, idx);
+
+      
+          // nav list
+          const navList = (items:any) => {
+            if(items !== undefined) {
+             
+                var itemsArray = items.items;
+             
+                if(itemsArray) {
+                    return itemsArray.map((item:any, index:any) => navType(item, index));
+                }
+            }
+          };
+
+          const navChildList = (chilItem: any) => {
+            if(chilItem !== undefined) {
+            
+                var itemsArray = chilItem;
+             
+                if(itemsArray) {
+                    return itemsArray.map((chilItem:any, index:any) => navType(chilItem, index));
+                }
+            }
+          }
+      
+          const isExternal = (url:any) => {
+            const link = url ? url.substring(0, 4) : '';
+            return link === 'http';
+          };
+
+
         return (
             <div className={this.state.isOpen == true ? "ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" : "ms-body ms-primary-theme ms-has-quickbar"}>
 
@@ -33,9 +165,12 @@ class NavBar extends React.Component {
 
                     <ul className="accordion ms-main-aside fs-14" id="side-nav-accordion">
                         <span className="arrow" style={{ color: '#fb3', fontSize: '25px', margin: '15px', fontWeight: 600 }} onClick={this.closeNav}>x</span>
+                           <li className="menu-item">
+                           {navList(nav)}
+                               </li>
 
 
-                        <li className="menu-item">
+                        {/* <li className="menu-item">
                             <a href="#" className="has-chevron" data-toggle="collapse" data-target="#dashboard" aria-expanded="false" aria-controls="dashboard"> <span><i className="material-icons fs-16">dashboard</i>Dashboard </span>
                             </a>
                             <ul id="dashboard" className="collapse" aria-labelledby="dashboard" data-parent="#side-nav-accordion">
@@ -93,7 +228,7 @@ class NavBar extends React.Component {
                                 </li>
                                 <li><Link to="/merchant-business">Business Management</Link>
                                 </li>
-                                <li><Link to="/merchant-review">Review Management</Link>
+                                <li><Link to="/list-merchant-review">Review Management</Link>
                                 </li>
                             </ul>
                         </li>
@@ -106,9 +241,9 @@ class NavBar extends React.Component {
                                 </li>
                                 <li><Link to="/list-product-image">Image Management</Link>
                                 </li>
-                                <li><Link to="/product-inventory">Inventory Management</Link>
+                                <li><Link to="/list-product-inventory">Inventory Management</Link>
                                 </li>
-                                <li><Link to="/product-review">Review Management</Link>
+                                <li><Link to="/list-product-review">Review Management</Link>
                                 </li>
                                 <li><Link to="/product-addondetail">AddOn Management</Link>
                                 </li>
@@ -364,7 +499,7 @@ class NavBar extends React.Component {
                                 <li> <a href="pages/apps/to-do-list.html">To-do List</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> */}
 
                     </ul>
                 </aside>

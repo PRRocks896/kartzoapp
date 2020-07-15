@@ -44,6 +44,21 @@ import AddDelivery from '../pages/deliverymanagment/adddelivery/adddelivery';
 import ViewDelivery from '../pages/deliverymanagment/viewdelivery/viewdelivery';
 import ListProductImage from '../pages/productmanagment/listimageproduct/listimageproduct';
 import ViewProductImage from '../pages/productmanagment/viewproductimage/viewproductimage';
+import ListMerchantReview from '../pages/merchantmanagment/listreview/listreview';
+import ListProductInventory from '../pages/productmanagment/listinventory/listinventory';
+import ViewProductInventory from '../pages/productmanagment/viewproductinventory/viewinventory';
+import ListProductReview from '../pages/productmanagment/listproductreview/listproductreview';
+import ViewProductReview from '../pages/productmanagment/viewproductreview/viewproductreview';
+import ViewMerchantReview from '../pages/merchantmanagment/viewmerchantreview/viewmerchantreview';
+import OrderManagement from '../pages/ordermanagment/order/order';
+import ListOrderManagement from '../pages/ordermanagment/listorder/listorder';
+import OrderCartManagement from '../pages/ordermanagment/cart/cart';
+import ViewOrderManagement from '../pages/ordermanagment/vieworder/vieworder';
+import ListCartManagement from '../pages/ordermanagment/listcart/listcart';
+import ViewCartManagement from '../pages/ordermanagment/viewcart/viewcart';
+import ListUser from '../pages/customermanagment/listuser/listuser';
+import AddCustomer from '../pages/customermanagment/adduser/adduser';
+import ViewCustomer from '../pages/customermanagment/viewuser/viewuser';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -110,6 +125,24 @@ const createRoutes = (
         <Route exact path='/list-product-image' render={(props: any) => <ListProductImage {...props} />} />
         <Route exact path='/edit-product-image' render={(props: any) => <ImageProduct {...props} />} />
         <Route exact path='/view-product-image' render={(props: any) => <ViewProductImage {...props} />} />
+        <Route exact path='/list-merchant-review' render={(props: any) => <ListMerchantReview {...props} />} />
+        <Route exact path='/list-product-inventory' render={(props: any) => <ListProductInventory {...props} />} />
+        <Route exact path='/edit-product-inventory' render={(props: any) => <InventoryProduct {...props} />} />
+        <Route exact path='/view-product-inventory' render={(props: any) => <ViewProductInventory {...props} />} />
+        <Route exact path='/list-product-review' render={(props: any) => <ListProductReview {...props} />} />
+        <Route exact path='/view-product-review' render={(props: any) => <ViewProductReview {...props} />} />
+        <Route exact path='/view-merchant-review' render={(props: any) => <ViewMerchantReview {...props} />} />
+        <Route exact path='/list-order' render={(props: any) => <ListOrderManagement {...props} />} />
+        <Route exact path='/add-order' render={(props: any) => <OrderManagement {...props} />} />
+        <Route exact path='/edit-order-details' render={(props: any) => <OrderManagement {...props} />} />
+        <Route exact path='/view-order-details' render={(props: any) => <ViewOrderManagement {...props} />} />
+        <Route exact path='/order-cart' render={(props: any) => <OrderCartManagement {...props} />} />
+        <Route exact path='/list-cart' render={(props: any) => <ListCartManagement {...props} />} />
+        <Route exact path='/view-cart-order' render={(props: any) => <ViewCartManagement {...props} />} />
+        <Route exact path='/list-user' render={(props: any) => <ListUser {...props} />} />
+        <Route exact path='/add-user' render={(props: any) => <AddCustomer {...props} />} />
+        <Route exact path='/edit-user' render={(props: any) => <AddCustomer {...props} />} />
+        <Route exact path='/view-user' render={(props: any) => <ViewCustomer {...props} />} />
       </React.Suspense>
     </Switch>
   </HashRouter>
