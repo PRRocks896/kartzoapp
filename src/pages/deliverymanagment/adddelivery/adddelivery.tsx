@@ -22,7 +22,7 @@ import { deliveryCreateRequest, deliveryUpdateRequest } from '../../../modelCont
 class AddDelivery extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: {},
+        selectedFile: undefined,
         firstname: '',
         firstnameerror: '',
         lastname: '',
@@ -35,9 +35,9 @@ class AddDelivery extends React.Component<{ history: any }> {
         passworderror: '',
         checked: false,
         selectedFileerror: '',
-        deliveryidproof: {},
+        deliveryidproof: undefined,
         deliveryidprooferror: '',
-        deliveryaddressproof: {},
+        deliveryaddressproof: undefined,
         deliveryaddressprooferror: ''
     }
 
@@ -212,7 +212,7 @@ class AddDelivery extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            selectedFile: this.state.selectedFile = {}
+            selectedFile: this.state.selectedFile = undefined
         })
     }
 
@@ -222,7 +222,7 @@ class AddDelivery extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            deliveryidproof: this.state.deliveryidproof = {}
+            deliveryidproof: this.state.deliveryidproof = undefined
         })
     }
 
@@ -232,7 +232,7 @@ class AddDelivery extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            deliveryaddressproof: this.state.deliveryaddressproof = {}
+            deliveryaddressproof: this.state.deliveryaddressproof = undefined
         })
     }
 

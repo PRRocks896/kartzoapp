@@ -24,7 +24,7 @@ import { countryCreateRequest, countryUpdateRequest } from '../../../modelContro
 class AddCountry extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: {},
+        selectedFile: undefined,
         countryname: '',
         countrynameerror: '',
         countrycode: '',
@@ -133,7 +133,7 @@ class AddCountry extends React.Component<{ history: any }> {
 
     removeIcon() {
         this.setState({
-            selectedFile: this.state.selectedFile = {}
+            selectedFile: this.state.selectedFile = undefined
         })
     }
 

@@ -26,7 +26,7 @@ import { subCategoryCreateRequest, subCategoryUpdateRequest } from '../../../mod
 class AddSubCategory extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: {},
+        selectedFile: undefined,
         categoryname: '',
         categorynameerror: '',
         selectedFileerror: '',
@@ -139,7 +139,7 @@ class AddSubCategory extends React.Component<{ history: any }> {
 
     removeIcon() {
         this.setState({
-            selectedFile: this.state.selectedFile = {}
+            selectedFile: this.state.selectedFile = undefined
         })
     }
 

@@ -27,7 +27,7 @@ class ImageProduct extends React.Component<{ history: any }> {
     state = {
         productid: '',
         productiderror: '',
-        imagename: {},
+        imagename: undefined,
         imagenameerror: '',
         altertag: '',
         altertagerror: '',
@@ -150,7 +150,7 @@ class ImageProduct extends React.Component<{ history: any }> {
 
     removeIcon() {
         this.setState({
-            imagename: this.state.imagename = {}
+            imagename: this.state.imagename = undefined
         })
     }
 

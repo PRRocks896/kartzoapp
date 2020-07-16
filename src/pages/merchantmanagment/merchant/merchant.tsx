@@ -25,9 +25,9 @@ import { merchantCreateRequest, merchantUpdateRequest } from '../../../modelCont
 class Merchant extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: {},
-        selectedProofFile: {},
-        selectedDocumentFile: {},
+        selectedFile: undefined,
+        selectedProofFile: undefined,
+        selectedDocumentFile: undefined,
         firstname: '',
         firstnameerror: '',
         lastname: '',
@@ -349,7 +349,7 @@ class Merchant extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            selectedFile: this.state.selectedFile = {}
+            selectedFile: this.state.selectedFile = undefined
         })
     }
 
@@ -359,7 +359,7 @@ class Merchant extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            selectedDocumentFile: this.state.selectedDocumentFile = {}
+            selectedDocumentFile: this.state.selectedDocumentFile = undefined
         })
     }
 
@@ -369,7 +369,7 @@ class Merchant extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            selectedProofFile: this.state.selectedProofFile = {}
+            selectedProofFile: this.state.selectedProofFile = undefined
         })
     }
 
