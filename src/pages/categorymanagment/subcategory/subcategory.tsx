@@ -22,6 +22,7 @@ import API from '../../../service/service';
 import Switch from "react-switch";
 import { MDBDataTable } from 'mdbreact';
 import constant from '../../../constant/constant';
+import { subCategoryListRequest } from '../../../modelController/subCategoryModel';
 const $ = require('jquery');
 $.DataTable = require('datatables.net')
 
@@ -75,8 +76,31 @@ class SubCategory extends React.Component<{ history: any }> {
             "info": false
         });
 
+        this.getUserCountData();
+        this.getApplicationPageData();
+
         // const getAllCategory = await API.getAllCategory();
         // console.log("getAllCategory",getAllCategory);
+    }
+
+    async getUserCountData() {
+
+        // var getuserCount = await API.getUserCount();
+        // console.log("getUsercount",getuserCount);
+      
+    }
+
+    async getApplicationPageData() {
+        // const obj = {
+        //     page_no: "1",
+        //     items_per_page: this.state.items_per_page
+        // }
+
+        // var getUserDataPagination = await API.getUserDataPagination();
+        // console.log("getUserDataPagination",getUserDataPagination);
+
+        // var getUserDataPagination : subCategoryListRequest = [];
+      
     }
 
 

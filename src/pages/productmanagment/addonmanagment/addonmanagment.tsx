@@ -20,6 +20,7 @@ import API from '../../../service/product.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { Editor } from '@tinymce/tinymce-react';
+import { addOnCreateRequest } from '../../../modelController/productAddOnModel';
 
 class AddOnProduct extends React.Component<{ history: any }> {
 
@@ -94,7 +95,7 @@ class AddOnProduct extends React.Component<{ history: any }> {
             })
             if (this.state.productid && this.state.addondetail) {
 
-                const obj = {
+                const obj : addOnCreateRequest = {
                     productid: this.state.productid,
                     addondetail: this.state.addondetail
                 }

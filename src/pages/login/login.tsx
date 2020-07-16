@@ -7,6 +7,7 @@ import history from '../../history';
 import Constant from '../../constant/constant';
 import $ from "jquery";
 import constant from '../../constant/constant';
+import { loginCreateRequest } from '../../modelController/loginModel';
 
 class Login extends React.Component<{ history: any }> {
 
@@ -119,7 +120,7 @@ class Login extends React.Component<{ history: any }> {
                 passworderror: this.state.passworderror = ''
             })
             if (this.state.email && this.state.password) {
-                const obj = {
+                const obj : loginCreateRequest = {
                     email: this.state.email,
                     password: this.state.password
                 }

@@ -85,6 +85,12 @@ export default {
     addCustomerTitle:'Add Customer',
     viewCustomerTitle:'View Customer',
     listCustomer:'Customer Management',
+    addAddress:'Add Address',
+    listAddress:'Address Management',
+    viewAddress:'View Address',
+    listCard:'Card Management',
+    addCard:'Add Card',
+    viewCard:'View Card',
 
     userTableColumn: [
         'Name','Email','Number','Address','Status','Action'

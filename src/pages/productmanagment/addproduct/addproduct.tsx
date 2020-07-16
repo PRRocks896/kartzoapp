@@ -20,6 +20,7 @@ import API from '../../../service/merchant.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { Editor } from '@tinymce/tinymce-react';
+import { productCreateRequest, productUpdateRequest } from '../../../modelController/productModel';
 
 class AddProduct extends React.Component<{ history: any }> {
 
@@ -211,7 +212,7 @@ class AddProduct extends React.Component<{ history: any }> {
             })
             if (this.state.merchantid && this.state.maincategoryid && this.state.subcategoryid && this.state.productdescription && this.state.price && this.state.discountprice && this.state.metadiscription && this.state.metatitle && this.state.metakeyword && this.state.sortorder) {
 
-                const obj = {
+                const obj : productCreateRequest = {
                     merchantid: this.state.merchantid,
                     maincategoryid: this.state.maincategoryid,
                     subcategoryid: this.state.subcategoryid,
@@ -224,6 +225,22 @@ class AddProduct extends React.Component<{ history: any }> {
                     metakeyword: this.state.metakeyword,
                     sortorder: this.state.sortorder
                 }
+
+                const obj1 : productUpdateRequest = {
+                    id:'',
+                    merchantid: this.state.merchantid,
+                    maincategoryid: this.state.maincategoryid,
+                    subcategoryid: this.state.subcategoryid,
+                    productname: this.state.productname,
+                    productdescription: this.state.productdescription,
+                    price: this.state.price,
+                    discountprice: this.state.discountprice,
+                    metadiscription: this.state.metadiscription,
+                    metatitle: this.state.metatitle,
+                    metakeyword: this.state.metakeyword,
+                    sortorder: this.state.sortorder
+                }
+
 
                 // const addProduct = await API.addProduct(obj);
                 // console.log("addProduct",addProduct);

@@ -23,6 +23,7 @@ import { MDBDataTable } from 'mdbreact';
 import constant from '../../../constant/constant';
 import TableComponent from '../../../component/tables/table';
 import apiUrl from '../../../apicontroller/apicontrollers';
+import {customerListRequest} from '../../../modelController/customerModel/userListRequest';
 const $ = require('jquery');
 $.DataTable = require('datatables.net')
 
@@ -101,6 +102,7 @@ class ListUser extends React.Component<{ history: any }> {
             cancelButtonText: 'No, keep it'
         }).then(async (result) => {
             if (result.value) {
+               
                 // var deleteCustomer = await API.deleteCustomer(id);
                 const msg = "Customer has been deleted";
                 utils.showSuccess(msg);
@@ -127,6 +129,8 @@ class ListUser extends React.Component<{ history: any }> {
 
         // var getUserDataPagination = await API.getUserDataPagination();
         // console.log("getUserDataPagination",getUserDataPagination);
+
+        // var getUserDataPagination: customerListRequest = [];
       
     }
 

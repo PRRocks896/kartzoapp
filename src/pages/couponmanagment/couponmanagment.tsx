@@ -20,6 +20,7 @@ import constant from '../../constant/constant';
 import { format } from "date-fns";
 import { any } from 'prop-types';
 import moment from 'moment';
+import { couponCreateRequest, couponUpdateRequest } from '../../modelController/couponModel';
 
 class Coupon extends React.Component<{ history: any }> {
 
@@ -123,7 +124,17 @@ class Coupon extends React.Component<{ history: any }> {
                 discriptionerror: ''
             })
             if (this.state.couponcode && this.state.percentage && this.state.discountprice && this.state.startdate && this.state.enddate && this.state.discription) {
-                const obj = {
+                const obj : couponCreateRequest = {
+                    couponcode: this.state.couponcode,
+                    percentage: this.state.percentage,
+                    discountprice: this.state.discountprice,
+                    startdate: this.state.startdate,
+                    enddate: this.state.enddate,
+                    discription: this.state.discription,
+                    isByPrice: this.state.isByPrice
+                }
+
+                const obj1 : couponUpdateRequest = {
                     couponcode: this.state.couponcode,
                     percentage: this.state.percentage,
                     discountprice: this.state.discountprice,

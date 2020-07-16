@@ -22,6 +22,7 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/location.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { stateListRequest } from '../../../modelController/stateModel';
 const $ = require('jquery');
 $.DataTable = require('datatables.net')
 
@@ -73,9 +74,31 @@ class StateManagment extends React.Component<{ history: any }> {
             "paging": false,
             "info": false
         });
-
-
+        this.getUserCountData();
+        this.getApplicationPageData();
     }
+
+    async getUserCountData() {
+
+        // var getuserCount = await API.getUserCount();
+        // console.log("getUsercount",getuserCount);
+      
+    }
+
+    async getApplicationPageData() {
+        // const obj = {
+        //     page_no: "1",
+        //     items_per_page: this.state.items_per_page
+        // }
+
+        // var getUserDataPagination = await API.getUserDataPagination();
+        // console.log("getUserDataPagination",getUserDataPagination);
+
+        // var getUserDataPagination : stateListRequest = [];
+      
+    }
+
+
 
     btnIncrementClick() {
         this.setState({ upperPageBound: this.state.upperPageBound + this.state.pageBound });

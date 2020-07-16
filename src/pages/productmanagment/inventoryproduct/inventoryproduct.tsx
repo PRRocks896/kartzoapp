@@ -20,6 +20,7 @@ import API from '../../../service/product.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { Editor } from '@tinymce/tinymce-react';
+import { inventoryCreateRequest, inventoryUpdateRequest } from '../../../modelController/productInventoryModel';
 
 class InventoryProduct extends React.Component<{ history: any }> {
 
@@ -86,7 +87,13 @@ class InventoryProduct extends React.Component<{ history: any }> {
             })
             if (this.state.productid && this.state.stockqty) {
 
-                const obj = {
+                const obj : inventoryCreateRequest = {
+                    productid: this.state.productid,
+                    stockqty: this.state.stockqty
+                }
+
+                const obj1 : inventoryUpdateRequest = {
+                    id:'',
                     productid: this.state.productid,
                     stockqty: this.state.stockqty
                 }

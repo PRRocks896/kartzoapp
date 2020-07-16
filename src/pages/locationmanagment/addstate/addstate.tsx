@@ -21,11 +21,12 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/location.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { stateCreateRequest, stateUpdateRequest } from '../../../modelController/stateModel';
 
 class AddState extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: null,
+        selectedFile: {},
         statename: '',
         statenameerror: '',
         selectedFileerror: ''
@@ -84,7 +85,13 @@ class AddState extends React.Component<{ history: any }> {
                 selectedFileerror: ''
             })
             if (this.state.statename && this.state.selectedFile) {
-                const obj = {
+                const obj : stateCreateRequest = {
+                    statename: this.state.statename,
+                    selectedFile: this.state.selectedFile
+                }
+
+                const obj1 : stateUpdateRequest = {
+                    id:'',
                     statename: this.state.statename,
                     selectedFile: this.state.selectedFile
                 }

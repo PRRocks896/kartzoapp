@@ -22,6 +22,7 @@ import API from '../../../service/merchant.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import Merchant from '../merchant/merchant';
+import { reviewCreateRequest, reviewUpdateRequest } from '../../../modelController/merchantReviewModel';
 
 class MerchantReview extends React.Component<{ history: any }> {
 
@@ -107,12 +108,21 @@ class MerchantReview extends React.Component<{ history: any }> {
                 ratingerror:''
             })
             if (this.state.merchantid && this.state.user && this.state.reviewdetails && this.state.rating) {
-                const obj = {
+                const obj : reviewCreateRequest = {
                     merchantid: this.state.merchantid,
                     user: this.state.user,
                     reviewdetails: this.state.reviewdetails,
                     rating: this.state.rating
                 }
+
+                const obj1 : reviewUpdateRequest = {
+                    id:'',
+                    merchantid: this.state.merchantid,
+                    user: this.state.user,
+                    reviewdetails: this.state.reviewdetails,
+                    rating: this.state.rating
+                }
+
 
                 // const addMerchantReview = await API.addMerchantReview(obj);
                 // console.log("addMerchantReview",addMerchantReview);

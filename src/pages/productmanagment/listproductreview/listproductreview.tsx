@@ -22,6 +22,7 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/product.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { reviewListRequest } from '../../../modelController/productReviewModel';
 const $ = require('jquery');
 $.DataTable = require('datatables.net')
 
@@ -73,6 +74,28 @@ class ListProductReview extends React.Component<{ history: any }> {
             "paging": false,
             "info": false
         });
+        this.getUserCountData();
+        this.getApplicationPageData();
+    }
+
+    async getUserCountData() {
+
+        // var getuserCount = await API.getUserCount();
+        // console.log("getUsercount",getuserCount);
+      
+    }
+
+    async getApplicationPageData() {
+        // const obj = {
+        //     page_no: "1",
+        //     items_per_page: this.state.items_per_page
+        // }
+
+        // var getUserDataPagination = await API.getUserDataPagination();
+        // console.log("getUserDataPagination",getUserDataPagination);
+
+        // var getUserDataPagination : reviewListRequest = [];
+      
     }
 
     btnIncrementClick() {

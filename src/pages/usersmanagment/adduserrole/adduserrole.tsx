@@ -17,6 +17,7 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/role.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { userRoleCreateRequest, userRoleUpdateRequest } from '../../../modelController/userRoleModel';
 
 class AddUserRole extends React.Component<{ history: any }> {
 
@@ -65,12 +66,19 @@ class AddUserRole extends React.Component<{ history: any }> {
                rolenameerror:''
             })
             if (this.state.rolename) {
-                const obj = {
+                const obj : userRoleCreateRequest = {
                  rolename:this.state.rolename
                 }
 
+                const obj1 : userRoleUpdateRequest = {
+                    rolename:this.state.rolename
+                   }
+
                 // const addUserRole = await API.addUserRole(obj);
                 // console.log("addUserRole",addUserRole);
+
+                  // const editUserRole = await API.editUserRole(obj);
+                // console.log("editUserRole",editUserRole);
 
                 if (this.state.rolename === obj.rolename) {
                     const msg = "UserRole Added Successfully";
