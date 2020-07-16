@@ -16,18 +16,19 @@ import './profile.css';
 import NavBar from '../navbar/navbar';
 import API from '../../service/service';
 import constant from '../../constant/constant';
+import { profileUpdateRequest, profileListRequest } from '../../modelController/profileModel';
 
 class Profile extends React.Component {
 
     state = {
-        selectedFile: null,
+        selectedFile: undefined,
         firstname: '',
         firstnameerror: '',
         lastname: '',
         lastnameerror: '',
         email: '',
         emailerror: '',
-        mobilenumber: '',
+        mobilenumber: 0,
         mobilenumbererror: '',
         selectedFileerror:''
     }
@@ -45,6 +46,8 @@ class Profile extends React.Component {
 
         // const getProfile = await API.getProfile();
         // console.log("getprofile",getProfile);
+
+        // const getProfile : profileListRequest = [];
     }
 
     validate() {
@@ -102,7 +105,8 @@ class Profile extends React.Component {
                 selectedFileerror:''
             })
             if (this.state.firstname && this.state.lastname && this.state.email && this.state.mobilenumber && this.state.selectedFile) {
-                const obj = {
+                const obj : profileUpdateRequest = {
+                    id:'',
                     firstname: this.state.firstname,
                     lastname: this.state.lastname,
                     email: this.state.email,
@@ -135,7 +139,7 @@ class Profile extends React.Component {
 
     removeIcon() {
         this.setState({
-            selectedFile: this.state.selectedFile = null
+            selectedFile: this.state.selectedFile = undefined
         })
     }
 

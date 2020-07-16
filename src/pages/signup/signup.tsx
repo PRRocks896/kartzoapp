@@ -5,6 +5,7 @@ import utils from '../../utils';
 import history from '../../history';
 import Constant from '../../constant/constant';
 import constant from '../../constant/constant';
+import { registerCreateRequest } from '../../modelController/registerModel';
 
 class Signup extends React.Component<{ history: any }> {
 
@@ -79,7 +80,7 @@ class Signup extends React.Component<{ history: any }> {
                 passworderror: this.state.passworderror = ''
             })
             if (this.state.firstname && this.state.lastname && this.state.email && this.state.password) {
-                const obj = {
+                const obj : registerCreateRequest = {
                     firstname: this.state.firstname,
                     lastname: this.state.lastname,
                     email: this.state.email,
