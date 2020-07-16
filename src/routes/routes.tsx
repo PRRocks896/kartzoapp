@@ -59,6 +59,12 @@ import ViewCartManagement from '../pages/ordermanagment/viewcart/viewcart';
 import ListUser from '../pages/customermanagment/listuser/listuser';
 import AddCustomer from '../pages/customermanagment/adduser/adduser';
 import ViewCustomer from '../pages/customermanagment/viewuser/viewuser';
+import ListAddress from '../pages/customermanagment/listaddress/listaddress';
+import AddAddress from '../pages/customermanagment/addaddress/addaddress';
+import ViewAddress from '../pages/customermanagment/viewaddress/viewaddress';
+import ListCard from '../pages/customermanagment/listcard/listcard';
+import AddCard from '../pages/customermanagment/addcard/addcard';
+import ViewCard from '../pages/customermanagment/viewcard/viewcard';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -143,6 +149,14 @@ const createRoutes = (
         <Route exact path='/add-user' render={(props: any) => <AddCustomer {...props} />} />
         <Route exact path='/edit-user' render={(props: any) => <AddCustomer {...props} />} />
         <Route exact path='/view-user' render={(props: any) => <ViewCustomer {...props} />} />
+        <Route exact path='/list-address' render={(props: any) => <ListAddress {...props} />} />
+        <Route exact path='/add-address' render={(props: any) => <AddAddress {...props} />} />
+        <Route exact path='/edit-address' render={(props: any) => <AddAddress {...props} />} />
+        <Route exact path='/view-address' render={(props: any) => <ViewAddress {...props} />} />
+        <Route exact path='/list-card' render={(props: any) => <ListCard {...props} />} />
+        <Route exact path='/add-card' render={(props: any) => <AddCard {...props} />} />
+        <Route exact path='/edit-card' render={(props: any) => <AddCard {...props} />} />
+        <Route exact path='/view-card' render={(props: any) => <ViewCard {...props} />} />
       </React.Suspense>
     </Switch>
   </HashRouter>

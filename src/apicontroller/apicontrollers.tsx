@@ -96,6 +96,12 @@ const apiUrl = {
         deleteOrder:'order',
         addOrderCart:'order'
     },
+    addressController: {
+        addAddress:'address',
+        getAddress:'address',
+        editAddress:'address',
+        deleteAddress:'address'
+    },
 }
 
 export default apiUrl;
