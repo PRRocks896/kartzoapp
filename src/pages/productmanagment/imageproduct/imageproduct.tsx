@@ -20,13 +20,14 @@ import API from '../../../service/product.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { Editor } from '@tinymce/tinymce-react';
+import { imageCreateRequest, imageUpdateRequest } from '../../../modelController/productImageModel';
 
 class ImageProduct extends React.Component<{ history: any }> {
 
     state = {
         productid: '',
         productiderror: '',
-        imagename: null,
+        imagename: {},
         imagenameerror: '',
         altertag: '',
         altertagerror: '',
@@ -99,7 +100,15 @@ class ImageProduct extends React.Component<{ history: any }> {
             })
             if (this.state.productid && this.state.imagename && this.state.altertag && this.state.sortorder) {
 
-                const obj = {
+                const obj : imageCreateRequest = {
+                    productid: this.state.productid,
+                    imagename: this.state.imagename,
+                    altertag: this.state.altertag,
+                    sortorder: this.state.sortorder
+                }
+
+                const obj1 : imageUpdateRequest = {
+                    id:'',
                     productid: this.state.productid,
                     imagename: this.state.imagename,
                     altertag: this.state.altertag,
@@ -141,7 +150,7 @@ class ImageProduct extends React.Component<{ history: any }> {
 
     removeIcon() {
         this.setState({
-            imagename: this.state.imagename = null
+            imagename: this.state.imagename = {}
         })
     }
 

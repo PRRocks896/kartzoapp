@@ -19,6 +19,7 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/customer.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import {cardCreateRequest,cardUpdateRequest} from '../../../modelController/cardModel';
 
 class AddCard extends React.Component<{ history: any }> {
 
@@ -113,7 +114,16 @@ class AddCard extends React.Component<{ history: any }> {
 
             })
             if (this.state.userid && this.state.cardtype && this.state.cardname && this.state.cardnumber && this.state.expirymonth && this.state.expiryyear) {
-                const obj = {
+                const obj:cardCreateRequest = {
+                    userid: this.state.userid,
+                    cardtype: this.state.cardtype,
+                    cardname: this.state.cardname,
+                    cardnumber: this.state.cardnumber,
+                    expirymonth: this.state.expirymonth,
+                    expiryyear: this.state.expiryyear
+                }
+
+                const obj1:cardUpdateRequest = {
                     userid: this.state.userid,
                     cardtype: this.state.cardtype,
                     cardname: this.state.cardname,

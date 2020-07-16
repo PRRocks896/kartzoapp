@@ -19,6 +19,8 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/customer.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { addressCreateRequest,addressUpdateRequest } from '../../../modelController/addressModel';
+import { number } from 'prop-types';
 
 class AddAddress extends React.Component<{ history: any }> {
 
@@ -121,7 +123,18 @@ class AddAddress extends React.Component<{ history: any }> {
 
             })
             if (this.state.userid && this.state.address && this.state.city && this.state.state && this.state.country && this.state.landmark && this.state.pincode) {
-                const obj = {
+                const obj : addressCreateRequest = {
+                    userid: this.state.userid,
+                    address: this.state.address,
+                    city: this.state.city,
+                    state: this.state.state,
+                    country: this.state.country,
+                    landmark: this.state.landmark,
+                    pincode:this.state.pincode
+                }
+
+                const obj1 : addressUpdateRequest = {
+                    id:'',
                     userid: this.state.userid,
                     address: this.state.address,
                     city: this.state.city,

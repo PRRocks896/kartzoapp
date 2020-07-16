@@ -23,6 +23,7 @@ import { MDBDataTable } from 'mdbreact';
 import constant from '../../../constant/constant';
 import TableComponent from '../../../component/tables/table';
 import apiUrl from '../../../apicontroller/apicontrollers';
+import { cardListRequest } from '../../../modelController/cardModel';
 const $ = require('jquery');
 $.DataTable = require('datatables.net')
 
@@ -128,6 +129,8 @@ class ListCard extends React.Component<{ history: any }> {
 
         // var getUserDataPagination = await API.getUserDataPagination();
         // console.log("getUserDataPagination",getUserDataPagination);
+
+        // var getUserDataPagination : cardListRequest = [];
 
     }
 

@@ -17,18 +17,20 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/customer.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { customerCreateRequest, customerUpdateRequest } from '../../../modelController/customerModel';
+
 
 class AddCustomer extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: null,
+        selectedFile: undefined,
         firstname: '',
         firstnameerror: '',
         lastname: '',
         lastnameerror: '',
         email: '',
         emailerror: '',
-        mobilenumber: '',
+        mobilenumber: 0,
         mobilenumbererror: '',
         password: '',
         passworderror: '',
@@ -123,7 +125,17 @@ class AddCustomer extends React.Component<{ history: any }> {
                 passworderror: ''
             })
             if (this.state.firstname && this.state.lastname && this.state.email && this.state.mobilenumber && this.state.password && this.state.selectedFile) {
-                const obj = {
+                const obj: customerCreateRequest = {
+                    firstname: this.state.firstname,
+                    lastname: this.state.lastname,
+                    email: this.state.email,
+                    mobilenumber: this.state.mobilenumber,
+                    password: this.state.password,
+                    selectedFile: this.state.selectedFile
+                }
+
+                const obj1: customerUpdateRequest = {
+                    id:'',
                     firstname: this.state.firstname,
                     lastname: this.state.lastname,
                     email: this.state.email,
@@ -156,7 +168,7 @@ class AddCustomer extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            selectedFile: this.state.selectedFile = null
+            selectedFile: this.state.selectedFile = undefined
         })
     }
 

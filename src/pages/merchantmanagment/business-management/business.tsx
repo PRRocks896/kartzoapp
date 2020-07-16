@@ -20,6 +20,7 @@ import API from '../../../service/service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import Merchant from '../merchant/merchant';
+import { bussinessCreateRequest, bussinessUpdateRequest } from '../../../modelController/bussinessModel';
 
 class MerchantBusiness extends React.Component<{ history: any }> {
 
@@ -81,7 +82,13 @@ class MerchantBusiness extends React.Component<{ history: any }> {
                 hourserror: ''
             })
             if (this.state.days && this.state.hours) {
-                const obj = {
+                const obj : bussinessCreateRequest = {
+                    days: this.state.days,
+                    hours: this.state.hours
+                }
+
+                const obj1 : bussinessUpdateRequest = {
+                    id:'',
                     days: this.state.days,
                     hours: this.state.hours
                 }

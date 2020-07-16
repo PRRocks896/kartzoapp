@@ -21,12 +21,13 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/location.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { cityCreateRequest, cityUpdateRequest } from '../../../modelController/cityModel';
 
 class AddCity extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: null,
-        selectedState: null,
+        selectedFile: {},
+        selectedState:'',
         cityname: '',
         citynameerror: '',
         selectedFileerror: '',
@@ -100,11 +101,19 @@ class AddCity extends React.Component<{ history: any }> {
                 selectedStateerror: ''
             })
             if (this.state.cityname && this.state.selectedFile && this.state.selectedState) {
-                const obj = {
+                const obj : cityCreateRequest = {
                     cityname: this.state.cityname,
                     selectedFile: this.state.selectedFile,
                     selectedState: this.state.selectedState
                 }
+
+                const obj1 : cityUpdateRequest = {
+                    id:'',
+                    cityname: this.state.cityname,
+                    selectedFile: this.state.selectedFile,
+                    selectedState: this.state.selectedState
+                }
+
 
                 // const addCity = await API.addCity(obj);
                 // console.log("addCity",addCity);

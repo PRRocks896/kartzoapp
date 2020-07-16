@@ -17,11 +17,12 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { deliveryCreateRequest, deliveryUpdateRequest } from '../../../modelController/deliveryModel';
 
 class AddDelivery extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: null,
+        selectedFile: {},
         firstname: '',
         firstnameerror: '',
         lastname: '',
@@ -34,9 +35,9 @@ class AddDelivery extends React.Component<{ history: any }> {
         passworderror: '',
         checked: false,
         selectedFileerror: '',
-        deliveryidproof: null,
+        deliveryidproof: {},
         deliveryidprooferror: '',
-        deliveryaddressproof: null,
+        deliveryaddressproof: {},
         deliveryaddressprooferror: ''
     }
 
@@ -168,7 +169,18 @@ class AddDelivery extends React.Component<{ history: any }> {
                 deliveryidprooferror: ''
             })
             if (this.state.firstname && this.state.lastname && this.state.email && this.state.mobilenumber && this.state.password && this.state.selectedFile && this.state.deliveryidproof && this.state.deliveryaddressproof) {
-                const obj = {
+                const obj : deliveryCreateRequest = {
+                    firstname: this.state.firstname,
+                    lastname: this.state.lastname,
+                    email: this.state.email,
+                    mobilenumber: this.state.mobilenumber,
+                    password: this.state.password,
+                    selectedFile: this.state.selectedFile,
+                    deliveryidproof: this.state.deliveryidproof,
+                    deliveryaddressproof: this.state.deliveryaddressproof,
+                }
+
+                const obj1 : deliveryUpdateRequest = {
                     firstname: this.state.firstname,
                     lastname: this.state.lastname,
                     email: this.state.email,
@@ -200,7 +212,7 @@ class AddDelivery extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            selectedFile: this.state.selectedFile = null
+            selectedFile: this.state.selectedFile = {}
         })
     }
 
@@ -210,7 +222,7 @@ class AddDelivery extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            deliveryidproof: this.state.deliveryidproof = null
+            deliveryidproof: this.state.deliveryidproof = {}
         })
     }
 
@@ -220,7 +232,7 @@ class AddDelivery extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            deliveryaddressproof: this.state.deliveryaddressproof = null
+            deliveryaddressproof: this.state.deliveryaddressproof = {}
         })
     }
 

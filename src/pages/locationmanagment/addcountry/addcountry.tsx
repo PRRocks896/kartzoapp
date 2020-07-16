@@ -19,11 +19,12 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { countryCreateRequest, countryUpdateRequest } from '../../../modelController/countryModel';
 
 class AddCountry extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: null,
+        selectedFile: {},
         countryname: '',
         countrynameerror: '',
         countrycode: '',
@@ -44,6 +45,7 @@ class AddCountry extends React.Component<{ history: any }> {
         document.title = constant.addCountryTitle + utils.getAppName();
         // const getProfile = await API.getProfile();
         // console.log("getprofile",getProfile);
+        
     }
 
 
@@ -98,7 +100,14 @@ class AddCountry extends React.Component<{ history: any }> {
                 selectedFileerror: ''
             })
             if (this.state.countryname && this.state.selectedFile && this.state.countrycode) {
-                const obj = {
+                const obj : countryCreateRequest = {
+                    countryname: this.state.countryname,
+                    selectedFile: this.state.selectedFile,
+                    countrycode: this.state.countrycode
+                }
+
+                const obj1 : countryUpdateRequest = {
+                    id:'',
                     countryname: this.state.countryname,
                     selectedFile: this.state.selectedFile,
                     countrycode: this.state.countrycode
@@ -124,7 +133,7 @@ class AddCountry extends React.Component<{ history: any }> {
 
     removeIcon() {
         this.setState({
-            selectedFile: this.state.selectedFile = null
+            selectedFile: this.state.selectedFile = {}
         })
     }
 

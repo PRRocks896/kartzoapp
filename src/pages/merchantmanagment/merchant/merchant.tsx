@@ -20,13 +20,14 @@ import API from '../../../service/merchant.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { Editor } from '@tinymce/tinymce-react';
+import { merchantCreateRequest, merchantUpdateRequest } from '../../../modelController/merchantModel';
 
 class Merchant extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: null,
-        selectedProofFile: null,
-        selectedDocumentFile: null,
+        selectedFile: {},
+        selectedProofFile: {},
+        selectedDocumentFile: {},
         firstname: '',
         firstnameerror: '',
         lastname: '',
@@ -285,7 +286,28 @@ class Merchant extends React.Component<{ history: any }> {
             })
             if (this.state.firstname && this.state.lastname && this.state.email && this.state.mobilenumber && this.state.selectedFile && this.state.selectedDocumentFile && this.state.selectedProofFile && this.state.latitude && this.state.longitude) {
 
-                const obj = {
+                const obj : merchantCreateRequest = {
+                    firstname: this.state.firstname,
+                    lastname: this.state.lastname,
+                    email: this.state.email,
+                    mobilenumber: this.state.mobilenumber,
+                    selectedDocumentFile: this.state.selectedDocumentFile,
+                    selectedProofFile: this.state.selectedProofFile,
+                    selectedFile: this.state.selectedFile,
+                    latitude:this.state.latitude,
+                    longitude:this.state.longitude,
+                    address:this.state.address,
+                    zipcode:this.state.zipcode,
+                    shopname:this.state.shopname,
+                    shoppingpolicy:this.state.shoppingpolicy,
+                    refundpolicy:this.state.refundpolicy,
+                    cancellationpolicy:this.state.cancellationpolicy,
+                    city:this.state.city,
+                    user:this.state.user
+                }
+
+                const obj1 : merchantUpdateRequest = {
+                    id:'',
                     firstname: this.state.firstname,
                     lastname: this.state.lastname,
                     email: this.state.email,
@@ -327,7 +349,7 @@ class Merchant extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            selectedFile: this.state.selectedFile = null
+            selectedFile: this.state.selectedFile = {}
         })
     }
 
@@ -337,7 +359,7 @@ class Merchant extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            selectedDocumentFile: this.state.selectedDocumentFile = null
+            selectedDocumentFile: this.state.selectedDocumentFile = {}
         })
     }
 
@@ -347,7 +369,7 @@ class Merchant extends React.Component<{ history: any }> {
         //     image_path: data
         // }
         this.setState({
-            selectedProofFile: this.state.selectedProofFile = null
+            selectedProofFile: this.state.selectedProofFile = {}
         })
     }
 

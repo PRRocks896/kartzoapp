@@ -19,11 +19,12 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { categoryCreateRequest,categoryUpdateRequest } from '../../../modelController/categoryModel';
 
 class AddCategory extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: null,
+        selectedFile: undefined,
         categoryname: '',
         categorynameerror: '',
         selectedFileerror: ''
@@ -91,7 +92,13 @@ class AddCategory extends React.Component<{ history: any }> {
                 selectedFileerror: ''
             })
             if (this.state.categoryname && this.state.selectedFile) {
-                const obj = {
+                const obj : categoryCreateRequest = {
+                    categoryname: this.state.categoryname,
+                    selectedFile: this.state.selectedFile
+                }
+
+                const obj1 : categoryUpdateRequest = {
+                    id:'',
                     categoryname: this.state.categoryname,
                     selectedFile: this.state.selectedFile
                 }
@@ -116,7 +123,7 @@ class AddCategory extends React.Component<{ history: any }> {
 
     removeIcon() {
         this.setState({
-            selectedFile: this.state.selectedFile = null
+            selectedFile: this.state.selectedFile = undefined
         })
     }
 

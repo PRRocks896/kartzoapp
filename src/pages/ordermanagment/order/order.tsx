@@ -19,6 +19,7 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/order.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { orderCreateRequest, orderUpdateRequest } from '../../../modelController/orderModel';
 
 class OrderManagement extends React.Component<{ history: any }> {
 
@@ -193,7 +194,24 @@ class OrderManagement extends React.Component<{ history: any }> {
             })
             if (this.state.orderdate && this.state.userid && this.state.orderno && this.state.paymentmethod && this.state.paymentstatus && this.state.orderstatus && this.state.totalqty && this.state.totalamount
                 && this.state.discountamount && this.state.taxamount && this.state.deliveryamount && this.state.couponid && this.state.couponamount) {
-                const obj = {
+                const obj : orderCreateRequest = {
+                    orderdate: this.state.orderdate,
+                    userid: this.state.userid,
+                    orderno: this.state.orderno,
+                    paymentmethod: this.state.paymentmethod,
+                    paymentstatus: this.state.paymentstatus,
+                    orderstatus: this.state.orderstatus,
+                    totalqty: this.state.totalqty,
+                    totalamount: this.state.totalamount,
+                    discountamount: this.state.discountamount,
+                    taxamount: this.state.taxamount,
+                    deliveryamount: this.state.deliveryamount,
+                    couponid: this.state.couponid,
+                    couponamount: this.state.couponamount
+                }
+
+                const obj1 : orderUpdateRequest = {
+                    id:'',
                     orderdate: this.state.orderdate,
                     userid: this.state.userid,
                     orderno: this.state.orderno,

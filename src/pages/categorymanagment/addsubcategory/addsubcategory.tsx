@@ -21,11 +21,12 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { subCategoryCreateRequest, subCategoryUpdateRequest } from '../../../modelController/subCategoryModel';
 
 class AddSubCategory extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: null,
+        selectedFile: {},
         categoryname: '',
         categorynameerror: '',
         selectedFileerror: '',
@@ -105,9 +106,17 @@ class AddSubCategory extends React.Component<{ history: any }> {
                 selectcategoryerror: ''
             })
             if (this.state.categoryname && this.state.selectedFile && this.state.selectcategory) {
-                const obj = {
+                const obj : subCategoryCreateRequest = {
                     categoryname: this.state.categoryname,
-                    selectedFile: this.state.selectedFile
+                    selectedFile: this.state.selectedFile,
+                    selectcategory: this.state.selectcategory
+                }
+
+                const obj1 : subCategoryUpdateRequest = {
+                    id:'',
+                    categoryname: this.state.categoryname,
+                    selectedFile: this.state.selectedFile,
+                    selectcategory: this.state.selectcategory
                 }
 
                 // const addSubCategory = await API.addSubCategory(obj);
@@ -130,7 +139,7 @@ class AddSubCategory extends React.Component<{ history: any }> {
 
     removeIcon() {
         this.setState({
-            selectedFile: this.state.selectedFile = null
+            selectedFile: this.state.selectedFile = {}
         })
     }
 
