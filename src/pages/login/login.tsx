@@ -125,6 +125,9 @@ class Login extends React.Component<{ history: any }> {
                     password: this.state.password
                 }
 
+                let token = '123456'
+                localStorage.setItem('token', token );
+
                 // var loginUser = await API.loginUser(obj);
                 // console.log("loginuser",loginUser);
 

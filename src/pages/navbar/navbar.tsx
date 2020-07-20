@@ -4,6 +4,7 @@ import { NavLink,Link } from 'react-router-dom';
 import nav from '../../navbar.service';
 import { Badge, Nav, NavItem, NavLink as RsNavLink } from 'reactstrap';
 import classNames from 'classnames';
+import history from '../../history';
 
 class NavBar extends React.Component {
     state = {
@@ -13,6 +14,7 @@ class NavBar extends React.Component {
 
     constructor(props:any) {
         super(props);
+        // this.logout = this.logout.bind(this);
     }
 
     activeRoute(routeName:any, props:any) {
@@ -37,6 +39,11 @@ class NavBar extends React.Component {
     closeNav = () => {
         this.setState({ isOpen: !this.state.isOpen });
     }
+
+    // logout() {
+    //     localStorage.removeItem('token');
+    //     history.push('/#/login')
+    // }
 
     render() {
         const badge = (badge:any) => {
@@ -603,7 +610,7 @@ class NavBar extends React.Component {
                                     </li>
                                     <li className="dropdown-divider"></li>
                                     <li className="dropdown-menu-footer">
-                                        <Link className="media fs-14 p-2" to="/"><span ><i className="fa fa-chevron-circle-right mr-2"></i>Logout</span></Link>
+                                    <Link className="media fs-14 p-2" to="/login"><span><i className="fa fa-chevron-circle-right mr-2"></i>Logout</span></Link>
                                     </li>
                                 </ul>
                             </li>

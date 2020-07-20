@@ -20,6 +20,9 @@ import API from '../../../service/product.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { Editor } from '@tinymce/tinymce-react';
+import ImageUploading from "react-images-uploading";
+import 'react-images-uploader/styles.css';
+import 'react-images-uploader/font.css';
 import { imageCreateRequest, imageUpdateRequest } from '../../../modelController/productImageModel';
 
 class ImageProduct extends React.Component<{ history: any }> {
@@ -42,6 +45,7 @@ class ImageProduct extends React.Component<{ history: any }> {
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.removeIcon = this.removeIcon.bind(this);
         this.addImageProduct = this.addImageProduct.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.onProductSelect = this.onProductSelect.bind(this);
     }
     async componentDidMount() {
@@ -100,15 +104,15 @@ class ImageProduct extends React.Component<{ history: any }> {
             })
             if (this.state.productid && this.state.imagename && this.state.altertag && this.state.sortorder) {
 
-                const obj : imageCreateRequest = {
+                const obj: imageCreateRequest = {
                     productid: this.state.productid,
                     imagename: this.state.imagename,
                     altertag: this.state.altertag,
                     sortorder: this.state.sortorder
                 }
 
-                const obj1 : imageUpdateRequest = {
-                    id:'',
+                const obj1: imageUpdateRequest = {
+                    id: '',
                     productid: this.state.productid,
                     imagename: this.state.imagename,
                     altertag: this.state.altertag,
@@ -118,7 +122,7 @@ class ImageProduct extends React.Component<{ history: any }> {
                 // const addProductImage = await API.addProductImage(obj);
                 // console.log("addProductImage",addProductImage);
 
-                 // const editProductImage = await API.editProductImage(obj);
+                // const editProductImage = await API.editProductImage(obj);
                 // console.log("editProductImage",editProductImage);
 
                 if (this.state.productid === obj.productid && this.state.imagename === obj.imagename && this.state.altertag === obj.altertag && this.state.sortorder === obj.sortorder) {
@@ -133,9 +137,9 @@ class ImageProduct extends React.Component<{ history: any }> {
         };
     }
 
-    onProductSelect(event:any) {
+    onProductSelect(event: any) {
         this.setState({
-            productid:this.state.productid = event.target.value
+            productid: this.state.productid = event.target.value
         })
     }
 
@@ -154,7 +158,14 @@ class ImageProduct extends React.Component<{ history: any }> {
         })
     }
 
+    onChange = (imageList: any) => {
+        // data for submit
+        console.log("imagelist", imageList);
+    };
+
     render() {
+        const maxNumber = 10;
+        const maxMbFileSize = 5 * 1024 * 1024;
         return (
             <>
                 <NavBar>
@@ -166,8 +177,9 @@ class ImageProduct extends React.Component<{ history: any }> {
                                         <Row>
                                             <Col xs="12" sm="6" md="9" lg="9" xl="9">
                                                 <h1>Add Product Image</h1>
+
                                             </Col>
-                                            <Col xs="12" sm="6" md="3" lg="3" xl="3" style={{textAlign:"right"}}>
+                                            <Col xs="12" sm="6" md="3" lg="3" xl="3" style={{ textAlign: "right" }}>
                                                 <Link to="/list-product-image">
                                                     <Button
                                                         type="button"
@@ -184,6 +196,30 @@ class ImageProduct extends React.Component<{ history: any }> {
                                     </CardHeader>
                                     <CardBody>
                                         <Row>
+                                            {/* <ImageUploading
+                                                onChange={this.onChange}
+                                                maxNumber={maxNumber}
+                                                multiple
+                                                maxFileSize={maxMbFileSize}
+                                                acceptType={["jpg", "gif", "png"]}
+                                            >
+                                                {({ imageList, onImageUpload, onImageRemoveAll }) => (
+                                                    // write your building UI
+                                                    <div>
+                                                        <button onClick={onImageUpload}>Upload images</button>
+                                                        <button onClick={onImageRemoveAll}>Remove all images</button>
+
+                                                        {imageList.map((image) => (
+                                                            <div key={image.key}>
+                                                                <img src={image.dataURL} />
+                                                                <button onClick={image.onUpdate}>Update</button>
+                                                                <button onClick={image.onRemove}>Remove</button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                            </ImageUploading> */}
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <Form>
                                                     <FormGroup>
@@ -192,7 +228,7 @@ class ImageProduct extends React.Component<{ history: any }> {
                                                             type="select"
                                                             id="exampleCustomSelect"
                                                             name="productid"
-                                                        onChange={this.onProductSelect}
+                                                            onChange={this.onProductSelect}
                                                         >
                                                             <option value="">Select Product</option>
                                                             <option value="Product-1">Product-1</option>
@@ -287,7 +323,7 @@ class ImageProduct extends React.Component<{ history: any }> {
                                             size="sm"
                                             color="primary"
                                             className="mb-2 mt-3 mr-2 custom-button"
-                                        onClick={this.addImageProduct}
+                                            onClick={this.addImageProduct}
                                         >
                                             Save
                                         </Button>
