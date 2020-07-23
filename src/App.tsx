@@ -11,6 +11,7 @@ class App extends React.Component {
 
   render() {
     console.log('localstoreage',localStorage.getItem('token'));
+   
     const loading = (
       <div className="pt-3 text-center">
         <div className="sk-spinner sk-spinner-pulse"></div>
@@ -20,9 +21,9 @@ class App extends React.Component {
     const PrivateRoute = ({ component: Component, ...rest }: any) => (
       <Route {...rest} render={props => (
         // console.log(Component)
-        props.location.pathname !== '/admin/' ? (
+        props.location.pathname !== '/admin/' &&  1<2 ? (
           // console.log("enter")
-          1<2 ? (
+         1<2 ? (
             // console.log("msg")
             <Component {...props} />
           ) : (
@@ -31,17 +32,20 @@ class App extends React.Component {
                 state: { from: props.location }
               }} />
             )
-        ) : ('') 
+        ) : (  <Redirect to={{
+          pathname: '/login',
+          state: { from: props.location }
+        }} />) 
       )} />
     )
     return (
       // <div>
-      //   {createRoutes}
+      //   {Main}
       // </div>
       <HashRouter>
         <Switch>
           <React.Suspense fallback={loading}>
-            <Route exact path='/login' render={(props: any) => (1>2 ? (<Redirect to="/dashboard" />) : (<Login {...props} />)) } />
+            <Route exact path='/login' render={(props: any) => ( localStorage.getItem('token') !== null ? (<Redirect to="/dashboard" />) : (<Login {...props} />)) } />
             {/* <Route exact path='/' render={(props: any) => <Login {...props} />} /> */}
             <Route exact path='/signup' render={(props: any) => (localStorage.getItem('token') ? (<Redirect to="/dashboard" />) : (<Signup {...props} />)) } />
             <PrivateRoute path="/" component={Main} />

@@ -159,7 +159,7 @@ class Main extends React.Component {
             <Route exact path='/add-card' render={(props: any) => <AddCard {...props} />} />
             <Route exact path='/edit-card' render={(props: any) => <AddCard {...props} />} />
             <Route exact path='/view-card' render={(props: any) => <ViewCard {...props} />} />
-             <Redirect from="/" to="/dashboard" />
+             {/* <Redirect from="/" to="/login" /> */}
           </React.Suspense>
         </Switch>
       </HashRouter>

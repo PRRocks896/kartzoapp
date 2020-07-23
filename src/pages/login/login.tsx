@@ -111,7 +111,7 @@ class Login extends React.Component<{ history: any }> {
         };
     }
 
-    login() {
+   async login() {
         // this.props.history.push('/dashboard');
         const isValid = this.validate();
         if (isValid) {
@@ -125,20 +125,21 @@ class Login extends React.Component<{ history: any }> {
                     password: this.state.password
                 }
 
-                let token = '123456'
-                localStorage.setItem('token', token );
+                var loginUser = await API.loginUser(obj);
+                console.log("loginuser",loginUser);
 
-                // var loginUser = await API.loginUser(obj);
-                // console.log("loginuser",loginUser);
-
-                if (this.state.email === obj.email && this.state.password === obj.password) {
+                if(loginUser.resultObject !== undefined) {
+                    var user=loginUser.resultObject;
+                    localStorage.setItem('user',JSON.stringify(user));
+                    localStorage.setItem('token',user.token);
                     const msg = "Login Successfully";
                     utils.showSuccess(msg);
                     this.props.history.push('/dashboard');
                 } else {
-                    const msg1 = "Error";
-                    utils.showError(msg1);
-                }
+                        const msg1 = loginUser.explanation;
+                        utils.showError(msg1);
+                    }
+
             }
         };
     }

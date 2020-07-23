@@ -1,12 +1,13 @@
 const apiUrl = {
     userController: {
-        createData:'user',
-        getData:'user',
-        getDataById:'user/',
+        createData:'User/login',
+        getData:'User',
+        getDataById:'User/',
         forgotpassword:'',
-        updateData:'user',
-        getCount:'user',
-        getUserPaginationData:'user'
+        updateData:'User',
+        getCount:'User',
+        getUserPaginationData:'User',
+        createUser:'User/register'
 
     },
     customerController: {

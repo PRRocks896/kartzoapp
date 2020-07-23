@@ -20,7 +20,7 @@ export default {
     about: 'About',
     service: 'Service',
     logout: 'Logout',
-    apiUrl: 'https://courier.digitalvichar.in/api/v1/',
+    apiUrl: 'http://api.kartzoapp.com/api/',
     headers: {
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTkzNjgwMzc1LCJleHAiOjE1OTM2ODc1NzV9.jc1NOHGWLgaeqra6RMM71vhIHSFf1GNUbvob66Wip4c',
         apikey: 'courierservice-0000-9876-5432-10@@',

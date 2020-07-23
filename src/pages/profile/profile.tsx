@@ -16,7 +16,11 @@ import './profile.css';
 import NavBar from '../navbar/navbar';
 import API from '../../service/service';
 import constant from '../../constant/constant';
-import { profileUpdateRequest, profileListRequest } from '../../modelController/profileModel';
+import { profileUpdateRequest, profileListRequest, profileGetRequest } from '../../modelController/profileModel';
+
+interface User {
+    userID: number
+}
 
 class Profile extends React.Component {
 
@@ -44,8 +48,18 @@ class Profile extends React.Component {
     async componentDidMount() {
         document.title = constant.profileTitle + utils.getAppName();
 
-        // const getProfile = await API.getProfile();
-        // console.log("getprofile",getProfile);
+        var user = localStorage.getItem('user');
+        if(user) {
+            let profile: User = JSON.parse(user);
+            console.log("getprofile",profile.userID);
+            const obj : profileGetRequest = {
+                id: profile.userID
+            }
+            // JSON.parse(user);
+            const getProfile = await API.getProfile(obj);
+            console.log("getprofile",getProfile);
+        }
+
 
         // const getProfile : profileListRequest = [];
     }

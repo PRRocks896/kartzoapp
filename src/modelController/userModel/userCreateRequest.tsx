@@ -1,8 +1,11 @@
 export interface userCreateRequest {
+    userID?:number;
+    roleID?:number;
+    role?:string;
     firstname?: string;
     lastname?: string,
     email?: string,
-    mobilenumber?: number,
+    phone?: number,
     password?: string,
-    selectedFile?: object
+    photo?: object
 }

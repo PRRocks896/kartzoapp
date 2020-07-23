@@ -40,10 +40,12 @@ class NavBar extends React.Component {
         this.setState({ isOpen: !this.state.isOpen });
     }
 
-    // logout() {
-    //     localStorage.removeItem('token');
-    //     history.push('/#/login')
-    // }
+    logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        // this.props.history.push('/login');
+        window.location.href="/#/login";
+    }
 
     render() {
         const badge = (badge:any) => {
@@ -610,7 +612,7 @@ class NavBar extends React.Component {
                                     </li>
                                     <li className="dropdown-divider"></li>
                                     <li className="dropdown-menu-footer">
-                                    <Link className="media fs-14 p-2" to="/login"><span><i className="fa fa-chevron-circle-right mr-2"></i>Logout</span></Link>
+                                    <a className="media fs-14 p-2" onClick={this.logout}><span><i className="fa fa-chevron-circle-right mr-2"></i>Logout</span></a>
                                     </li>
                                 </ul>
                             </li>

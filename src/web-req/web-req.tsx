@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Constant from '../constant/constant';
+import utils from '../utils';
 
 const WebReqUrl = {
     get: async function (url: string) {
@@ -51,6 +52,11 @@ const WebReqUrl = {
             if (response.status === 200) {
                 console.log(response);
                 return response?.data;
+            } else if (response.status === 500) {
+                const msg = "Internal server error";
+                utils.showError(msg);
+                return [];
+               
             } else {
                 return [];
             }
