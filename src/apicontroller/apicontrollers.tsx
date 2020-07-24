@@ -1,12 +1,13 @@
 const apiUrl = {
     userController: {
-        createData:'user',
-        getData:'user',
-        getDataById:'user/',
+        createData:'User/login',
+        getData:'User',
+        getDataById:'User/get-user-detail/',
         forgotpassword:'',
-        updateData:'user',
-        getCount:'user',
-        getUserPaginationData:'user'
+        updateData:'User/update-user',
+        getCount:'User',
+        getUserPaginationData:'User',
+        createUser:'User/register'
 
     },
     customerController: {
@@ -21,7 +22,7 @@ const apiUrl = {
 
     },
     userRoleController: {
-        addRole:'role',
+        addRole:'Role/create-role',
         getRole:'role',
         editRole:'role',
         deleteRole:'role'

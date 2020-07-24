@@ -1,9 +1,11 @@
 export interface profileUpdateRequest {
-    id?: string;
-    firstname?: string;
-    lastname?: string,
+    id?: number;
+    roleID?: number;
+    firstName?: string;
+    lastName?: string,
     email?: string,
-    mobilenumber?: number,
+    phone?: string,
     password?: string,
-    selectedFile?: object
+    photo?: string,
+    isActive?:boolean
 }

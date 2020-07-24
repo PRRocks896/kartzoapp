@@ -19,7 +19,7 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/customer.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
-import { addressCreateRequest,addressUpdateRequest } from '../../../modelController/addressModel';
+import { addressCreateRequest,addressUpdateRequest } from '../../../modelController';
 import { number } from 'prop-types';
 
 class AddAddress extends React.Component<{ history: any }> {
