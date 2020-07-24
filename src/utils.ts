@@ -16,6 +16,12 @@ const utils = {
     },
     getAppName:() => {
         return ' | Kartzoo App'
+    },
+    getHeaderDetail:() => {
+        return {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Access-Control-Allow-Origin': true
+        }
     }
 }
 

@@ -2,9 +2,9 @@ const apiUrl = {
     userController: {
         createData:'User/login',
         getData:'User',
-        getDataById:'User/',
+        getDataById:'User/get-user-detail/',
         forgotpassword:'',
-        updateData:'User',
+        updateData:'User/update-user',
         getCount:'User',
         getUserPaginationData:'User',
         createUser:'User/register'
@@ -22,7 +22,7 @@ const apiUrl = {
 
     },
     userRoleController: {
-        addRole:'role',
+        addRole:'Role/create-role',
         getRole:'role',
         editRole:'role',
         deleteRole:'role'

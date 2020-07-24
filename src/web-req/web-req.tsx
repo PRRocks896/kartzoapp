@@ -6,7 +6,7 @@ const WebReqUrl = {
     get: async function (url: string) {
         try {
             let response;
-            response = await axios.get(url, { headers: Constant.headers })
+            response = await axios.get(url,{headers: utils.getHeaderDetail()})
             if (response.status === 200) {
                 console.log(response);
                 return response?.data;
@@ -20,7 +20,7 @@ const WebReqUrl = {
     delete: async function (url: string) {
         try {
             let response;
-            response = await axios.delete(url, { headers: Constant.headers })
+            response = await axios.delete(url, {headers: utils.getHeaderDetail()})
             if (response.status === 200) {
                 console.log(response);
                 return response?.data;
@@ -34,7 +34,7 @@ const WebReqUrl = {
     put: async function (url: string, body: any) {
         try {
             let response;
-            response = await axios.put(url, body, { headers: Constant.headers })
+            response = await axios.put(url, body, {headers: utils.getHeaderDetail()})
             if (response.status === 200) {
                 console.log(response);
                 return response?.data;
@@ -48,7 +48,7 @@ const WebReqUrl = {
     post: async function (url: string, body: any) {
         try {
             let response;
-            response = await axios.post(url, body, { headers: Constant.headers })
+            response = await axios.post(url, body, {headers: utils.getHeaderDetail()})
             if (response.status === 200) {
                 console.log(response);
                 return response?.data;

@@ -1,3 +1,6 @@
 export interface userRoleCreateRequest {
-    rolename?:string
+    role?:string,
+    description?:string,
+    isActive?:boolean,
+    isAdminRole?:boolean
 }

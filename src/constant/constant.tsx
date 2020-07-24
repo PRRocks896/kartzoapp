@@ -22,8 +22,7 @@ export default {
     logout: 'Logout',
     apiUrl: 'http://api.kartzoapp.com/api/',
     headers: {
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTkzNjgwMzc1LCJleHAiOjE1OTM2ODc1NzV9.jc1NOHGWLgaeqra6RMM71vhIHSFf1GNUbvob66Wip4c',
-        apikey: 'courierservice-0000-9876-5432-10@@',
+        Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI1IiwiZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoidXNlciBhYmMiLCJuYmYiOjE1OTU1NjUxNDMsImV4cCI6MTU5NTU4Njc0MywiaWF0IjoxNTk1NTY1MTQzfQ.KfSFaBXToiMLq4ULJUBmurIaNUrmZx181xqKOAD7il1Xr380mHx1DhpfV0OnqYuq-_IDhH3WzNKWIX31TnpjSQ',
         'Access-Control-Allow-Origin': true
     },
     firstname:'Firstname',

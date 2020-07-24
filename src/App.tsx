@@ -45,6 +45,7 @@ class App extends React.Component {
       <HashRouter>
         <Switch>
           <React.Suspense fallback={loading}>
+          <Route exact path='/' render={(props: any) => (<Login {...props} />) } />
             <Route exact path='/login' render={(props: any) => ( localStorage.getItem('token') !== null ? (<Redirect to="/dashboard" />) : (<Login {...props} />)) } />
             {/* <Route exact path='/' render={(props: any) => <Login {...props} />} /> */}
             <Route exact path='/signup' render={(props: any) => (localStorage.getItem('token') ? (<Redirect to="/dashboard" />) : (<Signup {...props} />)) } />
