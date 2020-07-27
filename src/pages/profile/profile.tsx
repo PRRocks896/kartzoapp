@@ -15,6 +15,7 @@ import {
 import "./profile.css";
 import NavBar from "../navbar/navbar";
 import API from "../../service/service";
+import RoleAPI from "../../service/role.service";
 import constant from "../../constant/constant";
 import {
   profileUpdateRequest,
@@ -42,7 +43,9 @@ class Profile extends React.Component {
     roleerror: "",
     roleid: 1,
     roleiderror: "",
-    userid:0
+    userid:0,
+    userrole:[],
+    updateTrue:false
   };
 
   constructor(props: any) {
@@ -55,6 +58,8 @@ class Profile extends React.Component {
 
   async componentDidMount() {
     document.title = constant.profileTitle + utils.getAppName();
+
+    this.getUserRole();
 
     var user = localStorage.getItem("user");
     if (user) {
@@ -69,6 +74,7 @@ class Profile extends React.Component {
 
       if (getProfile.resultObject !== undefined) {
         this.setState({
+          updateTrue:this.state.updateTrue = true,
           userid:this.state.userid = getProfile.resultObject.userID,
           firstname: this.state.firstname = getProfile.resultObject.firstName,
           lastname: this.state.lastname = getProfile.resultObject.lastName,
@@ -85,6 +91,21 @@ class Profile extends React.Component {
 
     // const getProfile : profileListRequest = [];
   }
+
+  async getUserRole() {
+    const getUserRole = await RoleAPI.getUserRole();
+  console.log("getUserRole",getUserRole);
+
+  if(getUserRole.resultObject != null) {
+    this.setState({
+      userrole : this.state.userrole = getUserRole.resultObject
+    })
+
+  } else {
+    const msg1 = getUserRole.explanation;
+    utils.showError(msg1);
+}
+}
 
   onItemSelect(event: any) {
     if (event.target.value === "User") {
@@ -298,7 +319,7 @@ class Profile extends React.Component {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="first_name">First_Name</Label>
+                          <Label htmlFor="first_name">First Name</Label>
                           <Input
                             type="text"
                             id="first_name"
@@ -316,7 +337,7 @@ class Profile extends React.Component {
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="last_name">Last_Name</Label>
+                          <Label htmlFor="last_name">Last Name</Label>
                           <Input
                             type="text"
                             id="last_name"
@@ -357,7 +378,7 @@ class Profile extends React.Component {
                             name="role"
                             onChange={this.onItemSelect}
                           >
-                            <option value={this.state.role}>
+                            {/* <option value={this.state.role}>
                               {this.state.role}
                             </option>
                             <option id="1" value="User">
@@ -365,12 +386,16 @@ class Profile extends React.Component {
                             </option>
                             <option id="2" value="Customer">
                               Customer
-                            </option>
-                            {/* {
-                              this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-                                  <option key={data.id} value={data.id}>{data.name}</option>
+                            </option> */}
+
+                            {
+
+                            }
+                            {
+                              this.state.userrole.length > 0 ? this.state.userrole.map((data:any, index:any) =>
+                                  <option key={data.roleId} value={data.roleID}>{data.role}</option>
                               ) : ''
-                          } */}
+                          }
                           </Input>
                           <div className="mb-4 text-danger">
                             {this.state.roleerror}
@@ -378,10 +403,10 @@ class Profile extends React.Component {
                         </FormGroup>
                       </Col>
                     </Row>
-                    <Row>
+                    {/* <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="mobile_no">Mobile_Number</Label>
+                          <Label htmlFor="mobile_no">Mobile Number</Label>
                           <Input
                             type="text"
                             id="mobile_no"
@@ -396,7 +421,7 @@ class Profile extends React.Component {
                           </div>
                         </FormGroup>
                       </Col>
-                    </Row>
+                    </Row> */}
 
                     <Button
                       type="button"

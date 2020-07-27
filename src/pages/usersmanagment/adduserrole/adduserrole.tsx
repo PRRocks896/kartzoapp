@@ -88,9 +88,9 @@ class AddUserRole extends React.Component<{ history: any }> {
           isAdminRole: this.state.isOpen,
         };
 
-        const obj1: userRoleUpdateRequest = {
-          rolename: this.state.rolename,
-        };
+        // const obj1: userRoleUpdateRequest = {
+        //   rolename: this.state.rolename,
+        // };
 
         console.log("userole", obj);
 

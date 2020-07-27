@@ -88,7 +88,7 @@ class Main extends React.Component {
             <Route exact path='/userroletorights' render={(props: any) => <UserRoleToRights {...props} />} />
             <Route exact path='/profile' render={(props: any) => <Profile {...props} />} />
             <Route exact path='/adduser' render={(props: any) => <AddUser {...props} />} />
-            <Route exact path='/edituser' render={(props: any) => <AddUser {...props} />} />
+            <Route exact path='/edituser/:id' render={(props: any) => <AddUser {...props} />} />
             <Route exact path='/category' render={(props: any) => <Category {...props} />} />
             <Route exact path='/subcategory' render={(props: any) => <SubCategory {...props} />} />
             <Route exact path='/addcategory' render={(props: any) => <AddCategory {...props} />} />

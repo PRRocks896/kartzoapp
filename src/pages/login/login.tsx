@@ -128,15 +128,15 @@ class Login extends React.Component<{ history: any }> {
                 var loginUser = await API.loginUser(obj);
                 console.log("loginuser",loginUser);
 
-                if(loginUser.resultObject !== undefined) {
-                    var user=loginUser.resultObject;
+                if(loginUser.data.resultObject !== undefined) {
+                    var user=loginUser.data.resultObject;
                     localStorage.setItem('user',JSON.stringify(user));
                     localStorage.setItem('token',user.token);
                     const msg = "Login Successfully";
                     utils.showSuccess(msg);
                     this.props.history.push('/dashboard');
                 } else {
-                        const msg1 = loginUser.explanation;
+                        const msg1 = loginUser.data.explanation;
                         utils.showError(msg1);
                     }
 

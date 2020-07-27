@@ -71,7 +71,7 @@ class UserRole extends React.Component<{ history: any }> {
             "paging": false,
             "info": false
         });
-        this.getUserCountData();
+        // this.getUserRole();
         this.getApplicationPageData();
     }
 

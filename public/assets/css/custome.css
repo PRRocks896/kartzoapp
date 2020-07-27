@@ -84,11 +84,12 @@ ul.dropdown-menu.dropdown-menu-right.user-dropdown.show {
     width: 100px;
   }
 
-  .img-size i.fa.fa-times.cursor{
-	position: absolute;
-    top: 5px;
-    right: 5px;
-  }
+  .img-size i.fa.fa-times.cursor {
+    position: absolute;
+    top: 0px;
+    right: 2px;
+    color: rgb(238, 162, 24);
+}
 
   table.dataTable thead .sorting:after,
 table.dataTable thead .sorting:before,

@@ -15,16 +15,18 @@ import {
 import "./adduser.css";
 import NavBar from "../../navbar/navbar";
 import API from "../../../service/service";
+import RoleAPI from "../../../service/role.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import {
   userCreateRequest,
   userUpdateRequest,
 } from "../../../modelController/userModel";
+import { any } from "prop-types";
 
-class AddUser extends React.Component<{ history: any }> {
+class AddUser extends React.Component<{ history: any,location:any }> {
   state = {
-    selectedFile: undefined,
+    selectedFile: new Array(),
     firstname: "",
     firstnameerror: "",
     lastname: "",
@@ -39,7 +41,12 @@ class AddUser extends React.Component<{ history: any }> {
     selectedFileerror: "",
     onItemSelect: "",
     onItemSelecterror: "",
-    roleid:0
+    roleid:0,
+    userrole:[],
+    updateTrue:false,
+    file:null,
+    userid:'',
+    rolename:''
   };
 
   constructor(props: any) {
@@ -49,7 +56,9 @@ class AddUser extends React.Component<{ history: any }> {
     this.handleChange = this.handleChange.bind(this);
     this.removeIcon = this.removeIcon.bind(this);
     this.addUser = this.addUser.bind(this);
+    this.editUser = this.editUser.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
+    this.getUserRole = this.getUserRole.bind(this);
   }
 
   handleChange(checked: boolean) {
@@ -58,6 +67,20 @@ class AddUser extends React.Component<{ history: any }> {
 
   async componentDidMount() {
     document.title = constant.addUserTitle + utils.getAppName();
+    this.getUserRole();
+    if(this.props.location.state != undefined) {
+      this.setState({
+        updateTrue:this.state.updateTrue = true,
+        firstname:this.state.firstname = this.props.location.state.userdata.firstName,
+        lastname:this.state.lastname = this.props.location.state.userdata.lastName,
+        email:this.state.email = this.props.location.state.userdata.email,
+        mobilenumber:this.state.mobilenumber = this.props.location.state.userdata.phone,
+        userid:this.state.userid = this.props.location.state.userdata.userID,
+        rolename:this.state.rolename = this.props.location.state.userdata.role,
+        roleid:this.state.roleid = this.props.location.state.userdata.roleID
+      })
+
+    }
 
     // const getProfile = await API.getProfile();
     // console.log("getprofile",getProfile);
@@ -67,9 +90,31 @@ class AddUser extends React.Component<{ history: any }> {
     // let data = new FormData();
     // data.append('file_name', event.target.files[0]);
     // console.log("event",event.target.files[0].name);
+    
+    let fileArray = [];
+    fileArray.push(event.target.files[0]);
     this.setState({
-      selectedFile: this.state.selectedFile = event.target.files[0].name,
+      selectedFile: this.state.selectedFile = fileArray,
     });
+    if(this.state.selectedFile.length == 1) {
+      this.setState({
+        file: this.state.file = this.state.selectedFile[0].name,
+      });
+    }
+  }
+
+  async getUserRole() {
+      const getUserRole = await RoleAPI.getUserRole();
+
+    if(getUserRole.resultObject != null) {
+      this.setState({
+        userrole : this.state.userrole = getUserRole.resultObject
+      })
+
+    } else {
+      const msg1 = getUserRole.explanation;
+      utils.showError(msg1);
+  }
   }
 
   validate() {
@@ -135,19 +180,67 @@ class AddUser extends React.Component<{ history: any }> {
     return true;
   }
 
-  onItemSelect(event: any) {
-    if(event.target.value === "User") {
-      this.setState({
-        onItemSelect: this.state.onItemSelect = event.target.value,
-        roleid:this.state.roleid = 1
-      });
-    } else {
-      this.setState({
-        onItemSelect: this.state.onItemSelect = event.target.value,
-        roleid:this.state.roleid = 2
-      });
+  validateUpdate() {
+    let firstnameerror = "";
+    let lastnameerror = "";
+    let emailerror = "";
+    let mobilenumbererror = "";
+    let selectedFileerror = "";
+    // let onItemSelecterror = "";
+
+    if (!this.state.firstname) {
+      firstnameerror = "please enter firstname";
     }
-   
+
+    if (!this.state.lastname) {
+      lastnameerror = "please enter lastname";
+    }
+
+    const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    if (!this.state.email) {
+      emailerror = "please enter email";
+    } else if (!reg.test(this.state.email)) {
+      emailerror = "please enter valid email";
+    }
+
+    if (!this.state.mobilenumber) {
+      mobilenumbererror = "please enter mobile number";
+    }
+
+    if (!this.state.selectedFile) {
+      selectedFileerror = "please select file";
+    }
+
+    // if (!this.state.onItemSelect) {
+    //   onItemSelecterror = "please select role";
+    // }
+
+    if (
+      firstnameerror ||
+      lastnameerror ||
+      emailerror ||
+      mobilenumbererror ||
+      selectedFileerror
+      // onItemSelecterror
+    ) {
+      this.setState({
+        firstnameerror,
+        lastnameerror,
+        emailerror,
+        mobilenumbererror,
+        selectedFileerror,
+        // onItemSelecterror,
+      });
+      return false;
+    }
+    return true;
+  }
+
+  onItemSelect(event: any) {
+    this.setState({
+      roleid: this.state.roleid = event.target.options[event.target.selectedIndex].value,
+      onItemSelect:this.state.onItemSelect = event.target.options[event.target.selectedIndex].innerHTML
+    });
   }
 
   handleChangeEvent(event: any) {
@@ -177,47 +270,78 @@ class AddUser extends React.Component<{ history: any }> {
         this.state.selectedFile &&
         this.state.onItemSelect
       ) {
-        const obj: userCreateRequest = {
-          userID:0,
-          roleID:this.state.roleid,
-          role:this.state.onItemSelect,
-          firstname: this.state.firstname,
-          lastname: this.state.lastname,
-          email: this.state.email,
-          phone: this.state.mobilenumber,
-          password: this.state.password,
-          photo: this.state.selectedFile,
-        };
 
-        const obj1: userUpdateRequest = {
-          id: "",
-          firstname: this.state.firstname,
-          lastname: this.state.lastname,
-          email: this.state.email,
-          mobilenumber: this.state.mobilenumber,
-          password: this.state.password,
-          selectedFile: this.state.selectedFile,
-        };
+        let formData = new FormData();    
 
-        console.log("addUser",obj);
+        formData.append('roleId', this.state.roleid.toString());   
+        formData.append('firstName', this.state.firstname);
+        formData.append('lastName', this.state.lastname);
+        formData.append('email', this.state.email);
+        formData.append('phone', this.state.mobilenumber.toString());
+        formData.append('photo', '');
+        formData.append('isActive','true');
+        formData.append('files', new Blob(this.state.selectedFile));
+        formData.append('userId', '0');
 
-        const addUser = await API.addUser(obj);
+        const addUser:any = await API.addUser(formData);
         console.log("addUser",addUser);
-        const msg = "User Added Successfully";
-        utils.showSuccess(msg);
-        // this.props.history.push("/users");
 
-        // if (
-        //   this.state.firstname === obj.firstname &&
-        //   this.state.lastname === obj.lastname &&
-        //   this.state.email === obj.email &&
-        //   this.state.mobilenumber === obj.mobilenumber &&
-        //   this.state.password === obj.password
-        // ) {
-         
+        if(addUser.resultObject !== null) {
+          const msg = "User Added Successfully";
+          utils.showSuccess(msg);
+          this.props.history.push("/users");
+        } else {
+          const msg1 = "Error";
+            utils.showError(msg1);
+        }
+      }
+    }
+  }
+
+  async editUser() {
+    const isValid = this.validateUpdate();
+    if (isValid) {
+      this.setState({
+        firstnameerror: "",
+        lastnameerror: "",
+        emailerror: "",
+        mobilenumbererror: "",
+        selectedFileerror: ""
+      });
+      if (
+        this.state.firstname &&
+        this.state.lastname &&
+        this.state.email &&
+        this.state.mobilenumber &&
+        this.state.selectedFile
+      ) {
+
+        console.log("id",this.state.userid,this.state.roleid)
+
+        let formData = new FormData();    
+
+        formData.append('iD', this.state.userid.toString());
+        formData.append('roleId', this.state.roleid.toString());   
+        formData.append('firstName', this.state.firstname);
+        formData.append('lastName', this.state.lastname);
+        formData.append('email', this.state.email);
+        formData.append('phone', this.state.mobilenumber.toString());
+        formData.append('password', '');
+        formData.append('photo', '');
+        formData.append('isActive','true');
+        formData.append('files', new Blob(this.state.selectedFile));
+        formData.append('userId', '0');
+
+        const editUser:any = await API.editUser(formData,this.state.userid);
+        console.log("editUser",editUser);
+
+        // if(addUser.resultObject !== null) {
+        //   const msg = "User Added Successfully";
+        //   utils.showSuccess(msg);
+        //   this.props.history.push("/users");
         // } else {
         //   const msg1 = "Error";
-        //   utils.showError(msg1);
+        //     utils.showError(msg1);
         // }
       }
     }
@@ -229,7 +353,7 @@ class AddUser extends React.Component<{ history: any }> {
     //     image_path: data
     // }
     this.setState({
-      selectedFile: this.state.selectedFile = undefined,
+      selectedFile: this.state.file = null,
     });
   }
 
@@ -243,9 +367,18 @@ class AddUser extends React.Component<{ history: any }> {
                 <Card>
                   <CardHeader>
                     <Row>
+                      {
+                        this.state.updateTrue == true ? (
+
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
                         <h1>Add User</h1>
                       </Col>
+                        ) : (
+                          <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                          <h1>Edit User</h1>
+                        </Col>
+                        )
+                      }
                       <Col
                         xs="12"
                         sm="6"
@@ -351,7 +484,7 @@ class AddUser extends React.Component<{ history: any }> {
                           id="password"
                           name="password"
                           className="form-control"
-                          value={this.state.password}
+                          // value={this.state.password}
                           onChange={this.handleChangeEvent}
                           placeholder="Enter your password"
                         />
@@ -360,6 +493,30 @@ class AddUser extends React.Component<{ history: any }> {
                         </div>
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        {
+                          this.state.updateTrue == true ? (
+                            <FormGroup>
+                            <Label for="exampleCustomSelect">
+                              Select Role:
+                            </Label>
+                            <Input
+                              type="select"
+                              name="onItemSelect"
+                              onChange={this.onItemSelect}
+                            >
+                              <option value="">{this.state.rolename}</option>
+                              {
+                                this.state.userrole.length > 0 ? this.state.userrole.map((data:any, index:any) =>
+                                    <option key={data.roleId} value={data.roleId}>{data.role}</option>
+                                ) : ''
+                            }
+                            </Input>
+                            <div className="mb-4 text-danger">
+                            {this.state.onItemSelecterror}
+                          </div>
+                          </FormGroup>
+                          ) : (
+
                         <FormGroup>
                           <Label for="exampleCustomSelect">
                             Select Role:
@@ -369,31 +526,34 @@ class AddUser extends React.Component<{ history: any }> {
                             name="onItemSelect"
                             onChange={this.onItemSelect}
                           >
-                            <option value="">Select UserRole:</option>
+                            {/* <option value="">Select UserRole:</option>
                             <option id="1" value="User">User</option>
-                            <option id="2" value="Customer">Customer</option>
-                            {/* {
-                              this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-                                  <option key={data.id} value={data.id}>{data.name}</option>
+                            <option id="2" value="Customer">Customer</option> */}
+                            <option value="">Select UserRole:</option>
+                            {
+                              this.state.userrole.length > 0 ? this.state.userrole.map((data:any, index:any) =>
+                                  <option key={data.roleId} value={data.roleId}>{data.role}</option>
                               ) : ''
-                          } */}
+                          }
                           </Input>
                           <div className="mb-4 text-danger">
                           {this.state.onItemSelecterror}
                         </div>
                         </FormGroup>
+                          )
+                        }
                       </Col>
                     </Row>
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
-                          {this.state.selectedFile != null ? (
+                          {this.state.file != null ? (
                             <div className="img-size">
-                              {this.state.selectedFile ? (
+                              {this.state.file != null ? (
                                 <div>
                                   <img
                                     className="picture"
-                                    src={require("../../dashboard/assets/images/login-img.png")}
+                                    src={constant.filepath + this.state.file}
                                   />
                                   <i
                                     className="fa fa-times cursor"
@@ -426,6 +586,20 @@ class AddUser extends React.Component<{ history: any }> {
                         </FormGroup>
                       </Col>
                     </Row>
+                    {
+                      this.state.updateTrue == true ? (
+                        <Button
+                        type="button"
+                        size="sm"
+                        color="primary"
+                        className="mb-2 mr-2 custom-button"
+                        onClick={this.editUser}
+                      >
+                        Update
+                      </Button>
+
+                      ) : (
+
                     <Button
                       type="button"
                       size="sm"
@@ -435,6 +609,8 @@ class AddUser extends React.Component<{ history: any }> {
                     >
                       Save
                     </Button>
+                      )
+                    }
                   </CardBody>
                 </Card>
               </Col>
