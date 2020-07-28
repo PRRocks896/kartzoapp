@@ -20,7 +20,7 @@ export default {
     about: 'About',
     service: 'Service',
     logout: 'Logout',
-    filepath:'../../../assets/img/people/',
+    filepath:'http://api.kartzoapp.com/',
     apiUrl: 'http://api.kartzoapp.com/v1/',
     headers: {
         Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI1IiwiZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoidXNlciBhYmMiLCJuYmYiOjE1OTU1NjUxNDMsImV4cCI6MTU5NTU4Njc0MywiaWF0IjoxNTk1NTY1MTQzfQ.KfSFaBXToiMLq4ULJUBmurIaNUrmZx181xqKOAD7il1Xr380mHx1DhpfV0OnqYuq-_IDhH3WzNKWIX31TnpjSQ',
@@ -28,10 +28,11 @@ export default {
     },
     firstname:'Firstname',
     lastname:'Lastname',
-
+    changepassword: 'Change Password',
     dashboardTitle: 'Dashboard',
     userTitle: 'User Management',
     addUserTitle: 'Add User',
+    updateUserTitle: 'Update User',
     viewUserTitle: 'View User',
     userRoleTitle: 'Role Management',
     viewUserRoleTitle: 'View Role',
@@ -91,10 +92,17 @@ export default {
     listCard:'Card Management',
     addCard:'Add Card',
     viewCard:'View Card',
-
     userTableColumn: [
-        'Name','Email','Number','Address','Status','Action'
-    ],
+        { name: 'firstName', title: "First Name", type: "text" },
+        { name: "lastName", title: "Last Name", type: "text" },
+        { name: "email", title: "E-mail", type: "text" },
+        { name: "role", title: "Role", type: "text" }
+        // { name: "status", title: "Status", type: "text" },
+        // { name: "role", title: "Role", type: "text" }
+      ],
+    // userTableColumn: [
+    //     'First Name', 'Last Name','E-mail','Role','Status','Action'
+    // ],
     roleTableColumn: [
         'Role Name','Status','Action'
     ],

@@ -223,18 +223,11 @@ class UserRoleToRights extends React.Component {
                                 onChange={this.onItemSelect}
                               >
                                 <option value="">Select UserRole:</option>
-                                {this.state.userrole.length > 0
-                                  ? this.state.userrole.map(
-                                      (data: any, index: any) => (
-                                        <option
-                                          key={data.roleId}
-                                          value={data.roleId}
-                                        >
-                                          {data.role}
-                                        </option>
-                                      )
-                                    )
-                                  : ""}
+                                {
+                                this.state.userrole.length > 0 ? this.state.userrole.map((data:any, index) =>
+                                    <option key={data.value} value={data.value}>{data.name}</option>
+                                ) : ''
+                            }
                               </CustomInput>
                             </FormGroup>
                           </Form>

@@ -3,12 +3,15 @@ const apiUrl = {
         createData:'users/login',
         getData:'User',
         getDataById:'users/',
-        forgotpassword:'',
+        forgotpassword:'users/forgot-password',
+        updateProfile:'users/update-profile',
         updateData:'users/',
         getCount:'User',
         getUserPaginationData:'users/get-user-list',
         createUser:'users',
-        deleteUser:'users/'
+        deleteUser:'users/',
+        updatepassword:'users/change-password',
+        resetpassword:'users/reset-password'
 
     },
     customerController: {
@@ -24,10 +27,11 @@ const apiUrl = {
     },
     userRoleController: {
         addRole:'roles',
-        getRole:'roles',
+        getRole:'roles/get-role-list-dropdown',
         editRole:'role',
         deleteRole:'role',
-        rolepreveliges:'roleprivileges/'
+        rolepreveliges:'roleprivileges/',
+        getRoles:'roles/get-role-list'
     },
     locationController: {
         addCountry:'country',

@@ -29,7 +29,7 @@ interface User {
 
 class Profile extends React.Component {
   state = {
-    selectedFile: undefined,
+    selectedFile: [],
     firstname: "",
     firstnameerror: "",
     lastname: "",
@@ -45,7 +45,8 @@ class Profile extends React.Component {
     roleiderror: "",
     userid:0,
     userrole:[],
-    updateTrue:false
+    updateTrue:false,
+    file:null
   };
 
   constructor(props: any) {
@@ -78,10 +79,9 @@ class Profile extends React.Component {
           userid:this.state.userid = getProfile.resultObject.userID,
           firstname: this.state.firstname = getProfile.resultObject.firstName,
           lastname: this.state.lastname = getProfile.resultObject.lastName,
-          email: this.state.email = getProfile.resultObject.email,
-          role: this.state.role = getProfile.resultObject.role,
           mobilenumber: this.state.mobilenumber = getProfile.resultObject.phone,
-          selectedFile: this.state.selectedFile = getProfile.resultObject.photo
+          selectedFile: this.state.selectedFile = getProfile.resultObject.photo,
+          file:this.state.file =  getProfile.resultObject.photoPath
         });
       } else {
         const msg1 = getProfile.explanation;
@@ -124,10 +124,8 @@ class Profile extends React.Component {
   validate() {
     let firstnameerror = "";
     let lastnameerror = "";
-    let emailerror = "";
     let mobilenumbererror = "";
     let selectedFileerror = "";
-    let roleerror = "";
 
     if (!this.state.firstname) {
       firstnameerror = "please enter firstname";
@@ -137,16 +135,6 @@ class Profile extends React.Component {
       lastnameerror = "please enter lastname";
     }
 
-    if (!this.state.role) {
-      roleerror = "please select role";
-    }
-
-    const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-    if (!this.state.email) {
-      emailerror = "please enter email";
-    } else if (!reg.test(this.state.email)) {
-      emailerror = "please enter valid email";
-    }
 
     if (!this.state.mobilenumber) {
       mobilenumbererror = "please enter mobile number";
@@ -159,18 +147,14 @@ class Profile extends React.Component {
     if (
       firstnameerror ||
       lastnameerror ||
-      emailerror ||
       mobilenumbererror ||
-      selectedFileerror ||
-      roleerror
+      selectedFileerror
     ) {
       this.setState({
         firstnameerror,
         lastnameerror,
-        emailerror,
         mobilenumbererror,
-        selectedFileerror,
-        roleerror,
+        selectedFileerror
       });
       return false;
     }
@@ -190,34 +174,34 @@ class Profile extends React.Component {
       this.setState({
         firstnameerror: "",
         lastnameerror: "",
-        emailerror: "",
         mobilenumbererror: "",
-        selectedFileerror: "",
-        roleerror: ""
+        selectedFileerror: ""
       });
       if (
         this.state.firstname &&
         this.state.lastname &&
-        this.state.email &&
         this.state.mobilenumber &&
-        this.state.selectedFile &&
-        this.state.role
+        this.state.selectedFile
       ) {
-        const obj: profileUpdateRequest = {
-          id: this.state.userid,
-          roleID:this.state.roleid,
-          firstName: this.state.firstname,
-          lastName: this.state.lastname,
-          email: this.state.email,
-          phone: this.state.mobilenumber,
-          password:'',
-          photo: this.state.selectedFile,
-          isActive:true
-        };
+        // const obj: profileUpdateRequest = {
+        //   iD: this.state.userid,
+        //   firstName: this.state.firstname,
+        //   lastName: this.state.lastname,
+        //   phone: this.state.mobilenumber,
+        //   files: new Array(this.state.selectedFile),
+        //   userId:0
+        // };
 
-        console.log("obj",obj);
+        let formData = new FormData();    
+        console.log('File in formData: ', this.state.selectedFile);
+        formData.append('iD', this.state.userid.toString());   
+        formData.append('firstName', this.state.firstname);
+        formData.append('lastName', this.state.lastname);
+        formData.append('phone', this.state.mobilenumber.toString());
+        formData.append('files', this.state.selectedFile[0]);
+        formData.append('userId', '0');
 
-        const updateProfile = await API.updateProfile(obj);
+        const updateProfile = await API.updateProfile(formData);
         console.log("updateProfile",updateProfile);
 
         if(updateProfile.resultObject !== null) {
@@ -246,17 +230,17 @@ class Profile extends React.Component {
   }
 
   onChangeHandler(event: any) {
-    // let data = new FormData();
-    // data.append('file_name', event.target.files[0]);
-    // console.log("event",event.target.files[0].name);
+    var fileArray = [];
+    fileArray.push(event.target.files[0])
     this.setState({
-      selectedFile: this.state.selectedFile = event.target.files[0].name,
+      selectedFile: this.state.selectedFile = event.target.files,
     });
+    console.log("file",this.state.selectedFile[0]);
   }
 
   removeIcon() {
     this.setState({
-      selectedFile: this.state.selectedFile = undefined,
+      file: this.state.file = null,
     });
   }
 
@@ -275,13 +259,13 @@ class Profile extends React.Component {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
-                          {this.state.selectedFile != null ? (
+                          {this.state.file != null ? (
                             <div className="img-size">
-                              {this.state.selectedFile ? (
+                              {this.state.file ? (
                                 <div>
                                   <img
                                     className="picture"
-                                    src={require("../dashboard/assets/images/login-img.png")}
+                                    src={constant.filepath + this.state.file}
                                   />
                                   <i
                                     className="fa fa-times cursor"
@@ -354,56 +338,8 @@ class Profile extends React.Component {
                         </FormGroup>
                       </Col>
                     </Row>
+                   
                     <Row>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
-                          <Label htmlFor="profile">E-Mail</Label>
-                          <Input
-                            type="email"
-                            id="profile"
-                            name="email"
-                            className="profile form-control"
-                            value={this.state.email}
-                            onChange={this.handleChangeEvent}
-                            placeholder="Enter your email"
-                            disabled
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
-                          <Label for="exampleCustomSelect">Select Role:</Label>
-                          <Input
-                            type="select"
-                            name="role"
-                            onChange={this.onItemSelect}
-                          >
-                            {/* <option value={this.state.role}>
-                              {this.state.role}
-                            </option>
-                            <option id="1" value="User">
-                              User
-                            </option>
-                            <option id="2" value="Customer">
-                              Customer
-                            </option> */}
-
-                            {
-
-                            }
-                            {
-                              this.state.userrole.length > 0 ? this.state.userrole.map((data:any, index:any) =>
-                                  <option key={data.roleId} value={data.roleID}>{data.role}</option>
-                              ) : ''
-                          }
-                          </Input>
-                          <div className="mb-4 text-danger">
-                            {this.state.roleerror}
-                          </div>
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    {/* <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
                           <Label htmlFor="mobile_no">Mobile Number</Label>
@@ -421,7 +357,7 @@ class Profile extends React.Component {
                           </div>
                         </FormGroup>
                       </Col>
-                    </Row> */}
+                    </Row>
 
                     <Button
                       type="button"

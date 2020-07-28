@@ -31,6 +31,7 @@ import utils from '../../../utils';
 import constant from '../../../constant/constant';
 import TableComponent from '../../../component/tables/table';
 import { userRoleListRequest } from '../../../modelController/userRoleModel';
+import API from '../../../service/role.service';
 const $ = require('jquery');
 $.DataTable = require('datatables.net')
 
@@ -39,7 +40,7 @@ class UserRole extends React.Component<{ history: any }> {
     state = {
         count: 10,
         currentPage: 1,
-        items_per_page: 2,
+        items_per_page: '10',
         perpage: 2,
         paginationdata: '',
         isFetch: false,
@@ -71,27 +72,20 @@ class UserRole extends React.Component<{ history: any }> {
             "paging": false,
             "info": false
         });
-        // this.getUserRole();
-        this.getApplicationPageData();
+        this.getRole();
     }
 
-    async getUserCountData() {
+    async getRole() {
 
-        // var getuserCount = await API.getUserCount();
-        // console.log("getUsercount",getuserCount);
-      
-    }
+        const obj = {
+            searchText:'',
+            isActive:true,
+            page:1,
+            size:parseInt(this.state.items_per_page)
+        }
 
-    async getApplicationPageData() {
-        // const obj = {
-        //     page_no: "1",
-        //     items_per_page: this.state.items_per_page
-        // }
-
-        // var getUserDataPagination = await API.getUserDataPagination();
-        // console.log("getUserDataPagination",getUserDataPagination);
-
-        // var getUserDataPagination : userRoleListRequest = [];
+        var getRole = await API.getRoles(obj);
+        console.log("getRole",getRole);
       
     }
 
@@ -148,7 +142,7 @@ class UserRole extends React.Component<{ history: any }> {
     render() {
 
         var pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
+        for (let i = 1; i <= Math.ceil(this.state.count / parseInt(this.state.items_per_page)); i++) {
             pageNumbers.push(i);
         }
         var renderPageNumbers = pageNumbers.map((number: any) => {

@@ -1,11 +1,8 @@
 export interface profileUpdateRequest {
-    id?: number;
-    roleID?: number;
+    iD?: number;
     firstName?: string;
     lastName?: string,
-    email?: string,
     phone?: string,
-    password?: string,
-    photo?: string,
-    isActive?:boolean
+    files?: any,
+    userId?:number
 }

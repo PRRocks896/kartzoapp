@@ -164,3 +164,11 @@ thead {
   .btn {
     margin: 0px !important;
 }
+
+td.dataTables_empty {
+    display: none;
+}
+
+table.dataTable {
+    margin-top: 30px !important;
+}

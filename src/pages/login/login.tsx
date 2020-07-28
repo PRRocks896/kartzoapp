@@ -84,7 +84,7 @@ class Login extends React.Component<{ history: any }> {
         return true;
     };
 
-    forgotpassword() {
+   async forgotpassword() {
         const isValid = this.validatePassword();
         if (isValid) {
             this.setState({
@@ -95,18 +95,18 @@ class Login extends React.Component<{ history: any }> {
                     email: this.state.email
                 }
 
-                // var forgotPassword = await API.forgotPassword(obj);
-                // console.log("forgotPassword",forgotPassword);
+                var forgotPassword = await API.forgotPassword(obj);
+                console.log("forgotPassword",forgotPassword);
 
-                if (this.state.email === obj.email) {
-                    const msg = "Password Reset Successfully";
-                    utils.showSuccess(msg);
-                    // $('#modal-12').modal('hide');
-                    // this.props.history.push('/');
-                } else {
-                    const msg1 = "Error";
-                    utils.showError(msg1);
-                }
+                // if (this.state.email === obj.email) {
+                //     const msg = "Password Reset Successfully";
+                //     utils.showSuccess(msg);
+                //     // $('#modal-12').modal('hide');
+                //     // this.props.history.push('/');
+                // } else {
+                //     const msg1 = "Error";
+                //     utils.showError(msg1);
+                // }
             }
         };
     }

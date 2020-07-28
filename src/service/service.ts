@@ -14,11 +14,18 @@ export default {
     forgotPassword: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.forgotpassword, data);
     },
+    resetPassword: async function (data: any) {
+        return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.resetpassword, data);
+    },
+    updatePassword: async function (data: any) {
+        return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.updatepassword, data);
+    },
+    
     getProfile: async function (data: any) {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.userController.getDataById + data.id);
     },
     updateProfile: async function (data: any) {
-        return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.updateData, data);
+        return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.updateProfile, data);
     },
     getUserCount: async function () {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.userController.getCount);
@@ -48,5 +55,8 @@ export default {
          }
         }
         return await axios.put(Constant.apiUrl + apiUrl.userController.updateData + id, data,config);
+    },
+    getUserById: async function (data:any) {
+        return await WebReqUrl.get(Constant.apiUrl + apiUrl.userController.getDataById + data.id);
     }
 }

@@ -40,8 +40,8 @@ $.DataTable = require("datatables.net");
 class Users extends React.Component<{ history: any }> {
   state = {
     count: 10,
-    currentPage: 1,
-    items_per_page: 10,
+    currentPage: '1',
+    items_per_page: '10',
     perpage: 2,
     paginationdata: "",
     isFetch: false,
@@ -55,7 +55,7 @@ class Users extends React.Component<{ history: any }> {
     onClickPage: 1,
     activePage: 15,
     role: "",
-    roleid: '',
+    roleid: '0',
     onItemSelect:'',
     userrole:[],
     userdata:[]
@@ -69,6 +69,8 @@ class Users extends React.Component<{ history: any }> {
     this.edituser = this.edituser.bind(this);
     this.viewuser = this.viewuser.bind(this);
     this.onRoleSelect = this.onRoleSelect.bind(this);
+    this.onItemSelect = this.onItemSelect.bind(this);
+    this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(this);
   }
 
   async componentDidMount() {
@@ -76,11 +78,11 @@ class Users extends React.Component<{ history: any }> {
     $("#dtBasicExample").DataTable({
       paging: false,
       info: false,
+      searching:false
     });
     // $('.dataTables_length').addClass('bs-select');
     this.getUserRole();
     this.getUsers();
-    this.getApplicationPageData();
   }
 
   btnIncrementClick() {
@@ -106,15 +108,19 @@ class Users extends React.Component<{ history: any }> {
   }
 
   edituser(data:any) {
-    this.props.history.push({
-      pathname : '/edituser/' + data.userID,
-      state :{
-      userdata : data
-    }});
+    this.props.history.push('/edituser/' + data.userID);
   }
 
-  viewuser() {
-    this.props.history.push("/viewuser");
+  viewuser(data:any) {
+    this.props.history.push('/viewuser/' + data.userID);
+  }
+
+  onItemSelect(event: any) {
+    this.setState({
+      items_per_page: this.state.items_per_page = event.target.options[event.target.selectedIndex].value
+    });
+
+    this.getUsers();
   }
 
  async onRoleSelect(event: any) {
@@ -130,7 +136,7 @@ class Users extends React.Component<{ history: any }> {
       searchText: "",
       isActive: true,
       page: 1,
-      size: 10
+      size: parseInt(this.state.items_per_page)
     }
 
     var getUserDataPagination = await API.getUserDataPagination(obj);
@@ -138,7 +144,8 @@ class Users extends React.Component<{ history: any }> {
 
     if(getUserDataPagination.resultObject.data != null) {
       this.setState({
-        userdata:this.state.userdata = getUserDataPagination.resultObject.data
+        userdata:this.state.userdata = getUserDataPagination.resultObject.data,
+        count:this.state.count = getUserDataPagination.resultObject.totalcount
       })
     }
 
@@ -157,7 +164,7 @@ class Users extends React.Component<{ history: any }> {
         var deleteUser = await API.deleteUser(id);
         const msg = "User has been deleted";
         utils.showSuccess(msg);
-        // this.componentDidMount();
+        this.getUsers();
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         const msg1 = "User is safe :";
         utils.showError(msg1);
@@ -181,46 +188,89 @@ class Users extends React.Component<{ history: any }> {
 
   async getUsers() {
 
-    // var getuserCount = await API.getUserCount();
-    // console.log("getUsercount",getuserCount);
+    const obj:getUserRequest = {
+      roleID:parseInt(this.state.roleid),
+      searchText: "",
+      isActive: true,
+      page: 1,
+      size: parseInt(this.state.items_per_page)
+    }
+
+    var getUserDataPagination = await API.getUserDataPagination(obj);
+    console.log("getUserDataPagination",getUserDataPagination);
+
+    if(getUserDataPagination.resultObject.data != null) {
+      this.setState({
+        // rows: { 'firstName','lastName' },
+        userdata:this.state.userdata = getUserDataPagination.resultObject.data,
+        count:this.state.count = getUserDataPagination.resultObject.totalcount
+      })
+    }
   }
 
-  async getApplicationPageData() {
-    // const obj = {
-    //     page_no: "1",
-    //     items_per_page: this.state.items_per_page
-    // }
-    // var getUserDataPagination = await API.getUserDataPagination();
-    // console.log("getUserDataPagination",getUserDataPagination);
-    // var getUserDataPagination : userListRequest = [];
+  async handleClick(event : any) {
+    this.setState({
+      currentPage:this.state.currentPage = event.target.id
+    })
+  const obj:getUserRequest = {
+    roleID:parseInt(this.state.roleid),
+    searchText: "",
+    isActive: true,
+    page: parseInt(event.target.id),
+    size: parseInt(this.state.items_per_page)
   }
 
-  handleClick(event: any) {
-    const obj = {
-      page_no: "" + event.target.id,
-      items_per_page: this.state.items_per_page,
-    };
-    // var getUserDataPagination = await API.getUserDataPagination();
-    // console.log("getUserDataPagination",getUserDataPagination);
+  var getUserDataPagination = await API.getUserDataPagination(obj);
+  console.log("getUserDataPagination",getUserDataPagination);
+
+  if(getUserDataPagination.resultObject.data != null) {
+    this.setState({
+      userdata:this.state.userdata = getUserDataPagination.resultObject.data
+    })
   }
+  }
+
+  async searchApplicationDataKeyUp(e:any) {
+    console.log("search",e.target.value)
+    const obj:getUserRequest = {
+      roleID:parseInt(this.state.roleid),
+      searchText: e.target.value,
+      isActive: true,
+      page: 1,
+      size: parseInt(this.state.items_per_page)
+    }
+
+    var getUserDataPagination = await API.getUserDataPagination(obj);
+    console.log("getUserDataPagination",getUserDataPagination);
+
+    if(getUserDataPagination.resultObject.data != null) {
+      this.setState({
+        userdata:this.state.userdata = getUserDataPagination.resultObject.data,
+        count:this.state.count = getUserDataPagination.resultObject.totalcount
+      })
+    }
+  }
+
+  
+
 
   render() {
     var pageNumbers = [];
     for (
       let i = 1;
-      i <= Math.ceil(this.state.count / this.state.items_per_page);
+      i <= Math.ceil(this.state.count / parseInt(this.state.items_per_page));
       i++
     ) {
       pageNumbers.push(i);
     }
     var renderPageNumbers = pageNumbers.map((number: any) => {
-      if (number === 1 && this.state.currentPage === 1) {
+      if (number === 1 && parseInt(this.state.currentPage) === 1) {
         return (
           <li
             key={number}
             id={number}
             className={
-              this.state.currentPage === number ? "active" : "page-item"
+              parseInt(this.state.currentPage) === number ? "active" : "page-item"
             }
           >
             <a className="page-link" onClick={this.handleClick}>
@@ -237,7 +287,7 @@ class Users extends React.Component<{ history: any }> {
             key={number}
             id={number}
             className={
-              this.state.currentPage === number ? "active" : "page-item"
+              parseInt(this.state.currentPage) === number ? "active" : "page-item"
             }
           >
             <a className="page-link" id={number} onClick={this.handleClick}>
@@ -297,20 +347,22 @@ class Users extends React.Component<{ history: any }> {
                     </Row>
                   </CardHeader>
                   <CardBody>
+                  <Row>
+                  <Col xs="12" sm="12" md="6" lg="6" xl="6">
                     <div style={{ width: "500px", position: "absolute" }}>
                       <Row>
                         <Col xs="12" sm="12" md="6" lg="6" xl="6">
                           <CustomInput
                             type="select"
-                            id="exampleCustomSelect"
+                            id="item"
                             name="customSelect"
-                            // onChange={this.onItemSelect}
+                            onChange={this.onItemSelect}
                           >
                             <option value="">Record per page</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
+                            <option value="3">3</option>
                             <option value="20">20</option>
                             <option value="25">25</option>
+                            <option value="30">30</option>
                            {/* {
                             this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
                                 <option key={data.id} value={data.id}>{data.name}</option>
@@ -329,13 +381,38 @@ class Users extends React.Component<{ history: any }> {
                            
                             {
                                 this.state.userrole.length > 0 ? this.state.userrole.map((data:any, index) =>
-                                    <option key={data.roleId} value={data.roleId}>{data.role}</option>
+                                    <option key={data.value} value={data.value}>{data.name}</option>
                                 ) : ''
                             }
                           </CustomInput>
                         </Col>
                       </Row>
                     </div>
+                    </Col>
+                    <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                    <div>
+                      <Row>
+                        <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <input
+                          className="form-control"
+                          type="text"
+                          placeholder="Search"
+                          aria-label="Search"
+                          onKeyUp={this.searchApplicationDataKeyUp}
+                      />
+                        </Col>
+                      </Row>
+                    </div>
+                    </Col>
+                    </Row>
+                    {/* {
+                      this.state.userdata !== null ? (
+
+                        <TableComponent column={constant.userTableColumn} row={this.state.userdata}/>
+                      ) : (
+                        'No Data Found'
+                      )
+                    } */}
 
                     <table
                       id="dtBasicExample"
@@ -370,7 +447,7 @@ class Users extends React.Component<{ history: any }> {
                                 <span className="padding">
                                   <i
                                     className="fa fa-eye"
-                                    onClick={() => this.viewuser}
+                                    onClick={() => this.viewuser(data)}
                                   ></i>
                                   <i
                                     className="fas fa-edit"
@@ -392,94 +469,20 @@ class Users extends React.Component<{ history: any }> {
                         }
                       </tbody>
                     </table>
-
-                    {/* <TableComponent column={constant.userTableColumn}/> */}
-
-                    {/* <MDBDataTable
-                                            // id="dtBasicExample"
-                                            striped
-                                            bordered
-                                            hover
-                                            paging={false}
-                                            data={data}
-                                        />  */}
-                    {/* <div>
-                                            <Row>
-                                                <Col md="6">
-                                                    <div>
-                                                        <input
-                                                            className="form-control"
-                                                            type="text"
-                                                            placeholder="Search"
-                                                            aria-label="Search"
-                                                        // onKeyUp={this.searchApplicationDataKeyUp}
-                                                        />
-                                                    </div>
-                                                </Col>
-                                                <Col md="6">
-                                                    <div className="right">
-                                                        <Link to="/adduser">
-                                                            <Button
-                                                                className="mb-2 mr-2 custom-button"
-                                                                color="primary"
-                                                            >
-                                                                Add
-                                                            </Button>
-                                                        </Link>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                        <br /> */}
-                    {/* <Table hover className="mb-0 table_responsive" bordered>
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>PhoneNumber</th>
-                                                    <th>Address</th>
-                                                    <th style={{textAlign:"center"}}>Status</th>
-                                                    <th className="action">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>User-1</td>
-                                                    <td>user1@gmail.com</td>
-                                                    <td>7878787878</td>
-                                                    <td>Digital Vichar Technology</td>
-                                                    <td style={{textAlign:"center"}}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.edituser}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>User-2</td>
-                                                    <td>user2@gmail.com</td>
-                                                    <td>7878787878</td>
-                                                    <td>Digital Vichar Technology</td>
-                                                    <td style={{textAlign:"center"}}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.edituser}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteuser}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </Table> */}
-                    <div>
+                      {
+                        this.state.userdata.length > 0 ? (
+                          
+                          <div>
                       <ul className="pagination" id="page-numbers">
                         {pageDecrementBtn}
                         {renderPageNumbers}
                         {pageIncrementBtn}
                       </ul>
                     </div>
+                        ) : (
+                          ''
+                        )
+                      }
                   </CardBody>
                 </Card>
               </Col>

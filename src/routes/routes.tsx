@@ -65,6 +65,8 @@ import ViewAddress from '../pages/customermanagment/viewaddress/viewaddress';
 import ListCard from '../pages/customermanagment/listcard/listcard';
 import AddCard from '../pages/customermanagment/addcard/addcard';
 import ViewCard from '../pages/customermanagment/viewcard/viewcard';
+import ChangePassword from '../pages/chnagepassword/changepassword';
+import ResetPassword from '../pages/resetpassword/resetpassword';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -106,7 +108,7 @@ class Main extends React.Component {
             <Route exact path='/city' render={(props: any) => <City {...props} />} />
             <Route exact path='/addcity' render={(props: any) => <AddCity {...props} />} />
             <Route exact path='/editcity' render={(props: any) => <AddCity {...props} />} />
-            <Route exact path='/viewuser' render={(props: any) => <ViewUser {...props} />} />
+            <Route exact path='/viewuser/:id' render={(props: any) => <ViewUser {...props} />} />
             <Route exact path='/viewuserrole' render={(props: any) => <ViewUserRole {...props} />} />
             <Route exact path='/viewcategory' render={(props: any) => <ViewCategory {...props} />} />
             <Route exact path='/viewsubcategory' render={(props: any) => <ViewSubCategory {...props} />} />
@@ -159,6 +161,8 @@ class Main extends React.Component {
             <Route exact path='/add-card' render={(props: any) => <AddCard {...props} />} />
             <Route exact path='/edit-card' render={(props: any) => <AddCard {...props} />} />
             <Route exact path='/view-card' render={(props: any) => <ViewCard {...props} />} />
+            <Route exact path='/change-password' render={(props: any) => <ChangePassword {...props} />} />
+            <Route exact path='/resetpassword/:guid' render={(props: any) => <ResetPassword {...props} />} />
              {/* <Redirect from="/" to="/login" /> */}
           </React.Suspense>
         </Switch>

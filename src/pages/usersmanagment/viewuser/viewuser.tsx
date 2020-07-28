@@ -17,21 +17,49 @@ import NavBar from '../../navbar/navbar';
 import API from '../../../service/service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
+import { any } from 'prop-types';
+export interface viewUser {
 
-class ViewUser extends React.Component<{ history: any }> {
-
+}
+class ViewUser extends React.Component<{ history: any,location:any}> {
+    
+    state = {
+        userdata: {
+            firstName:'',
+            lastName:'',
+            email:'',
+            phone:''
+        }
+    };
     constructor(props: any) {
         super(props);
     }
 
     async componentDidMount() {
         document.title = constant.viewUserTitle + utils.getAppName();
-        // const getProfile = await API.getProfile();
-        // console.log("getprofile",getProfile);
+        const usderId = this.props.location.pathname.split('/')[2];
+        if(usderId !== undefined) {
+          const obj = {
+            id:usderId
+          }
+          const getUserById: any= await API.getUserById(obj);
+          
+          this.setState({
+           userdata:{
+            firstName:getUserById.resultObject.firstName,
+            lastName:getUserById.resultObject.lastName,
+            email:getUserById.resultObject.email,
+            phone:getUserById.resultObject.phone
+           }
+          })
+           
     }
+}
 
 
     render() {
+
+        console.log("viewarray",this.state.userdata)
 
         return (
             <>
@@ -65,14 +93,14 @@ class ViewUser extends React.Component<{ history: any }> {
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
                                                     <Label htmlFor="first_name"><b>First Name</b></Label>
-                                                    <p>User-1</p>
+        <p>{this.state.userdata.firstName}</p>
 
                                                 </FormGroup>
                                             </Col>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
                                                     <Label htmlFor="last_name"><b>Last Name</b></Label>
-                                                    <p>User</p>
+        <p>{this.state.userdata.lastName}</p>
 
                                                 </FormGroup>
                                             </Col>
@@ -81,14 +109,14 @@ class ViewUser extends React.Component<{ history: any }> {
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
                                                     <Label htmlFor="email"><b>E-Mail</b></Label>
-                                                    <p>User@gmail.com</p>
+                                                    <p>{this.state.userdata.email}</p>
 
                                                 </FormGroup>
                                             </Col>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
                                                     <Label htmlFor="mobile_no"><b>Mobile Number</b></Label>
-                                                    <p>9797979797</p>
+                                                    <p>{this.state.userdata.phone}</p>
 
                                                 </FormGroup>
                                             </Col>
