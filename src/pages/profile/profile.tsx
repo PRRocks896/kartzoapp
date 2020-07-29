@@ -61,7 +61,14 @@ class Profile extends React.Component {
     document.title = constant.profileTitle + utils.getAppName();
 
     this.getUserRole();
+    this.getUserById();
 
+   
+
+    // const getProfile : profileListRequest = [];
+  }
+
+  async getUserById() {
     var user = localStorage.getItem("user");
     if (user) {
       let profile: User = JSON.parse(user);
@@ -88,8 +95,6 @@ class Profile extends React.Component {
         utils.showError(msg1);
       }
     }
-
-    // const getProfile : profileListRequest = [];
   }
 
   async getUserRole() {
@@ -193,7 +198,7 @@ class Profile extends React.Component {
         // };
 
         let formData = new FormData();    
-        console.log('File in formData: ', this.state.selectedFile);
+        console.log('File in formData: ', this.state.selectedFile[0]);
         formData.append('iD', this.state.userid.toString());   
         formData.append('firstName', this.state.firstname);
         formData.append('lastName', this.state.lastname);
@@ -206,6 +211,7 @@ class Profile extends React.Component {
 
         if(updateProfile.resultObject !== null) {
           const msg = "Profile Updated Successfully";
+          this.getUserById();
           utils.showSuccess(msg);
         } else {
           const msg1 = "Error";
@@ -235,7 +241,7 @@ class Profile extends React.Component {
     this.setState({
       selectedFile: this.state.selectedFile = event.target.files,
     });
-    console.log("file",this.state.selectedFile[0]);
+    // this.getUserById();
   }
 
   removeIcon() {

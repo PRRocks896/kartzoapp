@@ -35,7 +35,7 @@ class ResetPassword extends React.Component<{ location: any }> {
 
   /** first this method call */
   componentDidMount() {
-    console.log("query=", this.props.location.pathname.split("/")[2]);
+    console.log("query=", this.props.location.pathname.split("/")[2].split('=')[1]);
   }
 
   /** validation of reset form */
@@ -63,15 +63,8 @@ class ResetPassword extends React.Component<{ location: any }> {
 
   /** Reset password  */
   async ResetPassword() {
-    const isValid = this.validate();
-    if (isValid) {
-      this.setState({
-        password: "",
-        passwordError: "",
-      });
-    }
     const obj = {
-      guid: this.props.location.pathname.split("/")[2],
+      guid: this.props.location.pathname.split("/")[2].split('=')[1],
       password: this.state.password,
     };
     var resetPassword = await API.resetPassword(obj);

@@ -11,34 +11,59 @@ import ResturantListings from '../resturantslisting/resturantslisting';
 import NavBar from '../../../navbar/navbar';
 
 
+interface User {
+    firstName?: string,
+    lastName?: string
+  }
 
 class SideBar extends React.Component {
     state = {
         isOpen: true,
-        side: true
+        side: true,
+        firstName:'',
+        lastName:''
     };
-
+    
+    constructor(props:any) {
+        super(props);
+    }
+    
     toggleCollapse = () => {
         this.setState({ isOpen: !this.state.isOpen });
     }
-
+    
     toggleCollapseRight = () => {
         this.setState({ side: !this.state.side });
     }
-
-
-
+    
     closeNav = () => {
         this.setState({ isOpen: !this.state.isOpen });
     }
 
+    componentDidMount() {
+        var user = localStorage.getItem("user");
+        if (user) {
+            var username = JSON.parse(user);
+            this.setState({
+                firstName: this.state.firstName = username.firstName,
+                lastName: this.state.lastName = username.lastName
+            })
+        }
+    }
+    
     render() {
         return (
             <NavBar>
                 <div className="ms-content-wrapper">
                     <div className="row">
                         <div className="col-md-12">
-                            <h1 className="db-header-title">Welcome, Anny</h1>
+                            {
+                                this.state.firstName || this.state.lastName ? (
+                                    <h1 className="db-header-title">Welcome, {this.state.firstName} {this.state.lastName}</h1>
+                                ) : (
+                                    <h1 className="db-header-title">Welcome, Any</h1>
+                                )
+                            }
                         </div>
                         <OrderGraph />
 

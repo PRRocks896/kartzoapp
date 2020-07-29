@@ -28,7 +28,8 @@ class ViewUser extends React.Component<{ history: any,location:any}> {
             firstName:'',
             lastName:'',
             email:'',
-            phone:''
+            phone:'',
+            file:null
         }
     };
     constructor(props: any) {
@@ -49,7 +50,8 @@ class ViewUser extends React.Component<{ history: any,location:any}> {
             firstName:getUserById.resultObject.firstName,
             lastName:getUserById.resultObject.lastName,
             email:getUserById.resultObject.email,
-            phone:getUserById.resultObject.phone
+            phone:getUserById.resultObject.phone,
+            file:getUserById.resultObject.photoPath
            }
           })
            
@@ -58,8 +60,6 @@ class ViewUser extends React.Component<{ history: any,location:any}> {
 
 
     render() {
-
-        console.log("viewarray",this.state.userdata)
 
         return (
             <>
@@ -129,7 +129,20 @@ class ViewUser extends React.Component<{ history: any,location:any}> {
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup className="img-upload">
                                                     <p style={{ fontSize: '16px' }}><b>User Image</b></p>
-                                                    <p><i className="fa fa-user"></i></p>
+                                                    <div>
+                                                        {
+                                                            this.state.userdata.file != null ? (
+
+                                                                <img
+                                                                  className="picture"
+                                                                  src={constant.filepath + this.state.userdata.file}
+                                                                />
+                                                            ) : (
+                                                            <i className="fa fa-user"></i>
+                                                            )
+                                                        }
+                                 
+                                </div>
 
                                                 </FormGroup>
                                             </Col>

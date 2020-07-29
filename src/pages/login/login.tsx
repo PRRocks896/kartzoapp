@@ -233,8 +233,8 @@ class Login extends React.Component<{ history: any }> {
                                         >
                                             {Constant.signin}
                                         </button>
-                                        <p className="mb-0 mt-3 text-center">{Constant.notmember} <b className="btn-link"><Link to="/signup" style={{ color: 'rgb(238, 162, 24)',fontWeight:600 }}>{Constant.signup}</Link></b>
-                                        </p>
+                                        {/* <p className="mb-0 mt-3 text-center">{Constant.notmember} <b className="btn-link"><Link to="/signup" style={{ color: 'rgb(238, 162, 24)',fontWeight:600 }}>{Constant.signup}</Link></b>
+                                        </p> */}
                                     </form>
                                 </div>
                             </div>

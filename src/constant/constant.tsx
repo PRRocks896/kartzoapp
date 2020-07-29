@@ -37,6 +37,7 @@ export default {
     userRoleTitle: 'Role Management',
     viewUserRoleTitle: 'View Role',
     adduserRoleTitle: 'Add Role',
+    updateRoleTitle: 'Update Role',
     rolePrivilegesTitle: 'Role Privileges',
     countryTitle: 'Country Management',
     stateTitle:'State Management',

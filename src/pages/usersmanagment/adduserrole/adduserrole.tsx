@@ -22,13 +22,15 @@ import {
   userRoleUpdateRequest,
 } from "../../../modelController/userRoleModel";
 
-class AddUserRole extends React.Component<{ history: any }> {
+class AddUserRole extends React.Component<{ history: any,location:any }> {
   state = {
     rolename: "",
     rolenameerror: "",
     description: "",
     descriptionerror: "",
     isOpen: false,
+    updateTrue:false,
+    roleid:0
   };
 
   constructor(props: any) {
@@ -37,10 +39,30 @@ class AddUserRole extends React.Component<{ history: any }> {
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.addUserRole = this.addUserRole.bind(this);
+    this.updateUserRole = this.updateUserRole.bind(this);
   }
 
   async componentDidMount() {
-    document.title = constant.adduserRoleTitle + utils.getAppName();
+    const roleId = this.props.location.pathname.split('/')[2];
+    if(roleId != undefined) {
+      const obj = {
+        id:roleId
+      }
+      const getRoleById:any = await API.getRoleById(obj);
+      console.log("getRoleById",getRoleById);
+      this.setState({
+        updateTrue:this.state.updateTrue = true,
+        rolename:this.state.rolename = getRoleById.resultObject.role,
+        roleid:this.state.roleid = getRoleById.resultObject.roleId,
+        description:this.state.description = getRoleById.resultObject.description,
+        isOpen:this.state.isOpen = getRoleById.resultObject.isAdminRole
+      })
+    }
+    if(this.state.updateTrue === true) {
+      document.title = constant.updateRoleTitle + utils.getAppName();
+    } else {
+      document.title = constant.adduserRoleTitle + utils.getAppName();
+    }
   }
 
   handleChange(checked: boolean) {
@@ -88,10 +110,6 @@ class AddUserRole extends React.Component<{ history: any }> {
           isAdminRole: this.state.isOpen,
         };
 
-        // const obj1: userRoleUpdateRequest = {
-        //   rolename: this.state.rolename,
-        // };
-
         console.log("userole", obj);
 
         const addUserRole = await API.addUserRole(obj);
@@ -100,25 +118,46 @@ class AddUserRole extends React.Component<{ history: any }> {
         if (addUserRole.resultObject !== null) {
           const msg = "UserRole Added Successfully";
           utils.showSuccess(msg);
-        //   this.props.history.push("/userrole");
+          this.props.history.push("/userrole");
         } else {
           const msg1 = "Error";
           utils.showError(msg1);
         }
-
-        // const editUserRole = await API.editUserRole(obj);
-        // console.log("editUserRole",editUserRole);
-
-        // if (this.state.rolename === obj.rolename) {
-        //     const msg = "UserRole Added Successfully";
-        //     utils.showSuccess(msg);
-        //     this.props.history.push('/userrole');
-        // } else {
-        //     const msg1 = "Error";
-        //     utils.showError(msg1);
-        // }
       }
     }
+  }
+
+  async updateUserRole() {
+    const isValid = this.validate();
+    if (isValid) {
+      this.setState({
+        rolenameerror: "",
+        descriptionerror: "",
+      });
+      if (this.state.rolename && this.state.description) {
+        const obj: userRoleUpdateRequest = {
+          roleId:this.state.roleid,
+          role: this.state.rolename,
+          description: this.state.description,
+          isActive: true,
+          isAdminRole: this.state.isOpen,
+        };
+        console.log("userole", obj);
+
+        const editUserRole = await API.editUserRole(obj);
+        console.log("editUserRole",editUserRole);
+
+        if (editUserRole.resultObject !== null) {
+          const msg = "UserRole Updated Successfully";
+          utils.showSuccess(msg);
+          this.props.history.push("/userrole");
+        } else {
+          const msg1 = "Error";
+          utils.showError(msg1);
+        }
+      }
+    }
+
   }
 
   render() {
@@ -131,9 +170,18 @@ class AddUserRole extends React.Component<{ history: any }> {
                 <Card>
                   <CardHeader>
                     <Row>
+                      {
+                        this.state.updateTrue === true ? (
+                          <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                          <h1>Update Role</h1>
+                        </Col>
+                        ) : (
+
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
                         <h1>Add Role</h1>
                       </Col>
+                        )
+                      }
                       <Col
                         xs="12"
                         sm="6"
@@ -210,15 +258,30 @@ class AddUserRole extends React.Component<{ history: any }> {
                         </label>
                       </Col>
                     </Row>
+                    {
+                      this.state.updateTrue === true ? (
                     <Button
                       type="button"
                       size="sm"
                       color="primary"
                       className="mb-2 mr-2 custom-button"
-                      onClick={this.addUserRole}
+                      onClick={this.updateUserRole}
                     >
-                      Save
+                      Update
                     </Button>
+                      ) : (
+                        <Button
+                        type="button"
+                        size="sm"
+                        color="primary"
+                        className="mb-2 mr-2 custom-button"
+                        onClick={this.addUserRole}
+                      >
+                        Save
+                      </Button>
+
+                      )
+                    }
                   </CardBody>
                 </Card>
               </Col>

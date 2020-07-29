@@ -78,7 +78,8 @@ class Users extends React.Component<{ history: any }> {
     $("#dtBasicExample").DataTable({
       paging: false,
       info: false,
-      searching:false
+      searching:false,
+      ordering: true
     });
     // $('.dataTables_length').addClass('bs-select');
     this.getUserRole();
@@ -441,7 +442,13 @@ class Users extends React.Component<{ history: any }> {
                               <td>{data.email}</td>
                               <td>{data.role}</td>
                               <td style={{ textAlign: "center" }}>
-                                <i className="fa fa-check"></i>
+                                {
+                                  data.isActive === true ? (
+                                    <i className="fa fa-check"></i>
+                                  ) : (
+                                    <i className="fa fa-times cursor"></i>
+                                  )
+                                }
                               </td>
                               <td className="action">
                                 <span className="padding">

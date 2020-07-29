@@ -5,16 +5,32 @@ import nav from '../../navbar.service';
 import { Badge, Nav, NavItem, NavLink as RsNavLink } from 'reactstrap';
 import classNames from 'classnames';
 import history from '../../history';
+import constant from '../../constant/constant';
 
 class NavBar extends React.Component {
     state = {
         isOpen: true,
-        side: true
+        side: true,
+        file:null,
+        firstName:'',
+        lastName:''
     };
 
     constructor(props:any) {
         super(props);
         // this.logout = this.logout.bind(this);
+    }
+
+    componentDidMount() {
+        var user = localStorage.getItem("user");
+        if (user) {
+            var username = JSON.parse(user);
+            this.setState({
+                file: this.state.file = username.photoPath,
+                firstName: this.state.firstName = username.firstName,
+                lastName: this.state.lastName = username.lastName
+            })
+        }
     }
 
     activeRoute(routeName:any, props:any) {
@@ -600,11 +616,23 @@ class NavBar extends React.Component {
 
                             <li className="ms-nav-item ms-nav-user dropdown">
                                 <a href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img className="ms-user-img ms-img-round float-right" src="./assets/img/costic/customer-6.jpg" alt="people" />
+                                    {
+                                        this.state.file != null ? (
+                                            <img className="ms-user-img ms-img-round float-right" src={constant.filepath + this.state.file} alt="people" />
+                                        ) : (
+                                            <img className="ms-user-img ms-img-round float-right" src="../../assets/img/costic/customer-3.jpg" alt="people" />
+                                        )
+                                    }
                                 </a>
                                 <ul className="dropdown-menu dropdown-menu-right user-dropdown" aria-labelledby="userDropdown">
                                     <li className="dropdown-menu-header">
-                                        <h6 className="dropdown-header ms-inline m-0"><span className="text-disabled">Welcome, Anny Farisha</span></h6>
+                                        {
+                                            this.state.firstName || this.state.lastName ? (
+                                            <h6 className="dropdown-header ms-inline m-0"><span className="text-disabled">Welcome, {this.state.firstName} {this.state.lastName}</span></h6>
+                                            ) : (
+                                                <h6 className="dropdown-header ms-inline m-0"><span className="text-disabled">Welcome, Anny Farisha</span></h6>
+                                            )
+                                        }
                                     </li>
                                     <li className="dropdown-divider"></li>
                                     <li className="ms-dropdown-list">

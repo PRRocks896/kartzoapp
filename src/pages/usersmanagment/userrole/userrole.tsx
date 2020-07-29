@@ -1,375 +1,432 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { MDBDataTable } from 'mdbreact';
+import React from "react";
+import { Link } from "react-router-dom";
+import { MDBDataTable } from "mdbreact";
 import {
-    Badge,
-    Button,
-    Card,
-    CardBody,
-    CardFooter,
-    CardHeader,
-    Col,
-    CardTitle,
-    Form,
-    CustomInput,
-    FormGroup,
-    FormText,
-    FormFeedback,
-    Input,
-    Table,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupButtonDropdown,
-    InputGroupText,
-    Label,
-    Row,
-} from 'reactstrap';
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Col,
+  CardTitle,
+  Form,
+  CustomInput,
+  FormGroup,
+  FormText,
+  FormFeedback,
+  Input,
+  Table,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButtonDropdown,
+  InputGroupText,
+  Label,
+  Row,
+} from "reactstrap";
 // import './users.css';
-import NavBar from '../../navbar/navbar';
-import Swal from 'sweetalert2';
-import utils from '../../../utils';
-import constant from '../../../constant/constant';
-import TableComponent from '../../../component/tables/table';
-import { userRoleListRequest } from '../../../modelController/userRoleModel';
-import API from '../../../service/role.service';
-const $ = require('jquery');
-$.DataTable = require('datatables.net')
+import NavBar from "../../navbar/navbar";
+import Swal from "sweetalert2";
+import utils from "../../../utils";
+import constant from "../../../constant/constant";
+import TableComponent from "../../../component/tables/table";
+import { userRoleListRequest } from "../../../modelController/userRoleModel";
+import API from "../../../service/role.service";
+const $ = require("jquery");
+$.DataTable = require("datatables.net");
+
+interface getUserRoleRequest {
+  searchText?: string;
+  isActive?: boolean;
+  page?: number;
+  size?: number;
+}
 
 class UserRole extends React.Component<{ history: any }> {
+  state = {
+    count: 10,
+    currentPage: "1",
+    items_per_page: "10",
+    perpage: 2,
+    paginationdata: "",
+    isFetch: false,
+    data: "",
+    allRecords: "",
+    upperPageBound: 3,
+    lowerPageBound: 0,
+    pageBound: 3,
+    isPrevBtnActive: "disabled",
+    isNextBtnActive: "",
+    onClickPage: 1,
+    activePage: 15,
+    userrole: [],
+  };
 
-    state = {
-        count: 10,
-        currentPage: 1,
-        items_per_page: '10',
-        perpage: 2,
-        paginationdata: '',
-        isFetch: false,
-        data: '',
-        allRecords: '',
-        upperPageBound: 3,
-        lowerPageBound: 0,
-        pageBound: 3,
-        isPrevBtnActive: 'disabled',
-        isNextBtnActive: '',
-        onClickPage: 1,
-        activePage: 15
+  constructor(props: any) {
+    super(props);
+    this.editRole = this.editRole.bind(this);
+    this.btnIncrementClick = this.btnIncrementClick.bind(this);
+    this.btnDecrementClick = this.btnDecrementClick.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
+    this.deleteRole = this.deleteRole.bind(this);
+    this.viewRole = this.viewRole.bind(this);
+    this.onItemSelect = this.onItemSelect.bind(this);
+    this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(
+      this
+    );
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    document.title = constant.userRoleTitle + utils.getAppName();
+    $("#dtBasicExample").DataTable({
+      paging: false,
+      info: false,
+      searching: false,
+      order: [[0, "desc"]],
+    });
+    this.getRole();
+  }
+
+  async getRole() {
+    const obj = {
+      searchText: "",
+      isActive: true,
+      page: 1,
+      size: parseInt(this.state.items_per_page),
+    };
+    var getRole = await API.getRoles(obj);
+    console.log("getRole", getRole);
+
+    if (getRole.resultObject != null) {
+      this.setState({
+        userrole: this.state.userrole = getRole.resultObject.data,
+      });
+    } else {
+      const msg1 = getRole.explanation;
+      utils.showError(msg1);
     }
+  }
 
-    constructor(props: any) {
-        super(props);
-        this.editRole = this.editRole.bind(this);
-        this.btnIncrementClick = this.btnIncrementClick.bind(this);
-        this.btnDecrementClick = this.btnDecrementClick.bind(this);
-        this.handlePageChange = this.handlePageChange.bind(this);
-        this.deleteRole = this.deleteRole.bind(this);
-        this.viewRole = this.viewRole.bind(this);
+  handlePageChange(pageNumber: number) {
+    console.log(`active page is ${pageNumber}`);
+    this.setState({ activePage: pageNumber });
+  }
 
-    }
+  btnIncrementClick() {
+    this.setState({
+      upperPageBound: this.state.upperPageBound + this.state.pageBound,
+    });
+    this.setState({
+      lowerPageBound: this.state.lowerPageBound + this.state.pageBound,
+    });
+    let listid = this.state.upperPageBound + 1;
+    this.setState({ currentPage: listid });
+  }
 
-    componentDidMount() {
-        document.title = constant.userRoleTitle + utils.getAppName();
-        $('#dtBasicExample').DataTable({
-            "paging": false,
-            "info": false
-        });
+  btnDecrementClick() {
+    this.setState({
+      upperPageBound: this.state.upperPageBound - this.state.pageBound,
+    });
+    this.setState({
+      lowerPageBound: this.state.lowerPageBound - this.state.pageBound,
+    });
+    let listid = this.state.upperPageBound - this.state.pageBound;
+    this.setState({ currentPage: listid });
+  }
+
+  editRole(data:any) {
+    this.props.history.push("/edituserrole/" + data.roleId);
+  }
+
+  viewRole(data:any) {
+    this.props.history.push("/viewuserrole/" + data.roleId);
+  }
+
+  deleteRole(id:any) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You should be remove role!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, keep it",
+    }).then(async (result) => {
+      if (result.value) {
+        var deleteRole = await API.deleteRole(id);
+        const msg = "UserRole has been deleted";
+        utils.showSuccess(msg);
         this.getRole();
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        const msg1 = "UserRole is safe :";
+        utils.showError(msg1);
+      }
+    });
+  }
+
+  onItemSelect(event: any) {
+    this.setState({
+      items_per_page: this.state.items_per_page =
+        event.target.options[event.target.selectedIndex].value,
+    });
+
+    this.getRole();
+  }
+
+  async handleClick(event: any) {
+    this.setState({
+      currentPage: this.state.currentPage = event.target.id,
+    });
+    const obj: getUserRoleRequest = {
+      searchText: "",
+      isActive: true,
+      page: parseInt(event.target.id),
+      size: parseInt(this.state.items_per_page),
+    };
+
+    var getRoles = await API.getRoles(obj);
+    console.log("getRoles", getRoles);
+
+    if (getRoles.resultObject.data != null) {
+      this.setState({
+        userrole: this.state.userrole = getRoles.resultObject.data,
+      });
     }
+  }
 
-    async getRole() {
+  async searchApplicationDataKeyUp(e: any) {
+    const obj: getUserRoleRequest = {
+      searchText: e.target.value,
+      isActive: true,
+      page: 1,
+      size: parseInt(this.state.items_per_page),
+    };
 
-        const obj = {
-            searchText:'',
-            isActive:true,
-            page:1,
-            size:parseInt(this.state.items_per_page)
-        }
+    var getRoles = await API.getRoles(obj);
+    console.log("getRoles", getRoles);
 
-        var getRole = await API.getRoles(obj);
-        console.log("getRole",getRole);
-      
+    if (getRoles.resultObject.data != null) {
+      this.setState({
+        userrole: this.state.userrole = getRoles.resultObject.data,
+        count: this.state.count = getRoles.resultObject.totalcount,
+      });
     }
+  }
 
-
-    handlePageChange(pageNumber: number) {
-        console.log(`active page is ${pageNumber}`);
-        this.setState({ activePage: pageNumber });
+  render() {
+    var pageNumbers = [];
+    for (
+      let i = 1;
+      i <= Math.ceil(this.state.count / parseInt(this.state.items_per_page));
+      i++
+    ) {
+      pageNumbers.push(i);
     }
-
-
-    btnIncrementClick() {
-        this.setState({ upperPageBound: this.state.upperPageBound + this.state.pageBound });
-        this.setState({ lowerPageBound: this.state.lowerPageBound + this.state.pageBound });
-        let listid = this.state.upperPageBound + 1;
-        this.setState({ currentPage: listid });
-    }
-
-    btnDecrementClick() {
-        this.setState({ upperPageBound: this.state.upperPageBound - this.state.pageBound });
-        this.setState({ lowerPageBound: this.state.lowerPageBound - this.state.pageBound });
-        let listid = this.state.upperPageBound - this.state.pageBound;
-        this.setState({ currentPage: listid });
-    }
-
-    editRole() {
-        this.props.history.push('/edituserrole');
-    }
-
-    viewRole() {
-        this.props.history.push('/viewuserrole');
-    }
-
-    deleteRole() {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'You should be remove role!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it'
-        }).then(async (result) => {
-            if (result.value) {
-                // var deleteCategory = await API.deleteCategory(id);
-                const msg = "UserRole has been deleted";
-                utils.showSuccess(msg);
-                // this.componentDidMount();
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                const msg1 = "UserRole is safe :";
-                utils.showError(msg1);
-            }
-        })
-    }
-
-    render() {
-
-        var pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(this.state.count / parseInt(this.state.items_per_page)); i++) {
-            pageNumbers.push(i);
-        }
-        var renderPageNumbers = pageNumbers.map((number: any) => {
-            if (number === 1 && this.state.currentPage === 1) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link">{number}</a>
-                    </li>
-                );
-            }
-            else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link" id={number}>{number}</a>
-                    </li>
-                )
-            }
-        });
-
-        let pageIncrementBtn = null;
-        if (pageNumbers.length > this.state.upperPageBound) {
-            pageIncrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnIncrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
-
-        let pageDecrementBtn = null;
-        if (this.state.lowerPageBound >= 1) {
-            pageDecrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnDecrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
-
+    var renderPageNumbers = pageNumbers.map((number: any) => {
+      if (number === 1 && parseInt(this.state.currentPage) === 1) {
         return (
-            <>
-                <NavBar>
-                    <div className="ms-content-wrapper">
-                        <div className="row">
-                            <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                                <Card className="main-card mb-12">
-                                    <CardHeader>
-                                        <Row>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <CardTitle
-                                                    className="font"
-                                                >
-                                                    Role Management
-                                            </CardTitle>
-                                            </Col>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <div className="right">
-                                                    <Link to="/adduserrole">
-                                                        <Button
-                                                            className="mb-2 mr-2 custom-button"
-                                                            color="primary"
-                                                        >
-                                                            Add
-                                                            </Button>
-                                                    </Link>
-                                                </div>
-                                            </Col>
-                                        </Row>
+          <li
+            key={number}
+            id={number}
+            className={
+              parseInt(this.state.currentPage) === number
+                ? "active"
+                : "page-item"
+            }
+          >
+            <a className="page-link" onClick={this.handleClick}>
+              {number}
+            </a>
+          </li>
+        );
+      } else if (
+        number < this.state.upperPageBound + 1 &&
+        number > this.state.lowerPageBound
+      ) {
+        return (
+          <li
+            key={number}
+            id={number}
+            className={
+              parseInt(this.state.currentPage) === number
+                ? "active"
+                : "page-item"
+            }
+          >
+            <a className="page-link" id={number} onClick={this.handleClick}>
+              {number}
+            </a>
+          </li>
+        );
+      }
+    });
 
-                                    </CardHeader>
-                                    <CardBody>
-                                        <div className="selectDiv">
+    let pageIncrementBtn = null;
+    if (pageNumbers.length > this.state.upperPageBound) {
+      pageIncrementBtn = (
+        <li className="page-item">
+          <a className="page-link" onClick={this.btnIncrementClick}>
+            &hellip;
+          </a>
+        </li>
+      );
+    }
 
-                                            <CustomInput
-                                                type="select"
-                                                id="exampleCustomSelect"
-                                                name="customSelect"
-                                            // onChange={this.onItemSelect}
-                                            >
-                                                <option value="">Record per page</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="20">20</option>
-                                                <option value="25">25</option>
-                                                {/* {
+    let pageDecrementBtn = null;
+    if (this.state.lowerPageBound >= 1) {
+      pageDecrementBtn = (
+        <li className="page-item">
+          <a className="page-link" onClick={this.btnDecrementClick}>
+            &hellip;
+          </a>
+        </li>
+      );
+    }
+
+    return (
+      <>
+        <NavBar>
+          <div className="ms-content-wrapper">
+            <div className="row">
+              <Col xs="12" sm="12" md="12" lg="12" xl="12">
+                <Card className="main-card mb-12">
+                  <CardHeader>
+                    <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <CardTitle className="font">Role Management</CardTitle>
+                      </Col>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <div className="right">
+                          <Link to="/adduserrole">
+                            <Button
+                              className="mb-2 mr-2 custom-button"
+                              color="primary"
+                            >
+                              Add
+                            </Button>
+                          </Link>
+                        </div>
+                      </Col>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <div style={{ width: "500px", position: "absolute" }}>
+                          <Row>
+                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                              <CustomInput
+                                type="select"
+                                id="item"
+                                name="customSelect"
+                                onChange={this.onItemSelect}
+                              >
+                                <option value="">Record per page</option>
+                                <option value="3">3</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                {/* {
                             this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
                                 <option key={data.id} value={data.id}>{data.name}</option>
                             ) : ''
                         } */}
-                                            </CustomInput>
-                                        </div>
-
-                                        <table id="dtBasicExample" className="table table-striped table-bordered table-sm" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>Role Name</th>
-                                                    <th style={{ textAlign: "center" }}>Status</th>
-                                                    <th className="action">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Admin</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye" onClick={this.viewRole}></i>
-                                                            <i className="fas fa-edit" onClick={this.editRole}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteRole}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Customer</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye" onClick={this.viewRole}></i>
-                                                            <i className="fas fa-edit" onClick={this.editRole}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteRole}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-
-                                        </table>
-                                        {/* <TableComponent column={constant.roleTableColumn}/> */}
-                                        {/* <MDBDataTable
-                                            striped
-                                            hover
-                                            data={data}
-                                        /> */}
-                                        {/* <div>
-                                            <Row>
-                                                <Col md="6">
-                                                    <div>
-                                                        <input
-                                                            className="form-control"
-                                                            type="text"
-                                                            placeholder="Search"
-                                                            aria-label="Search"
-                                                        // onKeyUp={this.searchApplicationDataKeyUp}
-                                                        />
-                                                    </div>
-                                                </Col>
-                                                <Col md="6">
-                                                    <div className="right">
-                                                        <Link to="/adduserrole">
-                                                            <Button
-                                                                className="mb-2 mr-2 custom-button"
-                                                                color="primary"
-                                                            >
-                                                                Add
-                                                            </Button>
-                                                        </Link>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                        <br /> */}
-                                        {/* <Table hover className="mb-0 table_responsive" bordered>
-                                            <thead>
-                                                <tr>
-                                                    <th>Role Name</th>
-                                                    <th style={{ textAlign: "center" }}>Status</th>
-                                                    <th className="action">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Admin</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editRole}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteRole}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Customer</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editRole}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteRole}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </Table> */}
-                                        <div>
-                                            <ul className="pagination" id="page-numbers">
-                                                {pageDecrementBtn}
-                                                {renderPageNumbers}
-                                                {pageIncrementBtn}
-                                            </ul>
-                                        </div>
-                                    </CardBody>
-                                </Card>
+                              </CustomInput>
                             </Col>
+                          </Row>
                         </div>
-                    </div>
-                </NavBar>
-            </>
-        );
-    }
+                      </Col>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <div>
+                          <Row>
+                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                              <input
+                                className="form-control"
+                                type="text"
+                                placeholder="Search"
+                                aria-label="Search"
+                                onKeyUp={this.searchApplicationDataKeyUp}
+                              />
+                            </Col>
+                          </Row>
+                        </div>
+                      </Col>
+                    </Row>
+
+                    <table
+                      id="dtBasicExample"
+                      className="table table-striped table-bordered table-sm"
+                      width="100%"
+                    >
+                      <thead>
+                        <tr>
+                          <th>Role Name</th>
+                          {/* <th>Description</th> */}
+                          <th style={{ textAlign: "center" }}>Status</th>
+                          <th className="action">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.state.userrole.length > 0 ? (
+                          <>
+                            {this.state.userrole.map(
+                              (data: any, index: any) => (
+                                <tr key={index}>
+                                  <td>{data.role}</td>
+                                  {/* <td>{data.description}</td> */}
+                                  <td style={{ textAlign: "center" }}>
+                                    {data.isActive === true ? (
+                                      <i className="fa fa-check"></i>
+                                    ) : (
+                                      <i className="fa fa-times cursor"></i>
+                                    )}
+                                  </td>
+                                  <td className="action">
+                                    <span className="padding">
+                                      <i
+                                        className="fa fa-eye"
+                                        onClick={() => this.viewRole(data)}
+                                      ></i>
+                                      <i
+                                        className="fas fa-edit"
+                                        onClick={() => this.editRole(data)}
+                                      ></i>
+                                      <i
+                                        className="far fa-trash-alt"
+                                        onClick={() => this.deleteRole(data.roleId)}
+                                      ></i>
+                                    </span>
+                                  </td>
+                                </tr>
+                              )
+                            )}
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </tbody>
+                    </table>
+
+                    {this.state.userrole.length > 0 ? (
+                      <div>
+                        <ul className="pagination" id="page-numbers">
+                          {pageDecrementBtn}
+                          {renderPageNumbers}
+                          {pageIncrementBtn}
+                        </ul>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </CardBody>
+                </Card>
+              </Col>
+            </div>
+          </div>
+        </NavBar>
+      </>
+    );
+  }
 }
 
 export default UserRole;

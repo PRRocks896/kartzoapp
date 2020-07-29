@@ -84,7 +84,8 @@ class AddUser extends React.Component<{ history: any,location:any }> {
         userid:this.state.userid = getUserById.resultObject.userID,
         rolename:this.state.rolename = getUserById.resultObject.role,
         roleid:this.state.roleid = getUserById.resultObject.roleID,
-        file:this.state.file = getUserById.resultObject.photo
+        file:this.state.file = getUserById.resultObject.photoPath,
+        selectedFile:this.state.selectedFile = constant.filepath + getUserById.resultObject.photoPath
 
       })
     }
@@ -281,7 +282,7 @@ class AddUser extends React.Component<{ history: any,location:any }> {
         formData.append('phone', this.state.mobilenumber.toString());
         formData.append('photo', '');
         formData.append('isActive','true');
-        formData.append('files', this.state.selectedFile);
+        formData.append('files', this.state.selectedFile[0]);
         formData.append('userId', '0');
 
         const addUser:any = await API.addUser(formData);
@@ -330,7 +331,7 @@ class AddUser extends React.Component<{ history: any,location:any }> {
         formData.append('password', '');
         formData.append('photo', '');
         formData.append('isActive','true');
-        formData.append('files', this.state.selectedFile);
+        formData.append('files', this.state.selectedFile[0]);
         formData.append('userId', '0');
 
         const editUser:any = await API.editUser(formData,this.state.userid);

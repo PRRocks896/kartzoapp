@@ -26,7 +26,7 @@ import { any } from "prop-types";
 class UserRoleToRights extends React.Component {
   state = {
     userrole: [],
-    roleid: 0,
+    roleid: '0',
     onItemSelect: "",
     mainItemName: [],
     role: [],
@@ -42,6 +42,7 @@ class UserRoleToRights extends React.Component {
     this.handleMainChange = this.handleMainChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.checkMaster = this.checkMaster.bind(this);
+    this.updateRights = this.updateRights.bind(this);
   }
 
   componentDidMount() {
@@ -192,6 +193,38 @@ class UserRoleToRights extends React.Component {
     this.setState({
       _maincheck: _val,
     });
+  }
+
+  async updateRights() {
+    console.log("userdata",this.state.roleprivileges);
+    let privilegesArray = [];
+    for(var i=0;i<this.state.roleprivileges.length;i++) {
+      privilegesArray.push({
+        menuitemid: this.state.roleprivileges[i]['menuItemID'],
+        view:this.state.roleprivileges[i]['view'],
+        add:this.state.roleprivileges[i]['add'],
+        edit:this.state.roleprivileges[i]['edit'],
+        delete:this.state.roleprivileges[i]['delete'],
+        detail:this.state.roleprivileges[i]['detail']
+      })
+    }
+    const obj = {
+      roleid:parseInt(this.state.roleid),
+      isadminuser:true,
+      privileges:privilegesArray
+    }
+
+    const updateRolePreveliges = await RoleAPI.updateRolePreveliges(obj);
+    console.log("updateRolePreveliges", updateRolePreveliges);
+
+    if (updateRolePreveliges.resultObject !== null) {
+      const msg = "Role privileges Updated Successfully";
+      utils.showSuccess(msg);
+    } else {
+      const msg1 = "Error";
+      utils.showError(msg1);
+    }
+
   }
 
   render() {
@@ -481,6 +514,7 @@ class UserRoleToRights extends React.Component {
                               className="mb-2 mr-2 custom-button"
                               color="primary"
                               style={{ margin: "15px" }}
+                              onClick={this.updateRights}
                             >
                               Save
                             </Button>

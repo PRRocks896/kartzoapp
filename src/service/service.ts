@@ -12,10 +12,12 @@ export default {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.createData, data);
     },
     forgotPassword: async function (data: any) {
-        return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.forgotpassword, data);
+        console.log("data",data);
+        const params = data.email;
+        return await axios.post(Constant.apiUrl + apiUrl.userController.forgotpassword + '?email=' +  params);
     },
     resetPassword: async function (data: any) {
-        return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.resetpassword, data);
+        return await axios.post(Constant.apiUrl + apiUrl.userController.resetpassword, data);
     },
     updatePassword: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.updatepassword, data);

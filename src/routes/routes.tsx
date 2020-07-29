@@ -98,7 +98,7 @@ class Main extends React.Component {
             <Route exact path='/addsubcategory' render={(props: any) => <AddSubCategory {...props} />} />
             <Route exact path='/editsubcategory' render={(props: any) => <AddSubCategory {...props} />} />
             <Route exact path='/adduserrole' render={(props: any) => <AddUserRole {...props} />} />
-            <Route exact path='/edituserrole' render={(props: any) => <AddUserRole {...props} />} />
+            <Route exact path='/edituserrole/:id' render={(props: any) => <AddUserRole {...props} />} />
             <Route exact path='/country' render={(props: any) => <CountryManagment {...props} />} />
             <Route exact path='/addcountry' render={(props: any) => <AddCountry {...props} />} />
             <Route exact path='/editcountry' render={(props: any) => <AddCountry {...props} />} />
@@ -109,7 +109,7 @@ class Main extends React.Component {
             <Route exact path='/addcity' render={(props: any) => <AddCity {...props} />} />
             <Route exact path='/editcity' render={(props: any) => <AddCity {...props} />} />
             <Route exact path='/viewuser/:id' render={(props: any) => <ViewUser {...props} />} />
-            <Route exact path='/viewuserrole' render={(props: any) => <ViewUserRole {...props} />} />
+            <Route exact path='/viewuserrole/:id' render={(props: any) => <ViewUserRole {...props} />} />
             <Route exact path='/viewcategory' render={(props: any) => <ViewCategory {...props} />} />
             <Route exact path='/viewsubcategory' render={(props: any) => <ViewSubCategory {...props} />} />
             <Route exact path='/viewcity' render={(props: any) => <ViewCity {...props} />} />

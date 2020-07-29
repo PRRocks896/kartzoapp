@@ -28,10 +28,12 @@ const apiUrl = {
     userRoleController: {
         addRole:'roles',
         getRole:'roles/get-role-list-dropdown',
-        editRole:'role',
-        deleteRole:'role',
+        editRole:'roles/',
+        deleteRole:'roles/',
         rolepreveliges:'roleprivileges/',
-        getRoles:'roles/get-role-list'
+        updateRolePreveliges:'roleprivileges',
+        getRoles:'roles/get-role-list',
+        getRoleById:'roles/'
     },
     locationController: {
         addCountry:'country',
