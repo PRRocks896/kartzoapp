@@ -79,7 +79,8 @@ class Users extends React.Component<{ history: any }> {
       paging: false,
       info: false,
       searching:false,
-      ordering: true
+      ordering: true,
+      order: [[1, 'desc']]
     });
     // $('.dataTables_length').addClass('bs-select');
     this.getUserRole();

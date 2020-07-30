@@ -143,8 +143,11 @@ class AddUser extends React.Component<{ history: any,location:any }> {
       emailerror = "please enter valid email";
     }
 
+    const mobileRegex:any = /^([+]\d{2})?\d{10}$/;
     if (!this.state.mobilenumber) {
       mobilenumbererror = "please enter mobile number";
+    } else if (!mobileRegex.test(this.state.mobilenumber)){
+      mobilenumbererror = "please enter valid mobile number";
     }
 
     if (!this.state.password) {
@@ -460,7 +463,7 @@ class AddUser extends React.Component<{ history: any,location:any }> {
                         <FormGroup>
                           <Label htmlFor="mobile_no">Mobile Number</Label>
                           <Input
-                            type="text"
+                            type="number"
                             id="mobile_no"
                             name="mobilenumber"
                             className="form-control"
