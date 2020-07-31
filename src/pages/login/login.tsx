@@ -7,7 +7,13 @@ import history from '../../history';
 import Constant from '../../constant/constant';
 import $ from "jquery";
 import constant from '../../constant/constant';
+import axios from 'axios';
+import apiUrl from '../../apicontroller/apicontrollers';
 import { loginCreateRequest } from '../../modelController/loginModel';
+import Swal from 'sweetalert2';
+const interceptor =  require('../../intercepter');
+const publicIp = require('public-ip');
+
 
 class Login extends React.Component<{ history: any }> {
 
@@ -15,7 +21,8 @@ class Login extends React.Component<{ history: any }> {
         email: '',
         emailerror: '',
         password: '',
-        passworderror: ''
+        passworderror: '',
+        ipAddress:''
     }
 
     constructor(props: any) {
@@ -28,7 +35,11 @@ class Login extends React.Component<{ history: any }> {
 
     async componentDidMount() {
         document.title = constant.loginTitle + utils.getAppName();
-    
+        // console.log("interceptor",interceptor)
+        const ipaddress = publicIp.v4();
+        this.setState({
+            ipAddress : this.state.ipAddress =  await ipaddress
+        })
     }
 
     handleChangeEvent(event: any) {
@@ -122,23 +133,50 @@ class Login extends React.Component<{ history: any }> {
             if (this.state.email && this.state.password) {
                 const obj : loginCreateRequest = {
                     email: this.state.email,
-                    password: this.state.password
+                    password: this.state.password,
+                    deviceType:1,
+                    deviceId:'',
+                    ipAddress:this.state.ipAddress,
+                    userId:0
                 }
 
-                var loginUser = await API.loginUser(obj);
-                console.log("loginuser",loginUser);
-
-                if(loginUser.data.resultObject !== undefined) {
-                    var user=loginUser.data.resultObject;
-                    localStorage.setItem('user',JSON.stringify(user));
-                    localStorage.setItem('token',user.token);
+                axios.post(Constant.apiUrl + apiUrl.userController.createData, obj).then((res:any) => {
+                    console.log("res",res);
+                    var userData=res.data.resultObject;
+                    localStorage.setItem('user',JSON.stringify(userData));
+                    localStorage.setItem('token',userData.token);
                     const msg = "Login Successfully";
                     utils.showSuccess(msg);
-                    this.props.history.push('/dashboard');
-                } else {
-                        const msg1 = loginUser.data.explanation;
-                        utils.showError(msg1);
-                    }
+                }).catch((err:any) => {
+                    console.log("err",err);
+                    // Swal.fire({
+                    //     title: 'Cancelled',
+                    //     text: msg,
+                    //     icon: 'error'
+                    // });
+                });
+
+                // var loginUser:any = await API.loginUser(obj);
+                // console.log("loginuser",loginUser);
+
+                // if(loginUser.resultObject != null) {
+                //     var userData=loginUser.resultObject;
+                //     localStorage.setItem('user',JSON.stringify(userData));
+                //     localStorage.setItem('token',userData.token);
+                //     const msg = "Login Successfully";
+                //     utils.showSuccess(msg);
+                // } else {
+                //     const msg1 = loginUser.explanation;
+                //     utils.showError(msg1);
+                // }
+
+                // if(loginUser.data.resultObject !== undefined) {
+                  
+                //     // this.props.history.push('/dashboard');
+                // } else {
+                //         const msg1 = loginUser.data.explanation;
+                //         utils.showError(msg1);
+                //     }
 
             }
         };

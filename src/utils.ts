@@ -20,7 +20,8 @@ const utils = {
     getHeaderDetail:() => {
         return {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
-            'Access-Control-Allow-Origin': true
+            'Access-Control-Allow-Origin': true,
+            crossdomain: true 
         }
     }
 }

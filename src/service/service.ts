@@ -6,7 +6,7 @@ import axios from 'axios';
 
 export default {
     loginUser: async function (data: any) {
-        return await axios.post(Constant.apiUrl + apiUrl.userController.createData, data);
+        return axios.post(Constant.apiUrl + apiUrl.userController.createData, data);
     },
     signupUser: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.createData, data);

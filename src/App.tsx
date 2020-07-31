@@ -10,7 +10,6 @@ import Dashboard from './pages/dashboard/dashboard';
 class App extends React.Component {
 
   render() {
-    console.log('localstoreage',localStorage.getItem('token'));
    
     const loading = (
       <div className="pt-3 text-center">

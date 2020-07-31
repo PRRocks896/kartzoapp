@@ -37,9 +37,11 @@
     "firebase-tools": "^8.6.0",
     "history": "^5.0.0",
     "http-errors": "^1.8.0",
+    "lodash": "^4.17.19",
     "mdbreact": "^4.27.0",
     "moment": "^2.27.0",
     "prop-types": "^15.7.2",
+    "public-ip": "^4.0.2",
     "react": "^16.13.1",
     "react-bootstrap-table-next": "^4.0.3",
     "react-bootstrap-table2-editor": "^1.4.0",
@@ -81,5 +83,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "local-ip-url": "^1.0.3"
   }
 }

@@ -27,6 +27,7 @@ import {
 // import './users.css';
 import NavBar from "../../navbar/navbar";
 import Swal from "sweetalert2";
+import './userrole.css';
 import utils from "../../../utils";
 import constant from "../../../constant/constant";
 import TableComponent from "../../../component/tables/table";
@@ -60,6 +61,7 @@ class UserRole extends React.Component<{ history: any }> {
     onClickPage: 1,
     activePage: 15,
     userrole: [],
+    switchSort: false,
   };
 
   constructor(props: any) {
@@ -75,6 +77,8 @@ class UserRole extends React.Component<{ history: any }> {
       this
     );
     this.handleClick = this.handleClick.bind(this);
+    this.handleSort = this.handleSort.bind(this);
+    this.compareByDesc = this.compareByDesc.bind(this);
   }
 
   componentDidMount() {
@@ -83,7 +87,8 @@ class UserRole extends React.Component<{ history: any }> {
       paging: false,
       info: false,
       searching: false,
-      order: [[0, "desc"]],
+      sorting: false,
+      ordering: false,
     });
     this.getRole();
   }
@@ -135,15 +140,15 @@ class UserRole extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
-  editRole(data:any) {
+  editRole(data: any) {
     this.props.history.push("/edituserrole/" + data.roleId);
   }
 
-  viewRole(data:any) {
+  viewRole(data: any) {
     this.props.history.push("/viewuserrole/" + data.roleId);
   }
 
-  deleteRole(id:any) {
+  deleteRole(id: any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You should be remove role!",
@@ -171,6 +176,33 @@ class UserRole extends React.Component<{ history: any }> {
     });
 
     this.getRole();
+  }
+
+  handleSort(key: any) {
+    this.setState({
+      switchSort: !this.state.switchSort,
+    });
+    let copyTableData = [...this.state.userrole];
+    copyTableData.sort(this.compareByDesc(key));
+    this.setState({
+      userrole: this.state.userrole = copyTableData,
+    });
+  }
+
+  compareByDesc(key: any) {
+    if (this.state.switchSort) {
+      return function (a: any, b: any) {
+        if (a[key] < b[key]) return -1; // check for value if the second value is bigger then first return -1
+        if (a[key] > b[key]) return 1; //check for value if the second value is bigger then first return 1
+        return 0;
+      };
+    } else {
+      return function (a: any, b: any) {
+        if (a[key] > b[key]) return -1;
+        if (a[key] < b[key]) return 1;
+        return 0;
+      };
+    }
   }
 
   async handleClick(event: any) {
@@ -310,7 +342,16 @@ class UserRole extends React.Component<{ history: any }> {
                     </Row>
                   </CardHeader>
                   <CardBody>
-                    <Row>
+                  <div style={{textAlign:'right'}}>
+                  <input
+                      className="form-control custom_text_width search"
+                      type="text"
+                      placeholder="Search"
+                      aria-label="Search"
+                      onKeyUp={this.searchApplicationDataKeyUp}
+                  />
+                </div>
+                    {/* <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <div style={{ width: "500px", position: "absolute" }}>
                           <Row>
@@ -326,32 +367,24 @@ class UserRole extends React.Component<{ history: any }> {
                                 <option value="20">20</option>
                                 <option value="25">25</option>
                                 <option value="30">30</option>
-                                {/* {
-                            this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-                                <option key={data.id} value={data.id}>{data.name}</option>
-                            ) : ''
-                        } */}
+                              
                               </CustomInput>
                             </Col>
                           </Row>
                         </div>
                       </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                  
                         <div>
-                          <Row>
-                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                              <input
-                                className="form-control"
-                                type="text"
-                                placeholder="Search"
-                                aria-label="Search"
-                                onKeyUp={this.searchApplicationDataKeyUp}
-                              />
-                            </Col>
-                          </Row>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Search"
+                            aria-label="Search"
+                            onKeyUp={this.searchApplicationDataKeyUp}
+                          />
                         </div>
-                      </Col>
-                    </Row>
+                    
+                    </Row> */}
 
                     <table
                       id="dtBasicExample"
@@ -359,7 +392,7 @@ class UserRole extends React.Component<{ history: any }> {
                       width="100%"
                     >
                       <thead>
-                        <tr>
+                        <tr onClick={() => this.handleSort("role")}>
                           <th>Role Name</th>
                           {/* <th>Description</th> */}
                           <th style={{ textAlign: "center" }}>Status</th>
@@ -393,7 +426,9 @@ class UserRole extends React.Component<{ history: any }> {
                                       ></i>
                                       <i
                                         className="far fa-trash-alt"
-                                        onClick={() => this.deleteRole(data.roleId)}
+                                        onClick={() =>
+                                          this.deleteRole(data.roleId)
+                                        }
                                       ></i>
                                     </span>
                                   </td>
@@ -408,13 +443,28 @@ class UserRole extends React.Component<{ history: any }> {
                     </table>
 
                     {this.state.userrole.length > 0 ? (
-                      <div>
-                        <ul className="pagination" id="page-numbers">
-                          {pageDecrementBtn}
-                          {renderPageNumbers}
-                          {pageIncrementBtn}
-                        </ul>
-                      </div>
+                       <div className="filter">
+                       <CustomInput
+                      type="select"
+                      id="item"
+                      className="custom_text_width"
+                      name="customSelect"
+                      onChange={this.onItemSelect}
+                 >
+                      <option value="">Record per page</option>
+                      <option value="3">3</option>
+                      <option value="20">20</option>
+                      <option value="25">25</option>
+                      <option value="30">30</option>
+                    </CustomInput>
+                    <div>
+                <ul className="pagination" id="page-numbers">
+                  {pageDecrementBtn}
+                  {renderPageNumbers}
+                  {pageIncrementBtn}
+                </ul>
+                    </div>
+              </div>
                     ) : (
                       ""
                     )}

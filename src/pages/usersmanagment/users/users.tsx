@@ -27,6 +27,7 @@ import apiUrl from "../../../apicontroller/apicontrollers";
 import { userListRequest } from "../../../modelController/userModel";
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
+var _ = require('lodash');
 
  interface getUserRequest {
   roleID?: number,
@@ -58,7 +59,8 @@ class Users extends React.Component<{ history: any }> {
     roleid: '0',
     onItemSelect:'',
     userrole:[],
-    userdata:[]
+    userdata:[],
+    switchSort:false
   };
 
   constructor(props: any) {
@@ -71,6 +73,8 @@ class Users extends React.Component<{ history: any }> {
     this.onRoleSelect = this.onRoleSelect.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(this);
+    this.handleSort = this.handleSort.bind(this);
+    this.compareByDesc = this.compareByDesc.bind(this);
   }
 
   async componentDidMount() {
@@ -79,8 +83,8 @@ class Users extends React.Component<{ history: any }> {
       paging: false,
       info: false,
       searching:false,
-      ordering: true,
-      order: [[1, 'desc']]
+      sorting:false,
+      ordering:false
     });
     // $('.dataTables_length').addClass('bs-select');
     this.getUserRole();
@@ -152,6 +156,40 @@ class Users extends React.Component<{ history: any }> {
     }
 
   }
+
+  onSort(){
+    const sorted = _.sortBy(this.state.userdata, 'firstName')
+    this.setState({
+      userdata: this.state.userdata = sorted
+    });
+  }
+
+  handleSort(key:any){
+    this.setState({
+        switchSort:!this.state.switchSort
+    })
+   let copyTableData =[...this.state.userdata];
+   copyTableData.sort(this.compareByDesc(key));
+   this.setState({
+    userdata:this.state.userdata = copyTableData
+   })
+}
+
+compareByDesc(key:any){
+  if(this.state.switchSort){
+      return function(a:any,b:any){
+          if (a[key] < b[key]) return -1; // check for value if the second value is bigger then first return -1
+          if (a[key] > b[key]) return 1;  //check for value if the second value is bigger then first return 1
+          return 0;
+      };
+  }else{
+      return function(a:any,b:any){
+          if (a[key] > b[key]) return -1; 
+          if (a[key] < b[key]) return 1; 
+          return 0;
+      };
+  }
+ }
 
   async deleteuser(id:any) {
     Swal.fire({
@@ -252,11 +290,11 @@ class Users extends React.Component<{ history: any }> {
       })
     }
   }
-
   
 
 
   render() {
+    
     var pageNumbers = [];
     for (
       let i = 1;
@@ -349,7 +387,32 @@ class Users extends React.Component<{ history: any }> {
                     </Row>
                   </CardHeader>
                   <CardBody>
-                  <Row>
+                    <div className="filter">
+                      
+                          <CustomInput
+                            type="select"
+                            id="onselect"
+                            name="role"
+                            className="custom_text_width bottom_text"
+                            onChange={this.onRoleSelect}
+                          >
+                            <option value="">Select UserRole:</option>
+                            {
+                                this.state.userrole.length > 0 ? this.state.userrole.map((data:any, index) =>
+                                    <option key={data.value} value={data.value}>{data.name}</option>
+                                ) : ''
+                            }
+                          </CustomInput>
+                      
+                      <input
+                          className="form-control custom_text_width"
+                          type="text"
+                          placeholder="Search"
+                          aria-label="Search"
+                          onKeyUp={this.searchApplicationDataKeyUp}
+                      />
+                    </div>
+                  {/* <Row>
                   <Col xs="12" sm="12" md="6" lg="6" xl="6">
                     <div style={{ width: "500px", position: "absolute" }}>
                       <Row>
@@ -365,11 +428,7 @@ class Users extends React.Component<{ history: any }> {
                             <option value="20">20</option>
                             <option value="25">25</option>
                             <option value="30">30</option>
-                           {/* {
-                            this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-                                <option key={data.id} value={data.id}>{data.name}</option>
-                            ) : ''
-                        } */}
+                        
                           </CustomInput>
                         </Col>
                         <Col xs="12" sm="12" md="6" lg="6" xl="6">
@@ -393,8 +452,7 @@ class Users extends React.Component<{ history: any }> {
                     </Col>
                     <Col xs="12" sm="12" md="6" lg="6" xl="6">
                     <div>
-                      <Row>
-                        <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                     
                         <input
                           className="form-control"
                           type="text"
@@ -402,11 +460,12 @@ class Users extends React.Component<{ history: any }> {
                           aria-label="Search"
                           onKeyUp={this.searchApplicationDataKeyUp}
                       />
-                        </Col>
-                      </Row>
                     </div>
                     </Col>
-                    </Row>
+                    </Row> */}
+
+
+
                     {/* {
                       this.state.userdata !== null ? (
 
@@ -418,11 +477,11 @@ class Users extends React.Component<{ history: any }> {
 
                     <table
                       id="dtBasicExample"
-                      className="table table-striped table-bordered table_responsive table-sm"
+                      className="table table-striped table-bordered table_responsive table-sm sortable"
                       width="100%"
                     >
                       <thead>
-                        <tr>
+                        <tr onClick={() => this.handleSort('firstName')}>
                           <th>First Name</th>
                           <th>Last Name</th>
                           <th>Email</th>
@@ -436,9 +495,9 @@ class Users extends React.Component<{ history: any }> {
                           this.state.userdata != null ? (
                             <>
                             {
-                              this.state.userdata.map((data:any,index:any) =>
+                              this.state.userdata.sort((a:any, b:any) => a.firstName - b.firstName).map((data:any,index:any) =>
                               <tr key={index}>
-                              <td>{data.firstName}</td>
+                              <td className="sorting_1">{data.firstName}</td>
                               <td>{data.lastName}</td>
                               <td>{data.email}</td>
                               <td>{data.role}</td>
@@ -480,12 +539,27 @@ class Users extends React.Component<{ history: any }> {
                       {
                         this.state.userdata.length > 0 ? (
                           
+                          <div className="filter">
+                             <CustomInput
+                            type="select"
+                            id="item"
+                            className="custom_text_width"
+                            name="customSelect"
+                            onChange={this.onItemSelect}
+                       >
+                            <option value="">Record per page</option>
+                            <option value="3">3</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                            <option value="30">30</option>
+                          </CustomInput>
                           <div>
                       <ul className="pagination" id="page-numbers">
                         {pageDecrementBtn}
                         {renderPageNumbers}
                         {pageIncrementBtn}
                       </ul>
+                          </div>
                     </div>
                         ) : (
                           ''
