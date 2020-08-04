@@ -1019,7 +1019,7 @@ body:not(.ms-aside-left-open) .ms-aside-toggler .ms-toggler-bar{
   left: 0;
   width: 3px;
   height: 100%;
-  background-color: #ff0018;
+  background-color: #fbb132;
 }
 .side-nav .menu-item ul li a.active::before{
   left: auto;
