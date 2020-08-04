@@ -21,6 +21,7 @@ import {
   InputGroupAddon,
 } from "reactstrap";
 import utils from "../../utils";
+import './resetpassword.css';
 
 class ResetPassword extends React.Component<{ location: any,history:any }> {
   state = {
@@ -83,15 +84,15 @@ class ResetPassword extends React.Component<{ location: any,history:any }> {
 
   render() {
     return (
-      <div style={{marginTop:'10px'}}>
-        <Col xs="12" sm="12" md="6" lg="6" xl="6">
+      <div className="mainclass">
+        <div className="main-box">
           <Card>
             <CardHeader>
               <strong className="maincontent">Reset Password</strong>
             </CardHeader>
             <CardBody>
               <Row>
-                <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                <div className="box">
                   <FormGroup>
                     <Label htmlFor="resetpassword">ResetPassword</Label>
                     <Input
@@ -106,7 +107,7 @@ class ResetPassword extends React.Component<{ location: any,history:any }> {
                       {this.state.passwordError}
                     </div>
                   </FormGroup>
-                </Col>
+                </div>
               </Row>
               <Button
                 type="button"
@@ -119,7 +120,7 @@ class ResetPassword extends React.Component<{ location: any,history:any }> {
               </Button>
             </CardBody>
           </Card>
-        </Col>
+        </div>
       </div>
     );
   }
