@@ -45,7 +45,7 @@ interface getUserRoleRequest {
 
 class UserRole extends React.Component<{ history: any }> {
   state = {
-    count: 10,
+    count: '10',
     currentPage: "1",
     items_per_page: "10",
     perpage: 2,
@@ -106,6 +106,7 @@ class UserRole extends React.Component<{ history: any }> {
     if (getRole.resultObject != null) {
       this.setState({
         userrole: this.state.userrole = getRole.resultObject.data,
+        count:this.state.count = getRole.resultObject.totalcount
       });
     } else {
       const msg1 = getRole.explanation;
@@ -222,6 +223,7 @@ class UserRole extends React.Component<{ history: any }> {
     if (getRoles.resultObject.data != null) {
       this.setState({
         userrole: this.state.userrole = getRoles.resultObject.data,
+        count:this.state.count = getRoles.resultObject.totalcount
       });
     }
   }
@@ -249,7 +251,7 @@ class UserRole extends React.Component<{ history: any }> {
     var pageNumbers = [];
     for (
       let i = 1;
-      i <= Math.ceil(this.state.count / parseInt(this.state.items_per_page));
+      i <= Math.ceil(parseInt(this.state.count) / parseInt(this.state.items_per_page));
       i++
     ) {
       pageNumbers.push(i);

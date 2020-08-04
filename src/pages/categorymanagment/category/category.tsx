@@ -42,7 +42,7 @@ class Category extends React.Component<{ history: any }> {
         passworderror: '',
         checked: false,
         selectedFileerror: '',
-        count: 10,
+        count: '10',
         currentPage: '1',
         items_per_page: '5',
         perpage: 2,
@@ -103,6 +103,7 @@ class Category extends React.Component<{ history: any }> {
         if (getCategory.resultObject != null) {
             this.setState({
                 categorydata: this.state.categorydata = getCategory.resultObject.data,
+                count:this.state.count = getCategory.resultObject.totalcount
             });
         } else {
             const msg1 = getCategory.explanation;
@@ -193,6 +194,7 @@ class Category extends React.Component<{ history: any }> {
         if (getCategory.resultObject != null) {
             this.setState({
                 categorydata: this.state.categorydata = getCategory.resultObject.data,
+                count:this.state.count = getCategory.resultObject.totalcount
             });
         } else {
             const msg1 = getCategory.explanation;
@@ -215,7 +217,7 @@ class Category extends React.Component<{ history: any }> {
         if (getCategory.resultObject.data != null) {
           this.setState({
             categorydata: this.state.categorydata = getCategory.resultObject.data,
-            count: this.state.count = getCategory.resultObject.totalcount,
+            count:this.state.count = getCategory.resultObject.totalcount
           });
         }
     }
@@ -252,7 +254,7 @@ class Category extends React.Component<{ history: any }> {
         var pageNumbers = [];
         for (
             let i = 1;
-            i <= Math.ceil(this.state.count / parseInt(this.state.items_per_page));
+            i <= Math.ceil(parseInt(this.state.count) / parseInt(this.state.items_per_page));
             i++
         ) {
             pageNumbers.push(i);
@@ -365,6 +367,7 @@ class Category extends React.Component<{ history: any }> {
                                             <thead>
                                                 <tr onClick={() => this.handleSort('category')}>
                                                     <th>Category Name</th>
+                                                    <th>Sub Category Name</th>
                                                     <th>Image</th>
                                                     <th style={{ textAlign: "center" }}>Status</th>
                                                     <th className="action">Action</th>
@@ -378,6 +381,15 @@ class Category extends React.Component<{ history: any }> {
                                                                 this.state.categorydata.map((data: any, index: any) =>
                                                                     <tr>
                                                                         <td>{data.category}</td>
+                                                                       
+                                                                            {
+                                                                                data.parentCategory ? (
+                                                                                    <td>{data.parentCategory}</td>
+                                                                                ) : (
+                                                                                    <td>N/A</td>
+                                                                                )
+                                                                            }
+                                                                       
                                                                         <td>
                                                                             {
                                                                                 data.imagePath != null ? (

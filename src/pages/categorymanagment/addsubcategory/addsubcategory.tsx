@@ -50,17 +50,17 @@ class AddSubCategory extends React.Component<{ history: any }> {
 
     async componentDidMount() {
         document.title = constant.addSubCategoryTitle + utils.getAppName();
-        const getAllCategory = await API.getAllCategory();
-        console.log("getAllCategory", getAllCategory);
+        // const getAllCategory = await API.getAllCategory();
+        // console.log("getAllCategory", getAllCategory);
 
-        if (getAllCategory.resultObject.length > 0) {
-            this.setState({
-                categorylist: this.state.categorylist = getAllCategory.resultObject
-            })
-        } else {
-            const msg1 = "Error";
-            utils.showError(msg1);
-        }
+        // if (getAllCategory.resultObject.length > 0) {
+        //     this.setState({
+        //         categorylist: this.state.categorylist = getAllCategory.resultObject
+        //     })
+        // } else {
+        //     const msg1 = "Error";
+        //     utils.showError(msg1);
+        // }
     }
 
     onChangeHandler(event: any) {

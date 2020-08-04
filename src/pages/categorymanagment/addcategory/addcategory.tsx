@@ -9,6 +9,8 @@ import {
     CardTitle,
     Table,
     Input,
+    Form,
+    CustomInput,
     Col,
     FormGroup,
     Label,
@@ -32,7 +34,11 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
         sortorder: 0,
         updateTrue: false,
         filetrue:false,
-        categoryid: 0
+        categoryid: 0,
+        categorylist:[],
+        selectcategory:'',
+        selectcategoryerror:'',
+        parentCategory:''
     }
 
     constructor(props: any) {
@@ -43,6 +49,7 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
         this.addCategory = this.addCategory.bind(this);
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.updateCategory = this.updateCategory.bind(this);
+        this.onItemSelect = this.onItemSelect.bind(this);
     }
 
     async componentDidMount() {
@@ -61,13 +68,28 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
                     categoryname: this.state.categoryname = getCategoryById.resultObject.category,
                     categoryid: this.state.categoryid = getCategoryById.resultObject.categoryId,
                     file: this.state.file = getCategoryById.resultObject.imagePath,
-                    sortorder:this.state.sortorder = getCategoryById.resultObject.sortOrder
+                    sortorder:this.state.sortorder = getCategoryById.resultObject.sortOrder,
+                    parentCategory:this.state.parentCategory = getCategoryById.resultObject.parentCategory,
+                    selectedFile:this.state.selectedFile = getCategoryById.resultObject.imagePath
                 })
             } else {
                 const msg1 = "Error";
                 utils.showError(msg1);
             }
         }
+
+         const getAllCategory = await API.getAllCategory();
+        console.log("getAllCategory", getAllCategory);
+
+        if (getAllCategory.resultObject.length > 0) {
+            this.setState({
+                categorylist: this.state.categorylist = getAllCategory.resultObject
+            })
+        } else {
+            const msg1 = "Error";
+            utils.showError(msg1);
+        }
+
         if (this.state.updateTrue === true) {
             document.title = constant.updateCategoryTitle + utils.getAppName();
         } else {
@@ -75,6 +97,12 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
         }
         // const getProfile = await API.getProfile();
         // console.log("getprofile",getProfile);
+    }
+
+    onItemSelect(event: any) {
+        this.setState({
+            selectcategory: this.state.selectcategory = event.target.options[event.target.selectedIndex].value
+        });
     }
 
 
@@ -149,11 +177,9 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
 
                 formData.append('category', this.state.categoryname);
                 formData.append('isActive', 'true');
-                formData.append('parentCategoryId', '');
+                formData.append('parentCategoryId', this.state.selectcategory);
                 formData.append('sortOrder', this.state.sortorder.toString());
                 formData.append('files', this.state.selectedFile[0]);
-
-
 
                 const addCategory = await API.addCategory(formData);
                 console.log("addCategory", addCategory);
@@ -168,9 +194,6 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
                     utils.showError(msg1);
                 }
 
-
-                // const editCategory = await API.editCategory(obj);
-                // console.log("editCategory",editCategory);
             }
         };
     }
@@ -187,7 +210,7 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
                 formData.append('categoryId', this.state.categoryid.toString());
                 formData.append('category', this.state.categoryname);
                 formData.append('isActive', 'true');
-                formData.append('parentCategoryId', '');
+                formData.append('parentCategoryId', this.state.selectcategory);
                 formData.append('sortOrder', this.state.sortorder.toString());
                 formData.append('files', this.state.selectedFile[0]);
                 const editCategory = await API.editCategory(formData, this.state.categoryid.toString());
@@ -268,6 +291,47 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
                                                         {this.state.categorynameerror}
                                                     </div>
                                                 </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                                <Form>
+                                                    <FormGroup>
+                                                        <Label for="exampleCustomSelect">Select Parent Category</Label>
+                                                        <CustomInput
+                                                            type="select"
+                                                            id="exampleCustomSelect"
+                                                            name="customSelect"
+                                                            onChange={this.onItemSelect}
+                                                        >
+                                                            {
+                                                                this.state.parentCategory !== '' ? (
+                                                                    <>
+                                                                    <option value="">{this.state.parentCategory}</option>
+                                                                    {
+                                                                        this.state.categorylist.length > 0 ? this.state.categorylist.map((data: any, index: any) =>
+                                                                            <option key={data.id} value={data.value}>{data.name}</option>
+                                                                        ) : ''
+                                                                    }
+                                                                    </>
+
+                                                                ) : (
+                                                                    <>
+                                                                    <option value="">Select Parent Category</option>
+                                                                    {
+                                                                        this.state.categorylist.length > 0 ? this.state.categorylist.map((data: any, index: any) =>
+                                                                            <option key={data.id} value={data.value}>{data.name}</option>
+                                                                        ) : ''
+                                                                    }
+                                                                    </>
+                                                                )
+                                                            }
+                                                        </CustomInput>
+                                                        <div className="mb-4 text-danger">
+                                                            {this.state.selectcategoryerror}
+                                                        </div>
+                                                    </FormGroup>
+                                                </Form>
                                             </Col>
                                         </Row>
                                         <Row>

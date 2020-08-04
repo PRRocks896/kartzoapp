@@ -40,7 +40,7 @@ var _ = require('lodash');
 
 class Users extends React.Component<{ history: any }> {
   state = {
-    count: 10,
+    count: '10',
     currentPage: '1',
     items_per_page: '10',
     perpage: 2,
@@ -265,7 +265,8 @@ compareByDesc(key:any){
 
   if(getUserDataPagination.resultObject.data != null) {
     this.setState({
-      userdata:this.state.userdata = getUserDataPagination.resultObject.data
+      userdata:this.state.userdata = getUserDataPagination.resultObject.data,
+      count:this.state.count = getUserDataPagination.resultObject.totalcount
     })
   }
   }
@@ -298,7 +299,7 @@ compareByDesc(key:any){
     var pageNumbers = [];
     for (
       let i = 1;
-      i <= Math.ceil(this.state.count / parseInt(this.state.items_per_page));
+      i <= Math.ceil(parseInt(this.state.count) / parseInt(this.state.items_per_page));
       i++
     ) {
       pageNumbers.push(i);

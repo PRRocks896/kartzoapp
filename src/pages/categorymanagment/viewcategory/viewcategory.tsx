@@ -25,7 +25,8 @@ class ViewCategory extends React.Component<{ history: any, location: any }> {
     state = {
         category: "",
         file: null,
-        sortorder: ""
+        sortorder: "",
+        parentCategory:''
     };
 
     constructor(props: any) {
@@ -48,7 +49,8 @@ class ViewCategory extends React.Component<{ history: any, location: any }> {
                 this.setState({
                     category: this.state.category = getCategoryById.resultObject.category,
                     sortorder: this.state.sortorder = getCategoryById.resultObject.sortOrder,
-                    file: this.state.file = getCategoryById.resultObject.imagePath
+                    file: this.state.file = getCategoryById.resultObject.imagePath,
+                    parentCategory:this.state.parentCategory = getCategoryById.resultObject.parentCategory?getCategoryById.resultObject.parentCategory:''
                 })
             } else {
                 const msg1 = "Error";
@@ -96,12 +98,24 @@ class ViewCategory extends React.Component<{ history: any, location: any }> {
                                             </Col>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
-                                                    <Label htmlFor="category_name"><b>Sort Order</b></Label>
-                                                    <p>{this.state.sortorder}</p>
+                                                    <Label htmlFor="category_name"><b>Sub Category Name</b></Label>
+                                                    {
+                                                        this.state.parentCategory === '' ? (
+                                                            <p>N/A</p>
+                                                        ) : (
+                                                            <p>{this.state.parentCategory}</p>
+                                                        )
+                                                    }
                                                 </FormGroup>
                                             </Col>
                                         </Row>
                                         <Row>
+                                        <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                                <FormGroup>
+                                                    <Label htmlFor="category_name"><b>Sort Order</b></Label>
+                                                    <p>{this.state.sortorder}</p>
+                                                </FormGroup>
+                                            </Col>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup className="img-upload">
                                                     <p style={{ fontSize: '16px' }}><b>Category Image</b></p>

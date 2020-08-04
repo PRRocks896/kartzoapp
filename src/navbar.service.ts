@@ -35,11 +35,11 @@ export default {
           {
             name: 'Category',
             url: '/category'
-          },
-          {
-            name: 'Sub Category',
-            url: '/subcategory'
           }
+          // {
+          //   name: 'Sub Category',
+          //   url: '/subcategory'
+          // }
         ]
       },
       {
