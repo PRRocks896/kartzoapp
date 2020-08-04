@@ -44,7 +44,7 @@ class Category extends React.Component<{ history: any }> {
         selectedFileerror: '',
         count: 10,
         currentPage: '1',
-        items_per_page: '10',
+        items_per_page: '5',
         perpage: 2,
         paginationdata: '',
         isFetch: false,
@@ -385,7 +385,7 @@ class Category extends React.Component<{ history: any }> {
                                                                                         {
                                                                                             data.imagePath ? (
                                                                                                 <div>
-                                                                                                    <img className="picture" src={constant.filepath + data.imagePath} />
+                                                                                                    <img className="table-picture" src={constant.filepath + data.imagePath} />
                                                                                                     {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
                                                                                                 </div>
                                                                                             ) : (null)

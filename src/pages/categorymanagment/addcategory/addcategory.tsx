@@ -31,6 +31,7 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
         selectedFileerror: '',
         sortorder: 0,
         updateTrue: false,
+        filetrue:false,
         categoryid: 0
     }
 
@@ -56,6 +57,7 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
             if (getCategoryById.resultObject != null) {
                 this.setState({
                     updateTrue: this.state.updateTrue = true,
+                    filetrue:this.state.filetrue = true,
                     categoryname: this.state.categoryname = getCategoryById.resultObject.category,
                     categoryid: this.state.categoryid = getCategoryById.resultObject.categoryId,
                     file: this.state.file = getCategoryById.resultObject.imagePath,
@@ -71,8 +73,6 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
         } else {
             document.title = constant.addCategoryTitle + utils.getAppName();
         }
-
-
         // const getProfile = await API.getProfile();
         // console.log("getprofile",getProfile);
     }
@@ -80,15 +80,29 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
 
 
     onChangeHandler(event: any) {
-        this.setState({
-            selectedFile: this.state.selectedFile = event.target.files
-        })
-        const reader = new FileReader()
-        reader.readAsDataURL(event.target.files[0])
-        reader.onloadend = ev => {
-            this.setState({ 
-                file: reader.result
+        if(this.state.filetrue === true) {
+            this.setState({
+                filetrue:this.state.filetrue = false,
+                selectedFile: this.state.selectedFile = event.target.files
             })
+            const reader = new FileReader()
+            reader.readAsDataURL(event.target.files[0])
+            reader.onloadend = ev => {
+                this.setState({ 
+                    file: reader.result
+                })
+            }
+        } else {
+            this.setState({
+                selectedFile: this.state.selectedFile = event.target.files
+            })
+            const reader = new FileReader()
+            reader.readAsDataURL(event.target.files[0])
+            reader.onloadend = ev => {
+                this.setState({ 
+                    file: reader.result
+                })
+            }
         }
     }
 
@@ -130,7 +144,6 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
                     categoryname: this.state.categoryname,
                     selectedFile: this.state.selectedFile
                 }
-
 
                 let formData = new FormData();
 
@@ -284,7 +297,7 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
                                                                     this.state.file ? (
                                                                         <div>
                                                                             {
-                                                                                this.state.updateTrue === true ? (
+                                                                                this.state.filetrue === true ? (
                                                                                      <img className="picture" src={constant.filepath + this.state.file} />
                                                                                 ) : (
                                                                                     <img className="picture" src={this.state.file} />
@@ -306,7 +319,6 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
                                                                         name="file"
                                                                         onChange={this.onChangeHandler.bind(this)}
                                                                     />
-
                                                                 </div>
                                                             )
                                                     }

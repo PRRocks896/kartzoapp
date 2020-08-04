@@ -44,6 +44,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     roleid: 0,
     userrole: [],
     updateTrue: false,
+    filetrue:false,
     file: "",
     userid: "",
     rolename: "",
@@ -77,6 +78,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
 
       this.setState({
         updateTrue: this.state.updateTrue = true,
+        filetrue:this.state.filetrue = true,
         firstname: this.state.firstname = getUserById.resultObject.firstName,
         lastname: this.state.lastname = getUserById.resultObject.lastName,
         email: this.state.email = getUserById.resultObject.email,
@@ -97,17 +99,31 @@ class AddUser extends React.Component<{ history: any; location: any }> {
   }
 
   onChangeHandler(event: any) {
-    this.setState({
-      selectedFile: this.state.selectedFile = event.target.files,
-    });
-    const reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onloadend = (ev) => {
-      this.setState({
-        file: reader.result,
-      });
-    };
-  }
+    if(this.state.filetrue === true) {
+        this.setState({
+            filetrue:this.state.filetrue = false,
+            selectedFile: this.state.selectedFile = event.target.files
+        })
+        const reader = new FileReader()
+        reader.readAsDataURL(event.target.files[0])
+        reader.onloadend = ev => {
+            this.setState({ 
+                file: reader.result
+            })
+        }
+    } else {
+        this.setState({
+            selectedFile: this.state.selectedFile = event.target.files
+        })
+        const reader = new FileReader()
+        reader.readAsDataURL(event.target.files[0])
+        reader.onloadend = ev => {
+            this.setState({ 
+                file: reader.result
+            })
+        }
+    }
+}
 
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
@@ -563,7 +579,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                             <div className="img-size">
                               {this.state.file != "" ? (
                                 <div>
-                                  {this.state.updateTrue === true ? (
+                                  {this.state.filetrue === true ? (
                                     <img
                                       className="picture"
                                       src={constant.filepath + this.state.file}
