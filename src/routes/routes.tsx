@@ -71,7 +71,6 @@ import ListCard from '../pages/customermanagment/listcard/listcard';
 import AddCard from '../pages/customermanagment/addcard/addcard';
 import ViewCard from '../pages/customermanagment/viewcard/viewcard';
 import ChangePassword from '../pages/chnagepassword/changepassword';
-import ResetPassword from '../pages/resetpassword/resetpassword';
 import Page404 from '../pages/pagenotfound/pagenotfound';
 
 const loading = (
@@ -167,7 +166,6 @@ class Main extends React.Component<{history:any}> {
             <Route path='/edit-card' render={(props: any) => <AddCard {...props} />} />
             <Route path='/view-card' render={(props: any) => <ViewCard {...props} />} />
             <Route path='/change-password' render={(props: any) => <ChangePassword {...props} />} />
-            <Route path='/resetpassword/:guid' render={(props: any) => <ResetPassword {...props} />} />
             {
                     this.props.history.location.pathname != '/' ? (
                       <Route path="*" component={Page404}/>

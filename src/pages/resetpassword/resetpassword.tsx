@@ -20,8 +20,9 @@ import {
   InputGroup,
   InputGroupAddon,
 } from "reactstrap";
+import utils from "../../utils";
 
-class ResetPassword extends React.Component<{ location: any }> {
+class ResetPassword extends React.Component<{ location: any,history:any }> {
   state = {
     password: "",
     passwordError: "",
@@ -69,6 +70,15 @@ class ResetPassword extends React.Component<{ location: any }> {
     };
     var resetPassword = await API.resetPassword(obj);
     console.log("resetPassword", resetPassword);
+
+    if (resetPassword.data.resultObject === true) {
+      const msg = "Password Reset Suucessfully";
+      utils.showSuccess(msg);
+      this.props.history.push("/login");
+  } else {
+      const msg1 = "Error";
+      utils.showError(msg1);
+  }
   }
 
   render() {

@@ -10,6 +10,7 @@ import Main from "./routes/routes";
 import Login from "./pages/login/login";
 import Signup from "./pages/signup/signup";
 import Dashboard from "./pages/dashboard/dashboard";
+import ResetPassword from "./pages/resetpassword/resetpassword";
 // import ProtectedRoute from 'react-protected-route-component'
 
 class App extends React.Component {
@@ -52,6 +53,13 @@ class App extends React.Component {
               )
             }
           />
+            <Route exact path='/resetpassword/:guid' render={(props: any) =>  localStorage.getItem("token") !== null ? (
+                <Redirect to="/" />
+              ) : (
+                <ResetPassword {...props} />
+              )
+            }
+            />
           <PrivateRoute path="/" component={Main} />
         </Switch>
       </Router>
