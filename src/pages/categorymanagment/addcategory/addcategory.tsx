@@ -25,7 +25,7 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
 
     state = {
         selectedFile: '',
-        file: null,
+        file: '',
         categoryname: '',
         categorynameerror: '',
         selectedFileerror: '',
@@ -79,12 +79,17 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
 
 
 
-
     onChangeHandler(event: any) {
         this.setState({
-            selectedFile: this.state.selectedFile = event.target.files,
-            file: this.state.file = event.target.files[0].name,
-        });
+            selectedFile: this.state.selectedFile = event.target.files
+        })
+        const reader = new FileReader()
+        reader.readAsDataURL(event.target.files[0])
+        reader.onloadend = ev => {
+            this.setState({ 
+                file: reader.result
+            })
+        }
     }
 
     validate() {
@@ -188,7 +193,7 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
 
     removeIcon() {
         this.setState({
-            file: this.state.file = null
+            file: this.state.file = ''
         })
     }
 
@@ -273,12 +278,18 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup className="img-upload">
                                                     {
-                                                        this.state.file != null ? (
+                                                        this.state.file != '' ? (
                                                             <div className="img-size">
                                                                 {
                                                                     this.state.file ? (
                                                                         <div>
-                                                                            <img className="picture" src={constant.filepath + this.state.file} />
+                                                                            {
+                                                                                this.state.updateTrue === true ? (
+                                                                                     <img className="picture" src={constant.filepath + this.state.file} />
+                                                                                ) : (
+                                                                                    <img className="picture" src={this.state.file} />
+                                                                                )
+                                                                            }
                                                                             <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i>
                                                                         </div>
                                                                     ) : (null)
