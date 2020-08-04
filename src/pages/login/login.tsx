@@ -141,42 +141,19 @@ class Login extends React.Component<{ history: any }> {
                 }
 
                 axios.post(Constant.apiUrl + apiUrl.userController.createData, obj).then((res:any) => {
-                    console.log("res",res);
-                    var userData=res.data.resultObject;
-                    localStorage.setItem('user',JSON.stringify(userData));
-                    localStorage.setItem('token',userData.token);
-                    const msg = "Login Successfully";
-                    utils.showSuccess(msg);
-                    this.props.history.push('/dashboard');
-                }).catch((err:any) => {
-                    console.log("err",err);
-                    // Swal.fire({
-                    //     title: 'Cancelled',
-                    //     text: msg,
-                    //     icon: 'error'
-                    // });
-                });
-
-                // var loginUser:any = await API.loginUser(obj);
-                // console.log("loginuser",loginUser);
-
-                // if(loginUser.resultObject != null) {
-                //     var userData=loginUser.resultObject;
-                //     localStorage.setItem('user',JSON.stringify(userData));
-                //     localStorage.setItem('token',userData.token);
-                //     const msg = "Login Successfully";
-                //     utils.showSuccess(msg);
-                // } else {
-                //     const msg1 = loginUser.explanation;
-                //     utils.showError(msg1);
-                // }
-
-                // if(loginUser.data.resultObject !== undefined) {
-                  
-                // } else {
-                //         const msg1 = loginUser.data.explanation;
-                //         utils.showError(msg1);
-                //     }
+                    try{
+                        console.log("res",res);
+                        var userData=res.data.resultObject;
+                        localStorage.setItem('user',JSON.stringify(userData));
+                        localStorage.setItem('token',userData.token);
+                        const msg = "Login Successfully";
+                        utils.showSuccess(msg);
+                        this.props.history.push('/dashboard');
+                    } catch {
+                        const msg = res.data.explanation;
+                        utils.showError(msg);
+                    }
+                })
 
             }
         };
