@@ -94,9 +94,9 @@ class Main extends React.Component {
             <Route exact path='/category' render={(props: any) => <Category {...props} />} />
             <Route exact path='/subcategory' render={(props: any) => <SubCategory {...props} />} />
             <Route exact path='/addcategory' render={(props: any) => <AddCategory {...props} />} />
-            <Route exact path='/editcategory' render={(props: any) => <AddCategory {...props} />} />
+            <Route exact path='/editcategory/:id' render={(props: any) => <AddCategory {...props} />} />
             <Route exact path='/addsubcategory' render={(props: any) => <AddSubCategory {...props} />} />
-            <Route exact path='/editsubcategory' render={(props: any) => <AddSubCategory {...props} />} />
+            <Route exact path='/editsubcategory/:id' render={(props: any) => <AddSubCategory {...props} />} />
             <Route exact path='/adduserrole' render={(props: any) => <AddUserRole {...props} />} />
             <Route exact path='/edituserrole/:id' render={(props: any) => <AddUserRole {...props} />} />
             <Route exact path='/country' render={(props: any) => <CountryManagment {...props} />} />
@@ -110,8 +110,8 @@ class Main extends React.Component {
             <Route exact path='/editcity' render={(props: any) => <AddCity {...props} />} />
             <Route exact path='/viewuser/:id' render={(props: any) => <ViewUser {...props} />} />
             <Route exact path='/viewuserrole/:id' render={(props: any) => <ViewUserRole {...props} />} />
-            <Route exact path='/viewcategory' render={(props: any) => <ViewCategory {...props} />} />
-            <Route exact path='/viewsubcategory' render={(props: any) => <ViewSubCategory {...props} />} />
+            <Route exact path='/viewcategory/:id' render={(props: any) => <ViewCategory {...props} />} />
+            <Route exact path='/viewsubcategory/:id' render={(props: any) => <ViewSubCategory {...props} />} />
             <Route exact path='/viewcity' render={(props: any) => <ViewCity {...props} />} />
             <Route exact path='/viewstate' render={(props: any) => <ViewState {...props} />} />
             <Route exact path='/viewcountry' render={(props: any) => <ViewCountry {...props} />} />

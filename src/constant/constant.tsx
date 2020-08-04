@@ -21,6 +21,7 @@ export default {
     service: 'Service',
     logout: 'Logout',
     filepath:'http://api.kartzoapp.com/',
+    mainUrl:'http://api.kartzoapp.com/api/',
     apiUrl: 'http://api.kartzoapp.com/v1/',
     headers: {
         Authorization: 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI1IiwiZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoidXNlciBhYmMiLCJuYmYiOjE1OTU1NjUxNDMsImV4cCI6MTU5NTU4Njc0MywiaWF0IjoxNTk1NTY1MTQzfQ.KfSFaBXToiMLq4ULJUBmurIaNUrmZx181xqKOAD7il1Xr380mHx1DhpfV0OnqYuq-_IDhH3WzNKWIX31TnpjSQ',
@@ -50,6 +51,7 @@ export default {
     viewCountryTitle:'View Country',
     categoryTitle:'Category Management',
     addCategoryTitle:'Add Category',
+    updateCategoryTitle:'Update Category',
     viewCategoryTitle:'View Category',
     subcategoryTitle:'Sub Category Management',
     addSubCategoryTitle:'Add SubCategory',

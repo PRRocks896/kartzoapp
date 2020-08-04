@@ -33,56 +33,54 @@ axios.interceptors.response.use(response => {
     return response;
 }, (err:any) => {
     console.log("err",err);
-    // return new Promise(async (resolve, reject) => {
-    // const ipaddress = publicIp.v4();
-    //     const originalReq = err.config;
-    //     const users:any = localStorage.getItem('user');
-    //         let user =  JSON.parse(users);
-    //     if ( err.response.status === 401 && err.config && !err.config.__isRetryRequest )
-    //     {
-    //         originalReq._retry = true;
-    //         const data = {
-    //             deviceType:1,
-    //             deviceId:"",
-    //             deviceToken:"",
-    //             ipAddress:await ipaddress,
-    //             loginToken:user.token,
-    //             refreshToken:user.refreshToken
-    //         }
+    return new Promise(async (resolve, reject) => {
+    const ipaddress = publicIp.v4();
+        const originalReq = err.config;
+        originalReq._retry = true;
+        const users:any = localStorage.getItem('user');
+            let user =  JSON.parse(users);
+            if(user) {
+                const data = {
+                    deviceType:1,
+                    deviceId:"",
+                    ipAddress:await ipaddress,
+                    loginToken:user.token,
+                    refreshToken:user.refreshToken
+                }
+    
+                // let res = axios.post(constant.apiUrl + "token", data).then(res => {
+                //     console.log("res",res);
+                //     //     localStorage.setItem('user', JSON.stringify(res.data.data))
+                //     // // oldRequest
+                //     // if(oldCount == 0){
+                //     //     oldCount = 1;
+                //     //     oldRequest.headers['Authorization'] = 'Barier ' + (result.data.data ? result.data.data.access_token : '');
+                //     //     // console.log("oldRequest",oldRequest)
+                //     //     // console.log("oldRequest.url",oldRequest.url)
+                //     //     axios[oldRequest.method](oldRequest.url,oldRequest.body, {headers: oldRequest.headers})
+                //     //     .then((result1:any) => {  
+                //     //         // console.log("oldrequest result ", result1)
+                //     //         // console.log("oldrequest result response", response)
+                //     //         //return result1;
+                //     //         response = result1;
+                //     //         return response;
+                //     //     }).catch((error1:any) => {
+                //     //         // console.log("oldrequest error ", error1)
+                //     //         return error1;
+                //     //     })
+                //     // }
+    
+    
+                //     return axios(originalReq);
+                // });
+    
+    
+                // resolve(res);
+            } 
 
-    //         let res = axios.post(constant.apiUrl + "token", data).then(res => {
-    //             console.log("res",res);
-    //             //     localStorage.setItem('user', JSON.stringify(res.data.data))
-    //             // // oldRequest
-    //             // if(oldCount == 0){
-    //             //     oldCount = 1;
-    //             //     oldRequest.headers['Authorization'] = 'Barier ' + (result.data.data ? result.data.data.access_token : '');
-    //             //     // console.log("oldRequest",oldRequest)
-    //             //     // console.log("oldRequest.url",oldRequest.url)
-    //             //     axios[oldRequest.method](oldRequest.url,oldRequest.body, {headers: oldRequest.headers})
-    //             //     .then((result1:any) => {  
-    //             //         // console.log("oldrequest result ", result1)
-    //             //         // console.log("oldrequest result response", response)
-    //             //         //return result1;
-    //             //         response = result1;
-    //             //         return response;
-    //             //     }).catch((error1:any) => {
-    //             //         // console.log("oldrequest error ", error1)
-    //             //         return error1;
-    //             //     })
-    //             // }
-
-
-    //             return axios(originalReq);
-    //         });
-
-
-    //         resolve(res);
-    //     }
-
-    //     window.location.href = "/#/login";
-    //     return Promise.reject(err);
-    // });
+        window.location.href = "/#/login";
+        return Promise.reject(err);
+    });
 });
 
 

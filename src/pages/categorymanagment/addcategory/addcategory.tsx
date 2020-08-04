@@ -16,18 +16,22 @@ import {
 } from 'reactstrap';
 // import './adduser.css';
 import NavBar from '../../navbar/navbar';
-import API from '../../../service/service';
+import API from '../../../service/category.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
-import { categoryCreateRequest,categoryUpdateRequest } from '../../../modelController/categoryModel';
+import { categoryCreateRequest, categoryUpdateRequest } from '../../../modelController/categoryModel';
 
-class AddCategory extends React.Component<{ history: any }> {
+class AddCategory extends React.Component<{ history: any, location: any }> {
 
     state = {
-        selectedFile: undefined,
+        selectedFile: '',
+        file: null,
         categoryname: '',
         categorynameerror: '',
-        selectedFileerror: ''
+        selectedFileerror: '',
+        sortorder: 0,
+        updateTrue: false,
+        categoryid: 0
     }
 
     constructor(props: any) {
@@ -37,12 +41,39 @@ class AddCategory extends React.Component<{ history: any }> {
         this.removeIcon = this.removeIcon.bind(this);
         this.addCategory = this.addCategory.bind(this);
         this.onChangeHandler = this.onChangeHandler.bind(this);
+        this.updateCategory = this.updateCategory.bind(this);
     }
 
     async componentDidMount() {
-        document.title = constant.addCategoryTitle + utils.getAppName();
-        
-          // const getProfile = await API.getProfile();
+        const categoryId = this.props.location.pathname.split('/')[2];
+        if (categoryId !== undefined) {
+            const obj = {
+                id: categoryId
+            }
+            const getCategoryById: any = await API.getCategoryById(obj);
+            console.log("getCategoryById", getCategoryById);
+
+            if (getCategoryById.resultObject != null) {
+                this.setState({
+                    updateTrue: this.state.updateTrue = true,
+                    categoryname: this.state.categoryname = getCategoryById.resultObject.category,
+                    categoryid: this.state.categoryid = getCategoryById.resultObject.categoryId,
+                    file: this.state.file = getCategoryById.resultObject.imagePath,
+                    sortorder:this.state.sortorder = getCategoryById.resultObject.sortOrder
+                })
+            } else {
+                const msg1 = "Error";
+                utils.showError(msg1);
+            }
+        }
+        if (this.state.updateTrue === true) {
+            document.title = constant.updateCategoryTitle + utils.getAppName();
+        } else {
+            document.title = constant.addCategoryTitle + utils.getAppName();
+        }
+
+
+        // const getProfile = await API.getProfile();
         // console.log("getprofile",getProfile);
     }
 
@@ -50,12 +81,10 @@ class AddCategory extends React.Component<{ history: any }> {
 
 
     onChangeHandler(event: any) {
-        // let data = new FormData();
-        // data.append('file_name', event.target.files[0]);
-        // console.log("event",event.target.files[0].name);
         this.setState({
-            selectedFile: this.state.selectedFile = event.target.files[0].name
-        })
+            selectedFile: this.state.selectedFile = event.target.files,
+            file: this.state.file = event.target.files[0].name,
+        });
     }
 
     validate() {
@@ -92,25 +121,61 @@ class AddCategory extends React.Component<{ history: any }> {
                 selectedFileerror: ''
             })
             if (this.state.categoryname && this.state.selectedFile) {
-                const obj : categoryCreateRequest = {
+                const obj = {
                     categoryname: this.state.categoryname,
                     selectedFile: this.state.selectedFile
                 }
 
-                const obj1 : categoryUpdateRequest = {
-                    id:'',
-                    categoryname: this.state.categoryname,
-                    selectedFile: this.state.selectedFile
+
+                let formData = new FormData();
+
+                formData.append('category', this.state.categoryname);
+                formData.append('isActive', 'true');
+                formData.append('parentCategoryId', '');
+                formData.append('sortOrder', this.state.sortorder.toString());
+                formData.append('files', this.state.selectedFile[0]);
+
+
+
+                const addCategory = await API.addCategory(formData);
+                console.log("addCategory", addCategory);
+
+
+                if (addCategory.resultObject != null) {
+                    const msg = "Category Added Successfully";
+                    utils.showSuccess(msg);
+                    this.props.history.push('/category');
+                } else {
+                    const msg1 = "Error";
+                    utils.showError(msg1);
                 }
 
-                // const addCategory = await API.addCategory(obj);
-                // console.log("addCategory",addCategory);
 
                 // const editCategory = await API.editCategory(obj);
                 // console.log("editCategory",editCategory);
+            }
+        };
+    }
 
-                if (this.state.categoryname === obj.categoryname && this.state.selectedFile === obj.selectedFile) {
-                    const msg = "Category Added Successfully";
+    async updateCategory() {
+        const isValid = this.validate();
+        if (isValid) {
+            this.setState({
+                categorynameerror: '',
+                selectedFileerror: ''
+            })
+            if (this.state.categoryname && this.state.selectedFile) {
+                let formData = new FormData();
+                formData.append('categoryId', this.state.categoryid.toString());
+                formData.append('category', this.state.categoryname);
+                formData.append('isActive', 'true');
+                formData.append('parentCategoryId', '');
+                formData.append('sortOrder', this.state.sortorder.toString());
+                formData.append('files', this.state.selectedFile[0]);
+                const editCategory = await API.editCategory(formData, this.state.categoryid.toString());
+                console.log("editCategory", editCategory);
+                if (editCategory.resultObject != null) {
+                    const msg = "Category Updated Successfully";
                     utils.showSuccess(msg);
                     this.props.history.push('/category');
                 } else {
@@ -123,7 +188,7 @@ class AddCategory extends React.Component<{ history: any }> {
 
     removeIcon() {
         this.setState({
-            selectedFile: this.state.selectedFile = undefined
+            file: this.state.file = null
         })
     }
 
@@ -137,9 +202,19 @@ class AddCategory extends React.Component<{ history: any }> {
                                 <Card>
                                     <CardHeader>
                                         <Row>
-                                            <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                                                <h1>Add Category</h1>
-                                            </Col>
+                                            {
+                                                this.state.updateTrue === true ? (
+                                                    <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                                                        <h1>Update Category</h1>
+                                                    </Col>
+                                                ) : (
+
+                                                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                                                            <h1>Add Category</h1>
+                                                        </Col>
+                                                    )
+                                            }
+
                                             <Col xs="12" sm="6" md="3" lg="3" xl="3" style={{ textAlign: "right" }}>
                                                 <Link to="/category">
                                                     <Button
@@ -165,7 +240,7 @@ class AddCategory extends React.Component<{ history: any }> {
                                                         id="category_name"
                                                         name="categoryname"
                                                         className="form-control"
-                                                        // value={this.state.categoryname}
+                                                        value={this.state.categoryname}
                                                         onChange={this.handleChangeEvent}
 
                                                         placeholder="Enter your category name"
@@ -179,14 +254,31 @@ class AddCategory extends React.Component<{ history: any }> {
                                         </Row>
                                         <Row>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                                <FormGroup>
+                                                    <Label htmlFor="category_name">Sort Order</Label>
+                                                    <Input
+                                                        type="number"
+                                                        id="sortnumber"
+                                                        name="sortorder"
+                                                        className="form-control"
+                                                        value={this.state.sortorder}
+                                                        onChange={this.handleChangeEvent}
+                                                        placeholder="Enter your sort order"
+                                                        required
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup className="img-upload">
                                                     {
-                                                        this.state.selectedFile != null ? (
+                                                        this.state.file != null ? (
                                                             <div className="img-size">
                                                                 {
-                                                                    this.state.selectedFile ? (
+                                                                    this.state.file ? (
                                                                         <div>
-                                                                            <img className="picture" src={require('../../dashboard/assets/images/login-img.png')} />
+                                                                            <img className="picture" src={constant.filepath + this.state.file} />
                                                                             <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i>
                                                                         </div>
                                                                     ) : (null)
@@ -194,7 +286,7 @@ class AddCategory extends React.Component<{ history: any }> {
                                                             </div>
                                                         ) : (
                                                                 <div className="">
-                                                                    <p style={{fontSize:'16px'}}>Category Image</p>
+                                                                    <p style={{ fontSize: '16px' }}>Category Image</p>
                                                                     <Label className="imag" for="file-input"><i className="fa fa-upload fa-lg" style={{ color: '#20a8d8' }}></i></Label>
                                                                     <Input
                                                                         id="file-input"
@@ -213,16 +305,30 @@ class AddCategory extends React.Component<{ history: any }> {
                                                 </FormGroup>
                                             </Col>
                                         </Row>
+                                        {
+                                            this.state.updateTrue === true ? (
 
-                                        <Button
-                                            type="button"
-                                            size="sm"
-                                            color="primary"
-                                            className="mb-2 mr-2 custom-button"
-                                            onClick={this.addCategory}
-                                        >
-                                            Save
-                                    </Button>
+                                                <Button
+                                                    type="button"
+                                                    size="sm"
+                                                    color="primary"
+                                                    className="mb-2 mr-2 custom-button"
+                                                    onClick={this.updateCategory}
+                                                >
+                                                    Update
+                                                </Button>
+                                            ) : (
+                                                    <Button
+                                                        type="button"
+                                                        size="sm"
+                                                        color="primary"
+                                                        className="mb-2 mr-2 custom-button"
+                                                        onClick={this.addCategory}
+                                                    >
+                                                        Save
+                                                    </Button>
+                                                )
+                                        }
                                     </CardBody>
                                 </Card>
                             </Col>

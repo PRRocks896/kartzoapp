@@ -147,6 +147,7 @@ class Login extends React.Component<{ history: any }> {
                     localStorage.setItem('token',userData.token);
                     const msg = "Login Successfully";
                     utils.showSuccess(msg);
+                    this.props.history.push('/dashboard');
                 }).catch((err:any) => {
                     console.log("err",err);
                     // Swal.fire({
@@ -172,7 +173,6 @@ class Login extends React.Component<{ history: any }> {
 
                 // if(loginUser.data.resultObject !== undefined) {
                   
-                //     // this.props.history.push('/dashboard');
                 // } else {
                 //         const msg1 = loginUser.data.explanation;
                 //         utils.showError(msg1);

@@ -18,7 +18,7 @@ import {
 } from 'reactstrap';
 // import './adduser.css';
 import NavBar from '../../navbar/navbar';
-import API from '../../../service/service';
+import API from '../../../service/category.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { subCategoryCreateRequest, subCategoryUpdateRequest } from '../../../modelController/subCategoryModel';
@@ -26,12 +26,16 @@ import { subCategoryCreateRequest, subCategoryUpdateRequest } from '../../../mod
 class AddSubCategory extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: undefined,
+        selectedFile: '',
         categoryname: '',
         categorynameerror: '',
         selectedFileerror: '',
-        selectcategory:'',
-        selectcategoryerror:''
+        selectcategory: '',
+        selectcategoryerror: '',
+        file: null,
+        sortorder: 0,
+        subcategoryid: 0,
+        categorylist: []
     }
 
     constructor(props: any) {
@@ -46,24 +50,30 @@ class AddSubCategory extends React.Component<{ history: any }> {
 
     async componentDidMount() {
         document.title = constant.addSubCategoryTitle + utils.getAppName();
+        const getAllCategory = await API.getAllCategory();
+        console.log("getAllCategory", getAllCategory);
 
-        // const getAllCategory = await API.getAllCategory();
-        // console.log("getAllCategory",getAllCategory);
+        if (getAllCategory.resultObject.length > 0) {
+            this.setState({
+                categorylist: this.state.categorylist = getAllCategory.resultObject
+            })
+        } else {
+            const msg1 = "Error";
+            utils.showError(msg1);
+        }
     }
 
     onChangeHandler(event: any) {
-        // let data = new FormData();
-        // data.append('file_name', event.target.files[0]);
-        // console.log("event",event.target.files[0].name);
         this.setState({
-            selectedFile: this.state.selectedFile = event.target.files[0].name
-        })
+            selectedFile: this.state.selectedFile = event.target.files,
+            file: this.state.file = event.target.files[0].name,
+        });
     }
 
-    onItemSelect(){
+    onItemSelect(event: any) {
         this.setState({
-
-        })
+            selectcategory: this.state.selectcategory = event.target.options[event.target.selectedIndex].value
+        });
     }
 
     validate() {
@@ -106,27 +116,26 @@ class AddSubCategory extends React.Component<{ history: any }> {
                 selectcategoryerror: ''
             })
             if (this.state.categoryname && this.state.selectedFile && this.state.selectcategory) {
-                const obj : subCategoryCreateRequest = {
-                    categoryname: this.state.categoryname,
-                    selectedFile: this.state.selectedFile,
-                    selectcategory: this.state.selectcategory
-                }
+                // const obj : subCategoryCreateRequest = {
+                //     categoryname: this.state.categoryname,
+                //     selectedFile: this.state.selectedFile,
+                //     selectcategory: this.state.selectcategory
+                // }
 
-                const obj1 : subCategoryUpdateRequest = {
-                    id:'',
-                    categoryname: this.state.categoryname,
-                    selectedFile: this.state.selectedFile,
-                    selectcategory: this.state.selectcategory
-                }
 
-                // const addSubCategory = await API.addSubCategory(obj);
-                // console.log("addSubCategory",addSubCategory);
+                let formData = new FormData();
 
-                // const editCategory = await API.editCategory(obj);
-                // console.log("editCategory",editCategory);
+                formData.append('category', this.state.categoryname);
+                formData.append('isActive', 'true');
+                formData.append('parentCategoryId', this.state.selectcategory.toString());
+                formData.append('sortOrder', this.state.sortorder.toString());
+                formData.append('files', this.state.selectedFile[0]);
 
-                if (this.state.categoryname === obj.categoryname && this.state.selectedFile === obj.selectedFile) {
-                    const msg = "SubCategory Added Successfully";
+                const addCategory = await API.addCategory(formData);
+                console.log("addCategory", addCategory);
+
+                if (addCategory.resultObject != null) {
+                    const msg = "Sub Category Added Successfully";
                     utils.showSuccess(msg);
                     this.props.history.push('/subcategory');
                 } else {
@@ -139,7 +148,7 @@ class AddSubCategory extends React.Component<{ history: any }> {
 
     removeIcon() {
         this.setState({
-            selectedFile: this.state.selectedFile = undefined
+            file: this.state.file = null
         })
     }
 
@@ -202,34 +211,49 @@ class AddSubCategory extends React.Component<{ history: any }> {
                                                             type="select"
                                                             id="exampleCustomSelect"
                                                             name="customSelect"
-                                                        onChange={this.onItemSelect}
+                                                            onChange={this.onItemSelect}
                                                         >
                                                             <option value="">Select Category</option>
-                                                            <option value="Food">Food</option>
-                                                            <option value="Sweet">Sweet</option>
-                                                            {/* {
-                                                                        this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-                                                                            <option key={data.id} value={data.id}>{data.name}</option>
-                                                                        ) : ''
-                                                                    } */}
+                                                            {
+                                                                this.state.categorylist.length > 0 ? this.state.categorylist.map((data: any, index: any) =>
+                                                                    <option key={data.id} value={data.value}>{data.name}</option>
+                                                                ) : ''
+                                                            }
                                                         </CustomInput>
                                                         <div className="mb-4 text-danger">
-                                                        {this.state.selectcategoryerror}
-                                                    </div>
+                                                            {this.state.selectcategoryerror}
+                                                        </div>
                                                     </FormGroup>
                                                 </Form>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                                <FormGroup>
+                                                    <Label htmlFor="category_name">Sort Order</Label>
+                                                    <Input
+                                                        type="number"
+                                                        id="sortnumber"
+                                                        name="sortorder"
+                                                        className="form-control"
+                                                        value={this.state.sortorder}
+                                                        onChange={this.handleChangeEvent}
+                                                        placeholder="Enter your sort order"
+                                                        required
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup className="img-upload">
                                                     {
-                                                        this.state.selectedFile != null ? (
+                                                        this.state.file != null ? (
                                                             <div className="img-size">
                                                                 {
-                                                                    this.state.selectedFile ? (
+                                                                    this.state.file ? (
                                                                         <div>
-                                                                            <img className="picture" src={require('../../dashboard/assets/images/login-img.png')} />
+                                                                            <img className="picture" src={constant.filepath + this.state.file} />
                                                                             <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i>
                                                                         </div>
                                                                     ) : (null)
@@ -237,7 +261,7 @@ class AddSubCategory extends React.Component<{ history: any }> {
                                                             </div>
                                                         ) : (
                                                                 <div className="">
-                                                                    <p style={{fontSize:'16px'}}>Category Image</p>
+                                                                    <p style={{ fontSize: '16px' }}>Sub Category Image</p>
                                                                     <Label className="imag" for="file-input"><i className="fa fa-upload fa-lg" style={{ color: '#20a8d8' }}></i></Label>
                                                                     <Input
                                                                         id="file-input"
@@ -256,7 +280,6 @@ class AddSubCategory extends React.Component<{ history: any }> {
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-
                                         <Button
                                             type="button"
                                             size="sm"

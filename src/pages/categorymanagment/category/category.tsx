@@ -19,7 +19,7 @@ import {
 } from 'reactstrap';
 // import './adduser.css';
 import NavBar from '../../navbar/navbar';
-import API from '../../../service/service';
+import API from '../../../service/category.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { categoryListRequest } from '../../../modelController/categoryModel';
@@ -29,7 +29,7 @@ $.DataTable = require('datatables.net')
 class Category extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: null,
+        selectedFile: '',
         firstname: '',
         firstnameerror: '',
         lastname: '',
@@ -43,8 +43,8 @@ class Category extends React.Component<{ history: any }> {
         checked: false,
         selectedFileerror: '',
         count: 10,
-        currentPage: 1,
-        items_per_page: 2,
+        currentPage: '1',
+        items_per_page: '10',
         perpage: 2,
         paginationdata: '',
         isFetch: false,
@@ -56,7 +56,9 @@ class Category extends React.Component<{ history: any }> {
         isPrevBtnActive: 'disabled',
         isNextBtnActive: '',
         onClickPage: 1,
-        activePage: 15
+        activePage: 15,
+        categorydata: [],
+        switchSort: false
     }
 
     constructor(props: any) {
@@ -66,23 +68,47 @@ class Category extends React.Component<{ history: any }> {
         this.btnIncrementClick = this.btnIncrementClick.bind(this);
         this.btnDecrementClick = this.btnDecrementClick.bind(this);
         this.viewCategory = this.viewCategory.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(this);
+        this.handleSort = this.handleSort.bind(this);
+        this.compareByDesc = this.compareByDesc.bind(this);
+        this.onItemSelect = this.onItemSelect.bind(this);
     }
 
     async componentDidMount() {
         document.title = constant.categoryTitle + utils.getAppName();
-        $('#dtBasicExample').DataTable({
-            "paging": false,
-            "info": false
+        $("#dtBasicExample").DataTable({
+            paging: false,
+            info: false,
+            searching: false,
+            sorting: false,
+            ordering: false,
         });
-        this.getUserCountData();
+        this.getCategory();
         this.getApplicationPageData();
     }
 
-    async getUserCountData() {
+    async getCategory() {
 
-        // var getuserCount = await API.getUserCount();
-        // console.log("getUsercount",getuserCount);
-      
+        const obj = {
+            searchText: "",
+            isActive: true,
+            page: 1,
+            size: parseInt(this.state.items_per_page),
+        };
+
+        var getCategory = await API.getCategory(obj);
+        console.log("getCategory", getCategory);
+
+        if (getCategory.resultObject != null) {
+            this.setState({
+                categorydata: this.state.categorydata = getCategory.resultObject.data,
+            });
+        } else {
+            const msg1 = getCategory.explanation;
+            utils.showError(msg1);
+        }
+
     }
 
     async getApplicationPageData() {
@@ -95,7 +121,7 @@ class Category extends React.Component<{ history: any }> {
         // console.log("getUserDataPagination",getUserDataPagination);
 
         // var getUserDataPagination : categoryListRequest = [];
-      
+
     }
 
     btnIncrementClick() {
@@ -112,15 +138,24 @@ class Category extends React.Component<{ history: any }> {
         this.setState({ currentPage: listid });
     }
 
-    editCategory() {
-        this.props.history.push('/editcategory');
+    editCategory(id:any) {
+        this.props.history.push('/editcategory/' + id);
     }
 
-    viewCategory() {
-        this.props.history.push('/viewcategory');
+    viewCategory(id:any) {
+        this.props.history.push('/viewcategory/' + id);
     }
 
-    deleteCategory() {
+    onItemSelect(event: any) {
+        this.setState({
+            items_per_page: this.state.items_per_page =
+                event.target.options[event.target.selectedIndex].value,
+        });
+
+        this.getCategory();
+    }
+
+    deleteCategory(id:any) {
         Swal.fire({
             title: 'Are you sure?',
             text: 'You should be remove category!',
@@ -130,10 +165,10 @@ class Category extends React.Component<{ history: any }> {
             cancelButtonText: 'No, keep it'
         }).then(async (result) => {
             if (result.value) {
-                // var deleteCategory = await API.deleteCategory(id);
+                var deleteCategory = await API.deleteCategory(id);
                 const msg = "Your Category has been deleted";
                 utils.showSuccess(msg);
-                // this.componentDidMount();
+                this.getCategory();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 const msg1 = "Category is safe :";
                 utils.showError(msg1);
@@ -141,65 +176,148 @@ class Category extends React.Component<{ history: any }> {
         })
     }
 
+    async handleClick(event: any) {
+        this.setState({
+            currentPage: this.state.currentPage = event.target.id,
+        });
+        const obj = {
+            searchText: "",
+            isActive: true,
+            page: parseInt(event.target.id),
+            size: parseInt(this.state.items_per_page),
+        };
+
+        var getCategory = await API.getCategory(obj);
+        console.log("getCategory", getCategory);
+
+        if (getCategory.resultObject != null) {
+            this.setState({
+                categorydata: this.state.categorydata = getCategory.resultObject.data,
+            });
+        } else {
+            const msg1 = getCategory.explanation;
+            utils.showError(msg1);
+        }
+    }
+
+    async searchApplicationDataKeyUp(e: any) {
+        const obj = {
+            searchText: e.target.value,
+            isActive: true,
+            page: 1,
+            size: parseInt(this.state.items_per_page),
+        };
+
+        var getCategory = await API.getCategory(obj);
+        console.log("getCategory", getCategory);
+
+
+        if (getCategory.resultObject.data != null) {
+          this.setState({
+            categorydata: this.state.categorydata = getCategory.resultObject.data,
+            count: this.state.count = getCategory.resultObject.totalcount,
+          });
+        }
+    }
+
+    handleSort(key: any) {
+        this.setState({
+            switchSort: !this.state.switchSort,
+        });
+        let copyTableData = [...this.state.categorydata];
+        copyTableData.sort(this.compareByDesc(key));
+        this.setState({
+            categorydata: this.state.categorydata = copyTableData,
+        });
+    }
+
+    compareByDesc(key: any) {
+        if (this.state.switchSort) {
+            return function (a: any, b: any) {
+                if (a[key] < b[key]) return -1; // check for value if the second value is bigger then first return -1
+                if (a[key] > b[key]) return 1; //check for value if the second value is bigger then first return 1
+                return 0;
+            };
+        } else {
+            return function (a: any, b: any) {
+                if (a[key] > b[key]) return -1;
+                if (a[key] < b[key]) return 1;
+                return 0;
+            };
+        }
+    }
+
+
     render() {
         var pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
+        for (
+            let i = 1;
+            i <= Math.ceil(this.state.count / parseInt(this.state.items_per_page));
+            i++
+        ) {
             pageNumbers.push(i);
         }
         var renderPageNumbers = pageNumbers.map((number: any) => {
-            if (number === 1 && this.state.currentPage === 1) {
+            if (number === 1 && parseInt(this.state.currentPage) === 1) {
                 return (
                     <li
                         key={number}
                         id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
+                        className={
+                            parseInt(this.state.currentPage) === number
+                                ? "active"
+                                : "page-item"
+                        }
                     >
-                        <a className="page-link">{number}</a>
+                        <a className="page-link" onClick={this.handleClick}>
+                            {number}
+                        </a>
                     </li>
                 );
-            }
-            else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
+            } else if (
+                number < this.state.upperPageBound + 1 &&
+                number > this.state.lowerPageBound
+            ) {
                 return (
                     <li
                         key={number}
                         id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
+                        className={
+                            parseInt(this.state.currentPage) === number
+                                ? "active"
+                                : "page-item"
+                        }
                     >
-                        <a className="page-link" id={number}>{number}</a>
+                        <a className="page-link" id={number} onClick={this.handleClick}>
+                            {number}
+                        </a>
                     </li>
-                )
+                );
             }
         });
 
         let pageIncrementBtn = null;
         if (pageNumbers.length > this.state.upperPageBound) {
-            pageIncrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnIncrementClick}
-                    >
+            pageIncrementBtn = (
+                <li className="page-item">
+                    <a className="page-link" onClick={this.btnIncrementClick}>
                         &hellip;
-          </a>
+              </a>
                 </li>
+            );
         }
 
         let pageDecrementBtn = null;
         if (this.state.lowerPageBound >= 1) {
-            pageDecrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnDecrementClick}
-                    >
+            pageDecrementBtn = (
+                <li className="page-item">
+                    <a className="page-link" onClick={this.btnDecrementClick}>
                         &hellip;
-          </a>
+              </a>
                 </li>
+            );
         }
+
 
         return (
             <>
@@ -233,25 +351,14 @@ class Category extends React.Component<{ history: any }> {
 
                                     </CardHeader>
                                     <CardBody>
-                                        <div className="selectDiv">
-
-                                            <CustomInput
-                                                type="select"
-                                                id="exampleCustomSelect"
-                                                name="customSelect"
-                                            // onChange={this.onItemSelect}
-                                            >
-                                                <option value="">Record per page</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="20">20</option>
-                                                <option value="25">25</option>
-                                                {/* {
-                            this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-                                <option key={data.id} value={data.id}>{data.name}</option>
-                            ) : ''
-                        } */}
-                                            </CustomInput>
+                                        <div style={{ textAlign: 'right' }}>
+                                            <input
+                                                className="form-control custom_text_width search"
+                                                type="text"
+                                                placeholder="Search"
+                                                aria-label="Search"
+                                                onKeyUp={this.searchApplicationDataKeyUp}
+                                            />
                                         </div>
 
                                         <table id="dtBasicExample" className="table table-striped table-bordered table-sm" width="100%">
@@ -264,107 +371,82 @@ class Category extends React.Component<{ history: any }> {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>FOOD</td>
-                                                    <td>FOOD Image</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye" onClick={this.viewCategory}></i>
-                                                            <i className="fas fa-edit" onClick={this.editCategory}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCategory}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Vegitarain</td>
-                                                    <td>Vegitarain Image</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <i className="fa fa-eye" onClick={this.viewCategory}></i>
-                                                        <i className="fas fa-edit" onClick={this.editCategory}></i>
-                                                        <i className="far fa-trash-alt" onClick={this.deleteCategory}></i>
-                                                    </td>
-                                                </tr>
+                                                {
+                                                    this.state.categorydata.length > 0 ? (
+                                                        <>
+                                                            {
+                                                                this.state.categorydata.map((data: any, index: any) =>
+                                                                    <tr>
+                                                                        <td>{data.category}</td>
+                                                                        <td>
+                                                                            {
+                                                                                data.imagePath != null ? (
+                                                                                    <div className="img-size">
+                                                                                        {
+                                                                                            data.imagePath ? (
+                                                                                                <div>
+                                                                                                    <img className="picture" src={constant.filepath + data.imagePath} />
+                                                                                                    {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
+                                                                                                </div>
+                                                                                            ) : (null)
+                                                                                        }
+                                                                                    </div>
+                                                                                ) : (
+                                                                                        <div>
+                                                                                            <i className="fa fa-user picture"></i>
+                                                                                            {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
+                                                                                        </div>
+                                                                                    )
+                                                                            }
+                                                                        </td>
+                                                                        <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
+                                                                        <td className="action">
+                                                                            <span className="padding">
+                                                                                <i className="fa fa-eye" onClick={() => this.viewCategory(data.categoryId)}></i>
+                                                                                <i className="fas fa-edit" onClick={() => this.editCategory(data.categoryId)}></i>
+                                                                                <i className="far fa-trash-alt" onClick={() => this.deleteCategory(data.categoryId)}></i>
+                                                                            </span>
+                                                                        </td>
+                                                                    </tr>
+
+
+                                                                )
+                                                            }
+                                                        </>
+                                                    ) : (
+                                                            ''
+                                                        )
+                                                }
+
                                             </tbody>
 
                                         </table>
-                                        {/* <MDBDataTable
-                                            striped
-                                            hover
-                                            data={data}
-                                        /> */}
-                                        {/* <div>
-                                            <Row>
-                                                <Col md="6">
-                                                    <div>
-                                                        <input
-                                                            className="form-control"
-                                                            type="text"
-                                                            placeholder="Search"
-                                                            aria-label="Search"
-                                                        // onKeyUp={this.searchApplicationDataKeyUp}
-                                                        />
-                                                    </div>
-                                                </Col>
-                                                <Col md="6">
-                                                    <div className="right">
-                                                        <Link to="/addcategory">
-                                                            <Button
-                                                                className="mb-2 mr-2 custom-button"
-                                                                color="primary"
-                                                            >
-                                                                Add
-                                                        </Button>
-                                                        </Link>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                        <br /> */}
-                                        {/* <Table hover className="mb-0 table_responsive" bordered>
-                                            <thead>
-                                                <tr>
-                                                    <th>Category Name</th>
-                                                    <th>Image</th>
-                                                    <th style={{ textAlign: "center" }}>Status</th>
-                                                    <th className="action">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>FOOD</td>
-                                                    <td>FOOD Image</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editCategory}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCategory}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Vegitarain</td>
-                                                    <td>Vegitarain Image</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editCategory}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCategory}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </Table> */}
-                                        <div>
-                                            <ul className="pagination" id="page-numbers">
-                                                {pageDecrementBtn}
-                                                {renderPageNumbers}
-                                                {pageIncrementBtn}
-                                            </ul>
-                                        </div>
+                                        {this.state.categorydata.length > 0 ? (
+                                            <div className="filter">
+                                                <CustomInput
+                                                    type="select"
+                                                    id="item"
+                                                    className="custom_text_width"
+                                                    name="customSelect"
+                                                    onChange={this.onItemSelect}
+                                                >
+                                                    <option value="">Record per page</option>
+                                                    <option value="3">3</option>
+                                                    <option value="20">20</option>
+                                                    <option value="25">25</option>
+                                                    <option value="30">30</option>
+                                                </CustomInput>
+                                                <div>
+                                                    <ul className="pagination" id="page-numbers">
+                                                        {pageDecrementBtn}
+                                                        {renderPageNumbers}
+                                                        {pageIncrementBtn}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                                ""
+                                            )}
                                     </CardBody>
                                 </Card>
                             </Col>

@@ -51,10 +51,12 @@ const apiUrl = {
     },
     categoryController: {
         addCatergory:'category',
-        getCategory:'category',
-        editCategory:'category',
-        deleteCategory:'category',
-        addsubCategory:'subcategory'
+        getCategory:'category/get-category-list',
+        editCategory:'category/',
+        deleteCategory:'category/',
+        addsubCategory:'subcategory',
+        getCategoryById:'category/',
+        getAllCategory:'category/get-category-list-dropdown'
     },
     couponController: {
         addCoupon:'coupon',

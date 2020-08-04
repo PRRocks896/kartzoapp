@@ -97,8 +97,6 @@ class AddUser extends React.Component<{ history: any,location:any }> {
   }
 
   onChangeHandler(event: any) {
-    let fileArray = [];
-    fileArray.push(event.target.files[0]);
     this.setState({
       selectedFile: this.state.selectedFile = event.target.files,
       file: this.state.file =  event.target.files[0].name,
