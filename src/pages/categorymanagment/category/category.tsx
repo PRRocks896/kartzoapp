@@ -363,7 +363,7 @@ class Category extends React.Component<{ history: any }> {
 
                                         <table id="dtBasicExample" className="table table-striped table-bordered table-sm" width="100%">
                                             <thead>
-                                                <tr>
+                                                <tr onClick={() => this.handleSort('category')}>
                                                     <th>Category Name</th>
                                                     <th>Image</th>
                                                     <th style={{ textAlign: "center" }}>Status</th>
