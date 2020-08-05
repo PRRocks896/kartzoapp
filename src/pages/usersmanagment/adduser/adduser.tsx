@@ -524,7 +524,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                         </div>
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        {this.state.updateTrue == true ? (
+                        {this.state.updateTrue === true ? (
                           <FormGroup>
                             <Label for="exampleCustomSelect">
                               Select Role:
@@ -589,9 +589,9 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
-                          {this.state.file != "" ? (
+                          {this.state.file !== "" ? (
                             <div className="img-size">
-                              {this.state.file != "" ? (
+                              {this.state.file !== "" ? (
                                 <div>
                                   {this.state.filetrue === true ? (
                                     <img

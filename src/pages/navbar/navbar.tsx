@@ -6,12 +6,13 @@ import { Badge, Nav, NavItem, NavLink as RsNavLink } from 'reactstrap';
 import classNames from 'classnames';
 import history from '../../history';
 import constant from '../../constant/constant';
+import EventEmitter from '../../event';
 
 class NavBar extends React.Component {
     state = {
         isOpen: true,
         side: true,
-        file:null,
+        file:'',
         firstName:'',
         lastName:''
     };
@@ -19,6 +20,12 @@ class NavBar extends React.Component {
     constructor(props:any) {
         super(props);
         // this.logout = this.logout.bind(this);
+
+        EventEmitter.subscribe('imageUpload', (data:any) => {
+            this.setState({
+                file: this.state.file = data,
+            })
+        });
     }
 
     componentDidMount() {
@@ -617,7 +624,7 @@ class NavBar extends React.Component {
                             <li className="ms-nav-item ms-nav-user dropdown">
                                 <a href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {
-                                        this.state.file != null ? (
+                                        this.state.file != '' ? (
                                             <img className="ms-user-img ms-img-round float-right" src={constant.filepath + this.state.file} alt="people" />
                                         ) : (
                                             <img className="ms-user-img ms-img-round float-right" src="../../assets/img/costic/customer-3.jpg" alt="people" />

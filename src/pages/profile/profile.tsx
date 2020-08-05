@@ -17,6 +17,7 @@ import NavBar from "../navbar/navbar";
 import API from "../../service/service";
 import RoleAPI from "../../service/role.service";
 import constant from "../../constant/constant";
+import EventEmitter from '../../event';
 import {
   profileUpdateRequest,
   profileListRequest,
@@ -215,6 +216,7 @@ class Profile extends React.Component {
           const msg = "Profile Updated Successfully";
           this.getUserById();
           utils.showSuccess(msg);
+          // EventEmitter.dispatch('imageUpload', this.state.file);
         } else {
           const msg1 = "Error";
             utils.showError(msg1);

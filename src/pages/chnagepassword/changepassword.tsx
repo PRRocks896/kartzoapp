@@ -87,7 +87,6 @@ class ChangePassword extends Component {
                     userId: this.state.userid,
                     password: this.state.newpassword
                 }
-
                const updatePassword = await API.updatePassword(obj);
                 console.log("updatePassword",updatePassword);
                 
@@ -99,6 +98,12 @@ class ChangePassword extends Component {
                     utils.showError(msg1);
                 }
 
+            } else if(this.state.newpassword !== this.state.confirmpassword) {
+                const msg1 = "new password && confirm password are not same please check again";
+                utils.showError(msg1);
+            } else if(this.state.oldpassword === this.state.newpassword) {
+                const msg1 = "new password && old password are same please change new password";
+                utils.showError(msg1);
             } else {
                 const msg1 = "Error";
                 utils.showError(msg1);
