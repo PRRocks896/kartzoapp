@@ -33,3 +33,15 @@
   .spinerButton:focus {
 	outline: none;
   }
+
+  .right-inner-addon {
+    position: relative;
+}
+.right-inner-addon input {
+    padding-right: 35px !important;
+}
+.right-inner-addon i {
+    position: absolute;
+    right: 0px;
+    padding: 12px 12px;
+}

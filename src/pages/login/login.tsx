@@ -22,6 +22,7 @@ class Login extends React.Component<{ history: any }> {
     passworderror: "",
     ipAddress: "",
     isButton: false,
+    type: 'password'
   };
 
   constructor(props: any) {
@@ -30,6 +31,7 @@ class Login extends React.Component<{ history: any }> {
     this.handleChangeEventPassword = this.handleChangeEventPassword.bind(this);
     this.login = this.login.bind(this);
     this.forgotpassword = this.forgotpassword.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   async componentDidMount() {
@@ -54,6 +56,11 @@ class Login extends React.Component<{ history: any }> {
     state[event.target.name] = event.target.value;
     this.setState(state);
   }
+
+  
+  handleClick = () => this.setState(({type}:any) => ({
+    type: type === 'password' ? 'text' : 'password'
+  }))
 
   validate() {
     let emailerror = "";
@@ -229,16 +236,26 @@ class Login extends React.Component<{ history: any }> {
                       <label>
                         <b>{Constant.password}</b>
                       </label>
-                      <div className="input-group">
+                      <div className="right-inner-addon input-group">
+                     
                         <input
-                          type="password"
+                          type={this.state.type}
                           name="password"
                           className="form-control"
                           id="validationCustom09"
                           placeholder="Password"
                           onChange={this.handleChangeEvent}
                         />
+                        {
+                          this.state.type === "password" ? (
+
+                            <i onClick={this.handleClick} className="fas fa-eye"></i>
+                          ) : (
+                            <i onClick={this.handleClick} className="fas fa-eye-slash"></i>
+                          )
+                        }
                       </div>
+                      
                       <div className="mb-4 text-danger">
                         {this.state.passworderror}
                       </div>
