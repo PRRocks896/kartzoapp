@@ -48,6 +48,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     file: "",
     userid: "",
     rolename: "",
+    type:'password'
   };
 
   constructor(props: any) {
@@ -276,6 +277,11 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  handleClick = () => this.setState(({type}:any) => ({
+    type: type === 'password' ? 'text' : 'password'
+  }))
+
+
   async addUser() {
     const isValid = this.validate();
     if (isValid) {
@@ -496,15 +502,23 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <Label htmlFor="password">Password</Label>
-                        <Input
-                          type="password"
-                          id="password"
-                          name="password"
-                          className="form-control"
-                          // value={this.state.password}
-                          onChange={this.handleChangeEvent}
-                          placeholder="Enter your password"
-                        />
+                        <div className="right-inner-addon input-group">
+                     <input
+                       type={this.state.type}
+                       name="password"
+                       className="form-control"
+                       id="validationCustom09"
+                       placeholder="Enter your password"
+                       onChange={this.handleChangeEvent}
+                     />
+                     {
+                       this.state.type === "password" ? (
+                         <i onClick={this.handleClick} className="fas fa-eye"></i>
+                       ) : (
+                         <i onClick={this.handleClick} className="fas fa-eye-slash"></i>
+                       )
+                     }
+                   </div>
                         <div className="mb-4 text-danger">
                           {this.state.passworderror}
                         </div>
