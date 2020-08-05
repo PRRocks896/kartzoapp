@@ -115,12 +115,12 @@ class AddUserRole extends React.Component<{ history: any,location:any }> {
         const addUserRole = await API.addUserRole(obj);
         console.log("addUserRole", addUserRole);
 
-        if (addUserRole.resultObject !== null) {
+        if (addUserRole.resultObject === 1) {
           const msg = "UserRole Added Successfully";
           utils.showSuccess(msg);
           this.props.history.push("/userrole");
         } else {
-          const msg1 = "Error";
+          const msg1 = addUserRole.explanation;
           utils.showError(msg1);
         }
       }
@@ -147,12 +147,12 @@ class AddUserRole extends React.Component<{ history: any,location:any }> {
         const editUserRole = await API.editUserRole(obj);
         console.log("editUserRole",editUserRole);
 
-        if (editUserRole.resultObject !== null) {
-          const msg = "UserRole Updated Successfully";
+        if (editUserRole.resultObject === 1) {
+          const msg = "UserRole Added Successfully";
           utils.showSuccess(msg);
           this.props.history.push("/userrole");
         } else {
-          const msg1 = "Error";
+          const msg1 = editUserRole.explanation;
           utils.showError(msg1);
         }
       }

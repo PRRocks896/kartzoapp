@@ -185,12 +185,12 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
                 console.log("addCategory", addCategory);
 
 
-                if (addCategory.resultObject != null) {
+                if (addCategory.resultObject === 1) {
                     const msg = "Category Added Successfully";
                     utils.showSuccess(msg);
                     this.props.history.push('/category');
                 } else {
-                    const msg1 = "Error";
+                    const msg1 = addCategory.explanation;
                     utils.showError(msg1);
                 }
 
@@ -215,12 +215,12 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
                 formData.append('files', this.state.selectedFile[0]);
                 const editCategory = await API.editCategory(formData, this.state.categoryid.toString());
                 console.log("editCategory", editCategory);
-                if (editCategory.resultObject != null) {
-                    const msg = "Category Updated Successfully";
+                if (editCategory.resultObject === 1) {
+                    const msg = "Category Added Successfully";
                     utils.showSuccess(msg);
                     this.props.history.push('/category');
                 } else {
-                    const msg1 = "Error";
+                    const msg1 = editCategory.explanation;
                     utils.showError(msg1);
                 }
             }

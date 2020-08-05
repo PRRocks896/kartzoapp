@@ -311,12 +311,12 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         const addUser: any = await API.addUser(formData);
         console.log("addUser", addUser);
 
-        if (addUser.resultObject !== null) {
+        if (addUser.data.resultObject === 1) {
           const msg = "User Added Successfully";
           utils.showSuccess(msg);
           this.props.history.push("/users");
         } else {
-          const msg1 = "Error";
+          const msg1 = addUser.data.explanation;
           utils.showError(msg1);
         }
       }
@@ -359,12 +359,12 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         const editUser: any = await API.editUser(formData, this.state.userid);
         console.log("editUser", editUser);
 
-        if (editUser.resultObject !== null) {
-          const msg = "User Updated Successfully";
+        if (editUser.data.resultObject === 1) {
+          const msg = "User Added Successfully";
           utils.showSuccess(msg);
           this.props.history.push("/users");
         } else {
-          const msg1 = "Error";
+          const msg1 = editUser.data.explanation;
           utils.showError(msg1);
         }
       }
