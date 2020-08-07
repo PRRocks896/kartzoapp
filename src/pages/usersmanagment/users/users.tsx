@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import utils from "../../../utils";
-import API from "../../../service/service";
-import RoleAPI from "../../../service/role.service";
+import { API, RoleAPI} from '../../../service/index.service';
+
 import {
   Button,
   Card,
@@ -32,7 +32,7 @@ var _ = require("lodash");
 interface getUserRequest {
   roleID?: number;
   searchText?: string;
-  isActive?:any;
+  isActive?: any;
   page?: number;
   size?: number;
 }
@@ -250,7 +250,7 @@ class Users extends React.Component<{ history: any }> {
     }
   }
 
-  async getUsers() {
+  async getUsers(roleID: number = 0, searchText: string = '', page: number = 1, size: number = 10) {
     const obj: getUserRequest = {
       roleID: parseInt(this.state.roleid),
       searchText: "",
@@ -724,5 +724,11 @@ class Users extends React.Component<{ history: any }> {
     );
   }
 }
+
+const UserTable = (props: any) => (
+    <>  
+    </>
+  )
+;
 
 export default Users;
