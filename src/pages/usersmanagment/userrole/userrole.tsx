@@ -538,12 +538,12 @@ class UserRole extends React.Component<{ history: any }> {
                                         className="fas fa-edit"
                                         onClick={() => this.editRole(data)}
                                       ></i>
-                                      <i
+                                      {/* <i
                                         className="far fa-trash-alt"
                                         onClick={() =>
                                           this.deleteRole(data.roleId)
                                         }
-                                      ></i>
+                                      ></i> */}
                                     </span>
                                   </td>
                                 </tr>

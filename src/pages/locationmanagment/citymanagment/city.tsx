@@ -489,12 +489,12 @@ class City extends React.Component<{ history: any }> {
                                           this.editCity(data.cityId)
                                         }
                                       ></i>
-                                      <i
+                                      {/* <i
                                         className="far fa-trash-alt"
                                         onClick={() =>
                                           this.deleteCity(data.cityId)
                                         }
-                                      ></i>
+                                      ></i> */}
                                     </span>
                                   </td>
                                 </tr>

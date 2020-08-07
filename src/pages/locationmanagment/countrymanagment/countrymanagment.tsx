@@ -525,12 +525,12 @@ class CountryManagment extends React.Component<{ history: any }> {
                                           this.editCountry(data.countryId)
                                         }
                                       ></i>
-                                      <i
+                                      {/* <i
                                         className="far fa-trash-alt"
                                         onClick={() =>
                                           this.deleteCountry(data.countryId)
                                         }
-                                      ></i>
+                                      ></i> */}
                                     </span>
                                   </td>
                                 </tr>

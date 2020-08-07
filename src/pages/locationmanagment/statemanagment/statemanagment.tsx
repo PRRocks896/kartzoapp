@@ -496,12 +496,12 @@ class StateManagment extends React.Component<{ history: any }> {
                                           this.editState(data.stateId)
                                         }
                                       ></i>
-                                      <i
+                                      {/* <i
                                         className="far fa-trash-alt"
                                         onClick={() =>
                                           this.deleteState(data.stateId)
                                         }
-                                      ></i>
+                                      ></i> */}
                                     </span>
                                   </td>
                                 </tr>

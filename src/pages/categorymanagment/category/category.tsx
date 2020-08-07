@@ -534,12 +534,12 @@ class Category extends React.Component<{ history: any }> {
                                           this.editCategory(data.categoryId)
                                         }
                                       ></i>
-                                      <i
+                                      {/* <i
                                         className="far fa-trash-alt"
                                         onClick={() =>
                                           this.deleteCategory(data.categoryId)
                                         }
-                                      ></i>
+                                      ></i> */}
                                     </span>
                                   </td>
                                 </tr>
