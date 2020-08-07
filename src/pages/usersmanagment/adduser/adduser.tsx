@@ -46,7 +46,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     updateTrue: false,
     filetrue:false,
     file: "",
-    userid: "",
+    userid:0,
     rolename: "",
     type:'password'
   };
@@ -85,12 +85,13 @@ class AddUser extends React.Component<{ history: any; location: any }> {
           lastname: this.state.lastname = getUserById.resultObject.lastName,
           email: this.state.email = getUserById.resultObject.email,
           mobilenumber: this.state.mobilenumber = getUserById.resultObject.phone,
-          userid: this.state.userid = getUserById.resultObject.userID,
+          userid: this.state.userid = getUserById.resultObject.userId,
           rolename: this.state.rolename = getUserById.resultObject.role,
-          roleid: this.state.roleid = getUserById.resultObject.roleID,
+          roleid: this.state.roleid = getUserById.resultObject.roleId,
           file: this.state.file = getUserById.resultObject.photoPath,
           selectedFile: this.state.selectedFile =
             constant.filepath + getUserById.resultObject.photoPath,
+          password:this.state.password =  getUserById.resultObject.password ? getUserById.resultObject.password : ''
         });
       } else {
         const msg1 = getUserById.message;
@@ -314,7 +315,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         formData.append("lastName", this.state.lastname);
         formData.append("email", this.state.email);
         formData.append("phone", this.state.mobilenumber.toString());
-        formData.append("photo", "");
+        formData.append("password", this.state.password);
         formData.append("isActive", "true");
         formData.append("files", this.state.selectedFile[0]);
         formData.append("userId", "0");
@@ -361,8 +362,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         formData.append("lastName", this.state.lastname);
         formData.append("email", this.state.email);
         formData.append("phone", this.state.mobilenumber.toString());
-        formData.append("password", "");
-        formData.append("photo", "");
+        formData.append("password", this.state.password);
         formData.append("isActive", "true");
         formData.append("files", this.state.selectedFile[0]);
         formData.append("userId", "0");

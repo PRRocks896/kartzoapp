@@ -22,7 +22,7 @@ import NavBar from "../../navbar/navbar";
 import API from "../../../service/location.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
-import { stateListRequest } from "../../../modelController/stateModel";
+import { stateUpdateRequest } from "../../../modelController/stateModel";
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
 
@@ -58,6 +58,7 @@ class StateManagment extends React.Component<{ history: any }> {
     activePage: 15,
     statedata: [],
     switchSort: false,
+    isStatus:false
   };
 
   constructor(props: any) {
@@ -74,6 +75,8 @@ class StateManagment extends React.Component<{ history: any }> {
     );
     this.handleSort = this.handleSort.bind(this);
     this.compareByDesc = this.compareByDesc.bind(this);
+    this.statusChange = this.statusChange.bind(this);
+    this.statusEditChange = this.statusEditChange.bind(this);
   }
 
   async componentDidMount() {
@@ -249,6 +252,76 @@ class StateManagment extends React.Component<{ history: any }> {
     }
   }
 
+  statusChange(data:any) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You should be inActive state!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, inActive it!",
+      cancelButtonText: "No, keep it",
+    }).then(async (result) => {
+      if (result.value) {
+        const obj: stateUpdateRequest = {
+          stateId: data.stateId,
+          stateName: data.stateName,
+          countryId: data.countryId,
+          isActive: false,
+        };
+
+        const editState = await API.editState(obj,data.stateId);
+        console.log("editState", editState);
+
+        if (editState.status === 200) {
+          const msg = editState.message;
+          utils.showSuccess(msg);
+         this.getStateData()
+        } else {
+          const msg = editState.message;
+          utils.showError(msg);
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        const msg1 = "state is safe :";
+        utils.showError(msg1);
+      }
+    });
+  }
+
+  statusEditChange(data:any) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You should be Active state!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Active it!",
+      cancelButtonText: "No, keep it",
+    }).then(async (result) => {
+      if (result.value) {
+        const obj: stateUpdateRequest = {
+          stateId: data.stateId,
+          stateName: data.stateName,
+          countryId: data.countryId,
+          isActive: true,
+        };
+
+        const editState = await API.editState(obj,data.stateId);
+        console.log("editState", editState);
+
+        if (editState.status === 200) {
+          const msg = editState.message;
+          utils.showSuccess(msg);
+         this.getStateData()
+        } else {
+          const msg = editState.message;
+          utils.showError(msg);
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        const msg1 = "state is safe :";
+        utils.showError(msg1);
+      }
+    });
+  }
+
   render() {
     var pageNumbers = [];
     for (
@@ -381,8 +454,22 @@ class StateManagment extends React.Component<{ history: any }> {
                                   <td>{data.stateName}</td>
                                   <td>{data.countryName}</td>
                                   <td style={{ textAlign: "center" }}>
-                                    <i className="fa fa-check"></i>
-                                  </td>
+                            {this.state.isStatus === false ? (
+                              <button
+                                className="status_active_color"
+                                onClick={() => this.statusChange(data)}
+                              >
+                                Active
+                              </button>
+                            ) : (
+                              <button
+                                className="status_inactive_color"
+                                onClick={() => this.statusEditChange(data)}
+                              >
+                                InActive
+                              </button>
+                            )}
+                          </td>
                                   <td className="action">
                                     <span className="padding">
                                       <i

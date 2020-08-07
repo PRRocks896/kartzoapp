@@ -73,11 +73,11 @@ class ResetPassword extends React.Component<{ location: any,history:any }> {
     console.log("resetPassword", resetPassword);
 
     if (resetPassword.status === 200) {
-      const msg = resetPassword.message;
+      const msg = resetPassword.data.message;
       utils.showSuccess(msg);
       this.props.history.push("/login");
   } else {
-    const msg = resetPassword.message;
+    const msg = resetPassword.data.message;
       utils.showError(msg);
   }
   }

@@ -84,11 +84,8 @@ class Main extends React.Component<{history:any}> {
     return (
       <Router>
         <Switch>
-            {/* <Route path='/' render={(props: any) => <Login {...props} />} />
-            <Route path='/login' render={(props: any) => <Login {...props} />} /> */}
             <Route path='/dashboard' name='Dashboard' render={(props: any) => <Dashboard {...props} />} />
             <Route path='/signup' render={(props: any) => <Signup {...props} />} />
-            {/* <Route path='/forgotpassword' render={(props: any) => <ForgotPassword {...props} />} /> */}
             <Route path='/users' render={(props: any) => <Users {...props} />} />
             <Route path='/userrole' render={(props: any) => <UserRole {...props} />} />
             <Route path='/userroletorights' render={(props: any) => <UserRoleToRights {...props} />} />

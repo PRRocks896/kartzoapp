@@ -116,6 +116,10 @@ class Login extends React.Component<{ history: any }> {
         console.log("forgotPassword", forgotPassword);
 
         if (forgotPassword.status === 200) {
+          var ele = document.getElementById('modal-12');
+          if(ele != null) {
+            ele.style.display = 'none';
+          }
           const msg = forgotPassword.data.message;
           utils.showSuccess(msg);
         } else {
@@ -130,7 +134,6 @@ class Login extends React.Component<{ history: any }> {
     this.setState({
       isButton: true
     });
-    console.log("isButton",this.state.isButton);
     const isValid = this.validate();
     if (isValid) {
       this.setState({

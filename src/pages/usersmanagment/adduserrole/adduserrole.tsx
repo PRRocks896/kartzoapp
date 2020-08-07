@@ -77,18 +77,13 @@ class AddUserRole extends React.Component<{ history: any,location:any }> {
 
   validate() {
     let rolenameerror = "";
-    let descriptionerror = "";
 
     if (!this.state.rolename) {
       rolenameerror = "please enter role name";
     }
 
-    if (!this.state.description) {
-      descriptionerror = "please enter description";
-    }
-
-    if (rolenameerror || descriptionerror) {
-      this.setState({ rolenameerror, descriptionerror });
+    if (rolenameerror) {
+      this.setState({ rolenameerror});
       return false;
     }
     return true;
@@ -106,9 +101,8 @@ class AddUserRole extends React.Component<{ history: any,location:any }> {
     if (isValid) {
       this.setState({
         rolenameerror: "",
-        descriptionerror: "",
       });
-      if (this.state.rolename && this.state.description) {
+      if (this.state.rolename && this.state.isOpen) {
         const obj: userRoleCreateRequest = {
           role: this.state.rolename,
           description: this.state.description,
@@ -137,10 +131,9 @@ class AddUserRole extends React.Component<{ history: any,location:any }> {
     const isValid = this.validate();
     if (isValid) {
       this.setState({
-        rolenameerror: "",
-        descriptionerror: "",
+        rolenameerror: ""
       });
-      if (this.state.rolename && this.state.description) {
+      if (this.state.rolename && this.state.isOpen) {
         const obj: userRoleUpdateRequest = {
           roleId:this.state.roleid,
           role: this.state.rolename,

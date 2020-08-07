@@ -27,11 +27,11 @@ import {
 // import './users.css';
 import NavBar from "../../navbar/navbar";
 import Swal from "sweetalert2";
-import './userrole.css';
+import "./userrole.css";
 import utils from "../../../utils";
 import constant from "../../../constant/constant";
 import TableComponent from "../../../component/tables/table";
-import { userRoleListRequest } from "../../../modelController/userRoleModel";
+import { userRoleUpdateRequest } from "../../../modelController/userRoleModel";
 import API from "../../../service/role.service";
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
@@ -45,7 +45,7 @@ interface getUserRoleRequest {
 
 class UserRole extends React.Component<{ history: any }> {
   state = {
-    count: '10',
+    count: "10",
     currentPage: "1",
     items_per_page: "10",
     perpage: 2,
@@ -62,6 +62,7 @@ class UserRole extends React.Component<{ history: any }> {
     activePage: 15,
     userrole: [],
     switchSort: false,
+    isStatus: false,
   };
 
   constructor(props: any) {
@@ -79,6 +80,8 @@ class UserRole extends React.Component<{ history: any }> {
     this.handleClick = this.handleClick.bind(this);
     this.handleSort = this.handleSort.bind(this);
     this.compareByDesc = this.compareByDesc.bind(this);
+    this.statusChange = this.statusChange.bind(this);
+    this.statusEditChange = this.statusEditChange.bind(this);
   }
 
   componentDidMount() {
@@ -106,7 +109,7 @@ class UserRole extends React.Component<{ history: any }> {
     if (getRole.status === 200) {
       this.setState({
         userrole: this.state.userrole = getRole.resultObject.data,
-        count:this.state.count = getRole.resultObject.totalcount
+        count: this.state.count = getRole.resultObject.totalcount,
       });
     } else {
       const msg1 = getRole.message;
@@ -160,13 +163,13 @@ class UserRole extends React.Component<{ history: any }> {
     }).then(async (result) => {
       if (result.value) {
         var deleteRole = await API.deleteRole(id);
-        if(deleteRole.status === 200) {
+        if (deleteRole.status === 200) {
           const msg = deleteRole.message;
           utils.showSuccess(msg);
           this.getRole();
         } else {
           const msg = deleteRole.message;
-        utils.showError(msg);
+          utils.showError(msg);
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         const msg1 = "UserRole is safe :";
@@ -228,7 +231,7 @@ class UserRole extends React.Component<{ history: any }> {
     if (getRoles.status === 200) {
       this.setState({
         userrole: this.state.userrole = getRoles.resultObject.data,
-        count:this.state.count = getRoles.resultObject.totalcount
+        count: this.state.count = getRoles.resultObject.totalcount,
       });
     } else {
       const msg = getRoles.message;
@@ -250,7 +253,7 @@ class UserRole extends React.Component<{ history: any }> {
     if (getRoles.status === 200) {
       this.setState({
         userrole: this.state.userrole = getRoles.resultObject.data,
-        count:this.state.count = getRoles.resultObject.totalcount
+        count: this.state.count = getRoles.resultObject.totalcount,
       });
     } else {
       const msg = getRoles.message;
@@ -258,11 +261,86 @@ class UserRole extends React.Component<{ history: any }> {
     }
   }
 
+  statusChange(data: any) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You should be inActive user role!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, inActive it!",
+      cancelButtonText: "No, keep it",
+    }).then(async (result) => {
+      if (result.value) {
+        const obj: userRoleUpdateRequest = {
+          roleId: data.roleId,
+          role: data.role,
+          description: data.description,
+          isActive: false,
+          isAdminRole: data.isAdminRole,
+        };
+
+        const editUserRole = await API.editUserRole(obj);
+        console.log("editUserRole", editUserRole);
+
+        if (editUserRole.status === 200) {
+          const msg = editUserRole.message;
+          utils.showSuccess(msg);
+          this.getRole();
+        } else {
+          const msg1 = editUserRole.message;
+          utils.showError(msg1);
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        const msg1 = "user role is safe :";
+        utils.showError(msg1);
+      }
+    });
+  }
+
+  statusEditChange(data: any) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You should be Active user role!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Active it!",
+      cancelButtonText: "No, keep it",
+    }).then(async (result) => {
+      if (result.value) {
+        const obj: userRoleUpdateRequest = {
+          roleId: data.roleId,
+          role: data.role,
+          description: data.description,
+          isActive: true,
+          isAdminRole: data.isAdminRole,
+        };
+
+        const editUserRole = await API.editUserRole(obj);
+        console.log("editUserRole", editUserRole);
+
+        if (editUserRole.status === 200) {
+          const msg = editUserRole.message;
+          utils.showSuccess(msg);
+          this.getRole();
+        } else {
+          const msg1 = editUserRole.message;
+          utils.showError(msg1);
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        const msg1 = "user role is safe :";
+        utils.showError(msg1);
+      }
+    });
+  }
+
   render() {
     var pageNumbers = [];
     for (
       let i = 1;
-      i <= Math.ceil(parseInt(this.state.count) / parseInt(this.state.items_per_page));
+      i <=
+      Math.ceil(
+        parseInt(this.state.count) / parseInt(this.state.items_per_page)
+      );
       i++
     ) {
       pageNumbers.push(i);
@@ -355,15 +433,15 @@ class UserRole extends React.Component<{ history: any }> {
                     </Row>
                   </CardHeader>
                   <CardBody>
-                  <div style={{textAlign:'right'}}>
-                  <input
-                      className="form-control custom_text_width search"
-                      type="text"
-                      placeholder="Search"
-                      aria-label="Search"
-                      onKeyUp={this.searchApplicationDataKeyUp}
-                  />
-                </div>
+                    <div style={{ textAlign: "right" }}>
+                      <input
+                        className="form-control custom_text_width search"
+                        type="text"
+                        placeholder="Search"
+                        aria-label="Search"
+                        onKeyUp={this.searchApplicationDataKeyUp}
+                      />
+                    </div>
                     {/* <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <div style={{ width: "500px", position: "absolute" }}>
@@ -421,10 +499,22 @@ class UserRole extends React.Component<{ history: any }> {
                                   <td>{data.role}</td>
                                   {/* <td>{data.description}</td> */}
                                   <td style={{ textAlign: "center" }}>
-                                    {data.isActive === true ? (
-                                      <i className="fa fa-check"></i>
+                                    {this.state.isStatus === false ? (
+                                      <button
+                                        className="status_active_color"
+                                        onClick={() => this.statusChange(data)}
+                                      >
+                                        Active
+                                      </button>
                                     ) : (
-                                      <i className="fa fa-times cursor"></i>
+                                      <button
+                                        className="status_inactive_color"
+                                        onClick={() =>
+                                          this.statusEditChange(data)
+                                        }
+                                      >
+                                        InActive
+                                      </button>
                                     )}
                                   </td>
                                   <td className="action">
@@ -456,28 +546,28 @@ class UserRole extends React.Component<{ history: any }> {
                     </table>
 
                     {this.state.userrole.length > 0 ? (
-                       <div className="filter">
-                       <CustomInput
-                      type="select"
-                      id="item"
-                      className="custom_text_width"
-                      name="customSelect"
-                      onChange={this.onItemSelect}
-                 >
-                      <option value="">Record per page</option>
-                      <option value="3">3</option>
-                      <option value="20">20</option>
-                      <option value="25">25</option>
-                      <option value="30">30</option>
-                    </CustomInput>
-                    <div>
-                <ul className="pagination" id="page-numbers">
-                  {pageDecrementBtn}
-                  {renderPageNumbers}
-                  {pageIncrementBtn}
-                </ul>
-                    </div>
-              </div>
+                      <div className="filter">
+                        <CustomInput
+                          type="select"
+                          id="item"
+                          className="custom_text_width"
+                          name="customSelect"
+                          onChange={this.onItemSelect}
+                        >
+                          <option value="">Record per page</option>
+                          <option value="3">3</option>
+                          <option value="20">20</option>
+                          <option value="25">25</option>
+                          <option value="30">30</option>
+                        </CustomInput>
+                        <div>
+                          <ul className="pagination" id="page-numbers">
+                            {pageDecrementBtn}
+                            {renderPageNumbers}
+                            {pageIncrementBtn}
+                          </ul>
+                        </div>
+                      </div>
                     ) : (
                       ""
                     )}

@@ -22,7 +22,7 @@ import NavBar from "../../navbar/navbar";
 import API from "../../../service/location.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
-import { cityListRequest } from "../../../modelController/cityModel";
+import { cityUpdateRequest } from "../../../modelController/cityModel";
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
 
@@ -58,6 +58,7 @@ class City extends React.Component<{ history: any }> {
     activePage: 15,
     citydata: [],
     switchSort: false,
+    isStatus:false
   };
 
   constructor(props: any) {
@@ -67,6 +68,8 @@ class City extends React.Component<{ history: any }> {
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewCity = this.viewCity.bind(this);
+    this.statusChange = this.statusChange.bind(this);
+    this.statusEditChange = this.statusEditChange.bind(this);
   }
 
   async componentDidMount() {
@@ -242,6 +245,75 @@ class City extends React.Component<{ history: any }> {
     }
   }
 
+  statusChange(data:any) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You should be inActive city!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, inActive it!",
+      cancelButtonText: "No, keep it",
+    }).then(async (result) => {
+      if (result.value) {
+        const obj: cityUpdateRequest = {
+            cityId: data.cityId,
+            cityName: data.cityName,
+            stateId: data.stateId,
+            isActive: false,
+          };
+  
+          const editCity = await API.editCity(obj, data.cityId);
+          console.log("editCity", editCity);
+  
+          if (editCity.status === 200) {
+            const msg = editCity.message;
+            utils.showSuccess(msg);
+           this.getCityData();
+          } else {
+            const msg = editCity.message;
+            utils.showError(msg);
+          }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        const msg1 = "city is safe :";
+      }
+    });
+  }
+
+  statusEditChange(data:any) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You should be Active shop!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Active it!",
+      cancelButtonText: "No, keep it",
+    }).then(async (result) => {
+      if (result.value) {
+        const obj: cityUpdateRequest = {
+            cityId: data.cityId,
+            cityName: data.cityName,
+            stateId: data.stateId,
+            isActive: true,
+          };
+  
+          const editCity = await API.editCity(obj, data.cityId);
+          console.log("editCity", editCity);
+  
+          if (editCity.status === 200) {
+            const msg = editCity.message;
+            utils.showSuccess(msg);
+           this.getCityData();
+          } else {
+            const msg = editCity.message;
+            utils.showError(msg);
+          }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        const msg1 = "shop is safe :";
+        // utils.showError(msg1);
+      }
+    });
+  }
+
   render() {
     var pageNumbers = [];
     for (
@@ -375,8 +447,22 @@ class City extends React.Component<{ history: any }> {
                                   <td>{data.stateName}</td>
 
                                   <td style={{ textAlign: "center" }}>
-                                    <i className="fa fa-check"></i>
-                                  </td>
+                            {this.state.isStatus === false ? (
+                              <button
+                                className="status_active_color"
+                                onClick={() => this.statusChange(data)}
+                              >
+                                Active
+                              </button>
+                            ) : (
+                              <button
+                                className="status_inactive_color"
+                                onClick={() => this.statusEditChange(data)}
+                              >
+                                InActive
+                              </button>
+                            )}
+                          </td>
                                   <td className="action">
                                     <span className="padding">
                                       <i

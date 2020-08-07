@@ -200,3 +200,23 @@ table.dataTable {
   .check_display{
       display: inline-block !important;
   }
+
+  .status_active_color {
+    padding: 3px 11px;
+    background-color: #0000ffa6;
+    color: #fff;
+    border-radius: 20px;
+    border: black;
+  }
+
+  .status_inactive_color {
+    padding: 3px 11px;
+    background-color: red;
+    color: #fff;
+    border-radius: 20px;
+    border: black;
+  }
+
+  button:focus{
+    outline: none !important;
+  }
