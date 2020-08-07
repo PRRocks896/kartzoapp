@@ -94,7 +94,6 @@ class Category extends React.Component<{ history: any }> {
   async getCategory() {
     const obj = {
       searchText: "",
-      isActive: true,
       page: 1,
       size: parseInt(this.state.items_per_page),
     };
@@ -102,13 +101,18 @@ class Category extends React.Component<{ history: any }> {
     var getCategory = await API.getCategory(obj);
     console.log("getCategory", getCategory);
 
-    if (getCategory.status === 200) {
-      this.setState({
-        categorydata: this.state.categorydata = getCategory.resultObject.data,
-        count: this.state.count = getCategory.resultObject.totalcount,
-      });
+    if(getCategory) {
+      if (getCategory.status === 200) {
+        this.setState({
+          categorydata: this.state.categorydata = getCategory.resultObject.data,
+          count: this.state.count = getCategory.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getCategory.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getCategory.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -184,7 +188,6 @@ class Category extends React.Component<{ history: any }> {
     });
     const obj = {
       searchText: "",
-      isActive: true,
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
@@ -192,13 +195,18 @@ class Category extends React.Component<{ history: any }> {
     var getCategory = await API.getCategory(obj);
     console.log("getCategory", getCategory);
 
-    if (getCategory.status === 200) {
-      this.setState({
-        categorydata: this.state.categorydata = getCategory.resultObject.data,
-        count: this.state.count = getCategory.resultObject.totalcount,
-      });
+    if(getCategory) {
+      if (getCategory.status === 200) {
+        this.setState({
+          categorydata: this.state.categorydata = getCategory.resultObject.data,
+          count: this.state.count = getCategory.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getCategory.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getCategory.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -206,7 +214,6 @@ class Category extends React.Component<{ history: any }> {
   async searchApplicationDataKeyUp(e: any) {
     const obj = {
       searchText: e.target.value,
-      isActive: true,
       page: 1,
       size: parseInt(this.state.items_per_page),
     };
@@ -214,13 +221,18 @@ class Category extends React.Component<{ history: any }> {
     var getCategory = await API.getCategory(obj);
     console.log("getCategory", getCategory);
 
-    if (getCategory.status === 200) {
-      this.setState({
-        categorydata: this.state.categorydata = getCategory.resultObject.data,
-        count: this.state.count = getCategory.resultObject.totalcount,
-      });
+    if(getCategory) {
+      if (getCategory.status === 200) {
+        this.setState({
+          categorydata: this.state.categorydata = getCategory.resultObject.data,
+          count: this.state.count = getCategory.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getCategory.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getCategory.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -490,7 +502,7 @@ class Category extends React.Component<{ history: any }> {
                                     )}
                                   </td>
                                   <td style={{ textAlign: "center" }}>
-                                    {this.state.isStatus === false ? (
+                                    {data.isActive === true ? (
                                       <button
                                         className="status_active_color"
                                         onClick={() => this.statusChange(data)}

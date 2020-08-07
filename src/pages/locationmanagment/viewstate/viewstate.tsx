@@ -39,15 +39,20 @@ class ViewState extends React.Component<{ history: any,location:any }> {
           const getStateById: any = await API.getStateById(obj);
           console.log("getStateById", getStateById);
     
-          if (getStateById.status === 200) {
-            this.setState({
-              countryname: this.state.countryname =
-                getStateById.resultObject.countryName,
-                statename: this.state.statename =
-                getStateById.resultObject.stateName
-            });
+          if(getStateById) {
+              if (getStateById.status === 200) {
+                this.setState({
+                  countryname: this.state.countryname =
+                    getStateById.resultObject.countryName,
+                    statename: this.state.statename =
+                    getStateById.resultObject.stateName
+                });
+              } else {
+                const msg1 = getStateById.message;
+                utils.showError(msg1);
+              }
           } else {
-            const msg1 = getStateById.message;
+            const msg1 = "Internal server error";
             utils.showError(msg1);
           }
         }

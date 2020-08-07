@@ -32,7 +32,7 @@ var _ = require("lodash");
 interface getUserRequest {
   roleID?: number;
   searchText?: string;
-  isActive?: boolean;
+  isActive?:any;
   page?: number;
   size?: number;
 }
@@ -147,22 +147,27 @@ class Users extends React.Component<{ history: any }> {
     const obj: getUserRequest = {
       roleID: parseInt(this.state.roleid),
       searchText: "",
-      isActive: true,
       page: 1,
       size: parseInt(this.state.items_per_page),
     };
 
     var getUserDataPagination = await API.getUserDataPagination(obj);
     console.log("getUserDataPagination", getUserDataPagination);
-
-    if (getUserDataPagination.status === 200) {
-      this.setState({
-        // rows: { 'firstName','lastName' },
-        userdata: this.state.userdata = getUserDataPagination.resultObject.data,
-        count: this.state.count = getUserDataPagination.resultObject.totalcount,
-      });
+    if (getUserDataPagination) {
+      if (getUserDataPagination.status === 200) {
+        this.setState({
+          // rows: { 'firstName','lastName' },
+          userdata: this.state.userdata =
+            getUserDataPagination.resultObject.data,
+          count: this.state.count =
+            getUserDataPagination.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getUserDataPagination.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getUserDataPagination.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -230,12 +235,17 @@ class Users extends React.Component<{ history: any }> {
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
 
-    if (getUserRole.status === 200) {
-      this.setState({
-        userrole: this.state.userrole = getUserRole.resultObject,
-      });
+    if (getUserRole) {
+      if (getUserRole.status === 200) {
+        this.setState({
+          userrole: this.state.userrole = getUserRole.resultObject,
+        });
+      } else {
+        const msg1 = getUserRole.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getUserRole.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -244,7 +254,6 @@ class Users extends React.Component<{ history: any }> {
     const obj: getUserRequest = {
       roleID: parseInt(this.state.roleid),
       searchText: "",
-      isActive: true,
       page: 1,
       size: parseInt(this.state.items_per_page),
     };
@@ -252,14 +261,21 @@ class Users extends React.Component<{ history: any }> {
     var getUserDataPagination = await API.getUserDataPagination(obj);
     console.log("getUserDataPagination", getUserDataPagination);
 
-    if (getUserDataPagination.status === 200) {
-      this.setState({
-        // rows: { 'firstName','lastName' },
-        userdata: this.state.userdata = getUserDataPagination.resultObject.data,
-        count: this.state.count = getUserDataPagination.resultObject.totalcount,
-      });
+    if (getUserDataPagination) {
+      if (getUserDataPagination.status === 200) {
+        this.setState({
+          // rows: { 'firstName','lastName' },
+          userdata: this.state.userdata =
+            getUserDataPagination.resultObject.data,
+          count: this.state.count =
+            getUserDataPagination.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getUserDataPagination.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getUserDataPagination.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -271,7 +287,6 @@ class Users extends React.Component<{ history: any }> {
     const obj: getUserRequest = {
       roleID: parseInt(this.state.roleid),
       searchText: "",
-      isActive: true,
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
@@ -279,14 +294,21 @@ class Users extends React.Component<{ history: any }> {
     var getUserDataPagination = await API.getUserDataPagination(obj);
     console.log("getUserDataPagination", getUserDataPagination);
 
-    if (getUserDataPagination.status === 200) {
-      this.setState({
-        // rows: { 'firstName','lastName' },
-        userdata: this.state.userdata = getUserDataPagination.resultObject.data,
-        count: this.state.count = getUserDataPagination.resultObject.totalcount,
-      });
+    if (getUserDataPagination) {
+      if (getUserDataPagination.status === 200) {
+        this.setState({
+          // rows: { 'firstName','lastName' },
+          userdata: this.state.userdata =
+            getUserDataPagination.resultObject.data,
+          count: this.state.count =
+            getUserDataPagination.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getUserDataPagination.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getUserDataPagination.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -296,7 +318,6 @@ class Users extends React.Component<{ history: any }> {
     const obj: getUserRequest = {
       roleID: parseInt(this.state.roleid),
       searchText: e.target.value,
-      isActive: true,
       page: 1,
       size: parseInt(this.state.items_per_page),
     };
@@ -304,14 +325,21 @@ class Users extends React.Component<{ history: any }> {
     var getUserDataPagination = await API.getUserDataPagination(obj);
     console.log("getUserDataPagination", getUserDataPagination);
 
-    if (getUserDataPagination.status === 200) {
-      this.setState({
-        // rows: { 'firstName','lastName' },
-        userdata: this.state.userdata = getUserDataPagination.resultObject.data,
-        count: this.state.count = getUserDataPagination.resultObject.totalcount,
-      });
+    if (getUserDataPagination) {
+      if (getUserDataPagination.status === 200) {
+        this.setState({
+          // rows: { 'firstName','lastName' },
+          userdata: this.state.userdata =
+            getUserDataPagination.resultObject.data,
+          count: this.state.count =
+            getUserDataPagination.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getUserDataPagination.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getUserDataPagination.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -605,8 +633,8 @@ class Users extends React.Component<{ history: any }> {
                       <tbody>
                         {this.state.userdata != null ? (
                           <>
-                            {this.state.userdata
-                              .map((data: any, index: any) => (
+                            {this.state.userdata.map(
+                              (data: any, index: any) => (
                                 <tr key={index}>
                                   <td className="sorting_1">
                                     {data.firstName}
@@ -615,7 +643,7 @@ class Users extends React.Component<{ history: any }> {
                                   <td>{data.email}</td>
                                   <td>{data.role}</td>
                                   <td style={{ textAlign: "center" }}>
-                                    {this.state.isStatus === false ? (
+                                    {data.isActive === true ? (
                                       <button
                                         className="status_active_color"
                                         onClick={() => this.statusChange(data)}
@@ -652,7 +680,8 @@ class Users extends React.Component<{ history: any }> {
                                     </span>
                                   </td>
                                 </tr>
-                              ))}
+                              )
+                            )}
                           </>
                         ) : (
                           ""

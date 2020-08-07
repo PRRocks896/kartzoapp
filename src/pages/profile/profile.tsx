@@ -81,19 +81,24 @@ class Profile extends React.Component {
       const getProfile = await API.getProfile(obj);
       console.log("getprofile", getProfile);
 
-      if (getProfile.status === 200) {
-        this.setState({
-          updateTrue:this.state.updateTrue = true,
-          filetrue:this.state.filetrue = true,
-          userid:this.state.userid = getProfile.resultObject.userId,
-          firstname: this.state.firstname = getProfile.resultObject.firstName,
-          lastname: this.state.lastname = getProfile.resultObject.lastName,
-          mobilenumber: this.state.mobilenumber = getProfile.resultObject.phone,
-          selectedFile: this.state.selectedFile = getProfile.resultObject.photo,
-          file:this.state.file =  getProfile.resultObject.photoPath
-        });
+      if(getProfile) {
+        if (getProfile.status === 200) {
+          this.setState({
+            updateTrue:this.state.updateTrue = true,
+            filetrue:this.state.filetrue = true,
+            userid:this.state.userid = getProfile.resultObject.userId,
+            firstname: this.state.firstname = getProfile.resultObject.firstName,
+            lastname: this.state.lastname = getProfile.resultObject.lastName,
+            mobilenumber: this.state.mobilenumber = getProfile.resultObject.phone,
+            selectedFile: this.state.selectedFile = getProfile.resultObject.photo,
+            file:this.state.file =  getProfile.resultObject.photoPath
+          });
+        } else {
+          const msg1 = getProfile.message;
+          utils.showError(msg1);
+        }
       } else {
-        const msg1 = getProfile.message;
+        const msg1 = "Internal server error";
         utils.showError(msg1);
       }
     }
@@ -103,16 +108,21 @@ class Profile extends React.Component {
     const getUserRole = await RoleAPI.getUserRole();
   console.log("getUserRole",getUserRole);
 
-  if(getUserRole.resultObject != null) {
-    this.setState({
-      userrole : this.state.userrole = getUserRole.resultObject
-    })
-
+  if(getUserRole) {
+    if(getUserRole.resultObject != null) {
+      this.setState({
+        userrole : this.state.userrole = getUserRole.resultObject
+      })
+  
+    } else {
+      const msg1 = getUserRole.explanation;
+      utils.showError(msg1);
+  }
   } else {
-    const msg1 = getUserRole.explanation;
-    utils.showError(msg1);
-}
-}
+    const msg1 = "Internal server error";
+      utils.showError(msg1);
+  }
+} 
 
   onItemSelect(event: any) {
     if (event.target.value === "User") {
@@ -211,29 +221,20 @@ class Profile extends React.Component {
         const updateProfile = await API.updateProfile(formData);
         console.log("updateProfile",updateProfile);
 
-        if(updateProfile.status === 200) {
-          const msg = updateProfile.message;
-          this.getUserById();
-          utils.showSuccess(msg);
-          // EventEmitter.dispatch('imageUpload', this.state.file);
+        if(updateProfile) {
+          if(updateProfile.status === 200) {
+            const msg = updateProfile.message;
+            this.getUserById();
+            utils.showSuccess(msg);
+            // EventEmitter.dispatch('imageUpload', this.state.file);
+          } else {
+            const msg1 = updateProfile.message;
+              utils.showError(msg1);
+          }
         } else {
-          const msg1 = updateProfile.message;
-            utils.showError(msg1);
+          const msg1 = "Internal server error";
+      utils.showError(msg1);
         }
-
-
-        // if (
-        //   this.state.firstname === obj.firstname &&
-        //   this.state.lastname === obj.lastname &&
-        //   this.state.email === obj.email &&
-        //   this.state.mobilenumber === obj.mobilenumber &&
-        //   this.state.selectedFile === obj.selectedFile
-        // ) {
-         
-        // } else {
-        //   const msg1 = "Error";
-        //   utils.showError(msg1);
-        // }
       }
     }
   }

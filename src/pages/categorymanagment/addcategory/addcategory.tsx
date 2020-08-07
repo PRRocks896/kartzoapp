@@ -183,13 +183,18 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
 
                 const addCategory = await API.addCategory(formData);
                 console.log("addCategory", addCategory);
-
-                if (addCategory.status === 200) {
-                    const msg = addCategory.message;
-                    utils.showSuccess(msg);
-                    this.props.history.push('/category');
+                if(addCategory) {
+    
+                    if (addCategory.status === 200) {
+                        const msg = addCategory.message;
+                        utils.showSuccess(msg);
+                        this.props.history.push('/category');
+                    } else {
+                        const msg1 = addCategory.message;
+                        utils.showError(msg1);
+                    }
                 } else {
-                    const msg1 = addCategory.message;
+                    const msg1 = "Internal server error";
                     utils.showError(msg1);
                 }
 
@@ -214,6 +219,7 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
                 formData.append('files', this.state.selectedFile[0]);
                 const editCategory = await API.editCategory(formData, this.state.categoryid.toString());
                 console.log("editCategory", editCategory);
+                if(editCategory) {
                 if (editCategory.status === 200) {
                     const msg = editCategory.message;
                     utils.showSuccess(msg);
@@ -222,6 +228,10 @@ class AddCategory extends React.Component<{ history: any, location: any }> {
                     const msg1 = editCategory.message;
                     utils.showError(msg1);
                 }
+            } else {
+                const msg1 = "Internal server error";
+                utils.showError(msg1);
+            }
             }
         };
     }

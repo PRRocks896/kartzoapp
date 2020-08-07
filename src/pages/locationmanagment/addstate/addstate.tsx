@@ -59,31 +59,41 @@ class AddState extends React.Component<{ history: any; location: any }> {
       const getStateById: any = await API.getStateById(obj);
       console.log("getStateById", getStateById);
 
-      if (getStateById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          filetrue: this.state.filetrue = true,
-          statename: this.state.statename = getStateById.resultObject.stateName,
-          countryid: this.state.countryid = getStateById.resultObject.countryId,
-          countryname: this.state.countryname =
-            getStateById.resultObject.countryName,
-          stateid: this.state.stateid = getStateById.resultObject.stateId,
-        });
+      if(getStateById) {
+        if (getStateById.status === 200) {
+          this.setState({
+            updateTrue: this.state.updateTrue = true,
+            filetrue: this.state.filetrue = true,
+            statename: this.state.statename = getStateById.resultObject.stateName,
+            countryid: this.state.countryid = getStateById.resultObject.countryId,
+            countryname: this.state.countryname =
+              getStateById.resultObject.countryName,
+            stateid: this.state.stateid = getStateById.resultObject.stateId,
+          });
+        } else {
+          const msg1 = getStateById.message;
+          utils.showError(msg1);
+        }
       } else {
-        const msg1 = getStateById.message;
-        utils.showError(msg1);
+        const msg1 = "Internal server error";
+      utils.showError(msg1);
       }
     }
 
     const getCountry = await API.getCountry();
     console.log("getCountry", getCountry);
 
-    if (getCountry.status === 200) {
-      this.setState({
-        countrylist: this.state.countrylist = getCountry.resultObject,
-      });
+    if(getCountry) {
+      if (getCountry.status === 200) {
+        this.setState({
+          countrylist: this.state.countrylist = getCountry.resultObject,
+        });
+      } else {
+        const msg1 = "Error";
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = "Error";
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
 
@@ -143,13 +153,18 @@ class AddState extends React.Component<{ history: any; location: any }> {
         const addState = await API.addState(obj);
         console.log("addState", addState);
 
-        if (addState.status === 200) {
-          const msg = addState.message;
-          utils.showSuccess(msg);
-          this.props.history.push("/state");
+        if(addState) {
+          if (addState.status === 200) {
+            const msg = addState.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/state");
+          } else {
+            const msg = addState.message;
+            utils.showError(msg);
+          }
         } else {
-          const msg = addState.message;
-          utils.showError(msg);
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
         }
       }
     }
@@ -173,13 +188,18 @@ class AddState extends React.Component<{ history: any; location: any }> {
         const editState = await API.editState(obj, this.state.stateid);
         console.log("editState", editState);
 
-        if (editState.status === 200) {
-          const msg = editState.message;
-          utils.showSuccess(msg);
-          this.props.history.push("/state");
+        if(editState) {
+          if (editState.status === 200) {
+            const msg = editState.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/state");
+          } else {
+            const msg = editState.message;
+            utils.showError(msg);
+          }
         } else {
-          const msg = editState.message;
-          utils.showError(msg);
+          const msg1 = "Internal server error";
+      utils.showError(msg1);
         }
       }
     }

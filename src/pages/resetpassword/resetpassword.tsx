@@ -72,14 +72,19 @@ class ResetPassword extends React.Component<{ location: any,history:any }> {
     var resetPassword:any = await API.resetPassword(obj);
     console.log("resetPassword", resetPassword);
 
-    if (resetPassword.status === 200) {
+    if(resetPassword) {
+      if (resetPassword.status === 200) {
+        const msg = resetPassword.data.message;
+        utils.showSuccess(msg);
+        this.props.history.push("/login");
+    } else {
       const msg = resetPassword.data.message;
-      utils.showSuccess(msg);
-      this.props.history.push("/login");
-  } else {
-    const msg = resetPassword.data.message;
-      utils.showError(msg);
-  }
+        utils.showError(msg);
+    }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
+    }
   }
 
   render() {

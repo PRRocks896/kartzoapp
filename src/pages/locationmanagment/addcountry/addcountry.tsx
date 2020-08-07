@@ -57,18 +57,23 @@ class AddCountry extends React.Component<{ history: any,location:any }> {
             const getCountryById: any = await API.getCountryById(obj);
             console.log("getCountryById", getCountryById);
 
-            if (getCountryById.status === 200) {
-                this.setState({
-                    updateTrue: this.state.updateTrue = true,
-                    filetrue:this.state.filetrue = true,
-                    countryname: this.state.countryname = getCountryById.resultObject.countryName,
-                    countrycode: this.state.countrycode = getCountryById.resultObject.countryCode,
-                    countryid:this.state.countryid = getCountryById.resultObject.countryId,
-                    file: this.state.file = getCountryById.resultObject.imagePath,
-                    selectedFile:this.state.selectedFile = getCountryById.resultObject.imagePath
-                })
+            if(getCountryById) {
+                if (getCountryById.status === 200) {
+                    this.setState({
+                        updateTrue: this.state.updateTrue = true,
+                        filetrue:this.state.filetrue = true,
+                        countryname: this.state.countryname = getCountryById.resultObject.countryName,
+                        countrycode: this.state.countrycode = getCountryById.resultObject.countryCode,
+                        countryid:this.state.countryid = getCountryById.resultObject.countryId,
+                        file: this.state.file = getCountryById.resultObject.imagePath,
+                        selectedFile:this.state.selectedFile = getCountryById.resultObject.imagePath
+                    })
+                } else {
+                    const msg1 = getCountryById.message;
+                    utils.showError(msg1);
+                }
             } else {
-                const msg1 = getCountryById.message;
+                const msg1 = "Internal server error";
                 utils.showError(msg1);
             }
         }
@@ -159,13 +164,18 @@ class AddCountry extends React.Component<{ history: any,location:any }> {
                 const addCountry = await API.addCountry(formData);
                 console.log("addCountry",addCountry);
 
-                if(addCountry.status === 200) {
-                    const msg = addCountry.message;
-                    utils.showSuccess(msg);
-                    this.props.history.push('/country');
+                if(addCountry) {
+                    if(addCountry.status === 200) {
+                        const msg = addCountry.message;
+                        utils.showSuccess(msg);
+                        this.props.history.push('/country');
+                    } else {
+                        const msg = addCountry.message;
+                        utils.showError(msg);
+                    }
                 } else {
-                    const msg = addCountry.message;
-                    utils.showError(msg);
+                    const msg1 = "Internal server error";
+                    utils.showError(msg1);
                 }
                
             }
@@ -192,13 +202,18 @@ class AddCountry extends React.Component<{ history: any,location:any }> {
                 const editCountry = await API.editCountry(formData,this.state.countryid.toString());
                 console.log("editCountry",editCountry);
 
-                if(editCountry.status === 200) {
-                    const msg = editCountry.message;
-                    utils.showSuccess(msg);
-                    this.props.history.push('/country');
+                if(editCountry) {
+                    if(editCountry.status === 200) {
+                        const msg = editCountry.message;
+                        utils.showSuccess(msg);
+                        this.props.history.push('/country');
+                    } else {
+                        const msg = editCountry.message;
+                        utils.showError(msg);
+                    }
                 } else {
-                    const msg = editCountry.message;
-                    utils.showError(msg);
+                    const msg1 = "Internal server error";
+                    utils.showError(msg1);
                 }
             }
         };

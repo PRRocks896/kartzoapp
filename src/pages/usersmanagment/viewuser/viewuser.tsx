@@ -44,20 +44,25 @@ class ViewUser extends React.Component<{ history: any,location:any}> {
             id:usderId
           }
           const getUserById: any= await API.getUserById(obj);
-          if(getUserById.status === 200) {
-          this.setState({
-           userdata:{
-            firstName:getUserById.resultObject.firstName,
-            lastName:getUserById.resultObject.lastName,
-            email:getUserById.resultObject.email,
-            phone:getUserById.resultObject.phone,
-            file:getUserById.resultObject.photoPath
-           }
-          })
-        } else {
-            const msg1 = getUserById.message;
-      utils.showError(msg1);
-        }
+          if(getUserById) {
+              if(getUserById.status === 200) {
+              this.setState({
+               userdata:{
+                firstName:getUserById.resultObject.firstName,
+                lastName:getUserById.resultObject.lastName,
+                email:getUserById.resultObject.email,
+                phone:getUserById.resultObject.phone,
+                file:getUserById.resultObject.photoPath
+               }
+              })
+            } else {
+                const msg1 = getUserById.message;
+          utils.showError(msg1);
+            }
+          } else {
+            const msg1 = "Internal server error";
+            utils.showError(msg1);
+          }
            
     }
 }

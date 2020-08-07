@@ -38,17 +38,22 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
       const getCountryById: any = await API.getCountryById(obj);
       console.log("getCountryById", getCountryById);
 
-      if (getCountryById.status === 200) {
-        this.setState({
-          countryname: this.state.countryname =
-            getCountryById.resultObject.countryName,
-          countrycode: this.state.countrycode =
-            getCountryById.resultObject.countryCode,
-          file: this.state.file = getCountryById.resultObject.imagePath,
-        });
+      if(getCountryById) {
+        if (getCountryById.status === 200) {
+          this.setState({
+            countryname: this.state.countryname =
+              getCountryById.resultObject.countryName,
+            countrycode: this.state.countrycode =
+              getCountryById.resultObject.countryCode,
+            file: this.state.file = getCountryById.resultObject.imagePath,
+          });
+        } else {
+          const msg1 = getCountryById.message;
+          utils.showError(msg1);
+        }
       } else {
-        const msg1 = getCountryById.message;
-        utils.showError(msg1);
+        const msg1 = "Internal server error";
+      utils.showError(msg1);
       }
     }
   }

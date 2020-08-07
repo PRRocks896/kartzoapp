@@ -94,7 +94,6 @@ class StateManagment extends React.Component<{ history: any }> {
   async getStateData() {
     const obj = {
       searchText: "",
-      isActive: true,
       page: 1,
       size: parseInt(this.state.items_per_page),
     };
@@ -102,13 +101,18 @@ class StateManagment extends React.Component<{ history: any }> {
     var getStateData = await API.getStateData(obj);
     console.log("getStateData", getStateData);
 
-    if (getStateData.status === 200) {
-      this.setState({
-        statedata: this.state.statedata = getStateData.resultObject.data,
-        count: this.state.count = getStateData.resultObject.totalcount,
-      });
+    if(getStateData) {
+      if (getStateData.status === 200) {
+        this.setState({
+          statedata: this.state.statedata = getStateData.resultObject.data,
+          count: this.state.count = getStateData.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getStateData.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getStateData.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -184,7 +188,6 @@ class StateManagment extends React.Component<{ history: any }> {
     });
     const obj = {
       searchText: "",
-      isActive: true,
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
@@ -192,13 +195,18 @@ class StateManagment extends React.Component<{ history: any }> {
     var getStateData = await API.getStateData(obj);
     console.log("getStateData", getStateData);
 
-    if (getStateData.status === 200) {
-      this.setState({
-        statedata: this.state.statedata = getStateData.resultObject.data,
-        count: this.state.count = getStateData.resultObject.totalcount,
-      });
+    if(getStateData) {
+      if (getStateData.status === 200) {
+        this.setState({
+          statedata: this.state.statedata = getStateData.resultObject.data,
+          count: this.state.count = getStateData.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getStateData.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getStateData.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -206,7 +214,6 @@ class StateManagment extends React.Component<{ history: any }> {
   async searchApplicationDataKeyUp(e: any) {
     const obj = {
       searchText: e.target.value,
-      isActive: true,
       page: 1,
       size: parseInt(this.state.items_per_page),
     };
@@ -214,13 +221,18 @@ class StateManagment extends React.Component<{ history: any }> {
     var getStateData = await API.getStateData(obj);
     console.log("getStateData", getStateData);
 
-    if (getStateData.status === 200) {
-      this.setState({
-        statedata: this.state.statedata = getStateData.resultObject.data,
-        count: this.state.count = getStateData.resultObject.totalcount,
-      });
+    if(getStateData) {
+      if (getStateData.status === 200) {
+        this.setState({
+          statedata: this.state.statedata = getStateData.resultObject.data,
+          count: this.state.count = getStateData.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getStateData.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getStateData.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -454,7 +466,7 @@ class StateManagment extends React.Component<{ history: any }> {
                                   <td>{data.stateName}</td>
                                   <td>{data.countryName}</td>
                                   <td style={{ textAlign: "center" }}>
-                            {this.state.isStatus === false ? (
+                            {data.isActive === true ? (
                               <button
                                 className="status_active_color"
                                 onClick={() => this.statusChange(data)}

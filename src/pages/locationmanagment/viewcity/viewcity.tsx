@@ -38,14 +38,19 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
       const getCityById: any = await API.getCityById(obj);
       console.log("getCityById", getCityById);
 
-      if (getCityById.status === 200) {
-        this.setState({
-          statename: this.state.statename = getCityById.resultObject.stateName,
-          cityname: this.state.cityname = getCityById.resultObject.cityName,
-        });
+      if(getCityById) {
+        if (getCityById.status === 200) {
+          this.setState({
+            statename: this.state.statename = getCityById.resultObject.stateName,
+            cityname: this.state.cityname = getCityById.resultObject.cityName,
+          });
+        } else {
+          const msg1 = getCityById.message;
+          utils.showError(msg1);
+        }
       } else {
-        const msg1 = getCityById.message;
-        utils.showError(msg1);
+        const msg1 = "Internal server error";
+      utils.showError(msg1);
       }
     }
   }

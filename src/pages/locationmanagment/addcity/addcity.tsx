@@ -57,23 +57,29 @@ class AddCity extends React.Component<{ history: any; location: any }> {
       const getCityById: any = await API.getCityById(obj);
       console.log("getCityById", getCityById);
 
-      if (getCityById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          statename: this.state.statename = getCityById.resultObject.stateName,
-          stateid: this.state.stateid = getCityById.resultObject.stateId,
-          cityid: this.state.cityid = getCityById.resultObject.cityId,
-          cityname: this.state.cityname = getCityById.resultObject.cityName,
-        });
+      if(getCityById) {
+        if (getCityById.status === 200) {
+          this.setState({
+            updateTrue: this.state.updateTrue = true,
+            statename: this.state.statename = getCityById.resultObject.stateName,
+            stateid: this.state.stateid = getCityById.resultObject.stateId,
+            cityid: this.state.cityid = getCityById.resultObject.cityId,
+            cityname: this.state.cityname = getCityById.resultObject.cityName,
+          });
+        } else {
+          const msg1 = getCityById.message;
+          utils.showError(msg1);
+        }
       } else {
-        const msg1 = getCityById.message;
-        utils.showError(msg1);
+        const msg1 = "Internal server error";
+      utils.showError(msg1);
       }
     }
 
     const getState = await API.getState();
     console.log("getState", getState);
 
+    if(getState) {
     if (getState.status === 200) {
       this.setState({
         statelist: this.state.statelist = getState.resultObject,
@@ -82,6 +88,10 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         const msg = getState.message;
           utils.showError(msg);
     }
+  } else {
+    const msg1 = "Internal server error";
+    utils.showError(msg1);
+  }
 
     if (this.state.updateTrue === true) {
         document.title = constant.updateCityTitle + utils.getAppName();
@@ -139,13 +149,18 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         const addCity = await API.addCity(obj);
         console.log("addCity", addCity);
 
-        if (addCity.status === 200) {
-          const msg = addCity.message;
-          utils.showSuccess(msg);
-          this.props.history.push("/city");
+        if(addCity) {
+          if (addCity.status === 200) {
+            const msg = addCity.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/city");
+          } else {
+            const msg = addCity.message;
+            utils.showError(msg);
+          }
         } else {
-          const msg = addCity.message;
-          utils.showError(msg);
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
         }
       }
     }
@@ -169,13 +184,18 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         const editCity = await API.editCity(obj, this.state.cityid);
         console.log("editCity", editCity);
 
-        if (editCity.status === 200) {
-          const msg = editCity.message;
-          utils.showSuccess(msg);
-          this.props.history.push("/city");
+        if(editCity) {
+          if (editCity.status === 200) {
+            const msg = editCity.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/city");
+          } else {
+            const msg = editCity.message;
+            utils.showError(msg);
+          }
         } else {
-          const msg = editCity.message;
-          utils.showError(msg);
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
         }
       }
     }

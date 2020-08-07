@@ -41,7 +41,7 @@ axios.interceptors.response.use(
   },
   (err: any) => {
     console.log("err", err.response);
-    if(err !== undefined) {
+    if(err.response !== undefined) {
       if(err.response.data !== null) {
         if(err.response.data.message.length>0 && err.response.data.status === 400) {
           const msg1 = err.response.data.message[0].message;
@@ -161,8 +161,11 @@ axios.interceptors.response.use(
         utils.showError(msg1);
       }
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = "/#/login";
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 );

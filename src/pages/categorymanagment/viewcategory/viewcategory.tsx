@@ -44,18 +44,22 @@ class ViewCategory extends React.Component<{ history: any, location: any }> {
             }
             const getCategoryById: any = await API.getCategoryById(obj);
             console.log("getCategoryById", getCategoryById);
-
-            if (getCategoryById.status === 200) {
-                this.setState({
-                    category: this.state.category = getCategoryById.resultObject.category,
-                    sortorder: this.state.sortorder = getCategoryById.resultObject.sortOrder,
-                    file: this.state.file = getCategoryById.resultObject.imagePath,
-                    parentCategory:this.state.parentCategory = getCategoryById.resultObject.parentCategory?getCategoryById.resultObject.parentCategory:''
-                })
+            if(getCategoryById){
+                if (getCategoryById.status === 200) {
+                    this.setState({
+                        category: this.state.category = getCategoryById.resultObject.category,
+                        sortorder: this.state.sortorder = getCategoryById.resultObject.sortOrder,
+                        file: this.state.file = getCategoryById.resultObject.imagePath,
+                        parentCategory:this.state.parentCategory = getCategoryById.resultObject.parentCategory?getCategoryById.resultObject.parentCategory:''
+                    })
+                } else {
+                    const msg1 = getCategoryById.message;
+                    utils.showError(msg1);
+                }
             } else {
-                const msg1 = getCategoryById.message;
+                const msg1 = "Internal server error";
                 utils.showError(msg1);
-            }
+              }
         }
 
     }

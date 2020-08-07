@@ -115,16 +115,21 @@ class Login extends React.Component<{ history: any }> {
         var forgotPassword: any = await API.forgotPassword(obj);
         console.log("forgotPassword", forgotPassword);
 
-        if (forgotPassword.status === 200) {
-          var ele = document.getElementById('modal-12');
-          if(ele != null) {
-            ele.style.display = 'none';
+        if(forgotPassword) {
+          if (forgotPassword.status === 200) {
+            var ele = document.getElementById('modal-12');
+            if(ele != null) {
+              ele.style.display = 'none';
+            }
+            const msg = forgotPassword.data.message;
+            utils.showSuccess(msg);
+          } else {
+            const msg = forgotPassword.data.message;
+            utils.showError(msg);
           }
-          const msg = forgotPassword.data.message;
-          utils.showSuccess(msg);
-        } else {
-          const msg = forgotPassword.data.message;
-          utils.showError(msg);
+        }  else {
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
         }
       }
     }
@@ -154,19 +159,24 @@ class Login extends React.Component<{ history: any }> {
           .post(Constant.apiUrl + apiUrl.userController.createData, obj)
           .then((res: any) => {
             console.log("login", res);
-            if(res.data.status === 200) {
-              this.setState({
-                isButton: false,
-              });
-              var userData = res.data.resultObject;
-              localStorage.setItem("user", JSON.stringify(userData));
-              localStorage.setItem("token", userData.token);
-              const msg = res.data.message;
-              utils.showSuccess(msg);
-              this.props.history.push("/dashboard");
+            if(res) {
+              if(res.data.status === 200) {
+                this.setState({
+                  isButton: false,
+                });
+                var userData = res.data.resultObject;
+                localStorage.setItem("user", JSON.stringify(userData));
+                localStorage.setItem("token", userData.token);
+                const msg = res.data.message;
+                utils.showSuccess(msg);
+                this.props.history.push("/dashboard");
+              } else {
+                const msg = res.data.message;
+                utils.showError(msg);
+              }
             } else {
-              const msg = res.data.message;
-              utils.showError(msg);
+              const msg1 = "Internal server error";
+              utils.showError(msg1);
             }
           });
       }

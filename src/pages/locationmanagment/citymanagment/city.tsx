@@ -87,7 +87,6 @@ class City extends React.Component<{ history: any }> {
   async getCityData() {
     const obj = {
       searchText: "",
-      isActive: true,
       page: 1,
       size: parseInt(this.state.items_per_page),
     };
@@ -95,13 +94,18 @@ class City extends React.Component<{ history: any }> {
     var getCityData = await API.getCityData(obj);
     console.log("getCityData", getCityData);
 
-    if (getCityData.status === 200) {
-      this.setState({
-        citydata: this.state.citydata = getCityData.resultObject.data,
-        count: this.state.count = getCityData.resultObject.totalcount,
-      });
+    if(getCityData) {
+      if (getCityData.status === 200) {
+        this.setState({
+          citydata: this.state.citydata = getCityData.resultObject.data,
+          count: this.state.count = getCityData.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getCityData.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getCityData.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -177,7 +181,6 @@ class City extends React.Component<{ history: any }> {
     });
     const obj = {
       searchText: "",
-      isActive: true,
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
@@ -185,13 +188,18 @@ class City extends React.Component<{ history: any }> {
     var getCityData = await API.getCityData(obj);
     console.log("getCityData", getCityData);
 
-    if (getCityData.status === 200) {
-      this.setState({
-        citydata: this.state.citydata = getCityData.resultObject.data,
-        count: this.state.count = getCityData.resultObject.totalcount,
-      });
+    if(getCityData) {
+      if (getCityData.status === 200) {
+        this.setState({
+          citydata: this.state.citydata = getCityData.resultObject.data,
+          count: this.state.count = getCityData.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getCityData.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getCityData.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -199,7 +207,6 @@ class City extends React.Component<{ history: any }> {
   async searchApplicationDataKeyUp(e: any) {
     const obj = {
       searchText: e.target.value,
-      isActive: true,
       page: 1,
       size: parseInt(this.state.items_per_page),
     };
@@ -207,13 +214,18 @@ class City extends React.Component<{ history: any }> {
     var getCityData = await API.getCityData(obj);
     console.log("getCityData", getCityData);
 
-    if (getCityData.status === 200) {
-      this.setState({
-        citydata: this.state.citydata = getCityData.resultObject.data,
-        count: this.state.count = getCityData.resultObject.totalcount,
-      });
+    if(getCityData) {
+      if (getCityData.status === 200) {
+        this.setState({
+          citydata: this.state.citydata = getCityData.resultObject.data,
+          count: this.state.count = getCityData.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getCityData.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getCityData.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -447,7 +459,7 @@ class City extends React.Component<{ history: any }> {
                                   <td>{data.stateName}</td>
 
                                   <td style={{ textAlign: "center" }}>
-                            {this.state.isStatus === false ? (
+                            {data.isActive === true ? (
                               <button
                                 className="status_active_color"
                                 onClick={() => this.statusChange(data)}

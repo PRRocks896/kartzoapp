@@ -99,20 +99,24 @@ class UserRole extends React.Component<{ history: any }> {
   async getRole() {
     const obj = {
       searchText: "",
-      isActive: true,
       page: 1,
       size: parseInt(this.state.items_per_page),
     };
     var getRole = await API.getRoles(obj);
     console.log("getRole", getRole);
 
-    if (getRole.status === 200) {
-      this.setState({
-        userrole: this.state.userrole = getRole.resultObject.data,
-        count: this.state.count = getRole.resultObject.totalcount,
-      });
+    if (getRole) {
+      if (getRole.status === 200) {
+        this.setState({
+          userrole: this.state.userrole = getRole.resultObject.data,
+          count: this.state.count = getRole.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getRole.message;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getRole.message;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -220,7 +224,6 @@ class UserRole extends React.Component<{ history: any }> {
     });
     const obj: getUserRoleRequest = {
       searchText: "",
-      isActive: true,
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
@@ -228,36 +231,44 @@ class UserRole extends React.Component<{ history: any }> {
     var getRoles = await API.getRoles(obj);
     console.log("getRoles", getRoles);
 
-    if (getRoles.status === 200) {
-      this.setState({
-        userrole: this.state.userrole = getRoles.resultObject.data,
-        count: this.state.count = getRoles.resultObject.totalcount,
-      });
+    if (getRoles) {
+      if (getRoles.status === 200) {
+        this.setState({
+          userrole: this.state.userrole = getRoles.resultObject.data,
+          count: this.state.count = getRoles.resultObject.totalcount,
+        });
+      } else {
+        const msg = getRoles.message;
+        utils.showError(msg);
+      }
     } else {
-      const msg = getRoles.message;
-      utils.showError(msg);
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
     }
   }
 
   async searchApplicationDataKeyUp(e: any) {
     const obj: getUserRoleRequest = {
       searchText: e.target.value,
-      isActive: true,
       page: 1,
       size: parseInt(this.state.items_per_page),
     };
 
     var getRoles = await API.getRoles(obj);
     console.log("getRoles", getRoles);
-
-    if (getRoles.status === 200) {
-      this.setState({
-        userrole: this.state.userrole = getRoles.resultObject.data,
-        count: this.state.count = getRoles.resultObject.totalcount,
-      });
+    if (getRoles) {
+      if (getRoles.status === 200) {
+        this.setState({
+          userrole: this.state.userrole = getRoles.resultObject.data,
+          count: this.state.count = getRoles.resultObject.totalcount,
+        });
+      } else {
+        const msg = getRoles.message;
+        utils.showError(msg);
+      }
     } else {
-      const msg = getRoles.message;
-      utils.showError(msg);
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
     }
   }
 
@@ -499,7 +510,7 @@ class UserRole extends React.Component<{ history: any }> {
                                   <td>{data.role}</td>
                                   {/* <td>{data.description}</td> */}
                                   <td style={{ textAlign: "center" }}>
-                                    {this.state.isStatus === false ? (
+                                    {data.isActive === true ? (
                                       <button
                                         className="status_active_color"
                                         onClick={() => this.statusChange(data)}

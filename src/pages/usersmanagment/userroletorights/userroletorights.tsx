@@ -63,12 +63,17 @@ class UserRoleToRights extends React.Component {
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
 
-    if (getUserRole.resultObject != null) {
-      this.setState({
-        userrole: this.state.userrole = getUserRole.resultObject,
-      });
+    if(getUserRole) {
+      if (getUserRole.resultObject != null) {
+        this.setState({
+          userrole: this.state.userrole = getUserRole.resultObject,
+        });
+      } else {
+        const msg1 = getUserRole.explanation;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getUserRole.explanation;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -83,35 +88,41 @@ class UserRoleToRights extends React.Component {
       id: this.state.roleid,
     };
     const getRolePreveliges = await RoleAPI.getRolePreveliges(obj);
-    if (getRolePreveliges.resultObject !== null) {
-      this.setState({
-        mainItemName: this.state.mainItemName =
-          getRolePreveliges.resultObject.menuItems,
-        role: this.state.role = getRolePreveliges.resultObject.roleprivileges,
-      });
+    if(getRolePreveliges) {
 
-      let data = this.state.role;
-
-      let count = 0;
-      data.forEach((element: any) => {
-        if (
-          element.view == true &&
-          element.delete == true &&
-          element.add == true &&
-          element.edit == true &&
-          element.detail == true
-        ) {
-          element._rowChecked = true;
-          count++;
-        } else {
-          element._rowChecked = false;
-        }
-      });
-      this.setState({
-        roleprivileges: this.state.roleprivileges = data,
-      });
+      if (getRolePreveliges.resultObject !== null) {
+        this.setState({
+          mainItemName: this.state.mainItemName =
+            getRolePreveliges.resultObject.menuItems,
+          role: this.state.role = getRolePreveliges.resultObject.roleprivileges,
+        });
+  
+        let data = this.state.role;
+  
+        let count = 0;
+        data.forEach((element: any) => {
+          if (
+            element.view == true &&
+            element.delete == true &&
+            element.add == true &&
+            element.edit == true &&
+            element.detail == true
+          ) {
+            element._rowChecked = true;
+            count++;
+          } else {
+            element._rowChecked = false;
+          }
+        });
+        this.setState({
+          roleprivileges: this.state.roleprivileges = data,
+        });
+      } else {
+        const msg1 = "Error";
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = "Error";
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -294,11 +305,16 @@ class UserRoleToRights extends React.Component {
     const updateRolePreveliges = await RoleAPI.updateRolePreveliges(obj);
     console.log("updateRolePreveliges", updateRolePreveliges);
 
-    if (updateRolePreveliges.resultObject !== null) {
-      const msg = "Role privileges Updated Successfully";
-      utils.showSuccess(msg);
+    if(updateRolePreveliges) {
+      if (updateRolePreveliges.resultObject !== null) {
+        const msg = "Role privileges Updated Successfully";
+        utils.showSuccess(msg);
+      } else {
+        const msg1 = "Error";
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = "Error";
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
 
