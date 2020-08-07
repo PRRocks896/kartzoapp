@@ -23,13 +23,14 @@ import API from '../../../service/location.service';
 import Switch from "react-switch";
 import Constant from '../../../constant/constant';
 import { countryListRequest } from '../../../modelController/countryModel';
+import constant from '../../../constant/constant';
 const $ = require('jquery');
 $.DataTable = require('datatables.net')
 
 class CountryManagment extends React.Component<{ history: any }> {
 
     state = {
-        selectedFile: null,
+        selectedFile: '',
         firstname: '',
         firstnameerror: '',
         lastname: '',
@@ -42,9 +43,9 @@ class CountryManagment extends React.Component<{ history: any }> {
         passworderror: '',
         checked: false,
         selectedFileerror: '',
-        count: 10,
-        currentPage: 1,
-        items_per_page: 2,
+        count: '10',
+        currentPage: '1',
+        items_per_page: '10',
         perpage: 2,
         paginationdata: '',
         isFetch: false,
@@ -56,7 +57,9 @@ class CountryManagment extends React.Component<{ history: any }> {
         isPrevBtnActive: 'disabled',
         isNextBtnActive: '',
         onClickPage: 1,
-        activePage: 15
+        activePage: 15,
+        countrydata:[],
+        switchSort:false
     }
 
     constructor(props: any) {
@@ -66,22 +69,47 @@ class CountryManagment extends React.Component<{ history: any }> {
         this.btnIncrementClick = this.btnIncrementClick.bind(this);
         this.btnDecrementClick = this.btnDecrementClick.bind(this);
         this.viewCountry = this.viewCountry.bind(this);
+        this.onItemSelect = this.onItemSelect.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(this);
+        this.handleSort = this.handleSort.bind(this);
+        this.compareByDesc = this.compareByDesc.bind(this);
     }
 
     componentDidMount() {
         document.title = Constant.countryTitle + utils.getAppName();
-        $('#dtBasicExample').DataTable({
-            "paging": false,
-            "info": false
+        $("#dtBasicExample").DataTable({
+            paging: false,
+            info: false,
+            searching: false,
+            sorting: false,
+            ordering: false,
         });
-        this.getUserCountData();
+        this.getCountryData();
         this.getApplicationPageData();
     }
 
-    async getUserCountData() {
+    async getCountryData() {
 
-        // var getuserCount = await API.getUserCount();
-        // console.log("getUsercount",getuserCount);
+        const obj = {
+            searchText: "",
+            isActive: true,
+            page: 1,
+            size: parseInt(this.state.items_per_page),
+        };
+
+        var getCountryData = await API.getCountryData(obj);
+        console.log("getCountryData", getCountryData);
+
+        if (getCountryData.status === 200) {
+            this.setState({
+                countrydata: this.state.countrydata = getCountryData.resultObject.data,
+                count:this.state.count = getCountryData.resultObject.totalcount
+            });
+        } else {
+            const msg1 = getCountryData.message;
+            utils.showError(msg1);
+        }
       
     }
 
@@ -112,15 +140,15 @@ class CountryManagment extends React.Component<{ history: any }> {
         this.setState({ currentPage: listid });
     }
 
-    editCountry() {
-        this.props.history.push('/editcountry');
+    editCountry(id:any) {
+        this.props.history.push('/editcountry/' + id);
     }
 
-    viewCountry() {
-        this.props.history.push('/viewcountry');
+    viewCountry(id:any) {
+        this.props.history.push('/viewcountry/' + id);
     }
 
-    deleteCountry() {
+    deleteCountry(id:any) {
         Swal.fire({
             title: 'Are you sure?',
             text: 'You should be remove country!',
@@ -130,10 +158,15 @@ class CountryManagment extends React.Component<{ history: any }> {
             cancelButtonText: 'No, keep it'
         }).then(async (result) => {
             if (result.value) {
-                // var deleteCountry = await API.deleteCountry(id);
-                const msg = "Your Country has been deleted";
-                utils.showSuccess(msg);
-                // this.componentDidMount();
+                var deleteCountry = await API.deleteCountry(id);
+                if(deleteCountry.status === 200) {
+                    const msg = deleteCountry.message;
+                    utils.showSuccess(msg);
+                    this.getCountryData();
+                } else {
+                    const msg = deleteCountry.message;
+                    utils.showSuccess(msg);
+                }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 const msg1 = "Country is safe :";
                 utils.showError(msg1);
@@ -141,67 +174,160 @@ class CountryManagment extends React.Component<{ history: any }> {
         })
     }
 
+    onItemSelect(event: any) {
+        this.setState({
+            items_per_page: this.state.items_per_page =
+                event.target.options[event.target.selectedIndex].value,
+        });
 
+        this.getCountryData();
+    }
+
+    async handleClick(event: any) {
+        this.setState({
+            currentPage: this.state.currentPage = event.target.id,
+        });
+        const obj = {
+            searchText: "",
+            isActive: true,
+            page: parseInt(event.target.id),
+            size: parseInt(this.state.items_per_page),
+        };
+
+        var getCountryData = await API.getCountryData(obj);
+        console.log("getCountryData", getCountryData);
+
+        if (getCountryData.status === 200) {
+            this.setState({
+                countrydata: this.state.countrydata = getCountryData.resultObject.data,
+                count:this.state.count = getCountryData.resultObject.totalcount
+            });
+        } else {
+            const msg1 = getCountryData.message;
+            utils.showError(msg1);
+        }
+    }
+
+    async searchApplicationDataKeyUp(e: any) {
+        const obj = {
+            searchText: e.target.value,
+            isActive: true,
+            page: 1,
+            size: parseInt(this.state.items_per_page),
+        };
+
+        var getCountryData = await API.getCountryData(obj);
+        console.log("getCountryData", getCountryData);
+
+
+        if (getCountryData.status === 200) {
+            this.setState({
+                countrydata: this.state.countrydata = getCountryData.resultObject.data,
+                count:this.state.count = getCountryData.resultObject.totalcount
+            });
+        } else {
+            const msg1 = getCountryData.message;
+            utils.showError(msg1);
+        }
+    }
+
+    handleSort(key: any) {
+        this.setState({
+            switchSort: !this.state.switchSort,
+        });
+        let copyTableData = [...this.state.countrydata];
+        copyTableData.sort(this.compareByDesc(key));
+        this.setState({
+            countrydata: this.state.countrydata = copyTableData,
+        });
+    }
+
+    compareByDesc(key: any) {
+        if (this.state.switchSort) {
+            return function (a: any, b: any) {
+                if (a[key] < b[key]) return -1; // check for value if the second value is bigger then first return -1
+                if (a[key] > b[key]) return 1; //check for value if the second value is bigger then first return 1
+                return 0;
+            };
+        } else {
+            return function (a: any, b: any) {
+                if (a[key] > b[key]) return -1;
+                if (a[key] < b[key]) return 1;
+                return 0;
+            };
+        }
+    }
 
     render() {
         var pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
+        for (
+            let i = 1;
+            i <= Math.ceil(parseInt(this.state.count) / parseInt(this.state.items_per_page));
+            i++
+        ) {
             pageNumbers.push(i);
         }
         var renderPageNumbers = pageNumbers.map((number: any) => {
-            if (number === 1 && this.state.currentPage === 1) {
+            if (number === 1 && parseInt(this.state.currentPage) === 1) {
                 return (
                     <li
                         key={number}
                         id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
+                        className={
+                            parseInt(this.state.currentPage) === number
+                                ? "active"
+                                : "page-item"
+                        }
                     >
-                        <a className="page-link">{number}</a>
+                        <a className="page-link" onClick={this.handleClick}>
+                            {number}
+                        </a>
                     </li>
                 );
-            }
-            else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
+            } else if (
+                number < this.state.upperPageBound + 1 &&
+                number > this.state.lowerPageBound
+            ) {
                 return (
                     <li
                         key={number}
                         id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
+                        className={
+                            parseInt(this.state.currentPage) === number
+                                ? "active"
+                                : "page-item"
+                        }
                     >
-                        <a className="page-link" id={number}>{number}</a>
+                        <a className="page-link" id={number} onClick={this.handleClick}>
+                            {number}
+                        </a>
                     </li>
-                )
+                );
             }
         });
 
         let pageIncrementBtn = null;
         if (pageNumbers.length > this.state.upperPageBound) {
-            pageIncrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnIncrementClick}
-                    >
+            pageIncrementBtn = (
+                <li className="page-item">
+                    <a className="page-link" onClick={this.btnIncrementClick}>
                         &hellip;
-          </a>
+              </a>
                 </li>
+            );
         }
 
         let pageDecrementBtn = null;
         if (this.state.lowerPageBound >= 1) {
-            pageDecrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnDecrementClick}
-                    >
+            pageDecrementBtn = (
+                <li className="page-item">
+                    <a className="page-link" onClick={this.btnDecrementClick}>
                         &hellip;
-          </a>
+              </a>
                 </li>
+            );
         }
+
 
         return (
             <>
@@ -235,30 +361,19 @@ class CountryManagment extends React.Component<{ history: any }> {
 
                                     </CardHeader>
                                     <CardBody>
-                                        <div className="selectDiv">
-
-                                            <CustomInput
-                                                type="select"
-                                                id="exampleCustomSelect"
-                                                name="customSelect"
-                                            // onChange={this.onItemSelect}
-                                            >
-                                                <option value="">Record per page</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="20">20</option>
-                                                <option value="25">25</option>
-                                                {/* {
-this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-<option key={data.id} value={data.id}>{data.name}</option>
-) : ''
-} */}
-                                            </CustomInput>
+                                    <div style={{ textAlign: 'right' }}>
+                                            <input
+                                                className="form-control custom_text_width search"
+                                                type="text"
+                                                placeholder="Search"
+                                                aria-label="Search"
+                                                onKeyUp={this.searchApplicationDataKeyUp}
+                                            />
                                         </div>
 
                                         <table id="dtBasicExample" className="table table-striped table-bordered table-sm" width="100%">
                                             <thead>
-                                                <tr>
+                                                <tr onClick={() => this.handleSort('countryName')}>
                                                     <th>Country Name</th>
                                                     <th>Country Code</th>
                                                     <th>Country Flag</th>
@@ -267,113 +382,80 @@ this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>INDIA</td>
-                                                    <td>+91</td>
-                                                    <td><i className="fa fa-flag"></i> icon-flag</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye" onClick={this.viewCountry}></i>
-                                                            <i className="fas fa-edit" onClick={this.editCountry}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCountry}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>INDIA</td>
-                                                    <td>+91</td>
-                                                    <td><i className="fa fa-flag"></i> icon-flag</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye" onClick={this.viewCountry}></i>
-                                                            <i className="fas fa-edit" onClick={this.editCountry}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCountry}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
+                                                {
+                                                    this.state.countrydata.length>0 ? (
+                                                        <>
+                                                        {
+                                                            this.state.countrydata.map((data:any,index:any) => 
+                                                                <tr>
+                                                                <td>{data.countryName}</td>
+                                                        <td>{data.countryCode}</td>
+                                                        <td>
+                                                                            {
+                                                                                data.imagePath != null ? (
+                                                                                    <div className="img-size">
+                                                                                        {
+                                                                                            data.imagePath ? (
+                                                                                                <div>
+                                                                                                    <img className="table-picture" src={constant.filepath + data.imagePath} />
+                                                                                                    {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
+                                                                                                </div>
+                                                                                            ) : (null)
+                                                                                        }
+                                                                                    </div>
+                                                                                ) : (
+                                                                                        <div>
+                                                                                            <i className="fa fa-user picture"></i>
+                                                                                            {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
+                                                                                        </div>
+                                                                                    )
+                                                                            }
+                                                                        </td>
+                                                                <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
+                                                                <td className="action">
+                                                                    <span className="padding">
+                                                                        <i className="fa fa-eye" onClick={() => this.viewCountry(data.countryId)}></i>
+                                                                        <i className="fas fa-edit" onClick={() => this.editCountry(data.countryId)}></i>
+                                                                        <i className="far fa-trash-alt" onClick={() => this.deleteCountry(data.countryId)}></i>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            )
+                                                        }
+                                                        </>
+                                                    ) : (
+                                                        ''
+                                                    )
+                                                }
+                                               
                                             </tbody>
                                         </table>
-                                        {/* <MDBDataTable
-                                            striped
-                                            hover
-                                            data={data}
-                                        /> */}
-                                        {/* <div>
-                                            <Row>
-                                                <Col md="6">
-                                                    <div>
-                                                        <input
-                                                            className="form-control"
-                                                            type="text"
-                                                            placeholder="Search"
-                                                            aria-label="Search"
-                                                        // onKeyUp={this.searchApplicationDataKeyUp}
-                                                        />
-                                                    </div>
-                                                </Col>
-                                                <Col md="6">
-                                                    <div className="right">
-                                                        <Link to="/addcountry">
-                                                            <Button
-                                                                className="mb-2 mr-2 custom-button"
-                                                                color="primary"
-                                                            >
-                                                                Add
-                                                        </Button>
-                                                        </Link>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                        <br />
-                                        <Table hover className="mb-0 table_responsive" bordered>
-                                            <thead>
-                                                <tr>
-                                                    <th>Country Name</th>
-                                                    <th>Country Code</th>
-                                                    <th>Country Flag</th>
-                                                    <th style={{ textAlign: "center" }}>Status</th>
-                                                    <th className="action">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>INDIA</td>
-                                                    <td>+91</td>
-                                                    <td><i className="fa fa-flag"></i> icon-flag</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editCountry}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCountry}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                <td>INDIA</td>
-                                                    <td>+91</td>
-                                                    <td><i className="fa fa-flag"></i> icon-flag</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editCountry}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCountry}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </Table> */}
-                                        <div>
-                                            <ul className="pagination" id="page-numbers">
-                                                {pageDecrementBtn}
-                                                {renderPageNumbers}
-                                                {pageIncrementBtn}
-                                            </ul>
-                                        </div>
+                                        {this.state.countrydata.length > 0 ? (
+                                            <div className="filter">
+                                                <CustomInput
+                                                    type="select"
+                                                    id="item"
+                                                    className="custom_text_width"
+                                                    name="customSelect"
+                                                    onChange={this.onItemSelect}
+                                                >
+                                                    <option value="">Record per page</option>
+                                                    <option value="3">3</option>
+                                                    <option value="20">20</option>
+                                                    <option value="25">25</option>
+                                                    <option value="30">30</option>
+                                                </CustomInput>
+                                                <div>
+                                                    <ul className="pagination" id="page-numbers">
+                                                        {pageDecrementBtn}
+                                                        {renderPageNumbers}
+                                                        {pageIncrementBtn}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                                ""
+                                            )}
                                     </CardBody>
                                 </Card>
                             </Col>

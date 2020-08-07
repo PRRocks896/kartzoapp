@@ -105,20 +105,20 @@ class Main extends React.Component<{history:any}> {
             <Route path='/edituserrole/:id' render={(props: any) => <AddUserRole {...props} />} />
             <Route path='/country' render={(props: any) => <CountryManagment {...props} />} />
             <Route path='/addcountry' render={(props: any) => <AddCountry {...props} />} />
-            <Route path='/editcountry' render={(props: any) => <AddCountry {...props} />} />
+            <Route path='/editcountry/:id' render={(props: any) => <AddCountry {...props} />} />
             <Route path='/state' render={(props: any) => <StateManagment {...props} />} />
             <Route path='/addstate' render={(props: any) => <AddState {...props} />} />
-            <Route path='/editstate' render={(props: any) => <AddState {...props} />} />
+            <Route path='/editstate/:id' render={(props: any) => <AddState {...props} />} />
             <Route path='/city' render={(props: any) => <City {...props} />} />
             <Route path='/addcity' render={(props: any) => <AddCity {...props} />} />
-            <Route path='/editcity' render={(props: any) => <AddCity {...props} />} />
+            <Route path='/editcity/:id' render={(props: any) => <AddCity {...props} />} />
             <Route path='/viewuser/:id' render={(props: any) => <ViewUser {...props} />} />
             <Route path='/viewuserrole/:id' render={(props: any) => <ViewUserRole {...props} />} />
             <Route path='/viewcategory/:id' render={(props: any) => <ViewCategory {...props} />} />
             <Route path='/viewsubcategory/:id' render={(props: any) => <ViewSubCategory {...props} />} />
-            <Route path='/viewcity' render={(props: any) => <ViewCity {...props} />} />
-            <Route path='/viewstate' render={(props: any) => <ViewState {...props} />} />
-            <Route path='/viewcountry' render={(props: any) => <ViewCountry {...props} />} />
+            <Route path='/viewcity/:id' render={(props: any) => <ViewCity {...props} />} />
+            <Route path='/viewstate/:id' render={(props: any) => <ViewState {...props} />} />
+            <Route path='/viewcountry/:id' render={(props: any) => <ViewCountry {...props} />} />
             <Route path='/table' render={(props: any) => <Tables {...props} />} />
             <Route path='/coupon' render={(props: any) => <Coupon {...props} />} />
             <Route path='/merchant' render={(props: any) => <Merchant {...props} />} />

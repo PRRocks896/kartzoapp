@@ -85,7 +85,6 @@ class Category extends React.Component<{ history: any }> {
             ordering: false,
         });
         this.getCategory();
-        this.getApplicationPageData();
     }
 
     async getCategory() {
@@ -100,28 +99,15 @@ class Category extends React.Component<{ history: any }> {
         var getCategory = await API.getCategory(obj);
         console.log("getCategory", getCategory);
 
-        if (getCategory.resultObject != null) {
+        if (getCategory.status === 200) {
             this.setState({
                 categorydata: this.state.categorydata = getCategory.resultObject.data,
                 count:this.state.count = getCategory.resultObject.totalcount
             });
         } else {
-            const msg1 = getCategory.explanation;
+            const msg1 = getCategory.message;
             utils.showError(msg1);
         }
-
-    }
-
-    async getApplicationPageData() {
-        // const obj = {
-        //     page_no: "1",
-        //     items_per_page: this.state.items_per_page
-        // }
-
-        // var getUserDataPagination = await API.getUserDataPagination();
-        // console.log("getUserDataPagination",getUserDataPagination);
-
-        // var getUserDataPagination : categoryListRequest = [];
 
     }
 
@@ -167,9 +153,14 @@ class Category extends React.Component<{ history: any }> {
         }).then(async (result) => {
             if (result.value) {
                 var deleteCategory = await API.deleteCategory(id);
-                const msg = "Your Category has been deleted";
-                utils.showSuccess(msg);
-                this.getCategory();
+                if(deleteCategory.status === 200) {
+                    const msg = deleteCategory.message;
+                    utils.showSuccess(msg);
+                    this.getCategory();
+                } else {
+                    const msg = deleteCategory.message;
+                    utils.showSuccess(msg);
+                }
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 const msg1 = "Category is safe :";
                 utils.showError(msg1);
@@ -191,13 +182,13 @@ class Category extends React.Component<{ history: any }> {
         var getCategory = await API.getCategory(obj);
         console.log("getCategory", getCategory);
 
-        if (getCategory.resultObject != null) {
+        if (getCategory.status === 200) {
             this.setState({
                 categorydata: this.state.categorydata = getCategory.resultObject.data,
                 count:this.state.count = getCategory.resultObject.totalcount
             });
         } else {
-            const msg1 = getCategory.explanation;
+            const msg1 = getCategory.message;
             utils.showError(msg1);
         }
     }
@@ -214,11 +205,14 @@ class Category extends React.Component<{ history: any }> {
         console.log("getCategory", getCategory);
 
 
-        if (getCategory.resultObject.data != null) {
-          this.setState({
-            categorydata: this.state.categorydata = getCategory.resultObject.data,
-            count:this.state.count = getCategory.resultObject.totalcount
-          });
+        if (getCategory.status === 200) {
+            this.setState({
+                categorydata: this.state.categorydata = getCategory.resultObject.data,
+                count:this.state.count = getCategory.resultObject.totalcount
+            });
+        } else {
+            const msg1 = getCategory.message;
+            utils.showError(msg1);
         }
     }
 

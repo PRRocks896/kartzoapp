@@ -44,7 +44,7 @@ class ViewUser extends React.Component<{ history: any,location:any}> {
             id:usderId
           }
           const getUserById: any= await API.getUserById(obj);
-          
+          if(getUserById.status === 200) {
           this.setState({
            userdata:{
             firstName:getUserById.resultObject.firstName,
@@ -54,6 +54,10 @@ class ViewUser extends React.Component<{ history: any,location:any}> {
             file:getUserById.resultObject.photoPath
            }
           })
+        } else {
+            const msg1 = getUserById.message;
+      utils.showError(msg1);
+        }
            
     }
 }

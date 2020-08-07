@@ -69,16 +69,16 @@ class ResetPassword extends React.Component<{ location: any,history:any }> {
       guid: this.props.location.pathname.split("/")[2].split('=')[1],
       password: this.state.password,
     };
-    var resetPassword = await API.resetPassword(obj);
+    var resetPassword:any = await API.resetPassword(obj);
     console.log("resetPassword", resetPassword);
 
-    if (resetPassword.data.resultObject === true) {
-      const msg = "Password Reset Suucessfully";
+    if (resetPassword.status === 200) {
+      const msg = resetPassword.message;
       utils.showSuccess(msg);
       this.props.history.push("/login");
   } else {
-      const msg1 = "Error";
-      utils.showError(msg1);
+    const msg = resetPassword.message;
+      utils.showError(msg);
   }
   }
 

@@ -25,6 +25,7 @@ class NavBar extends React.Component {
             this.setState({
                 file: this.state.file = data,
             })
+
         });
     }
 

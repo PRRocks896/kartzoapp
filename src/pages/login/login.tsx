@@ -115,12 +115,12 @@ class Login extends React.Component<{ history: any }> {
         var forgotPassword: any = await API.forgotPassword(obj);
         console.log("forgotPassword", forgotPassword);
 
-        if (forgotPassword.data.resultObject === true) {
-          const msg = "Email sent Successfully Please Check Your Email";
+        if (forgotPassword.status === 200) {
+          const msg = forgotPassword.data.message;
           utils.showSuccess(msg);
         } else {
-          const msg1 = "Error";
-          utils.showError(msg1);
+          const msg = forgotPassword.data.message;
+          utils.showError(msg);
         }
       }
     }
@@ -142,7 +142,7 @@ class Login extends React.Component<{ history: any }> {
           email: this.state.email,
           password: this.state.password,
           deviceType: 1,
-          deviceId: "",
+          deviceId: "deviceId",
           ipAddress: this.state.ipAddress,
           userId: 0,
         };
@@ -150,19 +150,19 @@ class Login extends React.Component<{ history: any }> {
         axios
           .post(Constant.apiUrl + apiUrl.userController.createData, obj)
           .then((res: any) => {
-            try {
-              console.log("res", res);
+            console.log("login", res);
+            if(res.data.status === 200) {
               this.setState({
                 isButton: false,
               });
               var userData = res.data.resultObject;
               localStorage.setItem("user", JSON.stringify(userData));
               localStorage.setItem("token", userData.token);
-              const msg = "Login Successfully";
+              const msg = res.data.message;
               utils.showSuccess(msg);
               this.props.history.push("/dashboard");
-            } catch {
-              const msg = res.data.explanation;
+            } else {
+              const msg = res.data.message;
               utils.showError(msg);
             }
           });

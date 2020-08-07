@@ -196,3 +196,7 @@ table.dataTable {
   ::-webkit-scrollbar-thumb:hover {
     background: #555; 
   }
+
+  .check_display{
+      display: inline-block !important;
+  }

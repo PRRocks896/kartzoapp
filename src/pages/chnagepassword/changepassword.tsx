@@ -90,11 +90,11 @@ class ChangePassword extends Component {
                const updatePassword = await API.updatePassword(obj);
                 console.log("updatePassword",updatePassword);
                 
-                if (updatePassword.resultObject !== null) {
-                    const msg = "Password Changed Successfully";
+                if (updatePassword.status === 200) {
+                    const msg = updatePassword.message;
                     utils.showSuccess(msg);
                 } else {
-                    const msg1 = "Error";
+                    const msg1 = updatePassword.message;
                     utils.showError(msg1);
                 }
 

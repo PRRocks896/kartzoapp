@@ -32,6 +32,11 @@ class UserRoleToRights extends React.Component {
     role: [],
     roleprivileges: [],
     _maincheck: false,
+    _viewcheck:false,
+    _editcheck:false,
+    _addcheck:false,
+    _deletecheck:false,
+    _detailcheck:false,
     show: false,
   };
 
@@ -43,6 +48,11 @@ class UserRoleToRights extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.checkMaster = this.checkMaster.bind(this);
     this.updateRights = this.updateRights.bind(this);
+    this.handleViewChange = this.handleViewChange.bind(this);
+    this.handleAddChange = this.handleAddChange.bind(this);
+    this.handleDeleteChange = this.handleDeleteChange.bind(this);
+    this.handleDetailChange = this.handleDetailChange.bind(this);
+    this.handleEditChange = this.handleEditChange.bind(this);
   }
 
   componentDidMount() {
@@ -195,6 +205,73 @@ class UserRoleToRights extends React.Component {
     });
   }
 
+  handleViewChange(e: any) {
+    let _val = e.target.checked;
+    this.state.roleprivileges.forEach((element: any) => {
+      element.view = _val == true ? true : false;
+    });
+    this.setState({
+      roleprivileges: this.state.roleprivileges,
+    });
+    this.setState({
+      _viewcheck: _val,
+    });
+  }
+
+  handleAddChange(e: any) {
+    let _val = e.target.checked;
+    this.state.roleprivileges.forEach((element: any) => {
+      element.add = _val == true ? true : false;
+    });
+    this.setState({
+      roleprivileges: this.state.roleprivileges,
+    });
+    this.setState({
+      _addcheck: _val,
+    });
+  }
+
+  handleEditChange(e: any) {
+    let _val = e.target.checked;
+    this.state.roleprivileges.forEach((element: any) => {
+      element.edit = _val == true ? true : false;
+    });
+    this.setState({
+      roleprivileges: this.state.roleprivileges,
+    });
+    this.setState({
+      _editcheck: _val,
+    });
+  }
+
+  handleDeleteChange(e: any) {
+    let _val = e.target.checked;
+    this.state.roleprivileges.forEach((element: any) => {
+      element.delete = _val == true ? true : false;
+    });
+    this.setState({
+      roleprivileges: this.state.roleprivileges,
+    });
+    this.setState({
+      _deletecheck: _val,
+    });
+  }
+
+  handleDetailChange(e: any) {
+    let _val = e.target.checked;
+    this.state.roleprivileges.forEach((element: any) => {
+      element.detail = _val == true ? true : false;
+    });
+    this.setState({
+      roleprivileges: this.state.roleprivileges,
+    });
+    this.setState({
+      _detailcheck: _val,
+    });
+  }
+
+  
+
   async updateRights() {
     console.log("userdata",this.state.roleprivileges);
     let privilegesArray = [];
@@ -265,7 +342,7 @@ class UserRoleToRights extends React.Component {
                             </FormGroup>
                           </Form>
                         </Col>
-                        <Col md="8">
+                        {/* <Col md="8">
                           <div className="right">
                             <Link to="/">
                               <Button
@@ -276,7 +353,7 @@ class UserRoleToRights extends React.Component {
                               </Button>
                             </Link>
                           </div>
-                        </Col>
+                        </Col> */}
                       </Row>
                       {this.state.show === true ? (
                         <>
@@ -309,11 +386,66 @@ class UserRoleToRights extends React.Component {
                                         <th className="centers">
                                           <span>Name</span>
                                         </th>
-                                        <th>View</th>
-                                        <th>Add</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                        <th>Detail</th>
+                                        <th>
+                                        <CustomInput
+                                            name="view"
+                                            defaultValue="value"
+                                            type="checkbox"
+                                            id="view"
+                                            onChange={this.handleViewChange}
+                                            checked={this.state._viewcheck}
+                                            className="check_display"
+                                          />
+                                          View
+                                        </th>
+                                        <th>
+                                        <CustomInput
+                                            name="add"
+                                            defaultValue="value"
+                                            type="checkbox"
+                                            id="add"
+                                            onChange={this.handleAddChange}
+                                            checked={this.state._addcheck}
+                                            className="check_display"
+                                          />
+                                          Add
+                                        </th>
+                                        <th>
+                                        <CustomInput
+                                            name="edit"
+                                            defaultValue="value"
+                                            type="checkbox"
+                                            id="edit"
+                                            onChange={this.handleEditChange}
+                                            checked={this.state._editcheck}
+                                            className="check_display"
+                                          />
+                                          Edit
+                                        </th>
+                                        <th>
+                                        <CustomInput
+                                            name="delete"
+                                            defaultValue="value"
+                                            type="checkbox"
+                                            id="delete"
+                                            onChange={this.handleDeleteChange}
+                                            checked={this.state._deletecheck}
+                                            className="check_display"
+                                          />
+                                          Delete
+                                        </th>
+                                        <th>
+                                        <CustomInput
+                                            name="detail"
+                                            defaultValue="value"
+                                            type="checkbox"
+                                            id="detail"
+                                            onChange={this.handleDetailChange}
+                                            checked={this.state._detailcheck}
+                                            className="check_display"
+                                          />
+                                          Detail
+                                        </th>
                                       </tr>
                                     </thead>
                                     <tbody>

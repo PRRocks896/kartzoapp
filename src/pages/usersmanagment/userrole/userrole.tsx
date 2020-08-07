@@ -103,13 +103,13 @@ class UserRole extends React.Component<{ history: any }> {
     var getRole = await API.getRoles(obj);
     console.log("getRole", getRole);
 
-    if (getRole.resultObject != null) {
+    if (getRole.status === 200) {
       this.setState({
         userrole: this.state.userrole = getRole.resultObject.data,
         count:this.state.count = getRole.resultObject.totalcount
       });
     } else {
-      const msg1 = getRole.explanation;
+      const msg1 = getRole.message;
       utils.showError(msg1);
     }
   }
@@ -160,9 +160,14 @@ class UserRole extends React.Component<{ history: any }> {
     }).then(async (result) => {
       if (result.value) {
         var deleteRole = await API.deleteRole(id);
-        const msg = "UserRole has been deleted";
-        utils.showSuccess(msg);
-        this.getRole();
+        if(deleteRole.status === 200) {
+          const msg = deleteRole.message;
+          utils.showSuccess(msg);
+          this.getRole();
+        } else {
+          const msg = deleteRole.message;
+        utils.showError(msg);
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         const msg1 = "UserRole is safe :";
         utils.showError(msg1);
@@ -220,11 +225,14 @@ class UserRole extends React.Component<{ history: any }> {
     var getRoles = await API.getRoles(obj);
     console.log("getRoles", getRoles);
 
-    if (getRoles.resultObject.data != null) {
+    if (getRoles.status === 200) {
       this.setState({
         userrole: this.state.userrole = getRoles.resultObject.data,
         count:this.state.count = getRoles.resultObject.totalcount
       });
+    } else {
+      const msg = getRoles.message;
+      utils.showError(msg);
     }
   }
 
@@ -239,11 +247,14 @@ class UserRole extends React.Component<{ history: any }> {
     var getRoles = await API.getRoles(obj);
     console.log("getRoles", getRoles);
 
-    if (getRoles.resultObject.data != null) {
+    if (getRoles.status === 200) {
       this.setState({
         userrole: this.state.userrole = getRoles.resultObject.data,
-        count: this.state.count = getRoles.resultObject.totalcount,
+        count:this.state.count = getRoles.resultObject.totalcount
       });
+    } else {
+      const msg = getRoles.message;
+      utils.showError(msg);
     }
   }
 

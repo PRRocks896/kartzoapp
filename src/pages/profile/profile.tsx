@@ -25,7 +25,7 @@ import {
 } from "../../modelController/profileModel";
 
 interface User {
-  userID: number;
+  userId: number;
 }
 
 class Profile extends React.Component {
@@ -74,19 +74,18 @@ class Profile extends React.Component {
     var user = localStorage.getItem("user");
     if (user) {
       let profile: User = JSON.parse(user);
-      console.log("getprofile", profile.userID);
       const obj: profileGetRequest = {
-        id: profile.userID,
+        id: profile.userId,
       };
-      // JSON.parse(user);
+      JSON.parse(user);
       const getProfile = await API.getProfile(obj);
       console.log("getprofile", getProfile);
 
-      if (getProfile.resultObject !== undefined) {
+      if (getProfile.status === 200) {
         this.setState({
           updateTrue:this.state.updateTrue = true,
           filetrue:this.state.filetrue = true,
-          userid:this.state.userid = getProfile.resultObject.userID,
+          userid:this.state.userid = getProfile.resultObject.userId,
           firstname: this.state.firstname = getProfile.resultObject.firstName,
           lastname: this.state.lastname = getProfile.resultObject.lastName,
           mobilenumber: this.state.mobilenumber = getProfile.resultObject.phone,
@@ -94,7 +93,7 @@ class Profile extends React.Component {
           file:this.state.file =  getProfile.resultObject.photoPath
         });
       } else {
-        const msg1 = getProfile.explanation;
+        const msg1 = getProfile.message;
         utils.showError(msg1);
       }
     }
@@ -202,7 +201,7 @@ class Profile extends React.Component {
 
         let formData = new FormData();    
         console.log('File in formData: ', this.state.selectedFile[0]);
-        formData.append('iD', this.state.userid.toString());   
+        formData.append('id', this.state.userid.toString());   
         formData.append('firstName', this.state.firstname);
         formData.append('lastName', this.state.lastname);
         formData.append('phone', this.state.mobilenumber.toString());
@@ -212,13 +211,13 @@ class Profile extends React.Component {
         const updateProfile = await API.updateProfile(formData);
         console.log("updateProfile",updateProfile);
 
-        if(updateProfile.resultObject !== null) {
-          const msg = "Profile Updated Successfully";
+        if(updateProfile.status === 200) {
+          const msg = updateProfile.message;
           this.getUserById();
           utils.showSuccess(msg);
           // EventEmitter.dispatch('imageUpload', this.state.file);
         } else {
-          const msg1 = "Error";
+          const msg1 = updateProfile.message;
             utils.showError(msg1);
         }
 

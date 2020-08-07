@@ -50,13 +50,19 @@ class AddUserRole extends React.Component<{ history: any,location:any }> {
       }
       const getRoleById:any = await API.getRoleById(obj);
       console.log("getRoleById",getRoleById);
-      this.setState({
-        updateTrue:this.state.updateTrue = true,
-        rolename:this.state.rolename = getRoleById.resultObject.role,
-        roleid:this.state.roleid = getRoleById.resultObject.roleId,
-        description:this.state.description = getRoleById.resultObject.description,
-        isOpen:this.state.isOpen = getRoleById.resultObject.isAdminRole
-      })
+
+      if(getRoleById.status === 200) {
+        this.setState({
+          updateTrue:this.state.updateTrue = true,
+          rolename:this.state.rolename = getRoleById.resultObject.role,
+          roleid:this.state.roleid = getRoleById.resultObject.roleId,
+          description:this.state.description = getRoleById.resultObject.description,
+          isOpen:this.state.isOpen = getRoleById.resultObject.isAdminRole
+        })
+      } else {
+        const msg1 = getRoleById.message;
+          utils.showError(msg1);
+      }
     }
     if(this.state.updateTrue === true) {
       document.title = constant.updateRoleTitle + utils.getAppName();
@@ -115,12 +121,12 @@ class AddUserRole extends React.Component<{ history: any,location:any }> {
         const addUserRole = await API.addUserRole(obj);
         console.log("addUserRole", addUserRole);
 
-        if (addUserRole.resultObject === 1) {
-          const msg = "UserRole Added Successfully";
+        if (addUserRole.status === 200) {
+          const msg = addUserRole.message;
           utils.showSuccess(msg);
           this.props.history.push("/userrole");
         } else {
-          const msg1 = addUserRole.explanation;
+          const msg1 = addUserRole.message;
           utils.showError(msg1);
         }
       }
@@ -147,12 +153,12 @@ class AddUserRole extends React.Component<{ history: any,location:any }> {
         const editUserRole = await API.editUserRole(obj);
         console.log("editUserRole",editUserRole);
 
-        if (editUserRole.resultObject === 1) {
-          const msg = "UserRole Added Successfully";
+        if (editUserRole.status === 200) {
+          const msg = editUserRole.message;
           utils.showSuccess(msg);
           this.props.history.push("/userrole");
         } else {
-          const msg1 = editUserRole.explanation;
+          const msg1 = editUserRole.message;
           utils.showError(msg1);
         }
       }

@@ -22,10 +22,35 @@ import API from '../../../service/location.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 
-class ViewState extends React.Component<{ history: any }> {
+class ViewState extends React.Component<{ history: any,location:any }> {
+
+    state = {
+        statename: "",
+        countryname: ""
+      };
 
     async componentDidMount() {
         document.title = constant.viewStateTitle + utils.getAppName();
+        const stateId = this.props.location.pathname.split("/")[2];
+        if (stateId !== undefined) {
+          const obj = {
+            id: stateId,
+          };
+          const getStateById: any = await API.getStateById(obj);
+          console.log("getStateById", getStateById);
+    
+          if (getStateById.status === 200) {
+            this.setState({
+              countryname: this.state.countryname =
+                getStateById.resultObject.countryName,
+                statename: this.state.statename =
+                getStateById.resultObject.stateName
+            });
+          } else {
+            const msg1 = getStateById.message;
+            utils.showError(msg1);
+          }
+        }
     }
 
     render() {
@@ -61,7 +86,7 @@ class ViewState extends React.Component<{ history: any }> {
                                             <Col xs="12" sm="12" md="6" lg="6" xl="6">
                                                 <FormGroup>
                                                     <Label htmlFor="state_name"><b>State Name</b></Label>
-                                                    <p>Gujarat</p>
+        <p>{this.state.statename}</p>
                                                 </FormGroup>
                                             </Col>
                                     
@@ -69,7 +94,7 @@ class ViewState extends React.Component<{ history: any }> {
                                                 <Form>
                                                     <FormGroup>
                                                         <Label for="exampleCustomSelect"><b>Country name</b></Label>
-                                                        <p>India</p>
+        <p>{this.state.countryname}</p>
                                                     </FormGroup>
                                                 </Form>
                                             </Col>

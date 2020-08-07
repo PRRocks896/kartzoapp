@@ -38,12 +38,18 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
       };
       const getRoleById: any = await API.getRoleById(obj);
       console.log("getRoleById", getRoleById);
+
+      if(getRoleById.status === 200) {
       this.setState({
         roledata: {
           rolename: getRoleById.resultObject.role,
           description: getRoleById.resultObject.description,
         },
       });
+    } else {
+      const msg1 = getRoleById.message;
+          utils.showError(msg1);
+    }
     }
   }
 

@@ -148,11 +148,15 @@ class Users extends React.Component<{ history: any }> {
     var getUserDataPagination = await API.getUserDataPagination(obj);
     console.log("getUserDataPagination",getUserDataPagination);
 
-    if(getUserDataPagination.resultObject.data != null) {
+    if( getUserDataPagination.status === 200) {
       this.setState({
+        // rows: { 'firstName','lastName' },
         userdata:this.state.userdata = getUserDataPagination.resultObject.data,
         count:this.state.count = getUserDataPagination.resultObject.totalcount
       })
+    } else {
+      const msg1 = getUserDataPagination.message;
+      utils.showError(msg1);
     }
 
   }
@@ -202,9 +206,14 @@ compareByDesc(key:any){
     }).then(async (result) => {
       if (result.value) {
         var deleteUser = await API.deleteUser(id);
-        const msg = "User has been deleted";
-        utils.showSuccess(msg);
-        this.getUsers();
+        if(deleteUser.status === 200) {
+          const msg = deleteUser.message;
+          utils.showSuccess(msg);
+          this.getUsers();
+        } else {
+          const msg = deleteUser.message;
+          utils.showSuccess(msg);
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         const msg1 = "User is safe :";
         utils.showError(msg1);
@@ -215,13 +224,13 @@ compareByDesc(key:any){
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
 
-  if(getUserRole.resultObject != null) {
+  if(getUserRole.status === 200) {
     this.setState({
       userrole : this.state.userrole = getUserRole.resultObject
     })
 
   } else {
-    const msg1 = getUserRole.explanation;
+    const msg1 = getUserRole.message;
     utils.showError(msg1);
 }
 }
@@ -239,12 +248,15 @@ compareByDesc(key:any){
     var getUserDataPagination = await API.getUserDataPagination(obj);
     console.log("getUserDataPagination",getUserDataPagination);
 
-    if(getUserDataPagination.resultObject.data != null) {
+    if( getUserDataPagination.status === 200) {
       this.setState({
         // rows: { 'firstName','lastName' },
         userdata:this.state.userdata = getUserDataPagination.resultObject.data,
         count:this.state.count = getUserDataPagination.resultObject.totalcount
       })
+    } else {
+      const msg1 = getUserDataPagination.message;
+      utils.showError(msg1);
     }
   }
 
@@ -263,11 +275,15 @@ compareByDesc(key:any){
   var getUserDataPagination = await API.getUserDataPagination(obj);
   console.log("getUserDataPagination",getUserDataPagination);
 
-  if(getUserDataPagination.resultObject.data != null) {
+  if( getUserDataPagination.status === 200) {
     this.setState({
+      // rows: { 'firstName','lastName' },
       userdata:this.state.userdata = getUserDataPagination.resultObject.data,
       count:this.state.count = getUserDataPagination.resultObject.totalcount
     })
+  } else {
+    const msg1 = getUserDataPagination.message;
+    utils.showError(msg1);
   }
   }
 
@@ -284,11 +300,15 @@ compareByDesc(key:any){
     var getUserDataPagination = await API.getUserDataPagination(obj);
     console.log("getUserDataPagination",getUserDataPagination);
 
-    if(getUserDataPagination.resultObject.data != null) {
+    if( getUserDataPagination.status === 200) {
       this.setState({
+        // rows: { 'firstName','lastName' },
         userdata:this.state.userdata = getUserDataPagination.resultObject.data,
         count:this.state.count = getUserDataPagination.resultObject.totalcount
       })
+    } else {
+      const msg1 = getUserDataPagination.message;
+      utils.showError(msg1);
     }
   }
   
