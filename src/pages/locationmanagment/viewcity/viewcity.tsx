@@ -6,20 +6,14 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
-  Input,
   Col,
   Form,
-  CustomInput,
   FormGroup,
   Label,
   Row,
 } from "reactstrap";
-// import './adduser.css';
 import NavBar from "../../navbar/navbar";
 import API from "../../../service/location.service";
-import Switch from "react-switch";
 import constant from "../../../constant/constant";
 
 class ViewCity extends React.Component<{ history: any; location: any }> {
@@ -29,7 +23,7 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
   };
 
   async componentDidMount() {
-    document.title = constant.viewCityTitle + utils.getAppName();
+    document.title = constant.cityPage.title.viewCityTitle + utils.getAppName();
     const cityId = this.props.location.pathname.split("/")[2];
     if (cityId !== undefined) {
       const obj = {
@@ -38,10 +32,11 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
       const getCityById: any = await API.getCityById(obj);
       console.log("getCityById", getCityById);
 
-      if(getCityById) {
+      if (getCityById) {
         if (getCityById.status === 200) {
           this.setState({
-            statename: this.state.statename = getCityById.resultObject.stateName,
+            statename: this.state.statename =
+              getCityById.resultObject.stateName,
             cityname: this.state.cityname = getCityById.resultObject.cityName,
           });
         } else {
@@ -50,7 +45,7 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
         }
       } else {
         const msg1 = "Internal server error";
-      utils.showError(msg1);
+        utils.showError(msg1);
       }
     }
   }
@@ -94,7 +89,7 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
                           <Label htmlFor="city_name">
-                            <b>City Name</b>
+                            <b>{constant.cityPage.cityTableColumn.cityName}</b>
                           </Label>
                           <p>{this.state.cityname}</p>
                         </FormGroup>
@@ -103,7 +98,9 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
                         <Form>
                           <FormGroup>
                             <Label for="exampleCustomSelect">
-                              <b>State Name</b>
+                              <b>
+                                {constant.cityPage.cityTableColumn.stateName}
+                              </b>
                             </Label>
                             <p>{this.state.statename}</p>
                           </FormGroup>

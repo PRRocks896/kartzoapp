@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import utils from "../../utils";
 import {
   Button,
@@ -14,13 +13,10 @@ import {
 } from "reactstrap";
 import "./profile.css";
 import NavBar from "../navbar/navbar";
-import API from "../../service/service";
-import RoleAPI from "../../service/role.service";
+import { API, RoleAPI } from "../../service/index.service";
 import constant from "../../constant/constant";
-import EventEmitter from '../../event';
+// import EventEmitter from '../../event';
 import {
-  profileUpdateRequest,
-  profileListRequest,
   profileGetRequest,
 } from "../../modelController/profileModel";
 
@@ -29,26 +25,27 @@ interface User {
 }
 
 class Profile extends React.Component {
+  profileState = constant.profilePage.state;
   state = {
-    selectedFile: '',
-    firstname: "",
-    firstnameerror: "",
-    lastname: "",
-    lastnameerror: "",
-    email: "",
-    emailerror: "",
-    mobilenumber: "",
-    mobilenumbererror: "",
-    selectedFileerror: "",
-    role: "",
-    roleerror: "",
-    roleid: 1,
-    roleiderror: "",
-    userid:0,
-    userrole:[],
-    updateTrue:false,
-    filetrue:false,
-    file:''
+    selectedFile: this.profileState.selectedFile,
+    firstname: this.profileState.firstname,
+    firstnameerror: this.profileState.firstnameerror,
+    lastname: this.profileState.lastname,
+    lastnameerror: this.profileState.lastnameerror,
+    email: this.profileState.email,
+    emailerror: this.profileState.emailerror,
+    mobilenumber: this.profileState.mobilenumber,
+    mobilenumbererror: this.profileState.mobilenumbererror,
+    selectedFileerror: this.profileState.selectedFileerror,
+    role: this.profileState.role,
+    roleerror: this.profileState.roleerror,
+    roleid: this.profileState.roleid,
+    roleiderror: this.profileState.roleiderror,
+    userid:this.profileState.userid,
+    userrole:this.profileState.userrole,
+    updateTrue:this.profileState.updateTrue,
+    filetrue:this.profileState.filetrue,
+    file:this.profileState.file
   };
 
   constructor(props: any) {
@@ -61,13 +58,8 @@ class Profile extends React.Component {
 
   async componentDidMount() {
     document.title = constant.profileTitle + utils.getAppName();
-
     this.getUserRole();
     this.getUserById();
-
-   
-
-    // const getProfile : profileListRequest = [];
   }
 
   async getUserById() {
@@ -200,14 +192,6 @@ class Profile extends React.Component {
         this.state.mobilenumber &&
         this.state.selectedFile
       ) {
-        // const obj: profileUpdateRequest = {
-        //   iD: this.state.userid,
-        //   firstName: this.state.firstname,
-        //   lastName: this.state.lastname,
-        //   phone: this.state.mobilenumber,
-        //   files: new Array(this.state.selectedFile),
-        //   userId:0
-        // };
 
         let formData = new FormData();    
         console.log('File in formData: ', this.state.selectedFile[0]);
@@ -287,7 +271,7 @@ class Profile extends React.Component {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
-                          {this.state.file != '' ? (
+                          {this.state.file !== '' ? (
                             <div className="img-size">
                               {this.state.file ? (
                                 <div>

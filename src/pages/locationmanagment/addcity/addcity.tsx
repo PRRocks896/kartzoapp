@@ -16,10 +16,8 @@ import {
   Label,
   Row,
 } from "reactstrap";
-// import './adduser.css';
 import NavBar from "../../navbar/navbar";
 import API from "../../../service/location.service";
-import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import {
   cityCreateRequest,
@@ -27,17 +25,18 @@ import {
 } from "../../../modelController/cityModel";
 
 class AddCity extends React.Component<{ history: any; location: any }> {
+  cityState = constant.cityPage.state;
   state = {
-    stateid: "",
-    stateiderror: "",
-    cityname: "",
-    citynameerror: "",
-    selectedFileerror: "",
-    selectedStateerror: "",
-    statelist: [],
-    updateTrue: false,
-    statename: "",
-    cityid: 0,
+    stateid: this.cityState.stateid,
+    stateiderror: this.cityState.stateiderror,
+    cityname: this.cityState.cityname,
+    citynameerror: this.cityState.citynameerror,
+    selectedFileerror: this.cityState.selectedFileerror,
+    selectedStateerror: this.cityState.selectedStateerror,
+    statelist: this.cityState.statelist,
+    updateTrue: this.cityState.updateTrue,
+    statename: this.cityState.statename,
+    cityid: this.cityState.cityid,
   };
 
   constructor(props: any) {
@@ -46,58 +45,68 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     this.addCity = this.addCity.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.editCity = this.editCity.bind(this);
+    this.getState = this.getState.bind(this);
+    this.getCityById = this.getCityById.bind(this);
   }
 
   async componentDidMount() {
+    this.getState();
     const cityId = this.props.location.pathname.split("/")[2];
     if (cityId !== undefined) {
-      const obj = {
-        id: cityId,
-      };
-      const getCityById: any = await API.getCityById(obj);
-      console.log("getCityById", getCityById);
-
-      if(getCityById) {
-        if (getCityById.status === 200) {
-          this.setState({
-            updateTrue: this.state.updateTrue = true,
-            statename: this.state.statename = getCityById.resultObject.stateName,
-            stateid: this.state.stateid = getCityById.resultObject.stateId,
-            cityid: this.state.cityid = getCityById.resultObject.cityId,
-            cityname: this.state.cityname = getCityById.resultObject.cityName,
-          });
-        } else {
-          const msg1 = getCityById.message;
-          utils.showError(msg1);
-        }
-      } else {
-        const msg1 = "Internal server error";
-      utils.showError(msg1);
-      }
+      this.getCityById(cityId);
     }
+    if (this.state.updateTrue === true) {
+      document.title =
+        constant.cityPage.title.updateCityTitle + utils.getAppName();
+    } else {
+      document.title =
+        constant.cityPage.title.addCityTitle + utils.getAppName();
+    }
+  }
 
+  async getState() {
     const getState = await API.getState();
     console.log("getState", getState);
 
-    if(getState) {
-    if (getState.status === 200) {
-      this.setState({
-        statelist: this.state.statelist = getState.resultObject,
-      });
-    } else {
+    if (getState) {
+      if (getState.status === 200) {
+        this.setState({
+          statelist: this.state.statelist = getState.resultObject,
+        });
+      } else {
         const msg = getState.message;
-          utils.showError(msg);
+        utils.showError(msg);
+      }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
     }
-  } else {
-    const msg1 = "Internal server error";
-    utils.showError(msg1);
   }
 
-    if (this.state.updateTrue === true) {
-        document.title = constant.updateCityTitle + utils.getAppName();
+  async getCityById(cityId: any) {
+    const obj = {
+      id: cityId,
+    };
+    const getCityById: any = await API.getCityById(obj);
+    console.log("getCityById", getCityById);
+
+    if (getCityById) {
+      if (getCityById.status === 200) {
+        this.setState({
+          updateTrue: this.state.updateTrue = true,
+          statename: this.state.statename = getCityById.resultObject.stateName,
+          stateid: this.state.stateid = getCityById.resultObject.stateId,
+          cityid: this.state.cityid = getCityById.resultObject.cityId,
+          cityname: this.state.cityname = getCityById.resultObject.cityName,
+        });
       } else {
-        document.title = constant.addCityTitle + utils.getAppName();
+        const msg1 = getCityById.message;
+        utils.showError(msg1);
       }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
+    }
   }
 
   validate() {
@@ -149,7 +158,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         const addCity = await API.addCity(obj);
         console.log("addCity", addCity);
 
-        if(addCity) {
+        if (addCity) {
           if (addCity.status === 200) {
             const msg = addCity.message;
             utils.showSuccess(msg);
@@ -184,7 +193,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         const editCity = await API.editCity(obj, this.state.cityid);
         console.log("editCity", editCity);
 
-        if(editCity) {
+        if (editCity) {
           if (editCity.status === 200) {
             const msg = editCity.message;
             utils.showSuccess(msg);
@@ -246,7 +255,9 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="city_name">City Name</Label>
+                          <Label htmlFor="city_name">
+                            {constant.cityPage.cityTableColumn.cityName}
+                          </Label>
                           <Input
                             type="text"
                             id="city_name"

@@ -1,24 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import utils from "../../../utils";
-import Constant from "../../../constant/constant";
 import {
   Button,
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
-  Input,
   Col,
   FormGroup,
   Label,
   Row,
 } from "reactstrap";
-// import './adduser.css';
 import NavBar from "../../navbar/navbar";
 import API from "../../../service/location.service";
-import Switch from "react-switch";
 import constant from "../../../constant/constant";
 
 class ViewCountry extends React.Component<{ history: any; location: any }> {
@@ -29,7 +23,8 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
   };
 
   async componentDidMount() {
-    document.title = constant.viewCountryTitle + utils.getAppName();
+    document.title =
+      constant.countryPage.title.viewCountryTitle + utils.getAppName();
     const countryId = this.props.location.pathname.split("/")[2];
     if (countryId !== undefined) {
       const obj = {
@@ -38,7 +33,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
       const getCountryById: any = await API.getCountryById(obj);
       console.log("getCountryById", getCountryById);
 
-      if(getCountryById) {
+      if (getCountryById) {
         if (getCountryById.status === 200) {
           this.setState({
             countryname: this.state.countryname =
@@ -53,7 +48,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
         }
       } else {
         const msg1 = "Internal server error";
-      utils.showError(msg1);
+        utils.showError(msg1);
       }
     }
   }
@@ -97,7 +92,12 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
                           <Label htmlFor="country_name">
-                            <b>Country Name</b>
+                            <b>
+                              {
+                                constant.countryPage.countryTableColumn
+                                  .countryName
+                              }
+                            </b>
                           </Label>
                           <p>{this.state.countryname}</p>
                         </FormGroup>
@@ -106,7 +106,12 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
                           <Label htmlFor="country_code">
-                            <b>Country Code</b>
+                            <b>
+                              {
+                                constant.countryPage.countryTableColumn
+                                  .countryCode
+                              }
+                            </b>
                           </Label>
                           <p>{this.state.countrycode}</p>
                         </FormGroup>
@@ -116,7 +121,12 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
                           <p style={{ fontSize: "16px" }}>
-                            <b>Country Flag</b>
+                            <b>
+                              {
+                                constant.countryPage.countryTableColumn
+                                  .countryFlag
+                              }
+                            </b>
                           </p>
                           {this.state.file != null ? (
                             <div className="img-size">
@@ -126,14 +136,12 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
                                     className="picture"
                                     src={constant.filepath + this.state.file}
                                   />
-                                  {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
                                 </div>
                               ) : null}
                             </div>
                           ) : (
                             <div>
                               <i className="fa fa-user picture"></i>
-                              {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
                             </div>
                           )}
                         </FormGroup>

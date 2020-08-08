@@ -6,16 +6,13 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Input,
   Col,
   FormGroup,
   Label,
   Row,
 } from "reactstrap";
-// import './adduser.css';
 import NavBar from "../../navbar/navbar";
 import API from "../../../service/role.service";
-import Switch from "react-switch";
 import constant from "../../../constant/constant";
 
 class ViewUserRole extends React.Component<{ history: any; location: any }> {
@@ -25,12 +22,14 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
       description: "",
     },
   };
+
   constructor(props: any) {
     super(props);
   }
 
   async componentDidMount() {
-    document.title = constant.viewUserRoleTitle + utils.getAppName();
+    document.title =
+      constant.userRolePage.title.viewUserRoleTitle + utils.getAppName();
     const roleId = this.props.location.pathname.split("/")[2];
     if (roleId != undefined) {
       const obj = {
@@ -39,21 +38,21 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
       const getRoleById: any = await API.getRoleById(obj);
       console.log("getRoleById", getRoleById);
 
-      if(getRoleById) {
-        if(getRoleById.status === 200) {
-        this.setState({
-          roledata: {
-            rolename: getRoleById.resultObject.role,
-            description: getRoleById.resultObject.description,
-          },
-        });
-      } else {
-        const msg1 = getRoleById.message;
-            utils.showError(msg1);
-      }
+      if (getRoleById) {
+        if (getRoleById.status === 200) {
+          this.setState({
+            roledata: {
+              rolename: getRoleById.resultObject.role,
+              description: getRoleById.resultObject.description,
+            },
+          });
+        } else {
+          const msg1 = getRoleById.message;
+          utils.showError(msg1);
+        }
       } else {
         const msg1 = "Internal server error";
-      utils.showError(msg1);
+        utils.showError(msg1);
       }
     }
   }
@@ -97,7 +96,12 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
                           <Label htmlFor="role_name">
-                            <b>Role Name</b>
+                            <b>
+                              {
+                                constant.userRolePage.userRoleTableColumn
+                                  .rolename
+                              }
+                            </b>
                           </Label>
                           <p>{this.state.roledata.rolename}</p>
                         </FormGroup>

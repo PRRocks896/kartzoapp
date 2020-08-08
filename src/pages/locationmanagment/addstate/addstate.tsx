@@ -16,10 +16,8 @@ import {
   Label,
   Row,
 } from "reactstrap";
-// import './adduser.css';
 import NavBar from "../../navbar/navbar";
 import API from "../../../service/location.service";
-import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import {
   stateCreateRequest,
@@ -27,19 +25,20 @@ import {
 } from "../../../modelController/stateModel";
 
 class AddState extends React.Component<{ history: any; location: any }> {
+  stateState = constant.statePage.state;
   state = {
-    selectedFile: "",
-    statename: "",
-    statenameerror: "",
-    selectedFileerror: "",
-    file: "",
-    countryid: "",
-    countryiderror: "",
-    stateid: 0,
-    countrylist: [],
-    updateTrue: false,
-    filetrue: false,
-    countryname: "",
+    selectedFile: this.stateState.selectedFile,
+    statename: this.stateState.statename,
+    statenameerror: this.stateState.statenameerror,
+    selectedFileerror: this.stateState.selectedFileerror,
+    file: this.stateState.file,
+    countryid: this.stateState.countryid,
+    countryiderror: this.stateState.countryiderror,
+    stateid: this.stateState.stateid,
+    countrylist: this.stateState.countrylist,
+    updateTrue: this.stateState.updateTrue,
+    filetrue: this.stateState.filetrue,
+    countryname: this.stateState.countryname
   };
 
   constructor(props: any) {
@@ -48,38 +47,24 @@ class AddState extends React.Component<{ history: any; location: any }> {
     this.addState = this.addState.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.editState = this.editState.bind(this);
+    this.getCountry = this.getCountry.bind(this);
+    this.getCountryById = this.getCountryById.bind(this);
   }
 
   async componentDidMount() {
+    this.getCountry();
     const stateId = this.props.location.pathname.split("/")[2];
     if (stateId !== undefined) {
-      const obj = {
-        id: stateId,
-      };
-      const getStateById: any = await API.getStateById(obj);
-      console.log("getStateById", getStateById);
-
-      if(getStateById) {
-        if (getStateById.status === 200) {
-          this.setState({
-            updateTrue: this.state.updateTrue = true,
-            filetrue: this.state.filetrue = true,
-            statename: this.state.statename = getStateById.resultObject.stateName,
-            countryid: this.state.countryid = getStateById.resultObject.countryId,
-            countryname: this.state.countryname =
-              getStateById.resultObject.countryName,
-            stateid: this.state.stateid = getStateById.resultObject.stateId,
-          });
-        } else {
-          const msg1 = getStateById.message;
-          utils.showError(msg1);
-        }
-      } else {
-        const msg1 = "Internal server error";
-      utils.showError(msg1);
-      }
+      this.getCountryById(stateId);
     }
+    if (this.state.updateTrue === true) {
+      document.title = constant.statePage.title.updateStateTitle + utils.getAppName();
+    } else {
+      document.title = constant.statePage.title.addStateTitle+ utils.getAppName();
+    }
+  }
 
+  async getCountry() {
     const getCountry = await API.getCountry();
     console.log("getCountry", getCountry);
 
@@ -96,11 +81,32 @@ class AddState extends React.Component<{ history: any; location: any }> {
       const msg1 = "Internal server error";
       utils.showError(msg1);
     }
+  }
 
-    if (this.state.updateTrue === true) {
-      document.title = constant.updateStateTitle + utils.getAppName();
+  async getCountryById(stateId:any) {
+    const obj = {
+      id: stateId,
+    };
+    const getStateById: any = await API.getStateById(obj);
+    console.log("getStateById", getStateById);
+    if(getStateById) {
+      if (getStateById.status === 200) {
+        this.setState({
+          updateTrue: this.state.updateTrue = true,
+          filetrue: this.state.filetrue = true,
+          statename: this.state.statename = getStateById.resultObject.stateName,
+          countryid: this.state.countryid = getStateById.resultObject.countryId,
+          countryname: this.state.countryname =
+            getStateById.resultObject.countryName,
+          stateid: this.state.stateid = getStateById.resultObject.stateId,
+        });
+      } else {
+        const msg1 = getStateById.message;
+        utils.showError(msg1);
+      }
     } else {
-      document.title = constant.addStateTitle + utils.getAppName();
+      const msg1 = "Internal server error";
+    utils.showError(msg1);
     }
   }
 
@@ -250,7 +256,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="state_name">State Name</Label>
+                      <Label htmlFor="state_name">{constant.statePage.stateTableColumn.stateName}</Label>
                           <Input
                             type="text"
                             id="state_name"

@@ -1,28 +1,25 @@
 import React from "react";
 import "./login.css";
-import { Link } from "react-router-dom";
 import API from "../../service/service";
 import utils from "../../utils";
-import history from "../../history";
 import Constant from "../../constant/constant";
-import $ from "jquery";
 import constant from "../../constant/constant";
 import axios from "axios";
 import apiUrl from "../../apicontroller/apicontrollers";
 import { loginCreateRequest } from "../../modelController/loginModel";
-import Swal from "sweetalert2";
 const interceptor = require("../../intercepter");
 const publicIp = require("public-ip");
 
 class Login extends React.Component<{ history: any }> {
+  loginState = constant.loginPage.state;
   state = {
-    email: "",
-    emailerror: "",
-    password: "",
-    passworderror: "",
-    ipAddress: "",
-    isButton: false,
-    type: 'password'
+    email: this.loginState.email,
+    emailerror: this.loginState.emailerror,
+    password: this.loginState.password,
+    passworderror: this.loginState.passworderror,
+    ipAddress: this.loginState.ipAddress,
+    isButton: this.loginState.isButton,
+    type: this.loginState.type,
   };
 
   constructor(props: any) {
@@ -39,7 +36,7 @@ class Login extends React.Component<{ history: any }> {
     const ipaddress = publicIp.v4();
     this.setState({
       ipAddress: this.state.ipAddress = await ipaddress,
-      isButton: this.state.isButton = false
+      isButton: this.state.isButton = false,
     });
   }
 
@@ -57,10 +54,10 @@ class Login extends React.Component<{ history: any }> {
     this.setState(state);
   }
 
-  
-  handleClick = () => this.setState(({type}:any) => ({
-    type: type === 'password' ? 'text' : 'password'
-  }))
+  handleClick = () =>
+    this.setState(({ type }: any) => ({
+      type: type === "password" ? "text" : "password",
+    }));
 
   validate() {
     let emailerror = "";
@@ -115,11 +112,11 @@ class Login extends React.Component<{ history: any }> {
         var forgotPassword: any = await API.forgotPassword(obj);
         console.log("forgotPassword", forgotPassword);
 
-        if(forgotPassword) {
+        if (forgotPassword) {
           if (forgotPassword.status === 200) {
-            var ele = document.getElementById('modal-12');
-            if(ele != null) {
-              ele.style.display = 'none';
+            var ele = document.getElementById("modal-12");
+            if (ele != null) {
+              ele.style.display = "none";
             }
             const msg = forgotPassword.data.message;
             utils.showSuccess(msg);
@@ -127,7 +124,7 @@ class Login extends React.Component<{ history: any }> {
             const msg = forgotPassword.data.message;
             utils.showError(msg);
           }
-        }  else {
+        } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
         }
@@ -137,13 +134,13 @@ class Login extends React.Component<{ history: any }> {
 
   async login() {
     this.setState({
-      isButton: true
+      isButton: true,
     });
     const isValid = this.validate();
     if (isValid) {
       this.setState({
         emailerror: this.state.emailerror = "",
-        passworderror: this.state.passworderror = ""
+        passworderror: this.state.passworderror = "",
       });
       if (this.state.email && this.state.password) {
         const obj: loginCreateRequest = {
@@ -159,8 +156,8 @@ class Login extends React.Component<{ history: any }> {
           .post(Constant.apiUrl + apiUrl.userController.createData, obj)
           .then((res: any) => {
             console.log("login", res);
-            if(res) {
-              if(res.data.status === 200) {
+            if (res) {
+              if (res.data.status === 200) {
                 this.setState({
                   isButton: false,
                 });
@@ -250,7 +247,6 @@ class Login extends React.Component<{ history: any }> {
                         <b>{Constant.password}</b>
                       </label>
                       <div className="right-inner-addon input-group">
-                     
                         <input
                           type={this.state.type}
                           name="password"
@@ -259,16 +255,19 @@ class Login extends React.Component<{ history: any }> {
                           placeholder="Password"
                           onChange={this.handleChangeEvent}
                         />
-                        {
-                          this.state.type === "password" ? (
-
-                            <i onClick={this.handleClick} className="fas fa-eye"></i>
-                          ) : (
-                            <i onClick={this.handleClick} className="fas fa-eye-slash"></i>
-                          )
-                        }
+                        {this.state.type === "password" ? (
+                          <i
+                            onClick={this.handleClick}
+                            className="fas fa-eye"
+                          ></i>
+                        ) : (
+                          <i
+                            onClick={this.handleClick}
+                            className="fas fa-eye-slash"
+                          ></i>
+                        )}
                       </div>
-                      
+
                       <div className="mb-4 text-danger">
                         {this.state.passworderror}
                       </div>
@@ -296,8 +295,7 @@ class Login extends React.Component<{ history: any }> {
                         </a>
                       </label>
                     </div>
-                    {
-                    this.state.isButton === false ? (
+                    {this.state.isButton === false ? (
                       <button
                         className="btn mt-4 d-block w-100"
                         type="button"
@@ -313,12 +311,16 @@ class Login extends React.Component<{ history: any }> {
                     ) : (
                       <div className="spinerButton">
                         <div>
-                          <button className="btn mt-4 d-block w-100"  type="button"  style={{
-                          backgroundColor: "#eea218",
-                          color: "#fff",
-                          fontWeight: 500,
-                        }}>
-                          {Constant.signin}
+                          <button
+                            className="btn mt-4 d-block w-100"
+                            type="button"
+                            style={{
+                              backgroundColor: "#eea218",
+                              color: "#fff",
+                              fontWeight: 500,
+                            }}
+                          >
+                            {Constant.signin}
                           </button>
                         </div>
                         <div className="spinners"></div>

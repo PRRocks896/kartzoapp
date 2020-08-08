@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
 import utils from "../../../utils";
-import { MDBDataTable } from "mdbreact";
 import {
   Button,
   Card,
@@ -17,53 +15,27 @@ import {
   Label,
   Row,
 } from "reactstrap";
-// import './adduser.css';
 import NavBar from "../../navbar/navbar";
 import API from "../../../service/category.service";
-import Switch from "react-switch";
 import constant from "../../../constant/constant";
-import { categoryListRequest } from "../../../modelController/categoryModel";
-const $ = require("jquery");
-$.DataTable = require("datatables.net");
 
 class Category extends React.Component<{ history: any }> {
+  categoryState = constant.categoryPage.state;
   state = {
-    selectedFile: "",
-    firstname: "",
-    firstnameerror: "",
-    lastname: "",
-    lastnameerror: "",
-    email: "",
-    emailerror: "",
-    mobilenumber: "",
-    mobilenumbererror: "",
-    password: "",
-    passworderror: "",
-    checked: false,
-    selectedFileerror: "",
-    count: "10",
-    currentPage: "1",
-    items_per_page: "10",
-    perpage: 2,
-    paginationdata: "",
-    isFetch: false,
-    data: "",
-    allRecords: "",
-    upperPageBound: 3,
-    lowerPageBound: 0,
-    pageBound: 3,
-    isPrevBtnActive: "disabled",
-    isNextBtnActive: "",
-    onClickPage: 1,
-    activePage: 15,
-    categorydata: [],
-    switchSort: false,
-    isStatus: false,
+    count: this.categoryState.count,
+    currentPage: this.categoryState.currentPage,
+    items_per_page: this.categoryState.items_per_page,
+    upperPageBound: this.categoryState.upperPageBound,
+    lowerPageBound: this.categoryState.lowerPageBound,
+    pageBound: this.categoryState.pageBound,
+    onItemSelect: this.categoryState.onItemSelect,
+    categorydata: this.categoryState.categorydata,
+    switchSort: this.categoryState.switchSort,
+    isStatus: this.categoryState.isStatus,
   };
 
   constructor(props: any) {
     super(props);
-    this.deleteCategory = this.deleteCategory.bind(this);
     this.editCategory = this.editCategory.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
@@ -76,32 +48,33 @@ class Category extends React.Component<{ history: any }> {
     this.compareByDesc = this.compareByDesc.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.statusChange = this.statusChange.bind(this);
-    this.statusEditChange = this.statusEditChange.bind(this);
+    this.pagination = this.pagination.bind(this);
+    this.getTable = this.getTable.bind(this);
+    this.getPageData = this.getPageData.bind(this);
   }
 
   async componentDidMount() {
-    document.title = constant.categoryTitle + utils.getAppName();
-    $("#dtBasicExample").DataTable({
-      paging: false,
-      info: false,
-      searching: false,
-      sorting: false,
-      ordering: false,
-    });
+    document.title =
+      constant.categoryPage.title.categoryTitle + utils.getAppName();
+      utils.dataTable();
     this.getCategory();
   }
 
-  async getCategory() {
+  async getCategory(
+    searchText: string = "",
+    page: number = 1,
+    size: number = 10
+  ) {
     const obj = {
-      searchText: "",
-      page: 1,
-      size: parseInt(this.state.items_per_page),
+      searchText: searchText,
+      page: page,
+      size: size,
     };
 
     var getCategory = await API.getCategory(obj);
     console.log("getCategory", getCategory);
 
-    if(getCategory) {
+    if (getCategory) {
       if (getCategory.status === 200) {
         this.setState({
           categorydata: this.state.categorydata = getCategory.resultObject.data,
@@ -153,33 +126,7 @@ class Category extends React.Component<{ history: any }> {
         event.target.options[event.target.selectedIndex].value,
     });
 
-    this.getCategory();
-  }
-
-  deleteCategory(id: any) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You should be remove category!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, keep it",
-    }).then(async (result) => {
-      if (result.value) {
-        var deleteCategory = await API.deleteCategory(id);
-        if (deleteCategory.status === 200) {
-          const msg = deleteCategory.message;
-          utils.showSuccess(msg);
-          this.getCategory();
-        } else {
-          const msg = deleteCategory.message;
-          utils.showSuccess(msg);
-        }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        const msg1 = "Category is safe :";
-        utils.showError(msg1);
-      }
-    });
+    this.getCategory('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
   }
 
   async handleClick(event: any) {
@@ -192,23 +139,7 @@ class Category extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    var getCategory = await API.getCategory(obj);
-    console.log("getCategory", getCategory);
-
-    if(getCategory) {
-      if (getCategory.status === 200) {
-        this.setState({
-          categorydata: this.state.categorydata = getCategory.resultObject.data,
-          count: this.state.count = getCategory.resultObject.totalcount,
-        });
-      } else {
-        const msg1 = getCategory.message;
-        utils.showError(msg1);
-      }
-    } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
-    }
+    this.getCategory(obj.searchText, obj.page, obj.size);
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -218,23 +149,7 @@ class Category extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    var getCategory = await API.getCategory(obj);
-    console.log("getCategory", getCategory);
-
-    if(getCategory) {
-      if (getCategory.status === 200) {
-        this.setState({
-          categorydata: this.state.categorydata = getCategory.resultObject.data,
-          count: this.state.count = getCategory.resultObject.totalcount,
-        });
-      } else {
-        const msg1 = getCategory.message;
-        utils.showError(msg1);
-      }
-    } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
-    }
+    this.getCategory(obj.searchText, obj.page, obj.size);
   }
 
   handleSort(key: any) {
@@ -264,93 +179,36 @@ class Category extends React.Component<{ history: any }> {
     }
   }
 
-  statusChange(data: any) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You should be inActive category!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, inActive it!",
-      cancelButtonText: "No, keep it",
-    }).then(async (result) => {
-      if (result.value) {
-        let formData = new FormData();
-        formData.append("categoryId", data.categoryId);
-        formData.append("category", data.category);
-        formData.append("isActive", "false");
-        formData.append(
-          "parentCategoryId",
-          data.parentCategoryId ? data.parentCategoryId : ""
-        );
-        formData.append("sortOrder", data.sortOrder);
-        formData.append("files", data.imagePath);
-        const editCategory = await API.editCategory(formData, data.categoryId);
-        console.log("editCategory", editCategory);
-        if (editCategory.status === 200) {
-          const msg = editCategory.message;
-          utils.showSuccess(msg);
-          this.getCategory();
-        } else {
-          const msg1 = editCategory.message;
-          utils.showError(msg1);
-        }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        const msg1 = "category is safe :";
-        utils.showError(msg1);
-      }
-    });
-  }
-
-  statusEditChange(data: any) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You should be Active category!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, Active it!",
-      cancelButtonText: "No, keep it",
-    }).then(async (result) => {
-      if (result.value) {
-        let formData = new FormData();
-        formData.append("categoryId", data.categoryId);
-        formData.append("category", data.category);
-        formData.append("isActive", "true");
-        formData.append(
-          "parentCategoryId",
-          data.parentCategoryId ? data.parentCategoryId : ""
-        );
-        formData.append("sortOrder", data.sortOrder);
-        formData.append("files", data.imagePath);
-        const editCategory = await API.editCategory(formData, data.categoryId);
-        console.log("editCategory", editCategory);
-        if (editCategory.status === 200) {
-          const msg = editCategory.message;
-          utils.showSuccess(msg);
-          this.getCategory();
-        } else {
-          const msg1 = editCategory.message;
-          utils.showError(msg1);
-        }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        const msg1 = "category is safe :";
-        utils.showError(msg1);
-      }
-    });
-  }
-
-  render() {
-    var pageNumbers = [];
-    for (
-      let i = 1;
-      i <=
-      Math.ceil(
-        parseInt(this.state.count) / parseInt(this.state.items_per_page)
+  async statusChange(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      let formData = new FormData();
+      formData.append("categoryId", data.categoryId);
+      formData.append("category", data.category);
+      formData.append(
+        "isActive",
+        new Boolean(data.isActive === true ? false : true).toString()
       );
-      i++
-    ) {
-      pageNumbers.push(i);
+      formData.append(
+        "parentCategoryId",
+        data.parentCategoryId ? data.parentCategoryId : ""
+      );
+      formData.append("sortOrder", data.sortOrder);
+      formData.append("files", data.imagePath);
+      const editCategory = await API.editCategory(formData, data.categoryId);
+      console.log("editCategory", editCategory);
+      if (editCategory.status === 200) {
+        const msg = editCategory.message;
+        utils.showSuccess(msg);
+        this.getCategory();
+      } else {
+        const msg1 = editCategory.message;
+        utils.showError(msg1);
+      }
     }
-    var renderPageNumbers = pageNumbers.map((number: any) => {
+  }
+
+  pagination(pageNumbers: any) {
+    var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
         return (
           <li
@@ -388,6 +246,170 @@ class Category extends React.Component<{ history: any }> {
         );
       }
     });
+    return res;
+  }
+
+  getTable(categorydata: any) {
+    return (
+      <table
+        id="dtBasicExample"
+        className="table table-striped table-bordered table-sm"
+        width="100%"
+      >
+        <thead>
+          <tr onClick={() => this.handleSort("category")}>
+            <th>{constant.categoryPage.caetgoryTableColumn.categoryName}</th>
+            <th>{constant.categoryPage.caetgoryTableColumn.subCategoryName}</th>
+            <th>{constant.categoryPage.caetgoryTableColumn.image}</th>
+            <th style={{ textAlign: "center" }}>
+              {constant.tableAction.status}
+            </th>
+            <th className="action">{constant.tableAction.action}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.state.categorydata.length > 0 ? (
+            <>
+              {this.state.categorydata.map((data: any, index: any) => (
+                <tr>
+                  <td>{data.category}</td>
+
+                  {data.parentCategory ? (
+                    <td>{data.parentCategory}</td>
+                  ) : (
+                    <td>N/A</td>
+                  )}
+
+                  <td>
+                    {data.imagePath != null ? (
+                      <div className="img-size">
+                        {data.imagePath ? (
+                          <div>
+                            <img
+                              className="table-picture"
+                              src={constant.filepath + data.imagePath}
+                            />
+                            {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
+                          </div>
+                        ) : null}
+                      </div>
+                    ) : (
+                      <div>
+                        <i className="fa fa-user picture"></i>
+                        {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
+                      </div>
+                    )}
+                  </td>
+                  <td style={{ textAlign: "center" }}>
+                    {data.isActive === true ? (
+                      <button
+                        className="status_active_color"
+                        onClick={() =>
+                          this.statusChange(
+                            data,
+                            "You should be inActive category",
+                            "Yes, inActive it"
+                          )
+                        }
+                      >
+                        Active
+                      </button>
+                    ) : (
+                      <button
+                        className="status_inactive_color"
+                        onClick={() =>
+                          this.statusChange(
+                            data,
+                            "You should be Active category",
+                            "Yes, Active it"
+                          )
+                        }
+                      >
+                        InActive
+                      </button>
+                    )}
+                  </td>
+                  <td className="action">
+                    <span className="padding">
+                      <i
+                        className="fa fa-eye"
+                        onClick={() => this.viewCategory(data.categoryId)}
+                      ></i>
+                      <i
+                        className="fas fa-edit"
+                        onClick={() => this.editCategory(data.categoryId)}
+                      ></i>
+                      {/* <i
+                        className="far fa-trash-alt"
+                        onClick={() =>
+                          this.deleteCategory(data.categoryId)
+                        }
+                      ></i> */}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </>
+          ) : (
+            ""
+          )}
+        </tbody>
+      </table>
+    );
+  }
+
+  getPageData(
+    pageDecrementBtn: any,
+    renderPageNumbers: any,
+    pageIncrementBtn: any
+  ) {
+    return (
+      <div className="filter">
+        <CustomInput
+          type="select"
+          id="item"
+          className="custom_text_width"
+          name="customSelect"
+          onChange={this.onItemSelect}
+        >
+          <option value="">{constant.recordPerPage.recordperPage}</option>
+          <option value={constant.recordPerPage.fifteen}>
+            {constant.recordPerPage.fifteen}
+          </option>
+          <option value={constant.recordPerPage.twenty}>
+            {constant.recordPerPage.twenty}
+          </option>
+          <option value={constant.recordPerPage.thirty}>
+            {constant.recordPerPage.thirty}
+          </option>
+          <option value={constant.recordPerPage.fifty}>
+            {constant.recordPerPage.fifty}
+          </option>
+        </CustomInput>
+        <div>
+          <ul className="pagination" id="page-numbers">
+            {pageDecrementBtn}
+            {renderPageNumbers}
+            {pageIncrementBtn}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    var pageNumbers = [];
+    for (
+      let i = 1;
+      i <=
+      Math.ceil(
+        parseInt(this.state.count) / parseInt(this.state.items_per_page)
+      );
+      i++
+    ) {
+      pageNumbers.push(i);
+    }
+    var renderPageNumbers = this.pagination(pageNumbers);
 
     let pageIncrementBtn = null;
     if (pageNumbers.length > this.state.upperPageBound) {
@@ -440,7 +462,7 @@ class Category extends React.Component<{ history: any }> {
                     </Row>
                   </CardHeader>
                   <CardBody>
-                    <div style={{ textAlign: "right" }}>
+                    <div className="search_right">
                       <input
                         className="form-control custom_text_width search"
                         type="text"
@@ -450,133 +472,18 @@ class Category extends React.Component<{ history: any }> {
                       />
                     </div>
 
-                    <table
-                      id="dtBasicExample"
-                      className="table table-striped table-bordered table-sm"
-                      width="100%"
-                    >
-                      <thead>
-                        <tr onClick={() => this.handleSort("category")}>
-                          <th>Category Name</th>
-                          <th>Sub Category Name</th>
-                          <th>Image</th>
-                          <th style={{ textAlign: "center" }}>Status</th>
-                          <th className="action">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {this.state.categorydata.length > 0 ? (
-                          <>
-                            {this.state.categorydata.map(
-                              (data: any, index: any) => (
-                                <tr>
-                                  <td>{data.category}</td>
-
-                                  {data.parentCategory ? (
-                                    <td>{data.parentCategory}</td>
-                                  ) : (
-                                    <td>N/A</td>
-                                  )}
-
-                                  <td>
-                                    {data.imagePath != null ? (
-                                      <div className="img-size">
-                                        {data.imagePath ? (
-                                          <div>
-                                            <img
-                                              className="table-picture"
-                                              src={
-                                                constant.filepath +
-                                                data.imagePath
-                                              }
-                                            />
-                                            {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
-                                          </div>
-                                        ) : null}
-                                      </div>
-                                    ) : (
-                                      <div>
-                                        <i className="fa fa-user picture"></i>
-                                        {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
-                                      </div>
-                                    )}
-                                  </td>
-                                  <td style={{ textAlign: "center" }}>
-                                    {data.isActive === true ? (
-                                      <button
-                                        className="status_active_color"
-                                        onClick={() => this.statusChange(data)}
-                                      >
-                                        Active
-                                      </button>
-                                    ) : (
-                                      <button
-                                        className="status_inactive_color"
-                                        onClick={() =>
-                                          this.statusEditChange(data)
-                                        }
-                                      >
-                                        InActive
-                                      </button>
-                                    )}
-                                  </td>
-                                  <td className="action">
-                                    <span className="padding">
-                                      <i
-                                        className="fa fa-eye"
-                                        onClick={() =>
-                                          this.viewCategory(data.categoryId)
-                                        }
-                                      ></i>
-                                      <i
-                                        className="fas fa-edit"
-                                        onClick={() =>
-                                          this.editCategory(data.categoryId)
-                                        }
-                                      ></i>
-                                      {/* <i
-                                        className="far fa-trash-alt"
-                                        onClick={() =>
-                                          this.deleteCategory(data.categoryId)
-                                        }
-                                      ></i> */}
-                                    </span>
-                                  </td>
-                                </tr>
-                              )
-                            )}
-                          </>
-                        ) : (
-                          ""
-                        )}
-                      </tbody>
-                    </table>
                     {this.state.categorydata.length > 0 ? (
-                      <div className="filter">
-                        <CustomInput
-                          type="select"
-                          id="item"
-                          className="custom_text_width"
-                          name="customSelect"
-                          onChange={this.onItemSelect}
-                        >
-                          <option value="">Record per page</option>
-                          <option value="3">3</option>
-                          <option value="20">20</option>
-                          <option value="25">25</option>
-                          <option value="30">30</option>
-                        </CustomInput>
-                        <div>
-                          <ul className="pagination" id="page-numbers">
-                            {pageDecrementBtn}
-                            {renderPageNumbers}
-                            {pageIncrementBtn}
-                          </ul>
-                        </div>
-                      </div>
+                      <>{this.getTable(this.state.categorydata)}</>
                     ) : (
                       ""
                     )}
+                    {this.state.categorydata.length > 0
+                      ? this.getPageData(
+                          pageIncrementBtn,
+                          renderPageNumbers,
+                          pageDecrementBtn
+                        )
+                      : ""}
                   </CardBody>
                 </Card>
               </Col>

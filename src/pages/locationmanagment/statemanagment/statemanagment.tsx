@@ -27,43 +27,22 @@ const $ = require("jquery");
 $.DataTable = require("datatables.net");
 
 class StateManagment extends React.Component<{ history: any }> {
+  stateState = constant.statePage.state;
   state = {
-    selectedFile: null,
-    firstname: "",
-    firstnameerror: "",
-    lastname: "",
-    lastnameerror: "",
-    email: "",
-    emailerror: "",
-    mobilenumber: "",
-    mobilenumbererror: "",
-    password: "",
-    passworderror: "",
-    checked: false,
-    selectedFileerror: "",
-    count: "10",
-    currentPage: "1",
-    items_per_page: "10",
-    perpage: 2,
-    paginationdata: "",
-    isFetch: false,
-    data: "",
-    allRecords: "",
-    upperPageBound: 3,
-    lowerPageBound: 0,
-    pageBound: 3,
-    isPrevBtnActive: "disabled",
-    isNextBtnActive: "",
-    onClickPage: 1,
-    activePage: 15,
-    statedata: [],
-    switchSort: false,
-    isStatus:false
+    count: this.stateState.count,
+    currentPage: this.stateState.currentPage,
+    items_per_page: this.stateState.items_per_page,
+    upperPageBound: this.stateState.upperPageBound,
+    lowerPageBound: this.stateState.lowerPageBound,
+    pageBound: this.stateState.pageBound,
+    onItemSelect: this.stateState.onItemSelect,
+    statedata: this.stateState.statedata,
+    switchSort: this.stateState.switchSort,
+    isStatus: this.stateState.isStatus,
   };
 
   constructor(props: any) {
     super(props);
-    this.deleteState = this.deleteState.bind(this);
     this.editState = this.editState.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
@@ -76,32 +55,32 @@ class StateManagment extends React.Component<{ history: any }> {
     this.handleSort = this.handleSort.bind(this);
     this.compareByDesc = this.compareByDesc.bind(this);
     this.statusChange = this.statusChange.bind(this);
-    this.statusEditChange = this.statusEditChange.bind(this);
+    this.pagination = this.pagination.bind(this);
+    this.getTable = this.getTable.bind(this);
+    this.getPageData = this.getPageData.bind(this);
   }
 
   async componentDidMount() {
-    document.title = constant.stateTitle + utils.getAppName();
-    $("#dtBasicExample").DataTable({
-      paging: false,
-      info: false,
-      searching: false,
-      sorting: false,
-      ordering: false,
-    });
+    document.title = constant.statePage.title.stateTitle + utils.getAppName();
+    utils.dataTable();
     this.getStateData();
   }
 
-  async getStateData() {
+  async getStateData(
+    searchText: string = "",
+    page: number = 1,
+    size: number = 10
+  ) {
     const obj = {
-      searchText: "",
-      page: 1,
-      size: parseInt(this.state.items_per_page),
+      searchText: searchText,
+      page: page,
+      size: size,
     };
 
     var getStateData = await API.getStateData(obj);
     console.log("getStateData", getStateData);
 
-    if(getStateData) {
+    if (getStateData) {
       if (getStateData.status === 200) {
         this.setState({
           statedata: this.state.statedata = getStateData.resultObject.data,
@@ -147,39 +126,13 @@ class StateManagment extends React.Component<{ history: any }> {
     this.props.history.push("/viewstate/" + id);
   }
 
-  deleteState(id: any) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You should be remove state!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, keep it",
-    }).then(async (result) => {
-      if (result.value) {
-        var deleteState = await API.deleteState(id);
-        if(deleteState.status === 200) {
-            const msg = deleteState.message;
-            utils.showSuccess(msg);
-            this.getStateData();
-        } else {
-            const msg = deleteState.message;
-            utils.showSuccess(msg);
-        }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        const msg1 = "State is safe :";
-        utils.showError(msg1);
-      }
-    });
-  }
-
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
         event.target.options[event.target.selectedIndex].value,
     });
 
-    this.getStateData();
+    this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
   }
 
   async handleClick(event: any) {
@@ -192,23 +145,7 @@ class StateManagment extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    var getStateData = await API.getStateData(obj);
-    console.log("getStateData", getStateData);
-
-    if(getStateData) {
-      if (getStateData.status === 200) {
-        this.setState({
-          statedata: this.state.statedata = getStateData.resultObject.data,
-          count: this.state.count = getStateData.resultObject.totalcount,
-        });
-      } else {
-        const msg1 = getStateData.message;
-        utils.showError(msg1);
-      }
-    } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
-    }
+    this.getStateData(obj.searchText, obj.page, obj.size);
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -218,23 +155,7 @@ class StateManagment extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    var getStateData = await API.getStateData(obj);
-    console.log("getStateData", getStateData);
-
-    if(getStateData) {
-      if (getStateData.status === 200) {
-        this.setState({
-          statedata: this.state.statedata = getStateData.resultObject.data,
-          count: this.state.count = getStateData.resultObject.totalcount,
-        });
-      } else {
-        const msg1 = getStateData.message;
-        utils.showError(msg1);
-      }
-    } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
-    }
+    this.getStateData(obj.searchText, obj.page, obj.size);
   }
 
   handleSort(key: any) {
@@ -264,89 +185,31 @@ class StateManagment extends React.Component<{ history: any }> {
     }
   }
 
-  statusChange(data:any) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You should be inActive state!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, inActive it!",
-      cancelButtonText: "No, keep it",
-    }).then(async (result) => {
-      if (result.value) {
-        const obj: stateUpdateRequest = {
-          stateId: data.stateId,
-          stateName: data.stateName,
-          countryId: data.countryId,
-          isActive: false,
-        };
+  async statusChange(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: stateUpdateRequest = {
+        stateId: data.stateId,
+        stateName: data.stateName,
+        countryId: data.countryId,
+        isActive: false,
+      };
 
-        const editState = await API.editState(obj,data.stateId);
-        console.log("editState", editState);
+      const editState = await API.editState(obj, data.stateId);
+      console.log("editState", editState);
 
-        if (editState.status === 200) {
-          const msg = editState.message;
-          utils.showSuccess(msg);
-         this.getStateData()
-        } else {
-          const msg = editState.message;
-          utils.showError(msg);
-        }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        const msg1 = "state is safe :";
-        utils.showError(msg1);
+      if (editState.status === 200) {
+        const msg = editState.message;
+        utils.showSuccess(msg);
+        this.getStateData();
+      } else {
+        const msg = editState.message;
+        utils.showError(msg);
       }
-    });
-  }
-
-  statusEditChange(data:any) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You should be Active state!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, Active it!",
-      cancelButtonText: "No, keep it",
-    }).then(async (result) => {
-      if (result.value) {
-        const obj: stateUpdateRequest = {
-          stateId: data.stateId,
-          stateName: data.stateName,
-          countryId: data.countryId,
-          isActive: true,
-        };
-
-        const editState = await API.editState(obj,data.stateId);
-        console.log("editState", editState);
-
-        if (editState.status === 200) {
-          const msg = editState.message;
-          utils.showSuccess(msg);
-         this.getStateData()
-        } else {
-          const msg = editState.message;
-          utils.showError(msg);
-        }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        const msg1 = "state is safe :";
-        utils.showError(msg1);
-      }
-    });
-  }
-
-  render() {
-    var pageNumbers = [];
-    for (
-      let i = 1;
-      i <=
-      Math.ceil(
-        parseInt(this.state.count) / parseInt(this.state.items_per_page)
-      );
-      i++
-    ) {
-      pageNumbers.push(i);
     }
-    var renderPageNumbers = pageNumbers.map((number: any) => {
+  }
+
+  pagination(pageNumbers: any) {
+    var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
         return (
           <li
@@ -384,6 +247,137 @@ class StateManagment extends React.Component<{ history: any }> {
         );
       }
     });
+    return res;
+  }
+
+  getTable(statedata: any) {
+    return (
+      <table
+        id="dtBasicExample"
+        className="table table-striped table-bordered table-sm"
+        width="100%"
+      >
+        <thead>
+          <tr onClick={() => this.handleSort("stateName")}>
+            <th>{constant.statePage.stateTableColumn.stateName}</th>
+            <th>{constant.statePage.stateTableColumn.countryName}</th>
+            <th style={{ textAlign: "center" }}>
+              {constant.tableAction.status}
+            </th>
+            <th className="action">{constant.tableAction.action}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.state.statedata.length > 0 ? (
+            <>
+              {this.state.statedata.map((data: any, index: any) => (
+                <tr key={index}>
+                  <td>{data.stateName}</td>
+                  <td>{data.countryName}</td>
+                  <td style={{ textAlign: "center" }}>
+                    {data.isActive === true ? (
+                      <button
+                        className="status_active_color"
+                        onClick={() =>
+                          this.statusChange(
+                            data,
+                            "You should be inActive state",
+                            "Yes, inActive it"
+                          )
+                        }
+                      >
+                        Active
+                      </button>
+                    ) : (
+                      <button
+                        className="status_inactive_color"
+                        onClick={() =>
+                          this.statusChange(
+                            data,
+                            "You should be Active state",
+                            "Yes, Active it"
+                          )
+                        }
+                      >
+                        InActive
+                      </button>
+                    )}
+                  </td>
+                  <td className="action">
+                    <span className="padding">
+                      <i
+                        className="fa fa-eye"
+                        onClick={() => this.viewState(data.stateId)}
+                      ></i>
+                      <i
+                        className="fas fa-edit"
+                        onClick={() => this.editState(data.stateId)}
+                      ></i>
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </>
+          ) : (
+            ""
+          )}
+        </tbody>
+      </table>
+    );
+  }
+
+  getPageData(
+    pageDecrementBtn: any,
+    renderPageNumbers: any,
+    pageIncrementBtn: any
+  ) {
+    return (
+      <div className="filter">
+        <CustomInput
+          type="select"
+          id="item"
+          className="custom_text_width"
+          name="customSelect"
+          onChange={this.onItemSelect}
+        >
+          <option value="">{constant.recordPerPage.recordperPage}</option>
+          <option value={constant.recordPerPage.fifteen}>
+            {constant.recordPerPage.fifteen}
+          </option>
+          <option value={constant.recordPerPage.twenty}>
+            {constant.recordPerPage.twenty}
+          </option>
+          <option value={constant.recordPerPage.thirty}>
+            {constant.recordPerPage.thirty}
+          </option>
+          <option value={constant.recordPerPage.fifty}>
+            {constant.recordPerPage.fifty}
+          </option>
+        </CustomInput>
+        <div>
+          <ul className="pagination" id="page-numbers">
+            {pageDecrementBtn}
+            {renderPageNumbers}
+            {pageIncrementBtn}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    var pageNumbers = [];
+    for (
+      let i = 1;
+      i <=
+      Math.ceil(
+        parseInt(this.state.count) / parseInt(this.state.items_per_page)
+      );
+      i++
+    ) {
+      pageNumbers.push(i);
+    }
+    var renderPageNumbers = this.pagination(pageNumbers);
 
     let pageIncrementBtn = null;
     if (pageNumbers.length > this.state.upperPageBound) {
@@ -434,7 +428,7 @@ class StateManagment extends React.Component<{ history: any }> {
                     </Row>
                   </CardHeader>
                   <CardBody>
-                    <div style={{ textAlign: "right" }}>
+                    <div className="search_right">
                       <input
                         className="form-control custom_text_width search"
                         type="text"
@@ -444,101 +438,18 @@ class StateManagment extends React.Component<{ history: any }> {
                       />
                     </div>
 
-                    <table
-                      id="dtBasicExample"
-                      className="table table-striped table-bordered table-sm"
-                      width="100%"
-                    >
-                      <thead>
-                        <tr onClick={() => this.handleSort('stateName')}>
-                          <th>State Name</th>
-                          <th>Country Name</th>
-                          <th style={{ textAlign: "center" }}>Status</th>
-                          <th className="action">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {this.state.statedata.length > 0 ? (
-                          <>
-                            {this.state.statedata.map(
-                              (data: any, index: any) => (
-                                <tr key={index}>
-                                  <td>{data.stateName}</td>
-                                  <td>{data.countryName}</td>
-                                  <td style={{ textAlign: "center" }}>
-                            {data.isActive === true ? (
-                              <button
-                                className="status_active_color"
-                                onClick={() => this.statusChange(data)}
-                              >
-                                Active
-                              </button>
-                            ) : (
-                              <button
-                                className="status_inactive_color"
-                                onClick={() => this.statusEditChange(data)}
-                              >
-                                InActive
-                              </button>
-                            )}
-                          </td>
-                                  <td className="action">
-                                    <span className="padding">
-                                      <i
-                                        className="fa fa-eye"
-                                        onClick={() =>
-                                          this.viewState(data.stateId)
-                                        }
-                                      ></i>
-                                      <i
-                                        className="fas fa-edit"
-                                        onClick={() =>
-                                          this.editState(data.stateId)
-                                        }
-                                      ></i>
-                                      {/* <i
-                                        className="far fa-trash-alt"
-                                        onClick={() =>
-                                          this.deleteState(data.stateId)
-                                        }
-                                      ></i> */}
-                                    </span>
-                                  </td>
-                                </tr>
-                              )
-                            )}
-                          </>
-                        ) : (
-                          ""
-                        )}
-                      </tbody>
-                    </table>
                     {this.state.statedata.length > 0 ? (
-                      <div className="filter">
-                        <CustomInput
-                          type="select"
-                          id="item"
-                          className="custom_text_width"
-                          name="customSelect"
-                          onChange={this.onItemSelect}
-                        >
-                          <option value="">Record per page</option>
-                          <option value="3">3</option>
-                          <option value="20">20</option>
-                          <option value="25">25</option>
-                          <option value="30">30</option>
-                        </CustomInput>
-                        <div>
-                          <ul className="pagination" id="page-numbers">
-                            {pageDecrementBtn}
-                            {renderPageNumbers}
-                            {pageIncrementBtn}
-                          </ul>
-                        </div>
-                      </div>
+                      <>{this.getTable(this.state.statedata)}</>
                     ) : (
                       ""
                     )}
+                    {this.state.statedata.length > 0
+                      ? this.getPageData(
+                          pageIncrementBtn,
+                          renderPageNumbers,
+                          pageDecrementBtn
+                        )
+                      : ""}
                   </CardBody>
                 </Card>
               </Col>

@@ -14,46 +14,39 @@ import {
 } from "reactstrap";
 import "./adduser.css";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/service";
-import RoleAPI from "../../../service/role.service";
-import Switch from "react-switch";
+import { API, RoleAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import {
-  userCreateRequest,
-  userUpdateRequest,
-} from "../../../modelController/userModel";
-import { any } from "prop-types";
 
 class AddUser extends React.Component<{ history: any; location: any }> {
+  userState = constant.userPage.state;
   state = {
-    selectedFile: "",
-    firstname: "",
-    firstnameerror: "",
-    lastname: "",
-    lastnameerror: "",
-    email: "",
-    emailerror: "",
-    mobilenumber: 0,
-    mobilenumbererror: "",
-    password: "",
-    passworderror: "",
-    checked: false,
-    selectedFileerror: "",
-    onItemSelect: "",
-    onItemSelecterror: "",
+    selectedFile: this.userState.selectedFile,
+    firstname: this.userState.firstname,
+    firstnameerror: this.userState.firstnameerror,
+    lastname: this.userState.lastname,
+    lastnameerror: this.userState.lastnameerror,
+    email: this.userState.email,
+    emailerror: this.userState.emailerror,
+    mobilenumber: this.userState.mobilenumber,
+    mobilenumbererror: this.userState.mobilenumbererror,
+    password: this.userState.password,
+    passworderror: this.userState.passworderror,
+    checked: this.userState.checked,
+    selectedFileerror: this.userState.selectedFileerror,
+    onItemSelect: this.userState.onItemSelect,
+    onItemSelecterror: this.userState.onItemSelecterror,
     roleid: 0,
-    userrole: [],
-    updateTrue: false,
-    filetrue:false,
-    file: "",
-    userid:0,
-    rolename: "",
-    type:'password'
+    userrole: this.userState.userrole,
+    updateTrue: this.userState.updateTrue,
+    filetrue: this.userState.filetrue,
+    file: this.userState.file,
+    userid: this.userState.userid,
+    rolename: this.userState.rolename,
+    type: this.userState.type,
   };
 
   constructor(props: any) {
     super(props);
-    // this.Profile = this.Profile.bind(this);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.removeIcon = this.removeIcon.bind(this);
@@ -61,88 +54,96 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     this.editUser = this.editUser.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.getUserRole = this.getUserRole.bind(this);
+    this.getUserById = this.getUserById.bind(this);
+  }
+
+  async componentDidMount() {
+    this.getUserRole();
+    const usderId = this.props.location.pathname.split("/")[2];
+    if (usderId !== undefined) {
+      this.getUserById(usderId);
+    }
+    if (this.state.updateTrue === true) {
+      document.title =
+        constant.userPage.title.updateUserTitle + utils.getAppName();
+    } else {
+      document.title =
+        constant.userPage.title.addUserTitle + utils.getAppName();
+    }
   }
 
   handleChange(checked: boolean) {
     this.setState({ checked });
   }
 
-  async componentDidMount() {
-    this.getUserRole();
-    const usderId = this.props.location.pathname.split("/")[2];
-    if (usderId != undefined) {
-      const obj = {
-        id: usderId,
-      };
-      const getUserById: any = await API.getUserById(obj);
-      console.log("getUserById", getUserById);
+  async getUserById(usderId: any) {
+    const obj = {
+      id: usderId,
+    };
+    const getUserById: any = await API.getUserById(obj);
+    console.log("getUserById", getUserById);
 
-      if(getUserById) {
-
-        if(getUserById.status === 200) {
-          this.setState({
-            updateTrue: this.state.updateTrue = true,
-            filetrue:this.state.filetrue = true,
-            firstname: this.state.firstname = getUserById.resultObject.firstName,
-            lastname: this.state.lastname = getUserById.resultObject.lastName,
-            email: this.state.email = getUserById.resultObject.email,
-            mobilenumber: this.state.mobilenumber = getUserById.resultObject.phone,
-            userid: this.state.userid = getUserById.resultObject.userId,
-            rolename: this.state.rolename = getUserById.resultObject.role,
-            roleid: this.state.roleid = getUserById.resultObject.roleId,
-            file: this.state.file = getUserById.resultObject.photoPath,
-            selectedFile: this.state.selectedFile =
-              constant.filepath + getUserById.resultObject.photoPath,
-            password:this.state.password =  getUserById.resultObject.password ? getUserById.resultObject.password : ''
-          });
-        } else {
-          const msg1 = getUserById.message;
-        utils.showError(msg1);
-        }
+    if (getUserById) {
+      if (getUserById.status === 200) {
+        this.setState({
+          updateTrue: this.state.updateTrue = true,
+          filetrue: this.state.filetrue = true,
+          firstname: this.state.firstname = getUserById.resultObject.firstName,
+          lastname: this.state.lastname = getUserById.resultObject.lastName,
+          email: this.state.email = getUserById.resultObject.email,
+          mobilenumber: this.state.mobilenumber =
+            getUserById.resultObject.phone,
+          userid: this.state.userid = getUserById.resultObject.userId,
+          rolename: this.state.rolename = getUserById.resultObject.role,
+          roleid: this.state.roleid = getUserById.resultObject.roleId,
+          file: this.state.file = getUserById.resultObject.photoPath,
+          selectedFile: this.state.selectedFile =
+            constant.filepath + getUserById.resultObject.photoPath,
+          password: this.state.password = getUserById.resultObject.password
+            ? getUserById.resultObject.password
+            : "",
+        });
       } else {
-        const msg1 = "Internal server error";
+        const msg1 = getUserById.message;
         utils.showError(msg1);
       }
-
-    }
-    if (this.state.updateTrue == true) {
-      document.title = constant.updateUserTitle + utils.getAppName();
     } else {
-      document.title = constant.addUserTitle + utils.getAppName();
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
     }
   }
 
   onChangeHandler(event: any) {
-    if(this.state.filetrue === true) {
+    if (this.state.filetrue === true) {
+      this.setState({
+        filetrue: this.state.filetrue = false,
+        selectedFile: this.state.selectedFile = event.target.files,
+      });
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onloadend = (ev) => {
         this.setState({
-            filetrue:this.state.filetrue = false,
-            selectedFile: this.state.selectedFile = event.target.files
-        })
-        const reader = new FileReader()
-        reader.readAsDataURL(event.target.files[0])
-        reader.onloadend = ev => {
-            this.setState({ 
-                file: reader.result
-            })
-        }
+          file: reader.result,
+        });
+      };
     } else {
+      this.setState({
+        selectedFile: this.state.selectedFile = event.target.files,
+      });
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onloadend = (ev) => {
         this.setState({
-            selectedFile: this.state.selectedFile = event.target.files
-        })
-        const reader = new FileReader()
-        reader.readAsDataURL(event.target.files[0])
-        reader.onloadend = ev => {
-            this.setState({ 
-                file: reader.result
-            })
-        }
+          file: reader.result,
+        });
+      };
     }
-}
+  }
 
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
 
-    if(getUserRole) {
+    if (getUserRole) {
       if (getUserRole.status === 200) {
         this.setState({
           userrole: this.state.userrole = getUserRole.resultObject,
@@ -229,7 +230,6 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     let emailerror = "";
     let mobilenumbererror = "";
     let selectedFileerror = "";
-    // let onItemSelecterror = "";
 
     if (!this.state.firstname) {
       firstnameerror = "please enter firstname";
@@ -254,17 +254,12 @@ class AddUser extends React.Component<{ history: any; location: any }> {
       selectedFileerror = "please select file";
     }
 
-    // if (!this.state.onItemSelect) {
-    //   onItemSelecterror = "please select role";
-    // }
-
     if (
       firstnameerror ||
       lastnameerror ||
       emailerror ||
       mobilenumbererror ||
       selectedFileerror
-      // onItemSelecterror
     ) {
       this.setState({
         firstnameerror,
@@ -272,7 +267,6 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         emailerror,
         mobilenumbererror,
         selectedFileerror,
-        // onItemSelecterror,
       });
       return false;
     }
@@ -295,10 +289,10 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
-  handleClick = () => this.setState(({type}:any) => ({
-    type: type === 'password' ? 'text' : 'password'
-  }))
-
+  handleClick = () =>
+    this.setState(({ type }: any) => ({
+      type: type === "password" ? "text" : "password",
+    }));
 
   async addUser() {
     const isValid = this.validate();
@@ -335,7 +329,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         const addUser: any = await API.addUser(formData);
         console.log("addUser", addUser);
 
-        if(addUser) {
+        if (addUser) {
           if (addUser.data.status === 200) {
             const msg = addUser.data.message;
             utils.showSuccess(msg);
@@ -387,19 +381,19 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         const editUser: any = await API.editUser(formData, this.state.userid);
         console.log("editUser", editUser);
 
-        if(editUser) {
-        if (editUser.status === 200) {
-          const msg = editUser.data.message;
-          utils.showSuccess(msg);
-          this.props.history.push("/users");
+        if (editUser) {
+          if (editUser.status === 200) {
+            const msg = editUser.data.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/users");
+          } else {
+            const msg1 = editUser.data.message;
+            utils.showError(msg1);
+          }
         } else {
-          const msg1 = editUser.data.message;
+          const msg1 = "Internal server error";
           utils.showError(msg1);
         }
-      } else {
-        const msg1 = "Internal server error";
-          utils.showError(msg1);
-      }
       }
     }
   }
@@ -454,7 +448,9 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="first_name">First Name</Label>
+                          <Label htmlFor="first_name">
+                            {constant.userPage.userTableColumn.firstname}
+                          </Label>
                           <Input
                             type="text"
                             id="first_name"
@@ -472,7 +468,9 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="last_name">Last Name</Label>
+                          <Label htmlFor="last_name">
+                            {constant.userPage.userTableColumn.lastname}
+                          </Label>
                           <Input
                             type="text"
                             id="last_name"
@@ -492,7 +490,9 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="email">E-Mail</Label>
+                          <Label htmlFor="email">
+                            {constant.userPage.userTableColumn.email}
+                          </Label>
                           <Input
                             type="email"
                             id="email"
@@ -530,23 +530,27 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <Label htmlFor="password">Password</Label>
                         <div className="right-inner-addon input-group">
-                     <input
-                       type={this.state.type}
-                       name="password"
-                       className="form-control"
-                       id="validationCustom09"
-                       value={this.state.password}
-                       placeholder="Enter your password"
-                       onChange={this.handleChangeEvent}
-                     />
-                     {
-                       this.state.type === "password" ? (
-                         <i onClick={this.handleClick} className="fas fa-eye"></i>
-                       ) : (
-                         <i onClick={this.handleClick} className="fas fa-eye-slash"></i>
-                       )
-                     }
-                   </div>
+                          <input
+                            type={this.state.type}
+                            name="password"
+                            className="form-control"
+                            id="validationCustom09"
+                            value={this.state.password}
+                            placeholder="Enter your password"
+                            onChange={this.handleChangeEvent}
+                          />
+                          {this.state.type === "password" ? (
+                            <i
+                              onClick={this.handleClick}
+                              className="fas fa-eye"
+                            ></i>
+                          ) : (
+                            <i
+                              onClick={this.handleClick}
+                              className="fas fa-eye-slash"
+                            ></i>
+                          )}
+                        </div>
                         <div className="mb-4 text-danger">
                           {this.state.passworderror}
                         </div>

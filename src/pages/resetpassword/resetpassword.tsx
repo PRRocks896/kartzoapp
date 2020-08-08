@@ -2,12 +2,7 @@ import React from "react";
 import API from "../../service/service";
 import {
   Row,
-  Col,
   Button,
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Card,
   CardHeader,
   CardFooter,
@@ -17,13 +12,11 @@ import {
   FormText,
   Label,
   Input,
-  InputGroup,
-  InputGroupAddon,
 } from "reactstrap";
 import utils from "../../utils";
-import './resetpassword.css';
+import "./resetpassword.css";
 
-class ResetPassword extends React.Component<{ location: any,history:any }> {
+class ResetPassword extends React.Component<{ location: any; history: any }> {
   state = {
     password: "",
     passwordError: "",
@@ -37,7 +30,10 @@ class ResetPassword extends React.Component<{ location: any,history:any }> {
 
   /** first this method call */
   componentDidMount() {
-    console.log("query=", this.props.location.pathname.split("/")[2].split('=')[1]);
+    console.log(
+      "query=",
+      this.props.location.pathname.split("/")[2].split("=")[1]
+    );
   }
 
   /** validation of reset form */
@@ -66,21 +62,21 @@ class ResetPassword extends React.Component<{ location: any,history:any }> {
   /** Reset password  */
   async ResetPassword() {
     const obj = {
-      guid: this.props.location.pathname.split("/")[2].split('=')[1],
+      guid: this.props.location.pathname.split("/")[2].split("=")[1],
       password: this.state.password,
     };
-    var resetPassword:any = await API.resetPassword(obj);
+    var resetPassword: any = await API.resetPassword(obj);
     console.log("resetPassword", resetPassword);
 
-    if(resetPassword) {
+    if (resetPassword) {
       if (resetPassword.status === 200) {
         const msg = resetPassword.data.message;
         utils.showSuccess(msg);
         this.props.history.push("/login");
-    } else {
-      const msg = resetPassword.data.message;
+      } else {
+        const msg = resetPassword.data.message;
         utils.showError(msg);
-    }
+      }
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);

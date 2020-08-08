@@ -220,3 +220,12 @@ table.dataTable {
   button:focus{
     outline: none !important;
   }
+
+  .table-bordered {
+    border: 1px solid #dee2e6;
+    margin-top: 30px;
+}
+
+.search_right {
+  text-align: right;
+}

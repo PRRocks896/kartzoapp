@@ -27,74 +27,54 @@ const $ = require("jquery");
 $.DataTable = require("datatables.net");
 
 class City extends React.Component<{ history: any }> {
+  cityState = constant.cityPage.state;
   state = {
-    selectedFile: null,
-    firstname: "",
-    firstnameerror: "",
-    lastname: "",
-    lastnameerror: "",
-    email: "",
-    emailerror: "",
-    mobilenumber: "",
-    mobilenumbererror: "",
-    password: "",
-    passworderror: "",
-    checked: false,
-    selectedFileerror: "",
-    count: "10",
-    currentPage: "1",
-    items_per_page: "10",
-    perpage: 2,
-    paginationdata: "",
-    isFetch: false,
-    data: "",
-    allRecords: "",
-    upperPageBound: 3,
-    lowerPageBound: 0,
-    pageBound: 3,
-    isPrevBtnActive: "disabled",
-    isNextBtnActive: "",
-    onClickPage: 1,
-    activePage: 15,
-    citydata: [],
-    switchSort: false,
-    isStatus:false
+    count: this.cityState.count,
+    currentPage: this.cityState.currentPage,
+    items_per_page: this.cityState.items_per_page,
+    upperPageBound: this.cityState.upperPageBound,
+    lowerPageBound: this.cityState.lowerPageBound,
+    pageBound: this.cityState.pageBound,
+    onItemSelect: this.cityState.onItemSelect,
+    citydata: this.cityState.citydata,
+    switchSort: this.cityState.switchSort,
+    isStatus: this.cityState.isStatus,
   };
 
   constructor(props: any) {
     super(props);
-    this.deleteCity = this.deleteCity.bind(this);
     this.editCity = this.editCity.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewCity = this.viewCity.bind(this);
     this.statusChange = this.statusChange.bind(this);
-    this.statusEditChange = this.statusEditChange.bind(this);
+    this.pagination = this.pagination.bind(this);
+    this.getTable = this.getTable.bind(this);
+    this.getPageData = this.getPageData.bind(this);
+    this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(this);
   }
 
   async componentDidMount() {
-    document.title = constant.cityTitle + utils.getAppName();
-    $("#dtBasicExample").DataTable({
-        paging: false,
-        info: false,
-        searching: false,
-        sorting: false,
-        ordering: false,
-      });
+    document.title = constant.cityPage.title.cityTitle + utils.getAppName();
+    utils.dataTable();
     this.getCityData();
   }
 
-  async getCityData() {
+  async getCityData(
+    searchText: string = "",
+    page: number = 1,
+    size: number = 10
+  ) {
     const obj = {
-      searchText: "",
-      page: 1,
-      size: parseInt(this.state.items_per_page),
+      searchText: searchText,
+      page: page,
+      size: size,
     };
 
     var getCityData = await API.getCityData(obj);
     console.log("getCityData", getCityData);
 
-    if(getCityData) {
+    if (getCityData) {
       if (getCityData.status === 200) {
         this.setState({
           citydata: this.state.citydata = getCityData.resultObject.data,
@@ -140,39 +120,13 @@ class City extends React.Component<{ history: any }> {
     this.props.history.push("/viewcity/" + id);
   }
 
-  deleteCity(id: any) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You should be remove city!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, keep it",
-    }).then(async (result) => {
-      if (result.value) {
-        var deleteCity = await API.deleteCity(id);
-        if(deleteCity.status === 200) {
-            const msg = deleteCity.message;
-            utils.showSuccess(msg);
-            this.getCityData();
-        } else {
-            const msg = deleteCity.message;
-            utils.showSuccess(msg);
-        }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        const msg1 = "City is safe :";
-        utils.showError(msg1);
-      }
-    });
-  }
-
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
         event.target.options[event.target.selectedIndex].value,
     });
 
-    this.getCityData();
+    this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
   }
 
   async handleClick(event: any) {
@@ -185,23 +139,7 @@ class City extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    var getCityData = await API.getCityData(obj);
-    console.log("getCityData", getCityData);
-
-    if(getCityData) {
-      if (getCityData.status === 200) {
-        this.setState({
-          citydata: this.state.citydata = getCityData.resultObject.data,
-          count: this.state.count = getCityData.resultObject.totalcount,
-        });
-      } else {
-        const msg1 = getCityData.message;
-        utils.showError(msg1);
-      }
-    } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
-    }
+    this.getCityData(obj.searchText, obj.page, obj.size);
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -211,23 +149,7 @@ class City extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    var getCityData = await API.getCityData(obj);
-    console.log("getCityData", getCityData);
-
-    if(getCityData) {
-      if (getCityData.status === 200) {
-        this.setState({
-          citydata: this.state.citydata = getCityData.resultObject.data,
-          count: this.state.count = getCityData.resultObject.totalcount,
-        });
-      } else {
-        const msg1 = getCityData.message;
-        utils.showError(msg1);
-      }
-    } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
-    }
+    this.getCityData(obj.searchText, obj.page, obj.size);
   }
 
   handleSort(key: any) {
@@ -257,88 +179,31 @@ class City extends React.Component<{ history: any }> {
     }
   }
 
-  statusChange(data:any) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You should be inActive city!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, inActive it!",
-      cancelButtonText: "No, keep it",
-    }).then(async (result) => {
-      if (result.value) {
-        const obj: cityUpdateRequest = {
-            cityId: data.cityId,
-            cityName: data.cityName,
-            stateId: data.stateId,
-            isActive: false,
-          };
-  
-          const editCity = await API.editCity(obj, data.cityId);
-          console.log("editCity", editCity);
-  
-          if (editCity.status === 200) {
-            const msg = editCity.message;
-            utils.showSuccess(msg);
-           this.getCityData();
-          } else {
-            const msg = editCity.message;
-            utils.showError(msg);
-          }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        const msg1 = "city is safe :";
-      }
-    });
-  }
+  async statusChange(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: cityUpdateRequest = {
+        cityId: data.cityId,
+        cityName: data.cityName,
+        stateId: data.stateId,
+        isActive: data.isActive === true ? false : true,
+      };
 
-  statusEditChange(data:any) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You should be Active shop!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, Active it!",
-      cancelButtonText: "No, keep it",
-    }).then(async (result) => {
-      if (result.value) {
-        const obj: cityUpdateRequest = {
-            cityId: data.cityId,
-            cityName: data.cityName,
-            stateId: data.stateId,
-            isActive: true,
-          };
-  
-          const editCity = await API.editCity(obj, data.cityId);
-          console.log("editCity", editCity);
-  
-          if (editCity.status === 200) {
-            const msg = editCity.message;
-            utils.showSuccess(msg);
-           this.getCityData();
-          } else {
-            const msg = editCity.message;
-            utils.showError(msg);
-          }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        const msg1 = "shop is safe :";
-        // utils.showError(msg1);
-      }
-    });
-  }
+      const editCity = await API.editCity(obj, data.cityId);
+      console.log("editCity", editCity);
 
-  render() {
-    var pageNumbers = [];
-    for (
-      let i = 1;
-      i <=
-      Math.ceil(
-        parseInt(this.state.count) / parseInt(this.state.items_per_page)
-      );
-      i++
-    ) {
-      pageNumbers.push(i);
+      if (editCity.status === 200) {
+        const msg = editCity.message;
+        utils.showSuccess(msg);
+        this.getCityData();
+      } else {
+        const msg = editCity.message;
+        utils.showError(msg);
+      }
     }
-    var renderPageNumbers = pageNumbers.map((number: any) => {
+  }
+
+  pagination(pageNumbers: any) {
+    var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
         return (
           <li
@@ -376,6 +241,138 @@ class City extends React.Component<{ history: any }> {
         );
       }
     });
+    return res;
+  }
+
+  getTable(citydata: any) {
+    return (
+      <table
+        id="dtBasicExample"
+        className="table table-striped table-bordered table-sm"
+        width="100%"
+      >
+        <thead>
+          <tr onClick={() => this.handleSort("cityName")}>
+            <th>{constant.cityPage.cityTableColumn.cityName}</th>
+            <th>{constant.cityPage.cityTableColumn.stateName}</th>
+            <th style={{ textAlign: "center" }}>
+              {constant.tableAction.status}
+            </th>
+            <th className="action">{constant.tableAction.action}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.state.citydata.length > 0 ? (
+            <>
+              {this.state.citydata.map((data: any, index: any) => (
+                <tr key={index}>
+                  <td>{data.cityName}</td>
+                  <td>{data.stateName}</td>
+
+                  <td style={{ textAlign: "center" }}>
+                    {data.isActive === true ? (
+                      <button
+                        className="status_active_color"
+                        onClick={() =>
+                          this.statusChange(
+                            data,
+                            "You should be inActive city",
+                            "Yes, inActive it"
+                          )
+                        }
+                      >
+                        Active
+                      </button>
+                    ) : (
+                      <button
+                        className="status_inactive_color"
+                        onClick={() =>
+                          this.statusChange(
+                            data,
+                            "You should be Active city",
+                            "Yes, Active it"
+                          )
+                        }
+                      >
+                        InActive
+                      </button>
+                    )}
+                  </td>
+                  <td className="action">
+                    <span className="padding">
+                      <i
+                        className="fa fa-eye"
+                        onClick={() => this.viewCity(data.cityId)}
+                      ></i>
+                      <i
+                        className="fas fa-edit"
+                        onClick={() => this.editCity(data.cityId)}
+                      ></i>
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </>
+          ) : (
+            ""
+          )}
+        </tbody>
+      </table>
+    );
+  }
+
+  getPageData(
+    pageDecrementBtn: any,
+    renderPageNumbers: any,
+    pageIncrementBtn: any
+  ) {
+    return (
+      <div className="filter">
+        <CustomInput
+          type="select"
+          id="item"
+          className="custom_text_width"
+          name="customSelect"
+          onChange={this.onItemSelect}
+        >
+          <option value="">{constant.recordPerPage.recordperPage}</option>
+          <option value={constant.recordPerPage.fifteen}>
+            {constant.recordPerPage.fifteen}
+          </option>
+          <option value={constant.recordPerPage.twenty}>
+            {constant.recordPerPage.twenty}
+          </option>
+          <option value={constant.recordPerPage.thirty}>
+            {constant.recordPerPage.thirty}
+          </option>
+          <option value={constant.recordPerPage.fifty}>
+            {constant.recordPerPage.fifty}
+          </option>
+        </CustomInput>
+        <div>
+          <ul className="pagination" id="page-numbers">
+            {pageDecrementBtn}
+            {renderPageNumbers}
+            {pageIncrementBtn}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    var pageNumbers = [];
+    for (
+      let i = 1;
+      i <=
+      Math.ceil(
+        parseInt(this.state.count) / parseInt(this.state.items_per_page)
+      );
+      i++
+    ) {
+      pageNumbers.push(i);
+    }
+    var renderPageNumbers = this.pagination(pageNumbers);
 
     let pageIncrementBtn = null;
     if (pageNumbers.length > this.state.upperPageBound) {
@@ -426,7 +423,7 @@ class City extends React.Component<{ history: any }> {
                     </Row>
                   </CardHeader>
                   <CardBody>
-                    <div style={{ textAlign: "right" }}>
+                    <div className="search_right">
                       <input
                         className="form-control custom_text_width search"
                         type="text"
@@ -436,102 +433,18 @@ class City extends React.Component<{ history: any }> {
                       />
                     </div>
 
-                    <table
-                      id="dtBasicExample"
-                      className="table table-striped table-bordered table-sm"
-                      width="100%"
-                    >
-                      <thead>
-                        <tr>
-                          <th>City Name</th>
-                          <th>State Name</th>
-                          <th style={{ textAlign: "center" }}>Status</th>
-                          <th className="action">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {this.state.citydata.length > 0 ? (
-                          <>
-                            {this.state.citydata.map(
-                              (data: any, index: any) => (
-                                <tr key={index}>
-                                  <td>{data.cityName}</td>
-                                  <td>{data.stateName}</td>
-
-                                  <td style={{ textAlign: "center" }}>
-                            {data.isActive === true ? (
-                              <button
-                                className="status_active_color"
-                                onClick={() => this.statusChange(data)}
-                              >
-                                Active
-                              </button>
-                            ) : (
-                              <button
-                                className="status_inactive_color"
-                                onClick={() => this.statusEditChange(data)}
-                              >
-                                InActive
-                              </button>
-                            )}
-                          </td>
-                                  <td className="action">
-                                    <span className="padding">
-                                      <i
-                                        className="fa fa-eye"
-                                        onClick={() =>
-                                          this.viewCity(data.cityId)
-                                        }
-                                      ></i>
-                                      <i
-                                        className="fas fa-edit"
-                                        onClick={() =>
-                                          this.editCity(data.cityId)
-                                        }
-                                      ></i>
-                                      {/* <i
-                                        className="far fa-trash-alt"
-                                        onClick={() =>
-                                          this.deleteCity(data.cityId)
-                                        }
-                                      ></i> */}
-                                    </span>
-                                  </td>
-                                </tr>
-                              )
-                            )}
-                          </>
-                        ) : (
-                          ""
-                        )}
-                      </tbody>
-                    </table>
                     {this.state.citydata.length > 0 ? (
-                      <div className="filter">
-                        <CustomInput
-                          type="select"
-                          id="item"
-                          className="custom_text_width"
-                          name="customSelect"
-                          onChange={this.onItemSelect}
-                        >
-                          <option value="">Record per page</option>
-                          <option value="3">3</option>
-                          <option value="20">20</option>
-                          <option value="25">25</option>
-                          <option value="30">30</option>
-                        </CustomInput>
-                        <div>
-                          <ul className="pagination" id="page-numbers">
-                            {pageDecrementBtn}
-                            {renderPageNumbers}
-                            {pageIncrementBtn}
-                          </ul>
-                        </div>
-                      </div>
+                      <>{this.getTable(this.state.citydata)}</>
                     ) : (
                       ""
                     )}
+                    {this.state.citydata.length > 0
+                      ? this.getPageData(
+                          pageIncrementBtn,
+                          renderPageNumbers,
+                          pageDecrementBtn
+                        )
+                      : ""}
                   </CardBody>
                 </Card>
               </Col>
