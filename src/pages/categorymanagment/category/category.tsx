@@ -16,7 +16,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/category.service";
+import {CategoryAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class Category extends React.Component<{ history: any }> {
@@ -71,7 +71,7 @@ class Category extends React.Component<{ history: any }> {
       size: size,
     };
 
-    var getCategory = await API.getCategory(obj);
+    var getCategory = await CategoryAPI.getCategory(obj);
     console.log("getCategory", getCategory);
 
     if (getCategory) {
@@ -194,7 +194,7 @@ class Category extends React.Component<{ history: any }> {
       );
       formData.append("sortOrder", data.sortOrder);
       formData.append("files", data.imagePath);
-      const editCategory = await API.editCategory(formData, data.categoryId);
+      const editCategory = await CategoryAPI.editCategory(formData, data.categoryId);
       console.log("editCategory", editCategory);
       if (editCategory.status === 200) {
         const msg = editCategory.message;

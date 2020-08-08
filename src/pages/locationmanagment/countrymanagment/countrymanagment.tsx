@@ -16,7 +16,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/location.service";
+import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class CountryManagment extends React.Component<{ history: any }> {
@@ -71,7 +71,7 @@ class CountryManagment extends React.Component<{ history: any }> {
       size: size,
     };
 
-    var getCountryData = await API.getCountryData(obj);
+    var getCountryData = await LocationAPI.getCountryData(obj);
     console.log("getCountryData", getCountryData);
 
     if (getCountryData) {
@@ -189,7 +189,7 @@ class CountryManagment extends React.Component<{ history: any }> {
       );
       formData.append("files", data.imagePath);
 
-      const editCountry = await API.editCountry(formData, data.countryId);
+      const editCountry = await LocationAPI.editCountry(formData, data.countryId);
       console.log("editCountry", editCountry);
 
       if (editCountry.status === 200) {

@@ -15,7 +15,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/category.service";
+import {CategoryAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class ViewCategory extends React.Component<{ history: any; location: any }> {
@@ -39,7 +39,7 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
       const obj = {
         id: categoryId,
       };
-      const getCategoryById: any = await API.getCategoryById(obj);
+      const getCategoryById: any = await CategoryAPI.getCategoryById(obj);
       console.log("getCategoryById", getCategoryById);
       if (getCategoryById) {
         if (getCategoryById.status === 200) {

@@ -12,7 +12,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/location.service";
+import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class ViewCountry extends React.Component<{ history: any; location: any }> {
@@ -30,7 +30,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
       const obj = {
         id: countryId,
       };
-      const getCountryById: any = await API.getCountryById(obj);
+      const getCountryById: any = await LocationAPI.getCountryById(obj);
       console.log("getCountryById", getCountryById);
 
       if (getCountryById) {

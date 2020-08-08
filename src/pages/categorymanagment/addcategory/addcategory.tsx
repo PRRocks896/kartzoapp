@@ -17,7 +17,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/category.service";
+import {CategoryAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class AddCategory extends React.Component<{ history: any; location: any }> {
@@ -69,7 +69,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
   }
 
   async getAllCategory() {
-    const getAllCategory = await API.getAllCategory();
+    const getAllCategory = await CategoryAPI.getAllCategory();
     console.log("getAllCategory", getAllCategory);
     if (getAllCategory.status === 200) {
       this.setState({
@@ -85,7 +85,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     const obj = {
       id: categoryId
     };
-    const getCategoryById: any = await API.getCategoryById(obj);
+    const getCategoryById: any = await CategoryAPI.getCategoryById(obj);
     console.log("getCategoryById", getCategoryById);
 
     if (getCategoryById.status === 200) {
@@ -191,7 +191,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         formData.append("sortOrder", this.state.sortorder.toString());
         formData.append("files", this.state.selectedFile[0]);
 
-        const addCategory = await API.addCategory(formData);
+        const addCategory = await CategoryAPI.addCategory(formData);
         console.log("addCategory", addCategory);
         if (addCategory) {
           if (addCategory.status === 200) {
@@ -225,7 +225,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         formData.append("parentCategoryId", this.state.selectcategory);
         formData.append("sortOrder", this.state.sortorder.toString());
         formData.append("files", this.state.selectedFile[0]);
-        const editCategory = await API.editCategory(
+        const editCategory = await CategoryAPI.editCategory(
           formData,
           this.state.categoryid.toString()
         );

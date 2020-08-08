@@ -18,7 +18,7 @@ import constant from "../../constant/constant";
 // import EventEmitter from '../../event';
 import {
   profileGetRequest,
-} from "../../modelController/profileModel";
+} from "../../modelController/index";
 
 interface User {
   userId: number;

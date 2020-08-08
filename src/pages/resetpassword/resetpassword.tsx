@@ -1,5 +1,5 @@
 import React from "react";
-import API from "../../service/service";
+import {API} from "../../service/index.service";
 import {
   Row,
   Button,

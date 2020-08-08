@@ -17,7 +17,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/location.service";
+import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import {
   cityCreateRequest,
@@ -68,7 +68,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
   }
 
   async getState() {
-    const getState = await API.getState();
+    const getState = await LocationAPI.getState();
     console.log("getState", getState);
 
     if (getState) {
@@ -90,7 +90,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     const obj = {
       id: cityId,
     };
-    const getCityById: any = await API.getCityById(obj);
+    const getCityById: any = await LocationAPI.getCityById(obj);
     console.log("getCityById", getCityById);
 
     if (getCityById) {
@@ -158,7 +158,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
           isActive: true,
         };
 
-        const addCity = await API.addCity(obj);
+        const addCity = await LocationAPI.addCity(obj);
         console.log("addCity", addCity);
 
         if (addCity) {
@@ -193,7 +193,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
           isActive: true,
         };
 
-        const editCity = await API.editCity(obj, this.state.cityid);
+        const editCity = await LocationAPI.editCity(obj, this.state.cityid);
         console.log("editCity", editCity);
 
         if (editCity) {

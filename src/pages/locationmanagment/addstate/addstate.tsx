@@ -17,12 +17,12 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/location.service";
+import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import {
   stateCreateRequest,
   stateUpdateRequest,
-} from "../../../modelController/stateModel";
+} from "../../../modelController/index";
 
 class AddState extends React.Component<{ history: any; location: any }> {
   stateState = constant.statePage.state;
@@ -68,7 +68,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
   }
 
   async getCountry() {
-    const getCountry = await API.getCountry();
+    const getCountry = await LocationAPI.getCountry();
     console.log("getCountry", getCountry);
 
     if(getCountry) {
@@ -90,7 +90,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
     const obj = {
       id: stateId,
     };
-    const getStateById: any = await API.getStateById(obj);
+    const getStateById: any = await LocationAPI.getStateById(obj);
     console.log("getStateById", getStateById);
     if(getStateById) {
       if (getStateById.status === 200) {
@@ -159,7 +159,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
           isActive: true,
         };
 
-        const addState = await API.addState(obj);
+        const addState = await LocationAPI.addState(obj);
         console.log("addState", addState);
 
         if(addState) {
@@ -194,7 +194,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
           isActive: true,
         };
 
-        const editState = await API.editState(obj, this.state.stateid);
+        const editState = await LocationAPI.editState(obj, this.state.stateid);
         console.log("editState", editState);
 
         if(editState) {

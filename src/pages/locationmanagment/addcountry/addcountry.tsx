@@ -15,7 +15,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/location.service";
+import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class AddCountry extends React.Component<{ history: any; location: any }> {
@@ -65,7 +65,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     const obj = {
       id: countryId,
     };
-    const getCountryById: any = await API.getCountryById(obj);
+    const getCountryById: any = await LocationAPI.getCountryById(obj);
     console.log("getCountryById", getCountryById);
 
     if (getCountryById) {
@@ -171,7 +171,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         formData.append("isActive", "true");
         formData.append("files", this.state.selectedFile[0]);
 
-        const addCountry = await API.addCountry(formData);
+        const addCountry = await LocationAPI.addCountry(formData);
         console.log("addCountry", addCountry);
 
         if (addCountry) {
@@ -211,7 +211,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         formData.append("isActive", "true");
         formData.append("files", this.state.selectedFile[0]);
 
-        const editCountry = await API.editCountry(
+        const editCountry = await LocationAPI.editCountry(
           formData,
           this.state.countryid.toString()
         );

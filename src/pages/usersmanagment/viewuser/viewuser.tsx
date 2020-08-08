@@ -13,7 +13,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/service";
+import {API} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class ViewUser extends React.Component<{ history: any; location: any }> {

@@ -1,35 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { MDBDataTable } from "mdbreact";
 import {
-  Badge,
   Button,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   Col,
   CardTitle,
-  Form,
   CustomInput,
-  FormGroup,
-  FormText,
-  FormFeedback,
-  Input,
-  Table,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButtonDropdown,
-  InputGroupText,
-  Label,
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
 import "./userrole.css";
 import utils from "../../../utils";
 import constant from "../../../constant/constant";
-import { userRoleUpdateRequest } from "../../../modelController/userRoleModel";
-import API from "../../../service/role.service";
+import { userRoleUpdateRequest } from "../../../modelController/index";
+import {RoleAPI} from "../../../service/index.service";
 
 interface getUserRoleRequest {
   searchText?: string;
@@ -84,7 +70,7 @@ class UserRole extends React.Component<{ history: any }> {
       page: page,
       size: size,
     };
-    var getRole = await API.getRoles(obj);
+    var getRole = await RoleAPI.getRoles(obj);
     console.log("getRole", getRole);
 
     if (getRole) {
@@ -204,7 +190,7 @@ class UserRole extends React.Component<{ history: any }> {
         isAdminRole: data.isAdminRole,
       };
 
-      const editUserRole = await API.editUserRole(obj);
+      const editUserRole = await RoleAPI.editUserRole(obj);
       console.log("editUserRole", editUserRole);
 
       if (editUserRole.status === 200) {

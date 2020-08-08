@@ -13,7 +13,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/location.service";
+import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class ViewState extends React.Component<{ history: any; location: any }> {
@@ -30,7 +30,7 @@ class ViewState extends React.Component<{ history: any; location: any }> {
       const obj = {
         id: stateId,
       };
-      const getStateById: any = await API.getStateById(obj);
+      const getStateById: any = await LocationAPI.getStateById(obj);
       console.log("getStateById", getStateById);
 
       if (getStateById) {

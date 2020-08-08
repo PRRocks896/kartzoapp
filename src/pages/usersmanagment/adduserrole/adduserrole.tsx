@@ -13,13 +13,13 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/role.service";
+import {RoleAPI} from "../../../service/index.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import {
   userRoleCreateRequest,
   userRoleUpdateRequest,
-} from "../../../modelController/userRoleModel";
+} from "../../../modelController";
 
 class AddUserRole extends React.Component<{ history: any; location: any }> {
   userState = constant.userRolePage.state;
@@ -63,7 +63,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
     const obj = {
       id: roleId,
     };
-    const getRoleById: any = await API.getRoleById(obj);
+    const getRoleById: any = await RoleAPI.getRoleById(obj);
     console.log("getRoleById", getRoleById);
 
     if (getRoleById) {
@@ -127,7 +127,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
 
         console.log("userole", obj);
 
-        const addUserRole = await API.addUserRole(obj);
+        const addUserRole = await RoleAPI.addUserRole(obj);
         console.log("addUserRole", addUserRole);
 
         if (addUserRole) {
@@ -163,7 +163,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
         };
         console.log("userole", obj);
 
-        const editUserRole = await API.editUserRole(obj);
+        const editUserRole = await RoleAPI.editUserRole(obj);
         console.log("editUserRole", editUserRole);
 
         if (editUserRole) {

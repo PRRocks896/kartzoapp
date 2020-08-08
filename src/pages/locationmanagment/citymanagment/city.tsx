@@ -19,10 +19,9 @@ import {
 } from "reactstrap";
 // import './adduser.css';
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/location.service";
-import Switch from "react-switch";
+import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { cityUpdateRequest } from "../../../modelController/cityModel";
+import { cityUpdateRequest } from "../../../modelController/index";
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
 
@@ -71,7 +70,7 @@ class City extends React.Component<{ history: any }> {
       size: size,
     };
 
-    var getCityData = await API.getCityData(obj);
+    var getCityData = await LocationAPI.getCityData(obj);
     console.log("getCityData", getCityData);
 
     if (getCityData) {
@@ -188,7 +187,7 @@ class City extends React.Component<{ history: any }> {
         isActive: data.isActive === true ? false : true,
       };
 
-      const editCity = await API.editCity(obj, data.cityId);
+      const editCity = await LocationAPI.editCity(obj, data.cityId);
       console.log("editCity", editCity);
 
       if (editCity.status === 200) {

@@ -1,25 +1,17 @@
 import React, { Component } from 'react';
 import Swal from 'sweetalert2';
-import API from "../../service/service";
+import {API} from "../../service/index.service";
 import {
     Row,
     Col,
     Button,
-    ButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
     Card,
     CardHeader,
-    CardFooter,
     CardBody,
     Form,
     FormGroup,
-    FormText,
     Label,
     Input,
-    InputGroup,
-    InputGroupAddon
 } from 'reactstrap';
 import utils from '../../utils';
 import constant from '../../constant/constant';

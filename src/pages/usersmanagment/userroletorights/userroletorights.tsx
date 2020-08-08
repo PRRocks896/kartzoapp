@@ -1,6 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import RoleAPI from "../../../service/role.service";
+import {RoleAPI} from "../../../service/index.service";
 import {
   Button,
   Card,
@@ -12,16 +11,13 @@ import {
   CustomInput,
   FormGroup,
   Table,
-  InputGroup,
   Label,
   Row,
 } from "reactstrap";
-// import './users.css';
 import NavBar from "../../navbar/navbar";
 import constant from "../../../constant/constant";
 import utils from "../../../utils";
 import "./userroletorights.css";
-import { any } from "prop-types";
 
 class UserRoleToRights extends React.Component {
   state = {

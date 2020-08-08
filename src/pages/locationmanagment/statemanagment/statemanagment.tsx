@@ -19,10 +19,9 @@ import {
 } from "reactstrap";
 // import './adduser.css';
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/location.service";
-import Switch from "react-switch";
+import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { stateUpdateRequest } from "../../../modelController/stateModel";
+import { stateUpdateRequest } from "../../../modelController/index";
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
 
@@ -77,7 +76,7 @@ class StateManagment extends React.Component<{ history: any }> {
       size: size,
     };
 
-    var getStateData = await API.getStateData(obj);
+    var getStateData = await LocationAPI.getStateData(obj);
     console.log("getStateData", getStateData);
 
     if (getStateData) {
@@ -194,7 +193,7 @@ class StateManagment extends React.Component<{ history: any }> {
         isActive: false,
       };
 
-      const editState = await API.editState(obj, data.stateId);
+      const editState = await LocationAPI.editState(obj, data.stateId);
       console.log("editState", editState);
 
       if (editState.status === 200) {

@@ -1,6 +1,6 @@
 import React from "react";
 import "./login.css";
-import API from "../../service/service";
+import {API} from "../../service/index.service";
 import utils from "../../utils";
 import Constant from "../../constant/constant";
 import constant from "../../constant/constant";
