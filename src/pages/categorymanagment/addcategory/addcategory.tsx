@@ -47,7 +47,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     this.updateCategory = this.updateCategory.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.getAllCategory = this.getAllCategory.bind(this);
-    this.getCategoryById = this.getAllCategory.bind(this);
+    this.getCategoryById = this.getCategoryById.bind(this);
   }
 
   async componentDidMount() {
@@ -55,6 +55,9 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     const categoryId = this.props.location.pathname.split("/")[2];
     if (categoryId !== undefined) {
       this.getCategoryById(categoryId);
+      this.setState({
+        updateTrue: this.state.updateTrue = true
+      })
     }
     if (this.state.updateTrue === true) {
       document.title =
@@ -80,7 +83,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
 
   async getCategoryById(categoryId: any) {
     const obj = {
-      id: categoryId,
+      id: categoryId
     };
     const getCategoryById: any = await API.getCategoryById(obj);
     console.log("getCategoryById", getCategoryById);

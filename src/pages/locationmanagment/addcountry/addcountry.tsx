@@ -47,6 +47,9 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     const countryId = this.props.location.pathname.split("/")[2];
     if (countryId !== undefined) {
       this.getCountryById(countryId);
+      this.setState({
+        updateTrue: this.state.updateTrue = true
+      })
     }
 
     if (this.state.updateTrue === true) {

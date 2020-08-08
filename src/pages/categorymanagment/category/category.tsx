@@ -372,7 +372,7 @@ class Category extends React.Component<{ history: any }> {
           name="customSelect"
           onChange={this.onItemSelect}
         >
-          <option value="">{constant.recordPerPage.recordperPage}</option>
+          <option value="10">{constant.recordPerPage.recordperPage}</option>
           <option value={constant.recordPerPage.fifteen}>
             {constant.recordPerPage.fifteen}
           </option>
@@ -399,14 +399,7 @@ class Category extends React.Component<{ history: any }> {
 
   render() {
     var pageNumbers = [];
-    for (
-      let i = 1;
-      i <=
-      Math.ceil(
-        parseInt(this.state.count) / parseInt(this.state.items_per_page)
-      );
-      i++
-    ) {
+    for (let i = 1; i <= Math.ceil(parseInt(this.state.count) / parseInt(this.state.items_per_page)); i++) {
       pageNumbers.push(i);
     }
     var renderPageNumbers = this.pagination(pageNumbers);

@@ -22,7 +22,7 @@ import constant from "../../../constant/constant";
 import {
   cityCreateRequest,
   cityUpdateRequest,
-} from "../../../modelController/cityModel";
+} from "../../../modelController";
 
 class AddCity extends React.Component<{ history: any; location: any }> {
   cityState = constant.cityPage.state;
@@ -54,6 +54,9 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     const cityId = this.props.location.pathname.split("/")[2];
     if (cityId !== undefined) {
       this.getCityById(cityId);
+      this.setState({
+        updateTrue: this.state.updateTrue = true
+      })
     }
     if (this.state.updateTrue === true) {
       document.title =

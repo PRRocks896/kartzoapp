@@ -56,6 +56,9 @@ class AddState extends React.Component<{ history: any; location: any }> {
     const stateId = this.props.location.pathname.split("/")[2];
     if (stateId !== undefined) {
       this.getCountryById(stateId);
+      this.setState({
+        updateTrue: this.state.updateTrue = true
+      })
     }
     if (this.state.updateTrue === true) {
       document.title = constant.statePage.title.updateStateTitle + utils.getAppName();

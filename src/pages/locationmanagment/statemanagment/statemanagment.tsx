@@ -340,7 +340,7 @@ class StateManagment extends React.Component<{ history: any }> {
           name="customSelect"
           onChange={this.onItemSelect}
         >
-          <option value="">{constant.recordPerPage.recordperPage}</option>
+          <option value="10">{constant.recordPerPage.recordperPage}</option>
           <option value={constant.recordPerPage.fifteen}>
             {constant.recordPerPage.fifteen}
           </option>

@@ -5,11 +5,8 @@ import {
   Button,
   Card,
   CardHeader,
-  CardFooter,
   CardBody,
-  Form,
   FormGroup,
-  FormText,
   Label,
   Input,
 } from "reactstrap";

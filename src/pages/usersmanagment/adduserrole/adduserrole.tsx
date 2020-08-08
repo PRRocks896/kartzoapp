@@ -46,6 +46,9 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
     const roleId = this.props.location.pathname.split("/")[2];
     if (roleId !== undefined) {
       this.getRoleById(roleId);
+      this.setState({
+        updateTrue: this.state.updateTrue = true
+      })
     }
     if (this.state.updateTrue === true) {
       document.title =

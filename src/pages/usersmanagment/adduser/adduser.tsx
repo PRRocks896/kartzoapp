@@ -62,6 +62,9 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     const usderId = this.props.location.pathname.split("/")[2];
     if (usderId !== undefined) {
       this.getUserById(usderId);
+      this.setState({
+        updateTrue: this.state.updateTrue = true
+      })
     }
     if (this.state.updateTrue === true) {
       document.title =

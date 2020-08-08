@@ -26,17 +26,17 @@ import { any } from "prop-types";
 class UserRoleToRights extends React.Component {
   state = {
     userrole: [],
-    roleid: '0',
+    roleid: "0",
     onItemSelect: "",
     mainItemName: [],
     role: [],
     roleprivileges: [],
     _maincheck: false,
-    _viewcheck:false,
-    _editcheck:false,
-    _addcheck:false,
-    _deletecheck:false,
-    _detailcheck:false,
+    _viewcheck: false,
+    _editcheck: false,
+    _addcheck: false,
+    _deletecheck: false,
+    _detailcheck: false,
     show: false,
   };
 
@@ -63,7 +63,7 @@ class UserRoleToRights extends React.Component {
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
 
-    if(getUserRole) {
+    if (getUserRole) {
       if (getUserRole.resultObject != null) {
         this.setState({
           userrole: this.state.userrole = getUserRole.resultObject,
@@ -88,17 +88,16 @@ class UserRoleToRights extends React.Component {
       id: this.state.roleid,
     };
     const getRolePreveliges = await RoleAPI.getRolePreveliges(obj);
-    if(getRolePreveliges) {
-
+    if (getRolePreveliges) {
       if (getRolePreveliges.resultObject !== null) {
         this.setState({
           mainItemName: this.state.mainItemName =
             getRolePreveliges.resultObject.menuItems,
           role: this.state.role = getRolePreveliges.resultObject.roleprivileges,
         });
-  
+
         let data = this.state.role;
-  
+
         let count = 0;
         data.forEach((element: any) => {
           if (
@@ -281,31 +280,29 @@ class UserRoleToRights extends React.Component {
     });
   }
 
-  
-
   async updateRights() {
-    console.log("userdata",this.state.roleprivileges);
+    console.log("userdata", this.state.roleprivileges);
     let privilegesArray = [];
-    for(var i=0;i<this.state.roleprivileges.length;i++) {
+    for (var i = 0; i < this.state.roleprivileges.length; i++) {
       privilegesArray.push({
-        menuitemid: this.state.roleprivileges[i]['menuItemID'],
-        view:this.state.roleprivileges[i]['view'],
-        add:this.state.roleprivileges[i]['add'],
-        edit:this.state.roleprivileges[i]['edit'],
-        delete:this.state.roleprivileges[i]['delete'],
-        detail:this.state.roleprivileges[i]['detail']
-      })
+        menuitemid: this.state.roleprivileges[i]["menuItemID"],
+        view: this.state.roleprivileges[i]["view"],
+        add: this.state.roleprivileges[i]["add"],
+        edit: this.state.roleprivileges[i]["edit"],
+        delete: this.state.roleprivileges[i]["delete"],
+        detail: this.state.roleprivileges[i]["detail"],
+      });
     }
     const obj = {
-      roleid:parseInt(this.state.roleid),
-      isadminuser:true,
-      privileges:privilegesArray
-    }
+      roleid: parseInt(this.state.roleid),
+      isadminuser: true,
+      privileges: privilegesArray,
+    };
 
     const updateRolePreveliges = await RoleAPI.updateRolePreveliges(obj);
     console.log("updateRolePreveliges", updateRolePreveliges);
 
-    if(updateRolePreveliges) {
+    if (updateRolePreveliges) {
       if (updateRolePreveliges.resultObject !== null) {
         const msg = "Role privileges Updated Successfully";
         utils.showSuccess(msg);
@@ -317,7 +314,6 @@ class UserRoleToRights extends React.Component {
       const msg1 = "Internal server error";
       utils.showError(msg1);
     }
-
   }
 
   render() {
@@ -349,11 +345,18 @@ class UserRoleToRights extends React.Component {
                                 onChange={this.onItemSelect}
                               >
                                 <option value="">Select UserRole:</option>
-                                {
-                                this.state.userrole.length > 0 ? this.state.userrole.map((data:any, index) =>
-                                    <option key={data.value} value={data.value}>{data.name}</option>
-                                ) : ''
-                            }
+                                {this.state.userrole.length > 0
+                                  ? this.state.userrole.map(
+                                      (data: any, index) => (
+                                        <option
+                                          key={data.value}
+                                          value={data.value}
+                                        >
+                                          {data.name}
+                                        </option>
+                                      )
+                                    )
+                                  : ""}
                               </CustomInput>
                             </FormGroup>
                           </Form>
@@ -403,7 +406,7 @@ class UserRoleToRights extends React.Component {
                                           <span>Name</span>
                                         </th>
                                         <th>
-                                        <CustomInput
+                                          {/* <CustomInput
                                             name="view"
                                             defaultValue="value"
                                             type="checkbox"
@@ -411,11 +414,11 @@ class UserRoleToRights extends React.Component {
                                             onChange={this.handleViewChange}
                                             checked={this.state._viewcheck}
                                             className="check_display"
-                                          />
+                                          /> */}
                                           View
                                         </th>
                                         <th>
-                                        <CustomInput
+                                          {/* <CustomInput
                                             name="add"
                                             defaultValue="value"
                                             type="checkbox"
@@ -423,11 +426,11 @@ class UserRoleToRights extends React.Component {
                                             onChange={this.handleAddChange}
                                             checked={this.state._addcheck}
                                             className="check_display"
-                                          />
+                                          /> */}
                                           Add
                                         </th>
                                         <th>
-                                        <CustomInput
+                                          {/* <CustomInput
                                             name="edit"
                                             defaultValue="value"
                                             type="checkbox"
@@ -435,11 +438,11 @@ class UserRoleToRights extends React.Component {
                                             onChange={this.handleEditChange}
                                             checked={this.state._editcheck}
                                             className="check_display"
-                                          />
+                                          /> */}
                                           Edit
                                         </th>
                                         <th>
-                                        <CustomInput
+                                          {/* <CustomInput
                                             name="delete"
                                             defaultValue="value"
                                             type="checkbox"
@@ -447,11 +450,11 @@ class UserRoleToRights extends React.Component {
                                             onChange={this.handleDeleteChange}
                                             checked={this.state._deletecheck}
                                             className="check_display"
-                                          />
+                                          /> */}
                                           Delete
                                         </th>
                                         <th>
-                                        <CustomInput
+                                          {/* <CustomInput
                                             name="detail"
                                             defaultValue="value"
                                             type="checkbox"
@@ -459,7 +462,7 @@ class UserRoleToRights extends React.Component {
                                             onChange={this.handleDetailChange}
                                             checked={this.state._detailcheck}
                                             className="check_display"
-                                          />
+                                          /> */}
                                           Detail
                                         </th>
                                       </tr>
