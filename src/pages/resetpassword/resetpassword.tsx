@@ -12,6 +12,7 @@ import {
 } from "reactstrap";
 import utils from "../../utils";
 import "./resetpassword.css";
+import constant from '../../constant/constant';
 
 class ResetPassword extends React.Component<{ location: any; history: any }> {
   state = {
@@ -86,13 +87,13 @@ class ResetPassword extends React.Component<{ location: any; history: any }> {
         <div className="main-box">
           <Card>
             <CardHeader>
-              <strong className="maincontent">Reset Password</strong>
+    <strong className="maincontent">{constant.resetPasswordPage.resetpassword}</strong>
             </CardHeader>
             <CardBody>
               <Row>
                 <div className="box">
                   <FormGroup>
-                    <Label htmlFor="resetpassword">ResetPassword</Label>
+                    <Label htmlFor="resetpassword">{constant.resetPasswordPage.resetpassword}</Label>
                     <Input
                       type="password"
                       name="password"
@@ -101,7 +102,7 @@ class ResetPassword extends React.Component<{ location: any; history: any }> {
                       value={this.state.password}
                       onChange={this.handleChangeEvent}
                     />
-                    <div style={{ fontSize: 12, color: "red" }}>
+                    <div className="text-danger">
                       {this.state.passwordError}
                     </div>
                   </FormGroup>
@@ -114,7 +115,7 @@ class ResetPassword extends React.Component<{ location: any; history: any }> {
                 onClick={this.ResetPassword}
                 disabled={!this.state.password}
               >
-                Reset
+                {constant.resetPasswordPage.resetButton}
               </Button>
             </CardBody>
           </Card>

@@ -76,7 +76,7 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>View Category Details</h1>
+    <h1>{constant.categoryPage.viewcategorydetail.viewcategory}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -84,7 +84,7 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        style={{ textAlign: "right" }}
+                       className="search_right"
                       >
                         <Link to="/category">
                           <Button
@@ -93,7 +93,7 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
                             color="primary"
                             className="mb-2 mr-2 custom-button"
                           >
-                            Back
+                            {constant.button.back}
                           </Button>
                         </Link>
                       </Col>
@@ -136,7 +136,7 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
                           <Label htmlFor="category_name">
-                            <b>Sort Order</b>
+                          <b>{constant.categoryPage.caetgoryTableColumn.sortorder}</b>
                           </Label>
                           <p>{this.state.sortorder}</p>
                         </FormGroup>
@@ -144,7 +144,7 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
                           <p style={{ fontSize: "16px" }}>
-                            <b>Category Image</b>
+                          <b>{constant.categoryPage.caetgoryTableColumn.image}</b>
                           </p>
                           {this.state.file != null ? (
                             <div className="img-size">

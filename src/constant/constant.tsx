@@ -34,9 +34,9 @@ export default {
   changepassword: "Change Password",
   dashboardTitle: "Dashboard",
 
-
-  rolePrivilegesTitle: "Role Privileges",
-  
+  recoverPassword:'Recover Password',
+  rolePrivilegesTitle: "Role Privileges Management",
+  enter:'Enter your email to recover your password',
   subcategoryTitle: "Sub Category Management",
   addSubCategoryTitle: "Add SubCategory",
   viewSubCategoryTitle: "View SubCategory",
@@ -85,6 +85,51 @@ export default {
     action: "Action",
   },
 
+  button: {
+    update:'Update',
+    Save:'Save',
+    back:'Back',
+    add:'Add'
+  },
+
+  pageNotFound: {
+    gobackhome:'Go back home'
+  },
+
+  navbarPage: {
+    profile:'Profile',
+    changepassword:'Change Password',
+    logout:'Log Out'
+  },
+
+  alertMsg:{
+    msg:'new password && confirm password are not same please check again',
+    newmsg:'new password && old password are same please change new password'
+  },
+
+  resetPasswordPage: {
+    resetpassword:'Reset Password',
+    resetButton:'Reset'
+  },
+
+  changePasswordPage: {
+    state:{
+      oldpassword: '',
+      oldpassworderror:'',
+      newpassword: '',
+      newpassworderror:'',
+      confirmpassword:'',
+      confirmpassworderror:'',
+      userid:0
+  },
+  title: {
+    changepassword:'Change Password',
+    oldpassword:'Old Password',
+    newpassword:'New Password',
+    confirmpassword:'Confirm Password'
+  }
+  },
+
   recordPerPage: {
     recordperPage: "Record Per Page",
     fifteen: "15",
@@ -126,6 +171,14 @@ export default {
     updateTrue:false,
     filetrue:false,
     file:''
+    },
+
+    profile:{
+      profile:'My Profile',
+      userimage:'User Image',
+      lastname:'Last Name',
+      firstname:'First Name',
+      mobilenumber:'Mobile Number'
     }
   },
 
@@ -135,6 +188,8 @@ export default {
       updateUserTitle: "Update User",
       viewUserTitle: "View User",
       userTitle: "User Management",
+      editUser:'Edit User',
+      addUser:'Add User'
     },
     state: {
       count: "10",
@@ -177,7 +232,14 @@ export default {
       lastname: "Last Name",
       email: "E-Mail",
       role: "Role",
+      mobilenumber:'Mobile Number',
+      password:'Password',
+      roleselect:'Select Role:',
+      userimage:'User Image'
     },
+    viewuser:{
+      viewdetails:'View User Details'
+    }
   },
 
   userRolePage: {
@@ -209,7 +271,40 @@ export default {
     },
     userRoleTableColumn: {
       rolename: "Role Name",
+      description:'Description',
+      isadminrole:'IsAdminRole'
     },
+    viewrole:{
+      roleview:'View Role'
+    }
+  },
+
+  rolePrivileges:{
+    state:{
+      userrole: [],
+      roleid: "0",
+      onItemSelect: "",
+      mainItemName: [],
+      role: [],
+      roleprivileges: [],
+      _maincheck: false,
+      _viewcheck: false,
+      _editcheck: false,
+      _addcheck: false,
+      _deletecheck: false,
+      _detailcheck: false,
+      show: false,
+    },
+    title:{
+      title:'Select Role To Manage The All Rights:',
+      roleprivileges:'Role Privileges',
+      name:'Name',
+      edit:'Edit',
+      view:'View',
+      delete:'Delete',
+      detail:'Detail',
+      add:'Add'
+    }
   },
 
   categoryPage: {
@@ -249,7 +344,12 @@ export default {
       categoryName: "Category Name",
       subCategoryName: "Sub Category Name",
       image: "Category Image",
+      selectparentcategory:'Select Parent Category',
+      sortorder:'Sort Order'
     },
+    viewcategorydetail:{
+      viewcategory:'View Catgeory Details'
+    }
   },
 
   cityPage: {
@@ -284,7 +384,11 @@ export default {
     },
     cityTableColumn: {
       cityName: "City Name",
-      stateName: "State Name"
+      stateName: "State Name",
+      selectstate:'Select State'
+    },
+    viewcitydetails:{
+      viewcity:'View City Details'
     }
   },
 
@@ -322,7 +426,8 @@ export default {
     },
     stateTableColumn: {
       stateName: "State Name",
-      countryName: "Country Name"
+      countryName: "Country Name",
+      selectcountry:'Select Country'
     }
   },
 
@@ -361,5 +466,8 @@ export default {
       countryCode: "Country Code",
       countryFlag: "Country Flag"
     },
+    viewcountrypagedetails : {
+      viewcountry:'View Country Details'
+    }
   },
 };

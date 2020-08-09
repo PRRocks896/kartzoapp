@@ -265,11 +265,11 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>Update Category</h1>
+                          <h1>{constant.categoryPage.title.updateCategoryTitle}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>Add Category</h1>
+                          <h1>{constant.categoryPage.title.addCategoryTitle}</h1>
                         </Col>
                       )}
 
@@ -279,7 +279,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        style={{ textAlign: "right" }}
+                       className="search_right"
                       >
                         <Link to="/category">
                           <Button
@@ -288,7 +288,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                             color="primary"
                             className="mb-2 mr-2 custom-button"
                           >
-                            Back
+                            {constant.button.back}
                           </Button>
                         </Link>
                       </Col>
@@ -325,7 +325,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                         <Form>
                           <FormGroup>
                             <Label for="exampleCustomSelect">
-                              Select Parent Category
+                              {constant.categoryPage.caetgoryTableColumn.selectparentcategory}
                             </Label>
                             <CustomInput
                               type="select"
@@ -354,7 +354,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                               ) : (
                                 <>
                                   <option value="">
-                                    Select Parent Category
+                                  {constant.categoryPage.caetgoryTableColumn.selectparentcategory}
                                   </option>
                                   {this.state.categorylist.length > 0
                                     ? this.state.categorylist.map(
@@ -381,7 +381,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="category_name">Sort Order</Label>
+                                        <Label htmlFor="category_name">{constant.categoryPage.caetgoryTableColumn.sortorder}</Label>
                           <Input
                             type="number"
                             id="sortnumber"
@@ -422,7 +422,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                             </div>
                           ) : (
                             <div className="">
-                              <p style={{ fontSize: "16px" }}>Category Image</p>
+                              <p style={{ fontSize: "16px" }}>{constant.categoryPage.caetgoryTableColumn.image}</p>
                               <Label className="imag" for="file-input">
                                 <i
                                   className="fa fa-upload fa-lg"
@@ -452,7 +452,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                         className="mb-2 mr-2 custom-button"
                         onClick={this.updateCategory}
                       >
-                        Update
+                        {constant.button.update}
                       </Button>
                     ) : (
                       <Button
@@ -462,7 +462,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                         className="mb-2 mr-2 custom-button"
                         onClick={this.addCategory}
                       >
-                        Save
+                        {constant.button.Save}
                       </Button>
                     )}
                   </CardBody>

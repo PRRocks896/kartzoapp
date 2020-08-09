@@ -18,3 +18,4 @@ export * from './productInventoryModel';
 export * from './productAddOnModel';
 export * from './orderModel';
 export * from './orderCartModel';
+export * from './loginModel';

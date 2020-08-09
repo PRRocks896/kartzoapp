@@ -252,11 +252,11 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>Update Country</h1>
+                          <h1>{constant.countryPage.title.updateCountryTitle}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>Add Country</h1>
+                          <h1>{constant.countryPage.title.addCountryTitle}</h1>
                         </Col>
                       )}
                       <Col
@@ -265,7 +265,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        style={{ textAlign: "right" }}
+                        className="search_right"
                       >
                         <Link to="/country">
                           <Button
@@ -274,7 +274,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
                             color="primary"
                             className="mb-2 mr-2 custom-button"
                           >
-                            Back
+                            {constant.button.back}
                           </Button>
                         </Link>
                       </Col>
@@ -378,7 +378,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
                         className="mb-2 mr-2 custom-button"
                         onClick={this.editCountry}
                       >
-                        Update
+                        {constant.button.update}
                       </Button>
                     ) : (
                       <Button
@@ -388,7 +388,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
                         className="mb-2 mr-2 custom-button"
                         onClick={this.addCountry}
                       >
-                        Save
+                        {constant.button.Save}
                       </Button>
                     )}
                   </CardBody>

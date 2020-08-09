@@ -225,11 +225,11 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>Update City</h1>
+                          <h1>{constant.cityPage.title.updateCityTitle}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>Add City</h1>
+                          <h1>{constant.cityPage.title.addCityTitle}</h1>
                         </Col>
                       )}
 
@@ -239,7 +239,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        style={{ textAlign: "right" }}
+                        className="search_right"
                       >
                         <Link to="/city">
                           <Button
@@ -248,7 +248,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                             color="primary"
                             className="mb-2 mr-2 custom-button"
                           >
-                            Back
+                            {constant.button.back}
                           </Button>
                         </Link>
                       </Col>
@@ -282,7 +282,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                         <Form>
                           <FormGroup>
                             <Label for="exampleCustomSelect">
-                              Select State
+                              {constant.cityPage.cityTableColumn.selectstate}
                             </Label>
                             <CustomInput
                               type="select"
@@ -310,7 +310,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                                 </>
                               ) : (
                                 <>
-                                  <option value="">Select State</option>
+                                  <option value="">{constant.cityPage.cityTableColumn.selectstate}</option>
                                   {this.state.statelist.length > 0
                                     ? this.state.statelist.map(
                                         (data: any, index: any) => (
@@ -341,7 +341,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                         className="mb-2 mr-2 custom-button"
                         onClick={this.editCity}
                       >
-                        Update
+                        {constant.button.update}
                       </Button>
                     ) : (
                       <Button
@@ -351,7 +351,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                         className="mb-2 mr-2 custom-button"
                         onClick={this.addCity}
                       >
-                        Save
+                        {constant.button.Save}
                       </Button>
                     )}
                   </CardBody>

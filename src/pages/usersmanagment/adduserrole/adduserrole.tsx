@@ -195,11 +195,11 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>Update Role</h1>
+                          <h1>{constant.userRolePage.title.updateRoleTitle}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>Add Role</h1>
+                          <h1>{constant.userRolePage.title.updateRoleTitle}</h1>
                         </Col>
                       )}
                       <Col
@@ -208,7 +208,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        style={{ textAlign: "right" }}
+                        className="search_right"
                       >
                         <Link to="/userrole">
                           <Button
@@ -217,7 +217,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
                             color="primary"
                             className="mb-2 mr-2 custom-button"
                           >
-                            Back
+                            {constant.button.back}
                           </Button>
                         </Link>
                       </Col>
@@ -249,7 +249,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="description">Description</Label>
+                      <Label htmlFor="description">{constant.userRolePage.userRoleTableColumn.description}</Label>
                           <Input
                             type="textarea"
                             id="description"
@@ -269,7 +269,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <label>
-                          <span>IsAdminRole</span>
+                      <span>{constant.userRolePage.userRoleTableColumn.isadminrole}</span>
                           <br />
                           <div style={{ marginTop: "10px" }}>
                             <Switch
@@ -288,7 +288,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
                         className="mb-2 mr-2 custom-button"
                         onClick={this.updateUserRole}
                       >
-                        Update
+                        {constant.button.update}
                       </Button>
                     ) : (
                       <Button
@@ -298,7 +298,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
                         className="mb-2 mr-2 custom-button"
                         onClick={this.addUserRole}
                       >
-                        Save
+                        {constant.button.Save}
                       </Button>
                     )}
                   </CardBody>

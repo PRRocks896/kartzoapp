@@ -406,7 +406,7 @@ class UserRole extends React.Component<{ history: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <CardTitle className="font">Role Management</CardTitle>
+    <CardTitle className="font">{constant.userRolePage.title.userRoleTitle}</CardTitle>
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <div className="right">
@@ -415,7 +415,7 @@ class UserRole extends React.Component<{ history: any }> {
                               className="mb-2 mr-2 custom-button"
                               color="primary"
                             >
-                              Add
+                              {constant.button.add}
                             </Button>
                           </Link>
                         </div>

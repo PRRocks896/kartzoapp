@@ -419,11 +419,11 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue == true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>Edit User</h1>
+                          <h1>{constant.userPage.title.editUser}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>Add User</h1>
+                          <h1>{constant.userPage.title.addUser}</h1>
                         </Col>
                       )}
                       <Col
@@ -441,7 +441,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                             color="primary"
                             className="mb-2 mr-2 custom-button"
                           >
-                            Back
+                            {constant.button.back}
                           </Button>
                         </Link>
                       </Col>
@@ -513,7 +513,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="mobile_no">Mobile Number</Label>
+                      <Label htmlFor="mobile_no">{constant.userPage.userTableColumn.mobilenumber}</Label>
                           <Input
                             type="number"
                             id="mobile_no"
@@ -531,7 +531,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                     </Row>
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <Label htmlFor="password">Password</Label>
+                      <Label htmlFor="password">{constant.userPage.userTableColumn.password}</Label>
                         <div className="right-inner-addon input-group">
                           <input
                             type={this.state.type}
@@ -562,7 +562,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                         {this.state.updateTrue === true ? (
                           <FormGroup>
                             <Label for="exampleCustomSelect">
-                              Select Role:
+                              {constant.userPage.userTableColumn.roleselect}
                             </Label>
                             <Input
                               type="select"
@@ -590,7 +590,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                         ) : (
                           <FormGroup>
                             <Label for="exampleCustomSelect">
-                              Select Role:
+                            {constant.userPage.userTableColumn.roleselect}
                             </Label>
                             <Input
                               type="select"
@@ -600,7 +600,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                               {/* <option value="">Select UserRole:</option>
                             <option id="1" value="User">User</option>
                             <option id="2" value="Customer">Customer</option> */}
-                              <option value="">Select UserRole:</option>
+                              <option value="">{constant.userPage.userTableColumn.roleselect}</option>
                               {this.state.userrole.length > 0
                                 ? this.state.userrole.map(
                                     (data: any, index) => (
@@ -648,7 +648,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                             </div>
                           ) : (
                             <div className="">
-                              <p style={{ fontSize: "16px" }}>User Image</p>
+                              <p style={{ fontSize: "16px" }}>{constant.userPage.userTableColumn.userimage}</p>
                               <Label className="imag" for="file-input">
                                 <i
                                   className="fa fa-upload fa-lg"
@@ -678,7 +678,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                         className="mb-2 mr-2 custom-button"
                         onClick={this.editUser}
                       >
-                        Update
+                        {constant.button.update}
                       </Button>
                     ) : (
                       <Button
@@ -688,7 +688,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                         className="mb-2 mr-2 custom-button"
                         onClick={this.addUser}
                       >
-                        Save
+                        {constant.button.Save}
                       </Button>
                     )}
                   </CardBody>

@@ -41,11 +41,11 @@ class Profile extends React.Component {
     roleerror: this.profileState.roleerror,
     roleid: this.profileState.roleid,
     roleiderror: this.profileState.roleiderror,
-    userid:this.profileState.userid,
-    userrole:this.profileState.userrole,
-    updateTrue:this.profileState.updateTrue,
-    filetrue:this.profileState.filetrue,
-    file:this.profileState.file
+    userid: this.profileState.userid,
+    userrole: this.profileState.userrole,
+    updateTrue: this.profileState.updateTrue,
+    filetrue: this.profileState.filetrue,
+    file: this.profileState.file
   };
 
   constructor(props: any) {
@@ -73,17 +73,17 @@ class Profile extends React.Component {
       const getProfile = await API.getProfile(obj);
       console.log("getprofile", getProfile);
 
-      if(getProfile) {
+      if (getProfile) {
         if (getProfile.status === 200) {
           this.setState({
-            updateTrue:this.state.updateTrue = true,
-            filetrue:this.state.filetrue = true,
-            userid:this.state.userid = getProfile.resultObject.userId,
+            updateTrue: this.state.updateTrue = true,
+            filetrue: this.state.filetrue = true,
+            userid: this.state.userid = getProfile.resultObject.userId,
             firstname: this.state.firstname = getProfile.resultObject.firstName,
             lastname: this.state.lastname = getProfile.resultObject.lastName,
             mobilenumber: this.state.mobilenumber = getProfile.resultObject.phone,
             selectedFile: this.state.selectedFile = getProfile.resultObject.photo,
-            file:this.state.file =  getProfile.resultObject.photoPath
+            file: this.state.file = getProfile.resultObject.photoPath
           });
         } else {
           const msg1 = getProfile.message;
@@ -98,23 +98,23 @@ class Profile extends React.Component {
 
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
-  console.log("getUserRole",getUserRole);
+    console.log("getUserRole", getUserRole);
 
-  if(getUserRole) {
-    if(getUserRole.resultObject != null) {
-      this.setState({
-        userrole : this.state.userrole = getUserRole.resultObject
-      })
-  
+    if (getUserRole) {
+      if (getUserRole.resultObject != null) {
+        this.setState({
+          userrole: this.state.userrole = getUserRole.resultObject
+        })
+
+      } else {
+        const msg1 = getUserRole.explanation;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getUserRole.explanation;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
+    }
   }
-  } else {
-    const msg1 = "Internal server error";
-      utils.showError(msg1);
-  }
-} 
 
   onItemSelect(event: any) {
     if (event.target.value === "User") {
@@ -193,9 +193,9 @@ class Profile extends React.Component {
         this.state.selectedFile
       ) {
 
-        let formData = new FormData();    
+        let formData = new FormData();
         console.log('File in formData: ', this.state.selectedFile[0]);
-        formData.append('id', this.state.userid.toString());   
+        formData.append('id', this.state.userid.toString());
         formData.append('firstName', this.state.firstname);
         formData.append('lastName', this.state.lastname);
         formData.append('phone', this.state.mobilenumber.toString());
@@ -203,52 +203,52 @@ class Profile extends React.Component {
         formData.append('userId', '0');
 
         const updateProfile = await API.updateProfile(formData);
-        console.log("updateProfile",updateProfile);
+        console.log("updateProfile", updateProfile);
 
-        if(updateProfile) {
-          if(updateProfile.status === 200) {
+        if (updateProfile) {
+          if (updateProfile.status === 200) {
             const msg = updateProfile.message;
             this.getUserById();
             utils.showSuccess(msg);
             // EventEmitter.dispatch('imageUpload', this.state.file);
           } else {
             const msg1 = updateProfile.message;
-              utils.showError(msg1);
+            utils.showError(msg1);
           }
         } else {
           const msg1 = "Internal server error";
-      utils.showError(msg1);
+          utils.showError(msg1);
         }
       }
     }
   }
 
   onChangeHandler(event: any) {
-    if(this.state.filetrue === true) {
+    if (this.state.filetrue === true) {
+      this.setState({
+        filetrue: this.state.filetrue = false,
+        selectedFile: this.state.selectedFile = event.target.files
+      })
+      const reader = new FileReader()
+      reader.readAsDataURL(event.target.files[0])
+      reader.onloadend = ev => {
         this.setState({
-            filetrue:this.state.filetrue = false,
-            selectedFile: this.state.selectedFile = event.target.files
+          file: reader.result
         })
-        const reader = new FileReader()
-        reader.readAsDataURL(event.target.files[0])
-        reader.onloadend = ev => {
-            this.setState({ 
-                file: reader.result
-            })
-        }
+      }
     } else {
+      this.setState({
+        selectedFile: this.state.selectedFile = event.target.files
+      })
+      const reader = new FileReader()
+      reader.readAsDataURL(event.target.files[0])
+      reader.onloadend = ev => {
         this.setState({
-            selectedFile: this.state.selectedFile = event.target.files
+          file: reader.result
         })
-        const reader = new FileReader()
-        reader.readAsDataURL(event.target.files[0])
-        reader.onloadend = ev => {
-            this.setState({ 
-                file: reader.result
-            })
-        }
+      }
     }
-}
+  }
 
   removeIcon() {
     this.setState({
@@ -265,7 +265,7 @@ class Profile extends React.Component {
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
                 <Card>
                   <CardHeader>
-                    <strong>My Profile</strong>
+                    <strong>{constant.profilePage.profile.profile}</strong>
                   </CardHeader>
                   <CardBody>
                     <Row>
@@ -281,11 +281,11 @@ class Profile extends React.Component {
                                       src={constant.filepath + this.state.file}
                                     />
                                   ) : (
-                                    <img
-                                      className="picture"
-                                      src={this.state.file}
-                                    />
-                                  )}
+                                      <img
+                                        className="picture"
+                                        src={this.state.file}
+                                      />
+                                    )}
                                   <i
                                     className="fa fa-times cursor"
                                     onClick={() => this.removeIcon()}
@@ -294,25 +294,25 @@ class Profile extends React.Component {
                               ) : null}
                             </div>
                           ) : (
-                            <div className="">
-                              <p>
-                                <b>User Image:</b>
-                              </p>
-                              <Label className="imag" for="file-input">
-                                <i
-                                  className="fa fa-upload fa-lg"
-                                  style={{ color: "#20a8d8" }}
-                                ></i>
-                              </Label>
-                              <Input
-                                id="file-input"
-                                type="file"
-                                className="form-control"
-                                name="file"
-                                onChange={this.onChangeHandler.bind(this)}
-                              />
-                            </div>
-                          )}
+                              <div className="">
+                                <p>
+                                  <b>{constant.profilePage.profile.userimage}</b>
+                                </p>
+                                <Label className="imag" for="file-input">
+                                  <i
+                                    className="fa fa-upload fa-lg"
+                                    style={{ color: "#20a8d8" }}
+                                  ></i>
+                                </Label>
+                                <Input
+                                  id="file-input"
+                                  type="file"
+                                  className="form-control"
+                                  name="file"
+                                  onChange={this.onChangeHandler.bind(this)}
+                                />
+                              </div>
+                            )}
                           <div className="text-danger">
                             {this.state.selectedFileerror}
                           </div>
@@ -322,7 +322,7 @@ class Profile extends React.Component {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="first_name">First Name</Label>
+                          <Label htmlFor="first_name">{constant.profilePage.profile.firstname}</Label>
                           <Input
                             type="text"
                             id="first_name"
@@ -340,7 +340,7 @@ class Profile extends React.Component {
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="last_name">Last Name</Label>
+                          <Label htmlFor="last_name">{constant.profilePage.profile.lastname}</Label>
                           <Input
                             type="text"
                             id="last_name"
@@ -357,11 +357,11 @@ class Profile extends React.Component {
                         </FormGroup>
                       </Col>
                     </Row>
-                   
+
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="mobile_no">Mobile Number</Label>
+                          <Label htmlFor="mobile_no">{constant.profilePage.profile.mobilenumber}</Label>
                           <Input
                             type="text"
                             id="mobile_no"
@@ -385,7 +385,7 @@ class Profile extends React.Component {
                       color="primary"
                       onClick={this.Profile}
                     >
-                      Update
+                      {constant.button.update}
                     </Button>
                   </CardBody>
                 </Card>

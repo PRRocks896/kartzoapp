@@ -73,7 +73,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>View User Details</h1>
+    <h1>{constant.userPage.viewuser.viewdetails}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -81,7 +81,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        style={{ textAlign: "right" }}
+                        className="search_right"
                       >
                         <Link to="/users">
                           <Button
@@ -90,7 +90,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                             color="primary"
                             className="mb-2 mr-2 custom-button"
                           >
-                            Back
+                            {constant.button.back}
                           </Button>
                         </Link>
                       </Col>
@@ -127,7 +127,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
                           <Label htmlFor="mobile_no">
-                            <b>Mobile Number</b>
+    <b>{constant.userPage.userTableColumn.mobilenumber}</b>
                           </Label>
                           <p>{this.state.userdata.phone}</p>
                         </FormGroup>
@@ -137,7 +137,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
                           <p style={{ fontSize: "16px" }}>
-                            <b>User Image</b>
+                            <b>{constant.userPage.userTableColumn.userimage}</b>
                           </p>
                           <div>
                             {this.state.userdata.file != null ? (

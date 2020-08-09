@@ -644,15 +644,15 @@ class NavBar extends React.Component {
                                     </li>
                                     <li className="dropdown-divider"></li>
                                     <li className="ms-dropdown-list">
-                                        <Link className="media fs-14 p-2" to="/profile"> <span><i className="fa fa-user mr-2"></i> Profile</span></Link>
+                                    <Link className="media fs-14 p-2" to="/profile"> <span><i className="fa fa-user mr-2"></i> {constant.navbarPage.profile}</span></Link>
                                     </li>
                                     <li className="dropdown-divider"></li>
                                     <li className="ms-dropdown-list">
-                                        <Link className="media fs-14 p-2" to="/change-password"> <span><i className="fa fa-lock mr-2"></i> Change Password</span></Link>
+                                    <Link className="media fs-14 p-2" to="/change-password"> <span><i className="fa fa-lock mr-2"></i>{constant.navbarPage.changepassword}</span></Link>
                                     </li>
                                     <li className="dropdown-divider"></li>
                                     <li className="dropdown-menu-footer">
-                                    <a className="media fs-14 p-2" onClick={this.logout}><span><i className="fa fa-chevron-circle-right mr-2"></i>Logout</span></a>
+                                    <a className="media fs-14 p-2" onClick={this.logout}><span><i className="fa fa-chevron-circle-right mr-2"></i>{constant.navbarPage.logout}</span></a>
                                     </li>
                                 </ul>
                             </li>

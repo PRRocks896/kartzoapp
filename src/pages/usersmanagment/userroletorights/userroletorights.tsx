@@ -20,20 +20,21 @@ import utils from "../../../utils";
 import "./userroletorights.css";
 
 class UserRoleToRights extends React.Component {
+  roleState = constant.rolePrivileges.state
   state = {
-    userrole: [],
-    roleid: "0",
-    onItemSelect: "",
-    mainItemName: [],
-    role: [],
-    roleprivileges: [],
-    _maincheck: false,
-    _viewcheck: false,
-    _editcheck: false,
-    _addcheck: false,
-    _deletecheck: false,
-    _detailcheck: false,
-    show: false,
+    userrole: this.roleState.userrole,
+    roleid: this.roleState.roleid,
+    onItemSelect: this.roleState.onItemSelect,
+    mainItemName: this.roleState.mainItemName,
+    role: this.roleState.role,
+    roleprivileges: this.roleState.roleprivileges,
+    _maincheck: this.roleState._maincheck,
+    _viewcheck: this.roleState._viewcheck,
+    _editcheck: this.roleState._editcheck,
+    _addcheck: this.roleState._addcheck,
+    _deletecheck: this.roleState._deletecheck,
+    _detailcheck: this.roleState._detailcheck,
+    show: this.roleState.show,
   };
 
   constructor(props: any) {
@@ -322,7 +323,7 @@ class UserRoleToRights extends React.Component {
                 <Card className="main-card mb-12">
                   <CardHeader>
                     <CardTitle className="font">
-                      Role Privileges Management
+                      {constant.rolePrivilegesTitle}
                     </CardTitle>
                   </CardHeader>
                   <CardBody>
@@ -332,7 +333,7 @@ class UserRoleToRights extends React.Component {
                           <Form>
                             <FormGroup>
                               <Label for="exampleCustomSelect">
-                                <b>Select Role To Manage The All Rights:</b>
+                               {constant.rolePrivileges.title.title}
                               </Label>
                               <CustomInput
                                 type="select"
@@ -340,7 +341,7 @@ class UserRoleToRights extends React.Component {
                                 name="customSelect"
                                 onChange={this.onItemSelect}
                               >
-                                <option value="">Select UserRole:</option>
+                                <option value="">{constant.userPage.userTableColumn.roleselect}</option>
                                 {this.state.userrole.length > 0
                                   ? this.state.userrole.map(
                                       (data: any, index) => (
@@ -377,7 +378,7 @@ class UserRoleToRights extends React.Component {
                               <Card className="main-card mb-8">
                                 <CardHeader>
                                   <CardTitle className="font">
-                                    Role Privileges
+                                    {constant.rolePrivileges.title.roleprivileges}
                                   </CardTitle>
                                 </CardHeader>
                                 <CardBody>
@@ -399,7 +400,7 @@ class UserRoleToRights extends React.Component {
                                           />
                                         </th>
                                         <th className="centers">
-                                          <span>Name</span>
+                      <span>{constant.rolePrivileges.title.name}</span>
                                         </th>
                                         <th>
                                           {/* <CustomInput
@@ -411,7 +412,7 @@ class UserRoleToRights extends React.Component {
                                             checked={this.state._viewcheck}
                                             className="check_display"
                                           /> */}
-                                          View
+                                         {constant.rolePrivileges.title.view}
                                         </th>
                                         <th>
                                           {/* <CustomInput
@@ -423,7 +424,7 @@ class UserRoleToRights extends React.Component {
                                             checked={this.state._addcheck}
                                             className="check_display"
                                           /> */}
-                                          Add
+                                          {constant.rolePrivileges.title.add}
                                         </th>
                                         <th>
                                           {/* <CustomInput
@@ -435,7 +436,7 @@ class UserRoleToRights extends React.Component {
                                             checked={this.state._editcheck}
                                             className="check_display"
                                           /> */}
-                                          Edit
+                                          {constant.rolePrivileges.title.edit}
                                         </th>
                                         <th>
                                           {/* <CustomInput
@@ -447,7 +448,7 @@ class UserRoleToRights extends React.Component {
                                             checked={this.state._deletecheck}
                                             className="check_display"
                                           /> */}
-                                          Delete
+                                          {constant.rolePrivileges.title.delete}
                                         </th>
                                         <th>
                                           {/* <CustomInput
@@ -459,7 +460,7 @@ class UserRoleToRights extends React.Component {
                                             checked={this.state._detailcheck}
                                             className="check_display"
                                           /> */}
-                                          Detail
+                                          {constant.rolePrivileges.title.detail}
                                         </th>
                                       </tr>
                                     </thead>
@@ -663,7 +664,7 @@ class UserRoleToRights extends React.Component {
                               style={{ margin: "15px" }}
                               onClick={this.updateRights}
                             >
-                              Save
+                              {constant.button.Save}
                             </Button>
                           </Row>
                         </>

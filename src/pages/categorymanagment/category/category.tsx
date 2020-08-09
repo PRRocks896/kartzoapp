@@ -437,7 +437,7 @@ class Category extends React.Component<{ history: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <CardTitle className="font">
-                          Category Management
+                          {constant.categoryPage.title.categoryTitle}
                         </CardTitle>
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
@@ -447,7 +447,7 @@ class Category extends React.Component<{ history: any }> {
                               className="mb-2 mr-2 custom-button"
                               color="primary"
                             >
-                              Add
+                              {constant.button.add}
                             </Button>
                           </Link>
                         </div>

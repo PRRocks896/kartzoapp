@@ -64,7 +64,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>View Country Details</h1>
+    <h1>{constant.countryPage.title.countryTitle}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -72,7 +72,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        style={{ textAlign: "right" }}
+                        className="search_right"
                       >
                         <Link to="/country">
                           <Button
@@ -81,7 +81,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
                             color="primary"
                             className="mb-2 mr-2 custom-button"
                           >
-                            Back
+                            {constant.button.back}
                           </Button>
                         </Link>
                       </Col>

@@ -68,7 +68,7 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>View Role</h1>
+    <h1>{constant.userRolePage.viewrole.roleview}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -76,7 +76,7 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        style={{ textAlign: "right" }}
+                        className="search_right"
                       >
                         <Link to="/userrole">
                           <Button
@@ -85,7 +85,7 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
                             color="primary"
                             className="mb-2 mr-2 custom-button"
                           >
-                            Back
+                            {constant.button.back}
                           </Button>
                         </Link>
                       </Col>
@@ -109,7 +109,7 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
                           <Label htmlFor="description">
-                            <b>Description</b>
+                            <b>{constant.userRolePage.userRoleTableColumn.description}</b>
                           </Label>
                           <p>{this.state.roledata.description}</p>
                         </FormGroup>

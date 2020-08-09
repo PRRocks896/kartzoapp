@@ -1,12 +1,11 @@
 import React from "react";
 import "./login.css";
-import {API} from "../../service/index.service";
+import { API } from "../../service/index.service";
 import utils from "../../utils";
-import Constant from "../../constant/constant";
 import constant from "../../constant/constant";
 import axios from "axios";
 import apiUrl from "../../apicontroller/apicontrollers";
-import { loginCreateRequest } from "../../modelController/loginModel";
+import { loginCreateRequest } from "../../modelController";
 const interceptor = require("../../intercepter");
 const publicIp = require("public-ip");
 
@@ -153,7 +152,7 @@ class Login extends React.Component<{ history: any }> {
         };
 
         axios
-          .post(Constant.apiUrl + apiUrl.userController.createData, obj)
+          .post(constant.apiUrl + apiUrl.userController.createData, obj)
           .then((res: any) => {
             console.log("login", res);
             if (res) {
@@ -221,12 +220,12 @@ class Login extends React.Component<{ history: any }> {
                 <div className="ms-auth-form">
                   <form className="needs-validation">
                     <h3>
-                      <b>{Constant.account}</b>
+                      <b>{constant.account}</b>
                     </h3>
-                    <p>{Constant.loginpage}</p>
+                    <p>{constant.loginpage}</p>
                     <div className="mb-3">
                       <label>
-                        <b>{Constant.email}</b>
+                        <b>{constant.email}</b>
                       </label>
                       <div className="input-group">
                         <input
@@ -244,7 +243,7 @@ class Login extends React.Component<{ history: any }> {
                     </div>
                     <div className="mb-2">
                       <label>
-                        <b>{Constant.password}</b>
+                        <b>{constant.password}</b>
                       </label>
                       <div className="right-inner-addon input-group">
                         <input
@@ -261,11 +260,11 @@ class Login extends React.Component<{ history: any }> {
                             className="fas fa-eye"
                           ></i>
                         ) : (
-                          <i
-                            onClick={this.handleClick}
-                            className="fas fa-eye-slash"
-                          ></i>
-                        )}
+                            <i
+                              onClick={this.handleClick}
+                              className="fas fa-eye-slash"
+                            ></i>
+                          )}
                       </div>
 
                       <div className="mb-4 text-danger">
@@ -282,7 +281,7 @@ class Login extends React.Component<{ history: any }> {
                         <i className="ms-checkbox-check"></i>
                       </label>{" "}
                       <span>
-                        <b> Remember Password </b>
+                        <b> {constant.recoverPassword} </b>
                       </span>
                       <label className="d-block mt-3">
                         <a
@@ -291,7 +290,7 @@ class Login extends React.Component<{ history: any }> {
                           data-toggle="modal"
                           data-target="#modal-12"
                         >
-                          <b style={{ color: "#eea218" }}>{Constant.forgot} </b>
+                          <b style={{ color: "#eea218" }}>{constant.forgot} </b>
                         </a>
                       </label>
                     </div>
@@ -306,27 +305,27 @@ class Login extends React.Component<{ history: any }> {
                         }}
                         onClick={this.login}
                       >
-                        {Constant.signin}
+                        {constant.signin}
                       </button>
                     ) : (
-                      <div className="spinerButton">
-                        <div>
-                          <button
-                            className="btn mt-4 d-block w-100"
-                            type="button"
-                            style={{
-                              backgroundColor: "#eea218",
-                              color: "#fff",
-                              fontWeight: 500,
-                            }}
-                          >
-                            {Constant.signin}
-                          </button>
+                        <div className="spinerButton">
+                          <div>
+                            <button
+                              className="btn mt-4 d-block w-100"
+                              type="button"
+                              style={{
+                                backgroundColor: "#eea218",
+                                color: "#fff",
+                                fontWeight: 500,
+                              }}
+                            >
+                              {constant.signin}
+                            </button>
+                          </div>
+                          <div className="spinners"></div>
                         </div>
-                        <div className="spinners"></div>
-                      </div>
-                    )}
-                    {/* <p className="mb-0 mt-3 text-center">{Constant.notmember} <b className="btn-link"><Link to="/signup" style={{ color: 'rgb(238, 162, 24)',fontWeight:600 }}>{Constant.signup}</Link></b>
+                      )}
+                    {/* <p className="mb-0 mt-3 text-center">{constant.notmember} <b className="btn-link"><Link to="/signup" style={{ color: 'rgb(238, 162, 24)',fontWeight:600 }}>{constant.signup}</Link></b>
                                         </p> */}
                   </form>
                 </div>
@@ -357,10 +356,10 @@ class Login extends React.Component<{ history: any }> {
                   </button>{" "}
                   <i className="flaticon-secure-shield d-block"></i>
                   <h1>
-                    <b>{Constant.reset}</b>
+                    <b>{constant.reset}</b>
                   </h1>
                   <p>
-                    <b>Enter your email to recover your password</b>
+                    <b>{constant.enter}</b>
                   </p>
                   <form method="post">
                     <div className="ms-form-group has-icon">
@@ -381,7 +380,7 @@ class Login extends React.Component<{ history: any }> {
                       className="btn btn-primary shadow-none"
                       onClick={this.forgotpassword}
                     >
-                      {Constant.reset}
+                      {constant.reset}
                     </button>
                   </form>
                 </div>

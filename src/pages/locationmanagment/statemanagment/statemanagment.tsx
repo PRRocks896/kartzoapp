@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
 import utils from "../../../utils";
-import { MDBDataTable } from "mdbreact";
 import {
   Button,
   Card,
@@ -22,8 +20,6 @@ import NavBar from "../../navbar/navbar";
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { stateUpdateRequest } from "../../../modelController/index";
-const $ = require("jquery");
-$.DataTable = require("datatables.net");
 
 class StateManagment extends React.Component<{ history: any }> {
   stateState = constant.statePage.state;
@@ -410,7 +406,7 @@ class StateManagment extends React.Component<{ history: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <CardTitle className="font">State Management</CardTitle>
+    <CardTitle className="font">{constant.statePage.title.stateTitle}</CardTitle>
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <div className="right">
@@ -419,7 +415,7 @@ class StateManagment extends React.Component<{ history: any }> {
                               className="mb-2 mr-2 custom-button"
                               color="primary"
                             >
-                              Add
+                              {constant.button.add}
                             </Button>
                           </Link>
                         </div>

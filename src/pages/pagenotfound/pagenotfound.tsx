@@ -10,6 +10,7 @@ import {
 } from "reactstrap";
 import './pagenotfound.css';
 import { Link } from "react-router-dom";
+import constant from "../../constant/constant";
 
 class Page404 extends Component {
   render() {
@@ -19,7 +20,7 @@ class Page404 extends Component {
         <h2>Oops! Page not found.</h2>
         <h1>404</h1>
         <p>We can't find the page you're looking for.</p>
-        <Link to="/dashboard">Go back home</Link>
+    <Link to="/dashboard">{constant.pageNotFound.gobackhome}</Link>
       </div>
       </div>
     );
