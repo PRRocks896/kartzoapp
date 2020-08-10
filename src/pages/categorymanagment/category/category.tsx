@@ -1,379 +1,491 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import utils from '../../../utils';
-import { MDBDataTable } from 'mdbreact';
+import React from "react";
+import { Link } from "react-router-dom";
+import utils from "../../../utils";
 import {
-    Button,
-    Card,
-    CardBody,
-    CardHeader,
-    CardTitle,
-    Table,
-    Input,
-    Col,
-    FormGroup,
-    CustomInput,
-    Label,
-    Row,
-} from 'reactstrap';
-// import './adduser.css';
-import NavBar from '../../navbar/navbar';
-import API from '../../../service/service';
-import Switch from "react-switch";
-import constant from '../../../constant/constant';
-import { categoryListRequest } from '../../../modelController/categoryModel';
-const $ = require('jquery');
-$.DataTable = require('datatables.net')
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
+  Table,
+  Input,
+  Col,
+  FormGroup,
+  CustomInput,
+  Label,
+  Row,
+} from "reactstrap";
+import NavBar from "../../navbar/navbar";
+import {CategoryAPI} from "../../../service/index.service";
+import constant from "../../../constant/constant";
 
 class Category extends React.Component<{ history: any }> {
+  categoryState = constant.categoryPage.state;
+  state = {
+    count: this.categoryState.count,
+    currentPage: this.categoryState.currentPage,
+    items_per_page: this.categoryState.items_per_page,
+    upperPageBound: this.categoryState.upperPageBound,
+    lowerPageBound: this.categoryState.lowerPageBound,
+    pageBound: this.categoryState.pageBound,
+    onItemSelect: this.categoryState.onItemSelect,
+    categorydata: this.categoryState.categorydata,
+    switchSort: this.categoryState.switchSort,
+    isStatus: this.categoryState.isStatus,
+  };
 
-    state = {
-        selectedFile: null,
-        firstname: '',
-        firstnameerror: '',
-        lastname: '',
-        lastnameerror: '',
-        email: '',
-        emailerror: '',
-        mobilenumber: '',
-        mobilenumbererror: '',
-        password: '',
-        passworderror: '',
-        checked: false,
-        selectedFileerror: '',
-        count: 10,
-        currentPage: 1,
-        items_per_page: 2,
-        perpage: 2,
-        paginationdata: '',
-        isFetch: false,
-        data: '',
-        allRecords: '',
-        upperPageBound: 3,
-        lowerPageBound: 0,
-        pageBound: 3,
-        isPrevBtnActive: 'disabled',
-        isNextBtnActive: '',
-        onClickPage: 1,
-        activePage: 15
-    }
+  constructor(props: any) {
+    super(props);
+    this.editCategory = this.editCategory.bind(this);
+    this.btnIncrementClick = this.btnIncrementClick.bind(this);
+    this.btnDecrementClick = this.btnDecrementClick.bind(this);
+    this.viewCategory = this.viewCategory.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(
+      this
+    );
+    this.handleSort = this.handleSort.bind(this);
+    this.compareByDesc = this.compareByDesc.bind(this);
+    this.onItemSelect = this.onItemSelect.bind(this);
+    this.statusChange = this.statusChange.bind(this);
+    this.pagination = this.pagination.bind(this);
+    this.getTable = this.getTable.bind(this);
+    this.getPageData = this.getPageData.bind(this);
+  }
 
-    constructor(props: any) {
-        super(props);
-        this.deleteCategory = this.deleteCategory.bind(this);
-        this.editCategory = this.editCategory.bind(this);
-        this.btnIncrementClick = this.btnIncrementClick.bind(this);
-        this.btnDecrementClick = this.btnDecrementClick.bind(this);
-        this.viewCategory = this.viewCategory.bind(this);
-    }
+  async componentDidMount() {
+    document.title =
+      constant.categoryPage.title.categoryTitle + utils.getAppName();
+      utils.dataTable();
+    this.getCategory();
+  }
 
-    async componentDidMount() {
-        document.title = constant.categoryTitle + utils.getAppName();
-        $('#dtBasicExample').DataTable({
-            "paging": false,
-            "info": false
+  async getCategory(
+    searchText: string = "",
+    page: number = 1,
+    size: number = 10
+  ) {
+    const obj = {
+      searchText: searchText,
+      page: page,
+      size: size,
+    };
+
+    var getCategory = await CategoryAPI.getCategory(obj);
+    console.log("getCategory", getCategory);
+
+    if (getCategory) {
+      if (getCategory.status === 200) {
+        this.setState({
+          categorydata: this.state.categorydata = getCategory.resultObject.data,
+          count: this.state.count = getCategory.resultObject.totalcount,
         });
-        this.getUserCountData();
-        this.getApplicationPageData();
+      } else {
+        const msg1 = getCategory.message;
+        utils.showError(msg1);
+      }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
     }
+  }
 
-    async getUserCountData() {
+  btnIncrementClick() {
+    this.setState({
+      upperPageBound: this.state.upperPageBound + this.state.pageBound,
+    });
+    this.setState({
+      lowerPageBound: this.state.lowerPageBound + this.state.pageBound,
+    });
+    let listid = this.state.upperPageBound + 1;
+    this.setState({ currentPage: listid });
+  }
 
-        // var getuserCount = await API.getUserCount();
-        // console.log("getUsercount",getuserCount);
-      
+  btnDecrementClick() {
+    this.setState({
+      upperPageBound: this.state.upperPageBound - this.state.pageBound,
+    });
+    this.setState({
+      lowerPageBound: this.state.lowerPageBound - this.state.pageBound,
+    });
+    let listid = this.state.upperPageBound - this.state.pageBound;
+    this.setState({ currentPage: listid });
+  }
+
+  editCategory(id: any) {
+    this.props.history.push("/editcategory/" + id);
+  }
+
+  viewCategory(id: any) {
+    this.props.history.push("/viewcategory/" + id);
+  }
+
+  onItemSelect(event: any) {
+    this.setState({
+      items_per_page: this.state.items_per_page =
+        event.target.options[event.target.selectedIndex].value,
+    });
+
+    this.getCategory('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+  }
+
+  async handleClick(event: any) {
+    this.setState({
+      currentPage: this.state.currentPage = event.target.id,
+    });
+    const obj = {
+      searchText: "",
+      page: parseInt(event.target.id),
+      size: parseInt(this.state.items_per_page),
+    };
+
+    this.getCategory(obj.searchText, obj.page, obj.size);
+  }
+
+  async searchApplicationDataKeyUp(e: any) {
+    const obj = {
+      searchText: e.target.value,
+      page: 1,
+      size: parseInt(this.state.items_per_page),
+    };
+
+    this.getCategory(obj.searchText, obj.page, obj.size);
+  }
+
+  handleSort(key: any) {
+    this.setState({
+      switchSort: !this.state.switchSort,
+    });
+    let copyTableData = [...this.state.categorydata];
+    copyTableData.sort(this.compareByDesc(key));
+    this.setState({
+      categorydata: this.state.categorydata = copyTableData,
+    });
+  }
+
+  compareByDesc(key: any) {
+    if (this.state.switchSort) {
+      return function (a: any, b: any) {
+        if (a[key] < b[key]) return -1; // check for value if the second value is bigger then first return -1
+        if (a[key] > b[key]) return 1; //check for value if the second value is bigger then first return 1
+        return 0;
+      };
+    } else {
+      return function (a: any, b: any) {
+        if (a[key] > b[key]) return -1;
+        if (a[key] < b[key]) return 1;
+        return 0;
+      };
     }
+  }
 
-    async getApplicationPageData() {
-        // const obj = {
-        //     page_no: "1",
-        //     items_per_page: this.state.items_per_page
-        // }
-
-        // var getUserDataPagination = await API.getUserDataPagination();
-        // console.log("getUserDataPagination",getUserDataPagination);
-
-        // var getUserDataPagination : categoryListRequest = [];
-      
+  async statusChange(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      let formData = new FormData();
+      formData.append("categoryId", data.categoryId);
+      formData.append("category", data.category);
+      formData.append(
+        "isActive",
+        new Boolean(data.isActive === true ? false : true).toString()
+      );
+      formData.append(
+        "parentCategoryId",
+        data.parentCategoryId ? data.parentCategoryId : ""
+      );
+      formData.append("sortOrder", data.sortOrder);
+      formData.append("files", data.imagePath);
+      const editCategory = await CategoryAPI.editCategory(formData, data.categoryId);
+      console.log("editCategory", editCategory);
+      if (editCategory.status === 200) {
+        const msg = editCategory.message;
+        utils.showSuccess(msg);
+        this.getCategory();
+      } else {
+        const msg1 = editCategory.message;
+        utils.showError(msg1);
+      }
     }
+  }
 
-    btnIncrementClick() {
-        this.setState({ upperPageBound: this.state.upperPageBound + this.state.pageBound });
-        this.setState({ lowerPageBound: this.state.lowerPageBound + this.state.pageBound });
-        let listid = this.state.upperPageBound + 1;
-        this.setState({ currentPage: listid });
-    }
-
-    btnDecrementClick() {
-        this.setState({ upperPageBound: this.state.upperPageBound - this.state.pageBound });
-        this.setState({ lowerPageBound: this.state.lowerPageBound - this.state.pageBound });
-        let listid = this.state.upperPageBound - this.state.pageBound;
-        this.setState({ currentPage: listid });
-    }
-
-    editCategory() {
-        this.props.history.push('/editcategory');
-    }
-
-    viewCategory() {
-        this.props.history.push('/viewcategory');
-    }
-
-    deleteCategory() {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'You should be remove category!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it'
-        }).then(async (result) => {
-            if (result.value) {
-                // var deleteCategory = await API.deleteCategory(id);
-                const msg = "Your Category has been deleted";
-                utils.showSuccess(msg);
-                // this.componentDidMount();
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                const msg1 = "Category is safe :";
-                utils.showError(msg1);
-            }
-        })
-    }
-
-    render() {
-        var pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
-            pageNumbers.push(i);
-        }
-        var renderPageNumbers = pageNumbers.map((number: any) => {
-            if (number === 1 && this.state.currentPage === 1) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link">{number}</a>
-                    </li>
-                );
-            }
-            else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link" id={number}>{number}</a>
-                    </li>
-                )
-            }
-        });
-
-        let pageIncrementBtn = null;
-        if (pageNumbers.length > this.state.upperPageBound) {
-            pageIncrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnIncrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
-
-        let pageDecrementBtn = null;
-        if (this.state.lowerPageBound >= 1) {
-            pageDecrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnDecrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
-
+  pagination(pageNumbers: any) {
+    var res = pageNumbers.map((number: any) => {
+      if (number === 1 && parseInt(this.state.currentPage) === 1) {
         return (
-            <>
-                <NavBar>
-                    <div className="ms-content-wrapper">
-                        <div className="row">
-                            <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                                <Card className="main-card mb-12">
-                                    <CardHeader>
-                                        <Row>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <CardTitle
-                                                    className="font"
-                                                >
-                                                    Category Management
-                                        </CardTitle>
-                                            </Col>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <div className="right">
-                                                    <Link to="/addcategory">
-                                                        <Button
-                                                            className="mb-2 mr-2 custom-button"
-                                                            color="primary"
-                                                        >
-                                                            Add
-                                                            </Button>
-                                                    </Link>
-                                                </div>
-                                            </Col>
-                                        </Row>
-
-                                    </CardHeader>
-                                    <CardBody>
-                                        <div className="selectDiv">
-
-                                            <CustomInput
-                                                type="select"
-                                                id="exampleCustomSelect"
-                                                name="customSelect"
-                                            // onChange={this.onItemSelect}
-                                            >
-                                                <option value="">Record per page</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="20">20</option>
-                                                <option value="25">25</option>
-                                                {/* {
-                            this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-                                <option key={data.id} value={data.id}>{data.name}</option>
-                            ) : ''
-                        } */}
-                                            </CustomInput>
-                                        </div>
-
-                                        <table id="dtBasicExample" className="table table-striped table-bordered table-sm" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>Category Name</th>
-                                                    <th>Image</th>
-                                                    <th style={{ textAlign: "center" }}>Status</th>
-                                                    <th className="action">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>FOOD</td>
-                                                    <td>FOOD Image</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye" onClick={this.viewCategory}></i>
-                                                            <i className="fas fa-edit" onClick={this.editCategory}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCategory}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Vegitarain</td>
-                                                    <td>Vegitarain Image</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <i className="fa fa-eye" onClick={this.viewCategory}></i>
-                                                        <i className="fas fa-edit" onClick={this.editCategory}></i>
-                                                        <i className="far fa-trash-alt" onClick={this.deleteCategory}></i>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-
-                                        </table>
-                                        {/* <MDBDataTable
-                                            striped
-                                            hover
-                                            data={data}
-                                        /> */}
-                                        {/* <div>
-                                            <Row>
-                                                <Col md="6">
-                                                    <div>
-                                                        <input
-                                                            className="form-control"
-                                                            type="text"
-                                                            placeholder="Search"
-                                                            aria-label="Search"
-                                                        // onKeyUp={this.searchApplicationDataKeyUp}
-                                                        />
-                                                    </div>
-                                                </Col>
-                                                <Col md="6">
-                                                    <div className="right">
-                                                        <Link to="/addcategory">
-                                                            <Button
-                                                                className="mb-2 mr-2 custom-button"
-                                                                color="primary"
-                                                            >
-                                                                Add
-                                                        </Button>
-                                                        </Link>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                        <br /> */}
-                                        {/* <Table hover className="mb-0 table_responsive" bordered>
-                                            <thead>
-                                                <tr>
-                                                    <th>Category Name</th>
-                                                    <th>Image</th>
-                                                    <th style={{ textAlign: "center" }}>Status</th>
-                                                    <th className="action">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>FOOD</td>
-                                                    <td>FOOD Image</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editCategory}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCategory}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Vegitarain</td>
-                                                    <td>Vegitarain Image</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editCategory}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCategory}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </Table> */}
-                                        <div>
-                                            <ul className="pagination" id="page-numbers">
-                                                {pageDecrementBtn}
-                                                {renderPageNumbers}
-                                                {pageIncrementBtn}
-                                            </ul>
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                        </div>
-                    </div>
-                </NavBar>
-            </>
+          <li
+            key={number}
+            id={number}
+            className={
+              parseInt(this.state.currentPage) === number
+                ? "active"
+                : "page-item"
+            }
+          >
+            <a className="page-link" onClick={this.handleClick}>
+              {number}
+            </a>
+          </li>
         );
+      } else if (
+        number < this.state.upperPageBound + 1 &&
+        number > this.state.lowerPageBound
+      ) {
+        return (
+          <li
+            key={number}
+            id={number}
+            className={
+              parseInt(this.state.currentPage) === number
+                ? "active"
+                : "page-item"
+            }
+          >
+            <a className="page-link" id={number} onClick={this.handleClick}>
+              {number}
+            </a>
+          </li>
+        );
+      }
+    });
+    return res;
+  }
+
+  getTable(categorydata: any) {
+    return (
+      <table
+        id="dtBasicExample"
+        className="table table-striped table-bordered table-sm"
+        width="100%"
+      >
+        <thead>
+          <tr onClick={() => this.handleSort("category")}>
+            <th>{constant.categoryPage.caetgoryTableColumn.categoryName}</th>
+            <th>{constant.categoryPage.caetgoryTableColumn.subCategoryName}</th>
+            <th>{constant.categoryPage.caetgoryTableColumn.image}</th>
+            <th style={{ textAlign: "center" }}>
+              {constant.tableAction.status}
+            </th>
+            <th className="action">{constant.tableAction.action}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.state.categorydata.length > 0 ? (
+            <>
+              {this.state.categorydata.map((data: any, index: any) => (
+                <tr>
+                  <td>{data.category}</td>
+
+                  {data.parentCategory ? (
+                    <td>{data.parentCategory}</td>
+                  ) : (
+                    <td>N/A</td>
+                  )}
+
+                  <td>
+                    {data.imagePath != null ? (
+                      <div className="img-size">
+                        {data.imagePath ? (
+                          <div>
+                            <img
+                              className="table-picture"
+                              src={constant.filepath + data.imagePath}
+                            />
+                            {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
+                          </div>
+                        ) : null}
+                      </div>
+                    ) : (
+                      <div>
+                        <i className="fa fa-user picture"></i>
+                        {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
+                      </div>
+                    )}
+                  </td>
+                  <td style={{ textAlign: "center" }}>
+                    {data.isActive === true ? (
+                      <button
+                        className="status_active_color"
+                        onClick={() =>
+                          this.statusChange(
+                            data,
+                            "You should be inActive category",
+                            "Yes, inActive it"
+                          )
+                        }
+                      >
+                        Active
+                      </button>
+                    ) : (
+                      <button
+                        className="status_inactive_color"
+                        onClick={() =>
+                          this.statusChange(
+                            data,
+                            "You should be Active category",
+                            "Yes, Active it"
+                          )
+                        }
+                      >
+                        InActive
+                      </button>
+                    )}
+                  </td>
+                  <td className="action">
+                    <span className="padding">
+                      <i
+                        className="fa fa-eye"
+                        onClick={() => this.viewCategory(data.categoryId)}
+                      ></i>
+                      <i
+                        className="fas fa-edit"
+                        onClick={() => this.editCategory(data.categoryId)}
+                      ></i>
+                      {/* <i
+                        className="far fa-trash-alt"
+                        onClick={() =>
+                          this.deleteCategory(data.categoryId)
+                        }
+                      ></i> */}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </>
+          ) : (
+            ""
+          )}
+        </tbody>
+      </table>
+    );
+  }
+
+  getPageData(
+    pageDecrementBtn: any,
+    renderPageNumbers: any,
+    pageIncrementBtn: any
+  ) {
+    return (
+      <div className="filter">
+        <CustomInput
+          type="select"
+          id="item"
+          className="custom_text_width"
+          name="customSelect"
+          onChange={this.onItemSelect}
+        >
+          <option value="10">{constant.recordPerPage.recordperPage}</option>
+          <option value={constant.recordPerPage.fifteen}>
+            {constant.recordPerPage.fifteen}
+          </option>
+          <option value={constant.recordPerPage.twenty}>
+            {constant.recordPerPage.twenty}
+          </option>
+          <option value={constant.recordPerPage.thirty}>
+            {constant.recordPerPage.thirty}
+          </option>
+          <option value={constant.recordPerPage.fifty}>
+            {constant.recordPerPage.fifty}
+          </option>
+        </CustomInput>
+        <div>
+          <ul className="pagination" id="page-numbers">
+            {pageDecrementBtn}
+            {renderPageNumbers}
+            {pageIncrementBtn}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    var pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(parseInt(this.state.count) / parseInt(this.state.items_per_page)); i++) {
+      pageNumbers.push(i);
     }
+    var renderPageNumbers = this.pagination(pageNumbers);
+
+    let pageIncrementBtn = null;
+    if (pageNumbers.length > this.state.upperPageBound) {
+      pageIncrementBtn = (
+        <li className="page-item">
+          <a className="page-link" onClick={this.btnIncrementClick}>
+            &hellip;
+          </a>
+        </li>
+      );
+    }
+
+    let pageDecrementBtn = null;
+    if (this.state.lowerPageBound >= 1) {
+      pageDecrementBtn = (
+        <li className="page-item">
+          <a className="page-link" onClick={this.btnDecrementClick}>
+            &hellip;
+          </a>
+        </li>
+      );
+    }
+
+    return (
+      <>
+        <NavBar>
+          <div className="ms-content-wrapper">
+            <div className="row">
+              <Col xs="12" sm="12" md="12" lg="12" xl="12">
+                <Card className="main-card mb-12">
+                  <CardHeader>
+                    <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <CardTitle className="font">
+                          {constant.categoryPage.title.categoryTitle}
+                        </CardTitle>
+                      </Col>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <div className="right">
+                          <Link to="/addcategory">
+                            <Button
+                              className="mb-2 mr-2 custom-button"
+                              color="primary"
+                            >
+                              {constant.button.add}
+                            </Button>
+                          </Link>
+                        </div>
+                      </Col>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    <div className="search_right">
+                      <input
+                        className="form-control custom_text_width search"
+                        type="text"
+                        placeholder="Search"
+                        aria-label="Search"
+                        onKeyUp={this.searchApplicationDataKeyUp}
+                      />
+                    </div>
+
+                    {this.state.categorydata.length > 0 ? (
+                      <>{this.getTable(this.state.categorydata)}</>
+                    ) : (
+                      <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                    {this.state.categorydata.length > 0
+                      ? this.getPageData(
+                          pageIncrementBtn,
+                          renderPageNumbers,
+                          pageDecrementBtn
+                        )
+                      : ""}
+                  </CardBody>
+                </Card>
+              </Col>
+            </div>
+          </div>
+        </NavBar>
+      </>
+    );
+  }
 }
 
 export default Category;

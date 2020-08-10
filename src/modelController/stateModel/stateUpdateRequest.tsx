@@ -1,5 +1,6 @@
 export interface stateUpdateRequest {
-    id?: string,
-    statename?: string,
-    selectedFile?: object
+    stateId?: number,
+    stateName?: string,
+    countryId?:number,
+    isActive?: boolean
 }

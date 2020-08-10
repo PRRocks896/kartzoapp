@@ -1,385 +1,459 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import utils from '../../../utils';
-import { MDBDataTable } from 'mdbreact';
+import React from "react";
+import { Link } from "react-router-dom";
+import utils from "../../../utils";
 import {
-    Button,
-    Card,
-    CardBody,
-    CardHeader,
-    CardTitle,
-    Table,
-    Input,
-    CustomInput,
-    Col,
-    FormGroup,
-    Label,
-    Row,
-} from 'reactstrap';
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
+  Table,
+  Input,
+  CustomInput,
+  Col,
+  FormGroup,
+  Label,
+  Row,
+} from "reactstrap";
 // import './adduser.css';
-import NavBar from '../../navbar/navbar';
-import API from '../../../service/location.service';
-import Switch from "react-switch";
-import constant from '../../../constant/constant';
-import { stateListRequest } from '../../../modelController/stateModel';
-const $ = require('jquery');
-$.DataTable = require('datatables.net')
+import NavBar from "../../navbar/navbar";
+import {LocationAPI} from "../../../service/index.service";
+import constant from "../../../constant/constant";
+import { stateUpdateRequest } from "../../../modelController/index";
 
 class StateManagment extends React.Component<{ history: any }> {
+  stateState = constant.statePage.state;
+  state = {
+    count: this.stateState.count,
+    currentPage: this.stateState.currentPage,
+    items_per_page: this.stateState.items_per_page,
+    upperPageBound: this.stateState.upperPageBound,
+    lowerPageBound: this.stateState.lowerPageBound,
+    pageBound: this.stateState.pageBound,
+    onItemSelect: this.stateState.onItemSelect,
+    statedata: this.stateState.statedata,
+    switchSort: this.stateState.switchSort,
+    isStatus: this.stateState.isStatus,
+  };
 
-    state = {
-        selectedFile: null,
-        firstname: '',
-        firstnameerror: '',
-        lastname: '',
-        lastnameerror: '',
-        email: '',
-        emailerror: '',
-        mobilenumber: '',
-        mobilenumbererror: '',
-        password: '',
-        passworderror: '',
-        checked: false,
-        selectedFileerror: '',
-        count: 10,
-        currentPage: 1,
-        items_per_page: 2,
-        perpage: 2,
-        paginationdata: '',
-        isFetch: false,
-        data: '',
-        allRecords: '',
-        upperPageBound: 3,
-        lowerPageBound: 0,
-        pageBound: 3,
-        isPrevBtnActive: 'disabled',
-        isNextBtnActive: '',
-        onClickPage: 1,
-        activePage: 15
-    }
+  constructor(props: any) {
+    super(props);
+    this.editState = this.editState.bind(this);
+    this.btnIncrementClick = this.btnIncrementClick.bind(this);
+    this.btnDecrementClick = this.btnDecrementClick.bind(this);
+    this.viewState = this.viewState.bind(this);
+    this.onItemSelect = this.onItemSelect.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(
+      this
+    );
+    this.handleSort = this.handleSort.bind(this);
+    this.compareByDesc = this.compareByDesc.bind(this);
+    this.statusChange = this.statusChange.bind(this);
+    this.pagination = this.pagination.bind(this);
+    this.getTable = this.getTable.bind(this);
+    this.getPageData = this.getPageData.bind(this);
+  }
 
-    constructor(props: any) {
-        super(props);
-        this.deleteState = this.deleteState.bind(this);
-        this.editState = this.editState.bind(this);
-        this.btnIncrementClick = this.btnIncrementClick.bind(this);
-        this.btnDecrementClick = this.btnDecrementClick.bind(this);
-        this.viewState = this.viewState.bind(this);
-    }
+  async componentDidMount() {
+    document.title = constant.statePage.title.stateTitle + utils.getAppName();
+    utils.dataTable();
+    this.getStateData();
+  }
 
-    async componentDidMount() {
-        document.title = constant.stateTitle + utils.getAppName();
-        $('#dtBasicExample').DataTable({
-            "paging": false,
-            "info": false
+  async getStateData(
+    searchText: string = "",
+    page: number = 1,
+    size: number = 10
+  ) {
+    const obj = {
+      searchText: searchText,
+      page: page,
+      size: size,
+    };
+
+    var getStateData = await LocationAPI.getStateData(obj);
+    console.log("getStateData", getStateData);
+
+    if (getStateData) {
+      if (getStateData.status === 200) {
+        this.setState({
+          statedata: this.state.statedata = getStateData.resultObject.data,
+          count: this.state.count = getStateData.resultObject.totalcount,
         });
-        this.getUserCountData();
-        this.getApplicationPageData();
+      } else {
+        const msg1 = getStateData.message;
+        utils.showError(msg1);
+      }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
     }
+  }
 
-    async getUserCountData() {
+  btnIncrementClick() {
+    this.setState({
+      upperPageBound: this.state.upperPageBound + this.state.pageBound,
+    });
+    this.setState({
+      lowerPageBound: this.state.lowerPageBound + this.state.pageBound,
+    });
+    let listid = this.state.upperPageBound + 1;
+    this.setState({ currentPage: listid });
+  }
 
-        // var getuserCount = await API.getUserCount();
-        // console.log("getUsercount",getuserCount);
-      
+  btnDecrementClick() {
+    this.setState({
+      upperPageBound: this.state.upperPageBound - this.state.pageBound,
+    });
+    this.setState({
+      lowerPageBound: this.state.lowerPageBound - this.state.pageBound,
+    });
+    let listid = this.state.upperPageBound - this.state.pageBound;
+    this.setState({ currentPage: listid });
+  }
+
+  editState(id: any) {
+    this.props.history.push("/editstate/" + id);
+  }
+
+  viewState(id: any) {
+    this.props.history.push("/viewstate/" + id);
+  }
+
+  onItemSelect(event: any) {
+    this.setState({
+      items_per_page: this.state.items_per_page =
+        event.target.options[event.target.selectedIndex].value,
+    });
+
+    this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+  }
+
+  async handleClick(event: any) {
+    this.setState({
+      currentPage: this.state.currentPage = event.target.id,
+    });
+    const obj = {
+      searchText: "",
+      page: parseInt(event.target.id),
+      size: parseInt(this.state.items_per_page),
+    };
+
+    this.getStateData(obj.searchText, obj.page, obj.size);
+  }
+
+  async searchApplicationDataKeyUp(e: any) {
+    const obj = {
+      searchText: e.target.value,
+      page: 1,
+      size: parseInt(this.state.items_per_page),
+    };
+
+    this.getStateData(obj.searchText, obj.page, obj.size);
+  }
+
+  handleSort(key: any) {
+    this.setState({
+      switchSort: !this.state.switchSort,
+    });
+    let copyTableData = [...this.state.statedata];
+    copyTableData.sort(this.compareByDesc(key));
+    this.setState({
+      statedata: this.state.statedata = copyTableData,
+    });
+  }
+
+  compareByDesc(key: any) {
+    if (this.state.switchSort) {
+      return function (a: any, b: any) {
+        if (a[key] < b[key]) return -1; // check for value if the second value is bigger then first return -1
+        if (a[key] > b[key]) return 1; //check for value if the second value is bigger then first return 1
+        return 0;
+      };
+    } else {
+      return function (a: any, b: any) {
+        if (a[key] > b[key]) return -1;
+        if (a[key] < b[key]) return 1;
+        return 0;
+      };
     }
+  }
 
-    async getApplicationPageData() {
-        // const obj = {
-        //     page_no: "1",
-        //     items_per_page: this.state.items_per_page
-        // }
+  async statusChange(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: stateUpdateRequest = {
+        stateId: data.stateId,
+        stateName: data.stateName,
+        countryId: data.countryId,
+        isActive: false,
+      };
 
-        // var getUserDataPagination = await API.getUserDataPagination();
-        // console.log("getUserDataPagination",getUserDataPagination);
+      const editState = await LocationAPI.editState(obj, data.stateId);
+      console.log("editState", editState);
 
-        // var getUserDataPagination : stateListRequest = [];
-      
+      if (editState.status === 200) {
+        const msg = editState.message;
+        utils.showSuccess(msg);
+        this.getStateData();
+      } else {
+        const msg = editState.message;
+        utils.showError(msg);
+      }
     }
+  }
 
-
-
-    btnIncrementClick() {
-        this.setState({ upperPageBound: this.state.upperPageBound + this.state.pageBound });
-        this.setState({ lowerPageBound: this.state.lowerPageBound + this.state.pageBound });
-        let listid = this.state.upperPageBound + 1;
-        this.setState({ currentPage: listid });
-    }
-
-    btnDecrementClick() {
-        this.setState({ upperPageBound: this.state.upperPageBound - this.state.pageBound });
-        this.setState({ lowerPageBound: this.state.lowerPageBound - this.state.pageBound });
-        let listid = this.state.upperPageBound - this.state.pageBound;
-        this.setState({ currentPage: listid });
-    }
-
-    editState() {
-        this.props.history.push('/editstate');
-    }
-
-    viewState() {
-        this.props.history.push('/viewstate');
-    }
-
-    deleteState() {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'You should be remove state!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it'
-        }).then(async (result) => {
-            if (result.value) {
-                // var deleteState = await API.deleteState(id);
-                const msg = "Your State has been deleted";
-                utils.showSuccess(msg);
-                // this.componentDidMount();
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                const msg1 = "State is safe :";
-                utils.showError(msg1);
-            }
-        })
-    }
-
-
-
-    render() {
-
-        var pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
-            pageNumbers.push(i);
-        }
-        var renderPageNumbers = pageNumbers.map((number: any) => {
-            if (number === 1 && this.state.currentPage === 1) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link">{number}</a>
-                    </li>
-                );
-            }
-            else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link" id={number}>{number}</a>
-                    </li>
-                )
-            }
-        });
-
-        let pageIncrementBtn = null;
-        if (pageNumbers.length > this.state.upperPageBound) {
-            pageIncrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnIncrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
-
-        let pageDecrementBtn = null;
-        if (this.state.lowerPageBound >= 1) {
-            pageDecrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnDecrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
-
+  pagination(pageNumbers: any) {
+    var res = pageNumbers.map((number: any) => {
+      if (number === 1 && parseInt(this.state.currentPage) === 1) {
         return (
-            <>
-                <NavBar>
-                    <div className="ms-content-wrapper">
-                        <div className="row">
-                            <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                                <Card className="main-card mb-12">
-                                    <CardHeader>
-                                        <Row>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <CardTitle
-                                                    className="font"
-                                                >
-                                                    State Management
-                                        </CardTitle>
-                                            </Col>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <div className="right">
-                                                    <Link to="/addstate">
-                                                        <Button
-                                                            className="mb-2 mr-2 custom-button"
-                                                            color="primary"
-                                                        >
-                                                            Add
-                                                            </Button>
-                                                    </Link>
-                                                </div>
-                                            </Col>
-                                        </Row>
-
-                                    </CardHeader>
-                                    <CardBody>
-                                        <div className="selectDiv">
-
-                                            <CustomInput
-                                                type="select"
-                                                id="exampleCustomSelect"
-                                                name="customSelect"
-                                            // onChange={this.onItemSelect}
-                                            >
-                                                <option value="">Record per page</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="20">20</option>
-                                                <option value="25">25</option>
-                                                {/* {
-this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-<option key={data.id} value={data.id}>{data.name}</option>
-) : ''
-} */}
-                                            </CustomInput>
-                                        </div>
-
-                                        <table id="dtBasicExample" className="table table-striped table-bordered table-sm" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>State Name</th>
-                                                    <th>Country Name</th>
-                                                    <th style={{ textAlign: "center" }}>Status</th>
-                                                    <th className="action">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>GUJRAT</td>
-                                                    <td>INDIA</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye" onClick={this.viewState}></i>
-                                                            <i className="fas fa-edit" onClick={this.editState}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteState}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>RAJSHTHAN</td>
-                                                    <td>INDIA</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye" onClick={this.viewState}></i>
-                                                            <i className="fas fa-edit" onClick={this.editState}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteState}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        {/* <MDBDataTable
-                                            striped
-                                            hover
-                                            data={data}
-                                        /> */}
-                                        {/* <div>
-                                            <Row>
-                                                <Col md="6">
-                                                    <div>
-                                                        <input
-                                                            className="form-control"
-                                                            type="text"
-                                                            placeholder="Search"
-                                                            aria-label="Search"
-                                                        // onKeyUp={this.searchApplicationDataKeyUp}
-                                                        />
-                                                    </div>
-                                                </Col>
-                                                <Col md="6">
-                                                    <div className="right">
-                                                        <Link to="/addstate">
-                                                            <Button
-                                                                className="mb-2 mr-2 custom-button"
-                                                                color="primary"
-                                                            >
-                                                                Add
-                                                        </Button>
-                                                        </Link>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                        <br />
-                                        <Table hover className="mb-0 table_responsive" bordered>
-                                            <thead>
-                                                <tr>
-                                                    <th>State Name</th>
-                                                    <th>Country Name</th>
-                                                    <th style={{ textAlign: "center" }}>Status</th>
-                                                    <th className="action">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>GUJRAT</td>
-                                                    <td>INDIA</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editState}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteState}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>RAJSHTHAN</td>
-                                                    <td>INDIA</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editState}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteState}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </Table> */}
-                                        <div>
-                                            <ul className="pagination" id="page-numbers">
-                                                {pageDecrementBtn}
-                                                {renderPageNumbers}
-                                                {pageIncrementBtn}
-                                            </ul>
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                        </div>
-                    </div>
-                </NavBar>
-            </>
+          <li
+            key={number}
+            id={number}
+            className={
+              parseInt(this.state.currentPage) === number
+                ? "active"
+                : "page-item"
+            }
+          >
+            <a className="page-link" onClick={this.handleClick}>
+              {number}
+            </a>
+          </li>
         );
+      } else if (
+        number < this.state.upperPageBound + 1 &&
+        number > this.state.lowerPageBound
+      ) {
+        return (
+          <li
+            key={number}
+            id={number}
+            className={
+              parseInt(this.state.currentPage) === number
+                ? "active"
+                : "page-item"
+            }
+          >
+            <a className="page-link" id={number} onClick={this.handleClick}>
+              {number}
+            </a>
+          </li>
+        );
+      }
+    });
+    return res;
+  }
+
+  getTable(statedata: any) {
+    return (
+      <table
+        id="dtBasicExample"
+        className="table table-striped table-bordered table-sm"
+        width="100%"
+      >
+        <thead>
+          <tr onClick={() => this.handleSort("stateName")}>
+            <th>{constant.statePage.stateTableColumn.stateName}</th>
+            <th>{constant.statePage.stateTableColumn.countryName}</th>
+            <th style={{ textAlign: "center" }}>
+              {constant.tableAction.status}
+            </th>
+            <th className="action">{constant.tableAction.action}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.state.statedata.length > 0 ? (
+            <>
+              {this.state.statedata.map((data: any, index: any) => (
+                <tr key={index}>
+                  <td>{data.stateName}</td>
+                  <td>{data.countryName}</td>
+                  <td style={{ textAlign: "center" }}>
+                    {data.isActive === true ? (
+                      <button
+                        className="status_active_color"
+                        onClick={() =>
+                          this.statusChange(
+                            data,
+                            "You should be inActive state",
+                            "Yes, inActive it"
+                          )
+                        }
+                      >
+                        Active
+                      </button>
+                    ) : (
+                      <button
+                        className="status_inactive_color"
+                        onClick={() =>
+                          this.statusChange(
+                            data,
+                            "You should be Active state",
+                            "Yes, Active it"
+                          )
+                        }
+                      >
+                        InActive
+                      </button>
+                    )}
+                  </td>
+                  <td className="action">
+                    <span className="padding">
+                      <i
+                        className="fa fa-eye"
+                        onClick={() => this.viewState(data.stateId)}
+                      ></i>
+                      <i
+                        className="fas fa-edit"
+                        onClick={() => this.editState(data.stateId)}
+                      ></i>
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </>
+          ) : (
+            ""
+          )}
+        </tbody>
+      </table>
+    );
+  }
+
+  getPageData(
+    pageDecrementBtn: any,
+    renderPageNumbers: any,
+    pageIncrementBtn: any
+  ) {
+    return (
+      <div className="filter">
+        <CustomInput
+          type="select"
+          id="item"
+          className="custom_text_width"
+          name="customSelect"
+          onChange={this.onItemSelect}
+        >
+          <option value="10">{constant.recordPerPage.recordperPage}</option>
+          <option value={constant.recordPerPage.fifteen}>
+            {constant.recordPerPage.fifteen}
+          </option>
+          <option value={constant.recordPerPage.twenty}>
+            {constant.recordPerPage.twenty}
+          </option>
+          <option value={constant.recordPerPage.thirty}>
+            {constant.recordPerPage.thirty}
+          </option>
+          <option value={constant.recordPerPage.fifty}>
+            {constant.recordPerPage.fifty}
+          </option>
+        </CustomInput>
+        <div>
+          <ul className="pagination" id="page-numbers">
+            {pageDecrementBtn}
+            {renderPageNumbers}
+            {pageIncrementBtn}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    var pageNumbers = [];
+    for (
+      let i = 1;
+      i <=
+      Math.ceil(
+        parseInt(this.state.count) / parseInt(this.state.items_per_page)
+      );
+      i++
+    ) {
+      pageNumbers.push(i);
     }
+    var renderPageNumbers = this.pagination(pageNumbers);
+
+    let pageIncrementBtn = null;
+    if (pageNumbers.length > this.state.upperPageBound) {
+      pageIncrementBtn = (
+        <li className="page-item">
+          <a className="page-link" onClick={this.btnIncrementClick}>
+            &hellip;
+          </a>
+        </li>
+      );
+    }
+
+    let pageDecrementBtn = null;
+    if (this.state.lowerPageBound >= 1) {
+      pageDecrementBtn = (
+        <li className="page-item">
+          <a className="page-link" onClick={this.btnDecrementClick}>
+            &hellip;
+          </a>
+        </li>
+      );
+    }
+
+    return (
+      <>
+        <NavBar>
+          <div className="ms-content-wrapper">
+            <div className="row">
+              <Col xs="12" sm="12" md="12" lg="12" xl="12">
+                <Card className="main-card mb-12">
+                  <CardHeader>
+                    <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+    <CardTitle className="font">{constant.statePage.title.stateTitle}</CardTitle>
+                      </Col>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <div className="right">
+                          <Link to="/addstate">
+                            <Button
+                              className="mb-2 mr-2 custom-button"
+                              color="primary"
+                            >
+                              {constant.button.add}
+                            </Button>
+                          </Link>
+                        </div>
+                      </Col>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    <div className="search_right">
+                      <input
+                        className="form-control custom_text_width search"
+                        type="text"
+                        placeholder="Search"
+                        aria-label="Search"
+                        onKeyUp={this.searchApplicationDataKeyUp}
+                      />
+                    </div>
+
+                    {this.state.statedata.length > 0 ? (
+                      <>{this.getTable(this.state.statedata)}</>
+                    ) : (
+                      <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                    {this.state.statedata.length > 0
+                      ? this.getPageData(
+                          pageIncrementBtn,
+                          renderPageNumbers,
+                          pageDecrementBtn
+                        )
+                      : ""}
+                  </CardBody>
+                </Card>
+              </Col>
+            </div>
+          </div>
+        </NavBar>
+      </>
+    );
+  }
 }
 
 export default StateManagment;

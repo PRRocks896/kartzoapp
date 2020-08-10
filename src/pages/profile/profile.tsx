@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import utils from "../../utils";
 import {
   Button,
@@ -14,39 +13,39 @@ import {
 } from "reactstrap";
 import "./profile.css";
 import NavBar from "../navbar/navbar";
-import API from "../../service/service";
-import RoleAPI from "../../service/role.service";
+import { API, RoleAPI } from "../../service/index.service";
 import constant from "../../constant/constant";
+// import EventEmitter from '../../event';
 import {
-  profileUpdateRequest,
-  profileListRequest,
   profileGetRequest,
-} from "../../modelController/profileModel";
+} from "../../modelController/index";
 
 interface User {
-  userID: number;
+  userId: number;
 }
 
 class Profile extends React.Component {
+  profileState = constant.profilePage.state;
   state = {
-    selectedFile: [],
-    firstname: "",
-    firstnameerror: "",
-    lastname: "",
-    lastnameerror: "",
-    email: "",
-    emailerror: "",
-    mobilenumber: "",
-    mobilenumbererror: "",
-    selectedFileerror: "",
-    role: "",
-    roleerror: "",
-    roleid: 1,
-    roleiderror: "",
-    userid:0,
-    userrole:[],
-    updateTrue:false,
-    file:null
+    selectedFile: this.profileState.selectedFile,
+    firstname: this.profileState.firstname,
+    firstnameerror: this.profileState.firstnameerror,
+    lastname: this.profileState.lastname,
+    lastnameerror: this.profileState.lastnameerror,
+    email: this.profileState.email,
+    emailerror: this.profileState.emailerror,
+    mobilenumber: this.profileState.mobilenumber,
+    mobilenumbererror: this.profileState.mobilenumbererror,
+    selectedFileerror: this.profileState.selectedFileerror,
+    role: this.profileState.role,
+    roleerror: this.profileState.roleerror,
+    roleid: this.profileState.roleid,
+    roleiderror: this.profileState.roleiderror,
+    userid: this.profileState.userid,
+    userrole: this.profileState.userrole,
+    updateTrue: this.profileState.updateTrue,
+    filetrue: this.profileState.filetrue,
+    file: this.profileState.file
   };
 
   constructor(props: any) {
@@ -59,53 +58,63 @@ class Profile extends React.Component {
 
   async componentDidMount() {
     document.title = constant.profileTitle + utils.getAppName();
-
     this.getUserRole();
+    this.getUserById();
+  }
 
+  async getUserById() {
     var user = localStorage.getItem("user");
     if (user) {
       let profile: User = JSON.parse(user);
-      console.log("getprofile", profile.userID);
       const obj: profileGetRequest = {
-        id: profile.userID,
+        id: profile.userId,
       };
-      // JSON.parse(user);
+      JSON.parse(user);
       const getProfile = await API.getProfile(obj);
       console.log("getprofile", getProfile);
 
-      if (getProfile.resultObject !== undefined) {
-        this.setState({
-          updateTrue:this.state.updateTrue = true,
-          userid:this.state.userid = getProfile.resultObject.userID,
-          firstname: this.state.firstname = getProfile.resultObject.firstName,
-          lastname: this.state.lastname = getProfile.resultObject.lastName,
-          mobilenumber: this.state.mobilenumber = getProfile.resultObject.phone,
-          selectedFile: this.state.selectedFile = getProfile.resultObject.photo,
-          file:this.state.file =  getProfile.resultObject.photoPath
-        });
+      if (getProfile) {
+        if (getProfile.status === 200) {
+          this.setState({
+            updateTrue: this.state.updateTrue = true,
+            filetrue: this.state.filetrue = true,
+            userid: this.state.userid = getProfile.resultObject.userId,
+            firstname: this.state.firstname = getProfile.resultObject.firstName,
+            lastname: this.state.lastname = getProfile.resultObject.lastName,
+            mobilenumber: this.state.mobilenumber = getProfile.resultObject.phone,
+            selectedFile: this.state.selectedFile = getProfile.resultObject.photo,
+            file: this.state.file = getProfile.resultObject.photoPath
+          });
+        } else {
+          const msg1 = getProfile.message;
+          utils.showError(msg1);
+        }
       } else {
-        const msg1 = getProfile.explanation;
+        const msg1 = "Internal server error";
         utils.showError(msg1);
       }
     }
-
-    // const getProfile : profileListRequest = [];
   }
 
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
-  console.log("getUserRole",getUserRole);
+    console.log("getUserRole", getUserRole);
 
-  if(getUserRole.resultObject != null) {
-    this.setState({
-      userrole : this.state.userrole = getUserRole.resultObject
-    })
+    if (getUserRole) {
+      if (getUserRole.resultObject != null) {
+        this.setState({
+          userrole: this.state.userrole = getUserRole.resultObject
+        })
 
-  } else {
-    const msg1 = getUserRole.explanation;
-    utils.showError(msg1);
-}
-}
+      } else {
+        const msg1 = getUserRole.explanation;
+        utils.showError(msg1);
+      }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
+    }
+  }
 
   onItemSelect(event: any) {
     if (event.target.value === "User") {
@@ -183,18 +192,10 @@ class Profile extends React.Component {
         this.state.mobilenumber &&
         this.state.selectedFile
       ) {
-        // const obj: profileUpdateRequest = {
-        //   iD: this.state.userid,
-        //   firstName: this.state.firstname,
-        //   lastName: this.state.lastname,
-        //   phone: this.state.mobilenumber,
-        //   files: new Array(this.state.selectedFile),
-        //   userId:0
-        // };
 
-        let formData = new FormData();    
-        console.log('File in formData: ', this.state.selectedFile);
-        formData.append('iD', this.state.userid.toString());   
+        let formData = new FormData();
+        console.log('File in formData: ', this.state.selectedFile[0]);
+        formData.append('id', this.state.userid.toString());
         formData.append('firstName', this.state.firstname);
         formData.append('lastName', this.state.lastname);
         formData.append('phone', this.state.mobilenumber.toString());
@@ -202,45 +203,56 @@ class Profile extends React.Component {
         formData.append('userId', '0');
 
         const updateProfile = await API.updateProfile(formData);
-        console.log("updateProfile",updateProfile);
+        console.log("updateProfile", updateProfile);
 
-        if(updateProfile.resultObject !== null) {
-          const msg = "Profile Updated Successfully";
-          utils.showSuccess(msg);
-        } else {
-          const msg1 = "Error";
+        if (updateProfile) {
+          if (updateProfile.status === 200) {
+            const msg = updateProfile.message;
+            this.getUserById();
+            utils.showSuccess(msg);
+            // EventEmitter.dispatch('imageUpload', this.state.file);
+          } else {
+            const msg1 = updateProfile.message;
             utils.showError(msg1);
+          }
+        } else {
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
         }
-
-
-        // if (
-        //   this.state.firstname === obj.firstname &&
-        //   this.state.lastname === obj.lastname &&
-        //   this.state.email === obj.email &&
-        //   this.state.mobilenumber === obj.mobilenumber &&
-        //   this.state.selectedFile === obj.selectedFile
-        // ) {
-         
-        // } else {
-        //   const msg1 = "Error";
-        //   utils.showError(msg1);
-        // }
       }
     }
   }
 
   onChangeHandler(event: any) {
-    var fileArray = [];
-    fileArray.push(event.target.files[0])
-    this.setState({
-      selectedFile: this.state.selectedFile = event.target.files,
-    });
-    console.log("file",this.state.selectedFile[0]);
+    if (this.state.filetrue === true) {
+      this.setState({
+        filetrue: this.state.filetrue = false,
+        selectedFile: this.state.selectedFile = event.target.files
+      })
+      const reader = new FileReader()
+      reader.readAsDataURL(event.target.files[0])
+      reader.onloadend = ev => {
+        this.setState({
+          file: reader.result
+        })
+      }
+    } else {
+      this.setState({
+        selectedFile: this.state.selectedFile = event.target.files
+      })
+      const reader = new FileReader()
+      reader.readAsDataURL(event.target.files[0])
+      reader.onloadend = ev => {
+        this.setState({
+          file: reader.result
+        })
+      }
+    }
   }
 
   removeIcon() {
     this.setState({
-      file: this.state.file = null,
+      file: this.state.file = '',
     });
   }
 
@@ -253,20 +265,27 @@ class Profile extends React.Component {
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
                 <Card>
                   <CardHeader>
-                    <strong>My Profile</strong>
+                    <strong>{constant.profilePage.profile.profile}</strong>
                   </CardHeader>
                   <CardBody>
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
-                          {this.state.file != null ? (
+                          {this.state.file !== '' ? (
                             <div className="img-size">
                               {this.state.file ? (
                                 <div>
-                                  <img
-                                    className="picture"
-                                    src={constant.filepath + this.state.file}
-                                  />
+                                  {this.state.filetrue === true ? (
+                                    <img
+                                      className="picture"
+                                      src={constant.filepath + this.state.file}
+                                    />
+                                  ) : (
+                                      <img
+                                        className="picture"
+                                        src={this.state.file}
+                                      />
+                                    )}
                                   <i
                                     className="fa fa-times cursor"
                                     onClick={() => this.removeIcon()}
@@ -275,25 +294,25 @@ class Profile extends React.Component {
                               ) : null}
                             </div>
                           ) : (
-                            <div className="">
-                              <p>
-                                <b>User Image:</b>
-                              </p>
-                              <Label className="imag" for="file-input">
-                                <i
-                                  className="fa fa-upload fa-lg"
-                                  style={{ color: "#20a8d8" }}
-                                ></i>
-                              </Label>
-                              <Input
-                                id="file-input"
-                                type="file"
-                                className="form-control"
-                                name="file"
-                                onChange={this.onChangeHandler.bind(this)}
-                              />
-                            </div>
-                          )}
+                              <div className="">
+                                <p>
+                                  <b>{constant.profilePage.profile.userimage}</b>
+                                </p>
+                                <Label className="imag" for="file-input">
+                                  <i
+                                    className="fa fa-upload fa-lg"
+                                    style={{ color: "#20a8d8" }}
+                                  ></i>
+                                </Label>
+                                <Input
+                                  id="file-input"
+                                  type="file"
+                                  className="form-control"
+                                  name="file"
+                                  onChange={this.onChangeHandler.bind(this)}
+                                />
+                              </div>
+                            )}
                           <div className="text-danger">
                             {this.state.selectedFileerror}
                           </div>
@@ -303,7 +322,7 @@ class Profile extends React.Component {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="first_name">First Name</Label>
+                          <Label htmlFor="first_name">{constant.profilePage.profile.firstname}</Label>
                           <Input
                             type="text"
                             id="first_name"
@@ -321,7 +340,7 @@ class Profile extends React.Component {
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="last_name">Last Name</Label>
+                          <Label htmlFor="last_name">{constant.profilePage.profile.lastname}</Label>
                           <Input
                             type="text"
                             id="last_name"
@@ -338,11 +357,11 @@ class Profile extends React.Component {
                         </FormGroup>
                       </Col>
                     </Row>
-                   
+
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="mobile_no">Mobile Number</Label>
+                          <Label htmlFor="mobile_no">{constant.profilePage.profile.mobilenumber}</Label>
                           <Input
                             type="text"
                             id="mobile_no"
@@ -366,7 +385,7 @@ class Profile extends React.Component {
                       color="primary"
                       onClick={this.Profile}
                     >
-                      Update
+                      {constant.button.update}
                     </Button>
                   </CardBody>
                 </Card>

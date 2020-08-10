@@ -12,7 +12,20 @@ export default {
     getRoles: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.userRoleController.getRoles,data);
     },
+    deleteRole: async function (data: any) {
+        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.userRoleController.deleteRole + data);
+    },
+    getRoleById: async function (data: any) {
+        return await WebReqUrl.get(Constant.apiUrl + apiUrl.userRoleController.getRoleById + data.id );
+    },
+    editUserRole: async function (data: any) {
+        return await WebReqUrl.put(Constant.apiUrl + apiUrl.userRoleController.editRole + data.roleId ,data);
+    },
     getRolePreveliges: async function (data:any) {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.userRoleController.rolepreveliges + data.id);
+    },
+    updateRolePreveliges: async function (data:any) {
+        return await WebReqUrl.post(Constant.apiUrl + apiUrl.userRoleController.updateRolePreveliges,data);
     }
+    
 }

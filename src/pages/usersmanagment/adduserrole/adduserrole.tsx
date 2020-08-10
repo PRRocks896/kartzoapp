@@ -12,35 +12,78 @@ import {
   Label,
   Row,
 } from "reactstrap";
-// import './adduser.css';
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/role.service";
+import {RoleAPI} from "../../../service/index.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import {
   userRoleCreateRequest,
   userRoleUpdateRequest,
-} from "../../../modelController/userRoleModel";
+} from "../../../modelController";
 
-class AddUserRole extends React.Component<{ history: any }> {
+class AddUserRole extends React.Component<{ history: any; location: any }> {
+  userState = constant.userRolePage.state;
   state = {
-    rolename: "",
-    rolenameerror: "",
-    description: "",
-    descriptionerror: "",
-    isOpen: false,
+    rolename: this.userState.rolename,
+    rolenameerror: this.userState.rolenameerror,
+    description: this.userState.description,
+    descriptionerror: this.userState.descriptionerror,
+    isOpen: this.userState.isOpen,
+    updateTrue: this.userState.updateTrue,
+    roleid: this.userState.roleid
   };
 
   constructor(props: any) {
     super(props);
-    // this.Profile = this.Profile.bind(this);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.addUserRole = this.addUserRole.bind(this);
+    this.updateUserRole = this.updateUserRole.bind(this);
+    this.getRoleById = this.getRoleById.bind(this);
   }
 
   async componentDidMount() {
-    document.title = constant.adduserRoleTitle + utils.getAppName();
+    const roleId = this.props.location.pathname.split("/")[2];
+    if (roleId !== undefined) {
+      this.getRoleById(roleId);
+      this.setState({
+        updateTrue: this.state.updateTrue = true
+      })
+    }
+    if (this.state.updateTrue === true) {
+      document.title =
+        constant.userRolePage.title.updateRoleTitle + utils.getAppName();
+    } else {
+      document.title =
+        constant.userRolePage.title.adduserRoleTitle + utils.getAppName();
+    }
+  }
+
+  async getRoleById(roleId: any) {
+    const obj = {
+      id: roleId,
+    };
+    const getRoleById: any = await RoleAPI.getRoleById(obj);
+    console.log("getRoleById", getRoleById);
+
+    if (getRoleById) {
+      if (getRoleById.status === 200) {
+        this.setState({
+          updateTrue: this.state.updateTrue = true,
+          rolename: this.state.rolename = getRoleById.resultObject.role,
+          roleid: this.state.roleid = getRoleById.resultObject.roleId,
+          description: this.state.description =
+            getRoleById.resultObject.description,
+          isOpen: this.state.isOpen = getRoleById.resultObject.isAdminRole,
+        });
+      } else {
+        const msg1 = getRoleById.message;
+        utils.showError(msg1);
+      }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
+    }
   }
 
   handleChange(checked: boolean) {
@@ -49,18 +92,13 @@ class AddUserRole extends React.Component<{ history: any }> {
 
   validate() {
     let rolenameerror = "";
-    let descriptionerror = "";
 
     if (!this.state.rolename) {
       rolenameerror = "please enter role name";
     }
 
-    if (!this.state.description) {
-      descriptionerror = "please enter description";
-    }
-
-    if (rolenameerror || descriptionerror) {
-      this.setState({ rolenameerror, descriptionerror });
+    if (rolenameerror) {
+      this.setState({ rolenameerror });
       return false;
     }
     return true;
@@ -78,9 +116,8 @@ class AddUserRole extends React.Component<{ history: any }> {
     if (isValid) {
       this.setState({
         rolenameerror: "",
-        descriptionerror: "",
       });
-      if (this.state.rolename && this.state.description) {
+      if (this.state.rolename && this.state.isOpen) {
         const obj: userRoleCreateRequest = {
           role: this.state.rolename,
           description: this.state.description,
@@ -88,35 +125,60 @@ class AddUserRole extends React.Component<{ history: any }> {
           isAdminRole: this.state.isOpen,
         };
 
-        // const obj1: userRoleUpdateRequest = {
-        //   rolename: this.state.rolename,
-        // };
-
         console.log("userole", obj);
 
-        const addUserRole = await API.addUserRole(obj);
+        const addUserRole = await RoleAPI.addUserRole(obj);
         console.log("addUserRole", addUserRole);
 
-        if (addUserRole.resultObject !== null) {
-          const msg = "UserRole Added Successfully";
-          utils.showSuccess(msg);
-        //   this.props.history.push("/userrole");
+        if (addUserRole) {
+          if (addUserRole.status === 200) {
+            const msg = addUserRole.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/userrole");
+          } else {
+            const msg1 = addUserRole.message;
+            utils.showError(msg1);
+          }
         } else {
-          const msg1 = "Error";
+          const msg1 = "Internal server error";
           utils.showError(msg1);
         }
+      }
+    }
+  }
 
-        // const editUserRole = await API.editUserRole(obj);
-        // console.log("editUserRole",editUserRole);
+  async updateUserRole() {
+    const isValid = this.validate();
+    if (isValid) {
+      this.setState({
+        rolenameerror: "",
+      });
+      if (this.state.rolename && this.state.isOpen) {
+        const obj: userRoleUpdateRequest = {
+          roleId: this.state.roleid,
+          role: this.state.rolename,
+          description: this.state.description,
+          isActive: true,
+          isAdminRole: this.state.isOpen,
+        };
+        console.log("userole", obj);
 
-        // if (this.state.rolename === obj.rolename) {
-        //     const msg = "UserRole Added Successfully";
-        //     utils.showSuccess(msg);
-        //     this.props.history.push('/userrole');
-        // } else {
-        //     const msg1 = "Error";
-        //     utils.showError(msg1);
-        // }
+        const editUserRole = await RoleAPI.editUserRole(obj);
+        console.log("editUserRole", editUserRole);
+
+        if (editUserRole) {
+          if (editUserRole.status === 200) {
+            const msg = editUserRole.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/userrole");
+          } else {
+            const msg1 = editUserRole.message;
+            utils.showError(msg1);
+          }
+        } else {
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
+        }
       }
     }
   }
@@ -131,16 +193,22 @@ class AddUserRole extends React.Component<{ history: any }> {
                 <Card>
                   <CardHeader>
                     <Row>
-                      <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>Add Role</h1>
-                      </Col>
+                      {this.state.updateTrue === true ? (
+                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                          <h1>{constant.userRolePage.title.updateRoleTitle}</h1>
+                        </Col>
+                      ) : (
+                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                          <h1>{constant.userRolePage.title.updateRoleTitle}</h1>
+                        </Col>
+                      )}
                       <Col
                         xs="12"
                         sm="6"
                         md="3"
                         lg="3"
                         xl="3"
-                        style={{ textAlign: "right" }}
+                        className="search_right"
                       >
                         <Link to="/userrole">
                           <Button
@@ -149,7 +217,7 @@ class AddUserRole extends React.Component<{ history: any }> {
                             color="primary"
                             className="mb-2 mr-2 custom-button"
                           >
-                            Back
+                            {constant.button.back}
                           </Button>
                         </Link>
                       </Col>
@@ -159,7 +227,9 @@ class AddUserRole extends React.Component<{ history: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="role_name">Role Name</Label>
+                          <Label htmlFor="role_name">
+                            {constant.userRolePage.userRoleTableColumn.rolename}
+                          </Label>
                           <Input
                             type="text"
                             id="role_name"
@@ -179,7 +249,7 @@ class AddUserRole extends React.Component<{ history: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="description">Description</Label>
+                      <Label htmlFor="description">{constant.userRolePage.userRoleTableColumn.description}</Label>
                           <Input
                             type="textarea"
                             id="description"
@@ -199,7 +269,7 @@ class AddUserRole extends React.Component<{ history: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <label>
-                          <span>IsAdminRole</span>
+                      <span>{constant.userRolePage.userRoleTableColumn.isadminrole}</span>
                           <br />
                           <div style={{ marginTop: "10px" }}>
                             <Switch
@@ -210,15 +280,27 @@ class AddUserRole extends React.Component<{ history: any }> {
                         </label>
                       </Col>
                     </Row>
-                    <Button
-                      type="button"
-                      size="sm"
-                      color="primary"
-                      className="mb-2 mr-2 custom-button"
-                      onClick={this.addUserRole}
-                    >
-                      Save
-                    </Button>
+                    {this.state.updateTrue === true ? (
+                      <Button
+                        type="button"
+                        size="sm"
+                        color="primary"
+                        className="mb-2 mr-2 custom-button"
+                        onClick={this.updateUserRole}
+                      >
+                        {constant.button.update}
+                      </Button>
+                    ) : (
+                      <Button
+                        type="button"
+                        size="sm"
+                        color="primary"
+                        className="mb-2 mr-2 custom-button"
+                        onClick={this.addUserRole}
+                      >
+                        {constant.button.Save}
+                      </Button>
+                    )}
                   </CardBody>
                 </Card>
               </Col>

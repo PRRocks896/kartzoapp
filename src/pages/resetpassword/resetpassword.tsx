@@ -1,27 +1,20 @@
 import React from "react";
-import API from "../../service/service";
+import {API} from "../../service/index.service";
 import {
   Row,
-  Col,
   Button,
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Card,
   CardHeader,
-  CardFooter,
   CardBody,
-  Form,
   FormGroup,
-  FormText,
   Label,
   Input,
-  InputGroup,
-  InputGroupAddon,
 } from "reactstrap";
+import utils from "../../utils";
+import "./resetpassword.css";
+import constant from '../../constant/constant';
 
-class ResetPassword extends React.Component<{ location: any }> {
+class ResetPassword extends React.Component<{ location: any; history: any }> {
   state = {
     password: "",
     passwordError: "",
@@ -35,7 +28,10 @@ class ResetPassword extends React.Component<{ location: any }> {
 
   /** first this method call */
   componentDidMount() {
-    console.log("query=", this.props.location.pathname.split("/")[2]);
+    console.log(
+      "query=",
+      this.props.location.pathname.split("/")[2].split("=")[1]
+    );
   }
 
   /** validation of reset form */
@@ -63,34 +59,41 @@ class ResetPassword extends React.Component<{ location: any }> {
 
   /** Reset password  */
   async ResetPassword() {
-    const isValid = this.validate();
-    if (isValid) {
-      this.setState({
-        password: "",
-        passwordError: "",
-      });
-    }
     const obj = {
-      guid: this.props.location.pathname.split("/")[2],
+      guid: this.props.location.pathname.split("/")[2].split("=")[1],
       password: this.state.password,
     };
-    var resetPassword = await API.resetPassword(obj);
+    var resetPassword: any = await API.resetPassword(obj);
     console.log("resetPassword", resetPassword);
+
+    if (resetPassword) {
+      if (resetPassword.status === 200) {
+        const msg = resetPassword.data.message;
+        utils.showSuccess(msg);
+        this.props.history.push("/login");
+      } else {
+        const msg = resetPassword.data.message;
+        utils.showError(msg);
+      }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
+    }
   }
 
   render() {
     return (
-      <div style={{marginTop:'10px'}}>
-        <Col xs="12" sm="12" md="6" lg="6" xl="6">
+      <div className="mainclass">
+        <div className="main-box">
           <Card>
             <CardHeader>
-              <strong className="maincontent">Reset Password</strong>
+    <strong className="maincontent">{constant.resetPasswordPage.resetpassword}</strong>
             </CardHeader>
             <CardBody>
               <Row>
-                <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                <div className="box">
                   <FormGroup>
-                    <Label htmlFor="resetpassword">ResetPassword</Label>
+                    <Label htmlFor="resetpassword">{constant.resetPasswordPage.resetpassword}</Label>
                     <Input
                       type="password"
                       name="password"
@@ -99,11 +102,11 @@ class ResetPassword extends React.Component<{ location: any }> {
                       value={this.state.password}
                       onChange={this.handleChangeEvent}
                     />
-                    <div style={{ fontSize: 12, color: "red" }}>
+                    <div className="text-danger">
                       {this.state.passwordError}
                     </div>
                   </FormGroup>
-                </Col>
+                </div>
               </Row>
               <Button
                 type="button"
@@ -112,11 +115,11 @@ class ResetPassword extends React.Component<{ location: any }> {
                 onClick={this.ResetPassword}
                 disabled={!this.state.password}
               >
-                Reset
+                {constant.resetPasswordPage.resetButton}
               </Button>
             </CardBody>
           </Card>
-        </Col>
+        </div>
       </div>
     );
   }

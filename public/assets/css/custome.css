@@ -132,7 +132,7 @@ div#dtBasicExample_wrapper .row {
     list-style: none;
     border-radius: .25rem;
     justify-content: flex-end;
-    padding-top: 11px;
+    /* padding-top: 11px; */
 }
 table.dataTable.table-sm .sorting:after, table.dataTable.table-sm .sorting_asc:after, table.dataTable.table-sm .sorting_desc:after {
     top: 5px;
@@ -171,4 +171,61 @@ td.dataTables_empty {
 
 table.dataTable {
     margin-top: 30px !important;
+}
+
+.table-picture{
+    max-width: 40px;
+    height: 40px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #fbb132; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+  .check_display{
+      display: inline-block !important;
+  }
+
+  .status_active_color {
+    padding: 3px 11px;
+    background-color: #0000ffa6;
+    color: #fff;
+    border-radius: 20px;
+    border: black;
+  }
+
+  .status_inactive_color {
+    padding: 3px 11px;
+    background-color: red;
+    color: #fff;
+    border-radius: 20px;
+    border: black;
+  }
+
+  button:focus{
+    outline: none !important;
+  }
+
+  .table-bordered {
+    border: 1px solid #dee2e6;
+    margin-top: 30px;
+}
+
+.search_right {
+  text-align: right;
 }

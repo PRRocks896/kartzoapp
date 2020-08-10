@@ -1,4 +1,5 @@
 export interface stateCreateRequest {
-    statename?: string,
-    selectedFile?: object
+    stateName?: string,
+    countryId?: number,
+    isActive?:boolean
 }

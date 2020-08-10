@@ -1,6 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import RoleAPI from "../../../service/role.service";
+import {RoleAPI} from "../../../service/index.service";
 import {
   Button,
   Card,
@@ -12,27 +11,30 @@ import {
   CustomInput,
   FormGroup,
   Table,
-  InputGroup,
   Label,
   Row,
 } from "reactstrap";
-// import './users.css';
 import NavBar from "../../navbar/navbar";
 import constant from "../../../constant/constant";
 import utils from "../../../utils";
 import "./userroletorights.css";
-import { any } from "prop-types";
 
 class UserRoleToRights extends React.Component {
+  roleState = constant.rolePrivileges.state
   state = {
-    userrole: [],
-    roleid: 0,
-    onItemSelect: "",
-    mainItemName: [],
-    role: [],
-    roleprivileges: [],
-    _maincheck: false,
-    show: false,
+    userrole: this.roleState.userrole,
+    roleid: this.roleState.roleid,
+    onItemSelect: this.roleState.onItemSelect,
+    mainItemName: this.roleState.mainItemName,
+    role: this.roleState.role,
+    roleprivileges: this.roleState.roleprivileges,
+    _maincheck: this.roleState._maincheck,
+    _viewcheck: this.roleState._viewcheck,
+    _editcheck: this.roleState._editcheck,
+    _addcheck: this.roleState._addcheck,
+    _deletecheck: this.roleState._deletecheck,
+    _detailcheck: this.roleState._detailcheck,
+    show: this.roleState.show,
   };
 
   constructor(props: any) {
@@ -42,6 +44,12 @@ class UserRoleToRights extends React.Component {
     this.handleMainChange = this.handleMainChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.checkMaster = this.checkMaster.bind(this);
+    this.updateRights = this.updateRights.bind(this);
+    this.handleViewChange = this.handleViewChange.bind(this);
+    this.handleAddChange = this.handleAddChange.bind(this);
+    this.handleDeleteChange = this.handleDeleteChange.bind(this);
+    this.handleDetailChange = this.handleDetailChange.bind(this);
+    this.handleEditChange = this.handleEditChange.bind(this);
   }
 
   componentDidMount() {
@@ -52,12 +60,17 @@ class UserRoleToRights extends React.Component {
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
 
-    if (getUserRole.resultObject != null) {
-      this.setState({
-        userrole: this.state.userrole = getUserRole.resultObject,
-      });
+    if (getUserRole) {
+      if (getUserRole.resultObject != null) {
+        this.setState({
+          userrole: this.state.userrole = getUserRole.resultObject,
+        });
+      } else {
+        const msg1 = getUserRole.explanation;
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = getUserRole.explanation;
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -72,35 +85,40 @@ class UserRoleToRights extends React.Component {
       id: this.state.roleid,
     };
     const getRolePreveliges = await RoleAPI.getRolePreveliges(obj);
-    if (getRolePreveliges.resultObject !== null) {
-      this.setState({
-        mainItemName: this.state.mainItemName =
-          getRolePreveliges.resultObject.menuItems,
-        role: this.state.role = getRolePreveliges.resultObject.roleprivileges,
-      });
+    if (getRolePreveliges) {
+      if (getRolePreveliges.resultObject !== null) {
+        this.setState({
+          mainItemName: this.state.mainItemName =
+            getRolePreveliges.resultObject.menuItems,
+          role: this.state.role = getRolePreveliges.resultObject.roleprivileges,
+        });
 
-      let data = this.state.role;
+        let data = this.state.role;
 
-      let count = 0;
-      data.forEach((element: any) => {
-        if (
-          element.view == true &&
-          element.delete == true &&
-          element.add == true &&
-          element.edit == true &&
-          element.detail == true
-        ) {
-          element._rowChecked = true;
-          count++;
-        } else {
-          element._rowChecked = false;
-        }
-      });
-      this.setState({
-        roleprivileges: this.state.roleprivileges = data,
-      });
+        let count = 0;
+        data.forEach((element: any) => {
+          if (
+            element.view == true &&
+            element.delete == true &&
+            element.add == true &&
+            element.edit == true &&
+            element.detail == true
+          ) {
+            element._rowChecked = true;
+            count++;
+          } else {
+            element._rowChecked = false;
+          }
+        });
+        this.setState({
+          roleprivileges: this.state.roleprivileges = data,
+        });
+      } else {
+        const msg1 = "Error";
+        utils.showError(msg1);
+      }
     } else {
-      const msg1 = "Error";
+      const msg1 = "Internal server error";
       utils.showError(msg1);
     }
   }
@@ -194,6 +212,107 @@ class UserRoleToRights extends React.Component {
     });
   }
 
+  handleViewChange(e: any) {
+    let _val = e.target.checked;
+    this.state.roleprivileges.forEach((element: any) => {
+      element.view = _val == true ? true : false;
+    });
+    this.setState({
+      roleprivileges: this.state.roleprivileges,
+    });
+    this.setState({
+      _viewcheck: _val,
+    });
+  }
+
+  handleAddChange(e: any) {
+    let _val = e.target.checked;
+    this.state.roleprivileges.forEach((element: any) => {
+      element.add = _val == true ? true : false;
+    });
+    this.setState({
+      roleprivileges: this.state.roleprivileges,
+    });
+    this.setState({
+      _addcheck: _val,
+    });
+  }
+
+  handleEditChange(e: any) {
+    let _val = e.target.checked;
+    this.state.roleprivileges.forEach((element: any) => {
+      element.edit = _val == true ? true : false;
+    });
+    this.setState({
+      roleprivileges: this.state.roleprivileges,
+    });
+    this.setState({
+      _editcheck: _val,
+    });
+  }
+
+  handleDeleteChange(e: any) {
+    let _val = e.target.checked;
+    this.state.roleprivileges.forEach((element: any) => {
+      element.delete = _val == true ? true : false;
+    });
+    this.setState({
+      roleprivileges: this.state.roleprivileges,
+    });
+    this.setState({
+      _deletecheck: _val,
+    });
+  }
+
+  handleDetailChange(e: any) {
+    let _val = e.target.checked;
+    this.state.roleprivileges.forEach((element: any) => {
+      element.detail = _val == true ? true : false;
+    });
+    this.setState({
+      roleprivileges: this.state.roleprivileges,
+    });
+    this.setState({
+      _detailcheck: _val,
+    });
+  }
+
+  async updateRights() {
+    console.log("userdata", this.state.roleprivileges);
+    let privilegesArray = [];
+    for (var i = 0; i < this.state.roleprivileges.length; i++) {
+      privilegesArray.push({
+        menuitemid: this.state.roleprivileges[i]["menuItemID"],
+        view: this.state.roleprivileges[i]["view"],
+        add: this.state.roleprivileges[i]["add"],
+        edit: this.state.roleprivileges[i]["edit"],
+        delete: this.state.roleprivileges[i]["delete"],
+        detail: this.state.roleprivileges[i]["detail"],
+      });
+    }
+    const obj = {
+      roleid: parseInt(this.state.roleid),
+      isadminuser: true,
+      privileges: privilegesArray,
+    };
+
+    const updateRolePreveliges = await RoleAPI.updateRolePreveliges(obj);
+    console.log("updateRolePreveliges", updateRolePreveliges);
+
+    if (updateRolePreveliges) {
+      if (updateRolePreveliges.resultObject !== null) {
+        const msg = "Role privileges Updated Successfully";
+        utils.showSuccess(msg);
+      } else {
+        const msg1 = "Error";
+        utils.showError(msg1);
+      }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
+    }
+  }
+
   render() {
     return (
       <>
@@ -204,7 +323,7 @@ class UserRoleToRights extends React.Component {
                 <Card className="main-card mb-12">
                   <CardHeader>
                     <CardTitle className="font">
-                      Role Privileges Management
+                      {constant.rolePrivilegesTitle}
                     </CardTitle>
                   </CardHeader>
                   <CardBody>
@@ -214,7 +333,7 @@ class UserRoleToRights extends React.Component {
                           <Form>
                             <FormGroup>
                               <Label for="exampleCustomSelect">
-                                <b>Select Role To Manage The All Rights:</b>
+                               {constant.rolePrivileges.title.title}
                               </Label>
                               <CustomInput
                                 type="select"
@@ -222,17 +341,24 @@ class UserRoleToRights extends React.Component {
                                 name="customSelect"
                                 onChange={this.onItemSelect}
                               >
-                                <option value="">Select UserRole:</option>
-                                {
-                                this.state.userrole.length > 0 ? this.state.userrole.map((data:any, index) =>
-                                    <option key={data.value} value={data.value}>{data.name}</option>
-                                ) : ''
-                            }
+                                <option value="">{constant.userPage.userTableColumn.roleselect}</option>
+                                {this.state.userrole.length > 0
+                                  ? this.state.userrole.map(
+                                      (data: any, index) => (
+                                        <option
+                                          key={data.value}
+                                          value={data.value}
+                                        >
+                                          {data.name}
+                                        </option>
+                                      )
+                                    )
+                                  : ""}
                               </CustomInput>
                             </FormGroup>
                           </Form>
                         </Col>
-                        <Col md="8">
+                        {/* <Col md="8">
                           <div className="right">
                             <Link to="/">
                               <Button
@@ -243,7 +369,7 @@ class UserRoleToRights extends React.Component {
                               </Button>
                             </Link>
                           </div>
-                        </Col>
+                        </Col> */}
                       </Row>
                       {this.state.show === true ? (
                         <>
@@ -252,7 +378,7 @@ class UserRoleToRights extends React.Component {
                               <Card className="main-card mb-8">
                                 <CardHeader>
                                   <CardTitle className="font">
-                                    Role Privileges
+                                    {constant.rolePrivileges.title.roleprivileges}
                                   </CardTitle>
                                 </CardHeader>
                                 <CardBody>
@@ -274,13 +400,68 @@ class UserRoleToRights extends React.Component {
                                           />
                                         </th>
                                         <th className="centers">
-                                          <span>Name</span>
+                      <span>{constant.rolePrivileges.title.name}</span>
                                         </th>
-                                        <th>View</th>
-                                        <th>Add</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                        <th>Detail</th>
+                                        <th>
+                                          {/* <CustomInput
+                                            name="view"
+                                            defaultValue="value"
+                                            type="checkbox"
+                                            id="view"
+                                            onChange={this.handleViewChange}
+                                            checked={this.state._viewcheck}
+                                            className="check_display"
+                                          /> */}
+                                         {constant.rolePrivileges.title.view}
+                                        </th>
+                                        <th>
+                                          {/* <CustomInput
+                                            name="add"
+                                            defaultValue="value"
+                                            type="checkbox"
+                                            id="add"
+                                            onChange={this.handleAddChange}
+                                            checked={this.state._addcheck}
+                                            className="check_display"
+                                          /> */}
+                                          {constant.rolePrivileges.title.add}
+                                        </th>
+                                        <th>
+                                          {/* <CustomInput
+                                            name="edit"
+                                            defaultValue="value"
+                                            type="checkbox"
+                                            id="edit"
+                                            onChange={this.handleEditChange}
+                                            checked={this.state._editcheck}
+                                            className="check_display"
+                                          /> */}
+                                          {constant.rolePrivileges.title.edit}
+                                        </th>
+                                        <th>
+                                          {/* <CustomInput
+                                            name="delete"
+                                            defaultValue="value"
+                                            type="checkbox"
+                                            id="delete"
+                                            onChange={this.handleDeleteChange}
+                                            checked={this.state._deletecheck}
+                                            className="check_display"
+                                          /> */}
+                                          {constant.rolePrivileges.title.delete}
+                                        </th>
+                                        <th>
+                                          {/* <CustomInput
+                                            name="detail"
+                                            defaultValue="value"
+                                            type="checkbox"
+                                            id="detail"
+                                            onChange={this.handleDetailChange}
+                                            checked={this.state._detailcheck}
+                                            className="check_display"
+                                          /> */}
+                                          {constant.rolePrivileges.title.detail}
+                                        </th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -481,8 +662,9 @@ class UserRoleToRights extends React.Component {
                               className="mb-2 mr-2 custom-button"
                               color="primary"
                               style={{ margin: "15px" }}
+                              onClick={this.updateRights}
                             >
-                              Save
+                              {constant.button.Save}
                             </Button>
                           </Row>
                         </>

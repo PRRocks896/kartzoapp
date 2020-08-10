@@ -28,31 +28,41 @@ const apiUrl = {
     userRoleController: {
         addRole:'roles',
         getRole:'roles/get-role-list-dropdown',
-        editRole:'role',
-        deleteRole:'role',
+        editRole:'roles/',
+        deleteRole:'roles/',
         rolepreveliges:'roleprivileges/',
-        getRoles:'roles/get-role-list'
+        updateRolePreveliges:'roleprivileges',
+        getRoles:'roles/get-role-list',
+        getRoleById:'roles/'
     },
     locationController: {
         addCountry:'country',
-        getCountry:'country',
-        editCountry:'country',
-        deleteCountry:'country',
+        getCountry:'country/get-country-list',
+        getCountryList:'country/get-country-list-dropdown',
+        editCountry:'country/',
+        deleteCountry:'country/',
+        getStateById:'state/',
+        getCountryById:'country/',
+        getStateList:'state/get-state-list-dropdown',
         addState:'state',
-        getState:'state',
-        editState:'state',
-        deleteState:'state',
+        getState:'state/get-state-list',
+        editState:'state/',
+        deleteState:'state/',
         addCity:'city',
+        getCityData:'city/get-city-list',
         gedCity:'city',
-        edidCity:'city',
-        deletdCity:'city'
+        edidCity:'city/',
+        deletdCity:'city/',
+        getCityById:'city/'
     },
     categoryController: {
         addCatergory:'category',
-        getCategory:'category',
-        editCategory:'category',
-        deleteCategory:'category',
-        addsubCategory:'subcategory'
+        getCategory:'category/get-category-list',
+        editCategory:'category/',
+        deleteCategory:'category/',
+        addsubCategory:'subcategory',
+        getCategoryById:'category/',
+        getAllCategory:'category/get-category-list-dropdown'
     },
     couponController: {
         addCoupon:'coupon',

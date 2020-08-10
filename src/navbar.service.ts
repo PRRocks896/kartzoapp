@@ -7,7 +7,7 @@ export default {
         type: 'link',
       },
       {
-        name: 'User Management',
+        name: 'User',
         id: 'usermanagement',
         icon: 'fa fa-user fs-16',
         type: 'dropdown',
@@ -27,7 +27,7 @@ export default {
         ]
       },
       {
-        name: 'Category Management',
+        name: 'Category',
         id: 'categorymanagement',
         icon: 'fa fa-list fs-16',
         type: 'dropdown',
@@ -35,125 +35,125 @@ export default {
           {
             name: 'Category',
             url: '/category'
-          },
-          {
-            name: 'Sub Category',
-            url: '/subcategory'
           }
+          // {
+          //   name: 'Sub Category',
+          //   url: '/subcategory'
+          // }
         ]
       },
       {
-        name: 'Location Management',
+        name: 'Location',
         id: 'locationmanagement',
         icon: 'fa fa-location-arrow fs-16',
         type: 'dropdown',
         children: [
           {
-            name: 'Country Management',
+            name: 'Country',
             url: '/country'
           },
           {
-            name: 'State Management',
+            name: 'State',
             url: '/state'
           },
           {
-            name: 'City Management',
+            name: 'City',
             url: '/city'
           }
         ]
       },
       {
-        name: 'Coupon Management',
+        name: 'Coupon',
         url: '/coupon',
         icon: 'fa fa-gift fs-16',
         type: 'link'
       },
       {
-        name: 'Merchant Management',
+        name: 'Merchant',
         id: 'merchantmanagement',
         icon: 'fa fa-location-arrow fs-16',
         type: 'dropdown',
         children: [
           {
-            name: 'Merchant Management',
+            name: 'Merchant',
             url: '/merchant'
           },
           {
-            name: 'Business Management',
+            name: 'Business',
             url: '/merchant-business'
           },
           {
-            name: 'Review Management',
+            name: 'Review',
             url: '/list-merchant-review'
           }
         ]
       },
       {
-        name: 'Product Management',
+        name: 'Product',
         id: 'productmanagement',
         icon: 'fa fa-shopping-cart fs-16',
         type: 'dropdown',
         children: [
           {
-            name: 'Product Management',
+            name: 'Product',
             url: '/list-product'
           },
           {
-            name: 'Image Management',
+            name: 'Image',
             url: '/list-product-image'
           },
           {
-            name: 'Inventory Management',
+            name: 'Inventory',
             url: '/list-product-inventory'
           },
           {
-            name: 'Review Management',
+            name: 'Review',
             url: '/list-product-review'
           },
           {
-            name: 'AddOn Management',
+            name: 'AddOn',
             url: '/product-addondetail'
           }
         ]
       },
       {
-        name: 'Delivery Management',
+        name: 'Delivery',
         url: '/delivery',
         icon: 'fa fa-truck fs-16',
         type: 'link'
       },
       {
-        name: 'Order Management',
+        name: 'Order',
         id: 'ordermanagement',
         icon: 'fa fa-list-alt fs-16',
         type: 'dropdown',
         children: [
           {
-            name: 'Order Management',
+            name: 'Order',
             url: '/list-order'
           },
           {
-            name: 'Cart Management',
+            name: 'Cart',
             url: '/list-cart'
           }
         ]
       },
       {
-        name: 'Customer Management',
+        name: 'Customer',
         id: 'customermanagement',
         icon: 'fa fa-users fs-16',
         type: 'dropdown',
         children: [
           {
-            name: 'User Management',
+            name: 'User',
             url: '/list-user'
           },
           {
-            name: 'Address Management',
+            name: 'Address',
             url: '/list-address'
           },
           {
-            name: 'Card Management',
+            name: 'Card',
             url: '/list-card'
           }
         ]

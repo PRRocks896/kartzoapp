@@ -7,11 +7,21 @@ const WebReqUrl = {
         try {
             let response;
             response = await axios.get(url,{headers: utils.getHeaderDetail()})
-            if (response.status === 200) {
-                console.log(response);
-                return response?.data;
+            console.log("response",response);
+            if(response) {
+                try {
+                    if (response.status === 200) {
+                        console.log(response);
+                        return response?.data;
+                    } else {
+                        console.log(response);
+                        return [];
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
             } else {
-                return [];
+                console.log("err");
             }
         } catch (err) {
             console.error(err);
@@ -21,11 +31,21 @@ const WebReqUrl = {
         try {
             let response;
             response = await axios.delete(url, {headers: utils.getHeaderDetail()})
-            if (response.status === 200) {
-                console.log(response);
-                return response?.data;
+            console.log("response",response);
+            if(response) {
+                try {
+                    if (response.status === 200) {
+                        console.log(response);
+                        return response?.data;
+                    } else {
+                        console.log(response);
+                        return [];
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
             } else {
-                return [];
+                console.log("err");
             }
         } catch (err) {
             console.error(err);
@@ -35,11 +55,21 @@ const WebReqUrl = {
         try {
             let response;
             response = await axios.put(url, body, {headers: utils.getHeaderDetail()})
-            if (response.status === 200) {
-                console.log(response);
-                return response?.data;
+            console.log("response",response);
+            if(response) {
+                try {
+                    if (response.status === 200) {
+                        console.log(response);
+                        return response?.data;
+                    } else {
+                        console.log(response);
+                        return [];
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
             } else {
-                return [];
+                console.log("err");
             }
         } catch (err) {
             console.error(err);
@@ -49,16 +79,21 @@ const WebReqUrl = {
         try {
             let response;
             response = await axios.post(url, body, {headers: utils.getHeaderDetail()})
-            if (response.status === 200) {
-                console.log(response);
-                return response?.data;
-            } else if (response.status === 500) {
-                const msg = "Internal server error";
-                utils.showError(msg);
-                return [];
-               
+            console.log("response",response);
+            if(response) {
+                try {
+                    if (response.status === 200) {
+                        console.log(response);
+                        return response?.data;
+                    } else {
+                        console.log(response);
+                        return [];
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
             } else {
-                return [];
+                console.log("err");
             }
         } catch (err) {
             console.error(err);

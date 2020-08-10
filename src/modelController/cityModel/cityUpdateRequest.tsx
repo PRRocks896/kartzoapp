@@ -1,6 +1,6 @@
 export interface cityUpdateRequest {
-    id?:string,
-    cityname?: string,
-    selectedFile?: object,
-    selectedState?: string
+    cityId?:number,
+    cityName?: string,
+    stateId?: number,
+    isActive?: boolean
 }

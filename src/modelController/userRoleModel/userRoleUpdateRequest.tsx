@@ -1,3 +1,7 @@
 export interface userRoleUpdateRequest {
-    rolename?:string
+    roleId?:number,
+    role?:string,
+    description?:string,
+    isActive?:boolean,
+    isAdminRole?:boolean
 }

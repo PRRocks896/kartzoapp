@@ -1,5 +1,5 @@
 export interface cityCreateRequest {
-    cityname?: string,
-    selectedFile?: object,
-    selectedState?: string
+    cityName?: string,
+    stateId?: number,
+    isActive?: boolean
 }

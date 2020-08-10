@@ -1,388 +1,483 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import utils from '../../../utils';
-import { MDBDataTable } from 'mdbreact';
+import React from "react";
+import { Link } from "react-router-dom";
+import utils from "../../../utils";
 import {
-    Button,
-    Card,
-    CardBody,
-    CardHeader,
-    CardTitle,
-    Table,
-    Input,
-    Col,
-    FormGroup,
-    CustomInput,
-    Label,
-    Row,
-} from 'reactstrap';
-// import './adduser.css';
-import NavBar from '../../navbar/navbar';
-import API from '../../../service/location.service';
-import Switch from "react-switch";
-import Constant from '../../../constant/constant';
-import { countryListRequest } from '../../../modelController/countryModel';
-const $ = require('jquery');
-$.DataTable = require('datatables.net')
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
+  Table,
+  Input,
+  Col,
+  FormGroup,
+  CustomInput,
+  Label,
+  Row,
+} from "reactstrap";
+import NavBar from "../../navbar/navbar";
+import {LocationAPI} from "../../../service/index.service";
+import constant from "../../../constant/constant";
 
 class CountryManagment extends React.Component<{ history: any }> {
+  countryState = constant.countryPage.state;
+  state = {
+    count: this.countryState.count,
+    currentPage: this.countryState.currentPage,
+    items_per_page: this.countryState.items_per_page,
+    upperPageBound: this.countryState.upperPageBound,
+    lowerPageBound: this.countryState.lowerPageBound,
+    pageBound: this.countryState.pageBound,
+    onItemSelect: this.countryState.onItemSelect,
+    countrydata: this.countryState.countrydata,
+    switchSort: this.countryState.switchSort,
+    isStatus: this.countryState.isStatus,
+  };
 
-    state = {
-        selectedFile: null,
-        firstname: '',
-        firstnameerror: '',
-        lastname: '',
-        lastnameerror: '',
-        email: '',
-        emailerror: '',
-        mobilenumber: '',
-        mobilenumbererror: '',
-        password: '',
-        passworderror: '',
-        checked: false,
-        selectedFileerror: '',
-        count: 10,
-        currentPage: 1,
-        items_per_page: 2,
-        perpage: 2,
-        paginationdata: '',
-        isFetch: false,
-        data: '',
-        allRecords: '',
-        upperPageBound: 3,
-        lowerPageBound: 0,
-        pageBound: 3,
-        isPrevBtnActive: 'disabled',
-        isNextBtnActive: '',
-        onClickPage: 1,
-        activePage: 15
-    }
+  constructor(props: any) {
+    super(props);
+    this.editCountry = this.editCountry.bind(this);
+    this.btnIncrementClick = this.btnIncrementClick.bind(this);
+    this.btnDecrementClick = this.btnDecrementClick.bind(this);
+    this.viewCountry = this.viewCountry.bind(this);
+    this.onItemSelect = this.onItemSelect.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(
+      this
+    );
+    this.handleSort = this.handleSort.bind(this);
+    this.compareByDesc = this.compareByDesc.bind(this);
+    this.statusChange = this.statusChange.bind(this);
+    this.pagination = this.pagination.bind(this);
+    this.getTable = this.getTable.bind(this);
+    this.getPageData = this.getPageData.bind(this);
+  }
 
-    constructor(props: any) {
-        super(props);
-        this.deleteCountry = this.deleteCountry.bind(this);
-        this.editCountry = this.editCountry.bind(this);
-        this.btnIncrementClick = this.btnIncrementClick.bind(this);
-        this.btnDecrementClick = this.btnDecrementClick.bind(this);
-        this.viewCountry = this.viewCountry.bind(this);
-    }
+  componentDidMount() {
+    document.title =
+      constant.countryPage.title.countryTitle + utils.getAppName();
+      utils.dataTable();
+      this.getCountryData();
+  }
 
-    componentDidMount() {
-        document.title = Constant.countryTitle + utils.getAppName();
-        $('#dtBasicExample').DataTable({
-            "paging": false,
-            "info": false
+  async getCountryData(
+    searchText: string = "",
+    page: number = 1,
+    size: number = 10
+  ) {
+    const obj = {
+      searchText: searchText,
+      page: page,
+      size: size,
+    };
+
+    var getCountryData = await LocationAPI.getCountryData(obj);
+    console.log("getCountryData", getCountryData);
+
+    if (getCountryData) {
+      if (getCountryData.status === 200) {
+        this.setState({
+          countrydata: this.state.countrydata =
+            getCountryData.resultObject.data,
+          count: this.state.count = getCountryData.resultObject.totalcount,
         });
-        this.getUserCountData();
-        this.getApplicationPageData();
+      } else {
+        const msg1 = getCountryData.message;
+        utils.showError(msg1);
+      }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
     }
+  }
 
-    async getUserCountData() {
+  btnIncrementClick() {
+    this.setState({
+      upperPageBound: this.state.upperPageBound + this.state.pageBound,
+    });
+    this.setState({
+      lowerPageBound: this.state.lowerPageBound + this.state.pageBound,
+    });
+    let listid = this.state.upperPageBound + 1;
+    this.setState({ currentPage: listid });
+  }
 
-        // var getuserCount = await API.getUserCount();
-        // console.log("getUsercount",getuserCount);
-      
+  btnDecrementClick() {
+    this.setState({
+      upperPageBound: this.state.upperPageBound - this.state.pageBound,
+    });
+    this.setState({
+      lowerPageBound: this.state.lowerPageBound - this.state.pageBound,
+    });
+    let listid = this.state.upperPageBound - this.state.pageBound;
+    this.setState({ currentPage: listid });
+  }
+
+  editCountry(id: any) {
+    this.props.history.push("/editcountry/" + id);
+  }
+
+  viewCountry(id: any) {
+    this.props.history.push("/viewcountry/" + id);
+  }
+
+  onItemSelect(event: any) {
+    this.setState({
+      items_per_page: this.state.items_per_page =
+        event.target.options[event.target.selectedIndex].value,
+    });
+    this.getCountryData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+  }
+
+  async handleClick(event: any) {
+    this.setState({
+      currentPage: this.state.currentPage = event.target.id,
+    });
+    const obj = {
+      searchText: "",
+      page: parseInt(event.target.id),
+      size: parseInt(this.state.items_per_page),
+    };
+    this.getCountryData(obj.searchText, obj.page, obj.size);
+  }
+
+  async searchApplicationDataKeyUp(e: any) {
+    const obj = {
+      searchText: e.target.value,
+      page: 1,
+      size: parseInt(this.state.items_per_page),
+    };
+    this.getCountryData(obj.searchText, obj.page, obj.size);
+  }
+
+  handleSort(key: any) {
+    this.setState({
+      switchSort: !this.state.switchSort,
+    });
+    let copyTableData = [...this.state.countrydata];
+    copyTableData.sort(this.compareByDesc(key));
+    this.setState({
+      countrydata: this.state.countrydata = copyTableData,
+    });
+  }
+
+  compareByDesc(key: any) {
+    if (this.state.switchSort) {
+      return function (a: any, b: any) {
+        if (a[key] < b[key]) return -1; // check for value if the second value is bigger then first return -1
+        if (a[key] > b[key]) return 1; //check for value if the second value is bigger then first return 1
+        return 0;
+      };
+    } else {
+      return function (a: any, b: any) {
+        if (a[key] > b[key]) return -1;
+        if (a[key] < b[key]) return 1;
+        return 0;
+      };
     }
+  }
 
-    async getApplicationPageData() {
-        // const obj = {
-        //     page_no: "1",
-        //     items_per_page: this.state.items_per_page
-        // }
+  async statusChange(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      let formData = new FormData();
+      formData.append("countryId", data.countryId);
+      formData.append("countryName", data.countryName);
+      formData.append("countryCode", data.countryCode);
+      formData.append(
+        "isActive",
+        new Boolean(data.isActive === true ? false : true).toString()
+      );
+      formData.append("files", data.imagePath);
 
-        // var getUserDataPagination = await API.getUserDataPagination();
-        // console.log("getUserDataPagination",getUserDataPagination);
+      const editCountry = await LocationAPI.editCountry(formData, data.countryId);
+      console.log("editCountry", editCountry);
 
-        // var getUserDataPagination : countryListRequest = [];
-      
+      if (editCountry.status === 200) {
+        const msg = editCountry.message;
+        utils.showSuccess(msg);
+        this.getCountryData();
+      } else {
+        const msg = editCountry.message;
+        utils.showError(msg);
+      }
     }
+  }
 
-    btnIncrementClick() {
-        this.setState({ upperPageBound: this.state.upperPageBound + this.state.pageBound });
-        this.setState({ lowerPageBound: this.state.lowerPageBound + this.state.pageBound });
-        let listid = this.state.upperPageBound + 1;
-        this.setState({ currentPage: listid });
-    }
-
-    btnDecrementClick() {
-        this.setState({ upperPageBound: this.state.upperPageBound - this.state.pageBound });
-        this.setState({ lowerPageBound: this.state.lowerPageBound - this.state.pageBound });
-        let listid = this.state.upperPageBound - this.state.pageBound;
-        this.setState({ currentPage: listid });
-    }
-
-    editCountry() {
-        this.props.history.push('/editcountry');
-    }
-
-    viewCountry() {
-        this.props.history.push('/viewcountry');
-    }
-
-    deleteCountry() {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'You should be remove country!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it'
-        }).then(async (result) => {
-            if (result.value) {
-                // var deleteCountry = await API.deleteCountry(id);
-                const msg = "Your Country has been deleted";
-                utils.showSuccess(msg);
-                // this.componentDidMount();
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                const msg1 = "Country is safe :";
-                utils.showError(msg1);
-            }
-        })
-    }
-
-
-
-    render() {
-        var pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(this.state.count / this.state.items_per_page); i++) {
-            pageNumbers.push(i);
-        }
-        var renderPageNumbers = pageNumbers.map((number: any) => {
-            if (number === 1 && this.state.currentPage === 1) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link">{number}</a>
-                    </li>
-                );
-            }
-            else if ((number < this.state.upperPageBound + 1) && number > this.state.lowerPageBound) {
-                return (
-                    <li
-                        key={number}
-                        id={number}
-                        className={this.state.currentPage === number ? 'active' : 'page-item'}
-                    >
-                        <a className="page-link" id={number}>{number}</a>
-                    </li>
-                )
-            }
-        });
-
-        let pageIncrementBtn = null;
-        if (pageNumbers.length > this.state.upperPageBound) {
-            pageIncrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnIncrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
-
-        let pageDecrementBtn = null;
-        if (this.state.lowerPageBound >= 1) {
-            pageDecrementBtn =
-                <li
-                    className='page-item'
-                >
-                    <a
-                        className='page-link'
-                        onClick={this.btnDecrementClick}
-                    >
-                        &hellip;
-          </a>
-                </li>
-        }
-
+  pagination(pageNumbers: any) {
+    var res = pageNumbers.map((number: any) => {
+      if (number === 1 && parseInt(this.state.currentPage) === 1) {
         return (
-            <>
-                <NavBar>
-                    <div className="ms-content-wrapper">
-                        <div className="row">
-                            <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                                <Card className="main-card mb-12">
-                                    <CardHeader>
-                                        <Row>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <CardTitle
-                                                    className="font"
-                                                >
-                                                    Country Management
-                                        </CardTitle>
-                                            </Col>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <div className="right">
-                                                    <Link to="/addcountry">
-                                                        <Button
-                                                            className="mb-2 mr-2 custom-button"
-                                                            color="primary"
-                                                        >
-                                                            Add
-                                                            </Button>
-                                                    </Link>
-                                                </div>
-                                            </Col>
-                                        </Row>
-
-                                    </CardHeader>
-                                    <CardBody>
-                                        <div className="selectDiv">
-
-                                            <CustomInput
-                                                type="select"
-                                                id="exampleCustomSelect"
-                                                name="customSelect"
-                                            // onChange={this.onItemSelect}
-                                            >
-                                                <option value="">Record per page</option>
-                                                <option value="10">10</option>
-                                                <option value="15">15</option>
-                                                <option value="20">20</option>
-                                                <option value="25">25</option>
-                                                {/* {
-this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-<option key={data.id} value={data.id}>{data.name}</option>
-) : ''
-} */}
-                                            </CustomInput>
-                                        </div>
-
-                                        <table id="dtBasicExample" className="table table-striped table-bordered table-sm" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>Country Name</th>
-                                                    <th>Country Code</th>
-                                                    <th>Country Flag</th>
-                                                    <th style={{ textAlign: "center" }}>Status</th>
-                                                    <th className="action">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>INDIA</td>
-                                                    <td>+91</td>
-                                                    <td><i className="fa fa-flag"></i> icon-flag</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye" onClick={this.viewCountry}></i>
-                                                            <i className="fas fa-edit" onClick={this.editCountry}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCountry}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>INDIA</td>
-                                                    <td>+91</td>
-                                                    <td><i className="fa fa-flag"></i> icon-flag</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye" onClick={this.viewCountry}></i>
-                                                            <i className="fas fa-edit" onClick={this.editCountry}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCountry}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        {/* <MDBDataTable
-                                            striped
-                                            hover
-                                            data={data}
-                                        /> */}
-                                        {/* <div>
-                                            <Row>
-                                                <Col md="6">
-                                                    <div>
-                                                        <input
-                                                            className="form-control"
-                                                            type="text"
-                                                            placeholder="Search"
-                                                            aria-label="Search"
-                                                        // onKeyUp={this.searchApplicationDataKeyUp}
-                                                        />
-                                                    </div>
-                                                </Col>
-                                                <Col md="6">
-                                                    <div className="right">
-                                                        <Link to="/addcountry">
-                                                            <Button
-                                                                className="mb-2 mr-2 custom-button"
-                                                                color="primary"
-                                                            >
-                                                                Add
-                                                        </Button>
-                                                        </Link>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                        <br />
-                                        <Table hover className="mb-0 table_responsive" bordered>
-                                            <thead>
-                                                <tr>
-                                                    <th>Country Name</th>
-                                                    <th>Country Code</th>
-                                                    <th>Country Flag</th>
-                                                    <th style={{ textAlign: "center" }}>Status</th>
-                                                    <th className="action">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>INDIA</td>
-                                                    <td>+91</td>
-                                                    <td><i className="fa fa-flag"></i> icon-flag</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editCountry}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCountry}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                <td>INDIA</td>
-                                                    <td>+91</td>
-                                                    <td><i className="fa fa-flag"></i> icon-flag</td>
-                                                    <td style={{ textAlign: "center" }}><i className="fa fa-check"></i></td>
-                                                    <td className="action">
-                                                        <span className="padding">
-                                                            <i className="fa fa-eye"></i>
-                                                            <i className="fas fa-edit" onClick={this.editCountry}></i>
-                                                            <i className="far fa-trash-alt" onClick={this.deleteCountry}></i>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </Table> */}
-                                        <div>
-                                            <ul className="pagination" id="page-numbers">
-                                                {pageDecrementBtn}
-                                                {renderPageNumbers}
-                                                {pageIncrementBtn}
-                                            </ul>
-                                        </div>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                        </div>
-                    </div>
-                </NavBar>
-            </>
+          <li
+            key={number}
+            id={number}
+            className={
+              parseInt(this.state.currentPage) === number
+                ? "active"
+                : "page-item"
+            }
+          >
+            <a className="page-link" onClick={this.handleClick}>
+              {number}
+            </a>
+          </li>
         );
+      } else if (
+        number < this.state.upperPageBound + 1 &&
+        number > this.state.lowerPageBound
+      ) {
+        return (
+          <li
+            key={number}
+            id={number}
+            className={
+              parseInt(this.state.currentPage) === number
+                ? "active"
+                : "page-item"
+            }
+          >
+            <a className="page-link" id={number} onClick={this.handleClick}>
+              {number}
+            </a>
+          </li>
+        );
+      }
+    });
+    return res;
+  }
+
+  getTable(countrydata: any) {
+    return (
+      <table
+        id="dtBasicExample"
+        className="table table-striped table-bordered table-sm"
+        width="100%"
+      >
+        <thead>
+          <tr onClick={() => this.handleSort("countryName")}>
+            <th>{constant.countryPage.countryTableColumn.countryName}</th>
+            <th>{constant.countryPage.countryTableColumn.countryCode}</th>
+            <th>{constant.countryPage.countryTableColumn.countryFlag}</th>
+            <th style={{ textAlign: "center" }}>
+              {constant.tableAction.status}
+            </th>
+            <th className="action">{constant.tableAction.action}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.state.countrydata.length > 0 ? (
+            <>
+              {this.state.countrydata.map((data: any, index: any) => (
+                <tr>
+                  <td>{data.countryName}</td>
+                  <td>{data.countryCode}</td>
+                  <td>
+                    {data.imagePath != null ? (
+                      <div className="img-size">
+                        {data.imagePath ? (
+                          <div>
+                            <img
+                              className="table-picture"
+                              src={constant.filepath + data.imagePath}
+                            />
+                            {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
+                          </div>
+                        ) : (
+                          <i className="fa fa-user"></i>
+                        )}
+                      </div>
+                    ) : (
+                      <div>
+                        <i className="fa fa-user picture"></i>
+                        {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
+                      </div>
+                    )}
+                  </td>
+                  <td style={{ textAlign: "center" }}>
+                    {data.isActive === true ? (
+                      <button
+                        className="status_active_color"
+                        onClick={() =>
+                          this.statusChange(
+                            data,
+                            "You should be inActive country",
+                            "Yes, inActive it"
+                          )
+                        }
+                      >
+                        Active
+                      </button>
+                    ) : (
+                      <button
+                        className="status_inactive_color"
+                        onClick={() =>
+                          this.statusChange(
+                            data,
+                            "You should be Active country",
+                            "Yes, Active it"
+                          )
+                        }
+                      >
+                        InActive
+                      </button>
+                    )}
+                  </td>
+                  <td className="action">
+                    <span className="padding">
+                      <i
+                        className="fa fa-eye"
+                        onClick={() => this.viewCountry(data.countryId)}
+                      ></i>
+                      <i
+                        className="fas fa-edit"
+                        onClick={() => this.editCountry(data.countryId)}
+                      ></i>
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </>
+          ) : (
+            ""
+          )}
+        </tbody>
+      </table>
+    );
+  }
+
+  getPageData(
+    pageDecrementBtn: any,
+    renderPageNumbers: any,
+    pageIncrementBtn: any
+  ) {
+    return (
+      <div className="filter">
+        <CustomInput
+          type="select"
+          id="item"
+          className="custom_text_width"
+          name="customSelect"
+          onChange={this.onItemSelect}
+        >
+          <option value="10">{constant.recordPerPage.recordperPage}</option>
+          <option value={constant.recordPerPage.fifteen}>
+            {constant.recordPerPage.fifteen}
+          </option>
+          <option value={constant.recordPerPage.twenty}>
+            {constant.recordPerPage.twenty}
+          </option>
+          <option value={constant.recordPerPage.thirty}>
+            {constant.recordPerPage.thirty}
+          </option>
+          <option value={constant.recordPerPage.fifty}>
+            {constant.recordPerPage.fifty}
+          </option>
+        </CustomInput>
+        <div>
+          <ul className="pagination" id="page-numbers">
+            {pageDecrementBtn}
+            {renderPageNumbers}
+            {pageIncrementBtn}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    var pageNumbers = [];
+    for (
+      let i = 1;
+      i <=
+      Math.ceil(
+        parseInt(this.state.count) / parseInt(this.state.items_per_page)
+      );
+      i++
+    ) {
+      pageNumbers.push(i);
     }
+    var renderPageNumbers = this.pagination(pageNumbers);
+
+    let pageIncrementBtn = null;
+    if (pageNumbers.length > this.state.upperPageBound) {
+      pageIncrementBtn = (
+        <li className="page-item">
+          <a className="page-link" onClick={this.btnIncrementClick}>
+            &hellip;
+          </a>
+        </li>
+      );
+    }
+
+    let pageDecrementBtn = null;
+    if (this.state.lowerPageBound >= 1) {
+      pageDecrementBtn = (
+        <li className="page-item">
+          <a className="page-link" onClick={this.btnDecrementClick}>
+            &hellip;
+          </a>
+        </li>
+      );
+    }
+
+    return (
+      <>
+        <NavBar>
+          <div className="ms-content-wrapper">
+            <div className="row">
+              <Col xs="12" sm="12" md="12" lg="12" xl="12">
+                <Card className="main-card mb-12">
+                  <CardHeader>
+                    <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <CardTitle className="font">
+                          {constant.countryPage.title.countryTitle}
+                        </CardTitle>
+                      </Col>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <div className="right">
+                          <Link to="/addcountry">
+                            <Button
+                              className="mb-2 mr-2 custom-button"
+                              color="primary"
+                            >
+                              {constant.button.add}
+                            </Button>
+                          </Link>
+                        </div>
+                      </Col>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    <div className="search_right">
+                      <input
+                        className="form-control custom_text_width search"
+                        type="text"
+                        placeholder="Search"
+                        aria-label="Search"
+                        onKeyUp={this.searchApplicationDataKeyUp}
+                      />
+                    </div>
+                    {this.state.countrydata.length > 0 ? (
+                      <>{this.getTable(this.state.countrydata)}</>
+                    ) : (
+                      <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                    {this.state.countrydata.length > 0
+                      ? this.getPageData(
+                          pageIncrementBtn,
+                          renderPageNumbers,
+                          pageDecrementBtn
+                        )
+                      : ""}
+                  </CardBody>
+                </Card>
+              </Col>
+            </div>
+          </div>
+        </NavBar>
+      </>
+    );
+  }
 }
 
 export default CountryManagment;
