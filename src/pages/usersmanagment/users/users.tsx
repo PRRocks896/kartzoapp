@@ -566,7 +566,7 @@ class Users extends React.Component<{ history: any }> {
                     {this.state.userdata.length > 0 ? (
                       <>{this.getTable(this.state.userdata)}</>
                     ) : (
-                      <h1>No Data Found</h1>
+                      <h1 className="text-center mt-5">No Data Found</h1>
                     )}
                     {this.state.userdata.length > 0 ? (
                      this.getPageData(pageIncrementBtn,renderPageNumbers,pageDecrementBtn)

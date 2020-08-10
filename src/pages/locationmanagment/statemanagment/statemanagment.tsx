@@ -436,7 +436,7 @@ class StateManagment extends React.Component<{ history: any }> {
                     {this.state.statedata.length > 0 ? (
                       <>{this.getTable(this.state.statedata)}</>
                     ) : (
-                      ""
+                      <h1 className="text-center mt-5">No Data Found</h1>
                     )}
                     {this.state.statedata.length > 0
                       ? this.getPageData(

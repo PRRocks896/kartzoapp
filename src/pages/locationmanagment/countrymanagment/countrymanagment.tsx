@@ -460,7 +460,7 @@ class CountryManagment extends React.Component<{ history: any }> {
                     {this.state.countrydata.length > 0 ? (
                       <>{this.getTable(this.state.countrydata)}</>
                     ) : (
-                      ""
+                      <h1 className="text-center mt-5">No Data Found</h1>
                     )}
                     {this.state.countrydata.length > 0
                       ? this.getPageData(

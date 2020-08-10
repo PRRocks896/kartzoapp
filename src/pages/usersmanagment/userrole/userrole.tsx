@@ -436,7 +436,7 @@ class UserRole extends React.Component<{ history: any }> {
                     {this.state.userrole.length > 0 ? (
                       <>{this.getTable(this.state.userrole)}</>
                     ) : (
-                      ""
+                      <h1 className="text-center mt-5">No Data Found</h1>
                     )}
                     {this.state.userrole.length > 0
                       ? this.getPageData(

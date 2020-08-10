@@ -468,7 +468,7 @@ class Category extends React.Component<{ history: any }> {
                     {this.state.categorydata.length > 0 ? (
                       <>{this.getTable(this.state.categorydata)}</>
                     ) : (
-                      ""
+                      <h1 className="text-center mt-5">No Data Found</h1>
                     )}
                     {this.state.categorydata.length > 0
                       ? this.getPageData(
