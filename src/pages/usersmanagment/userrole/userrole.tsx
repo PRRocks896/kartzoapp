@@ -15,7 +15,7 @@ import "./userrole.css";
 import utils from "../../../utils";
 import constant from "../../../constant/constant";
 import { userRoleUpdateRequest } from "../../../modelController/index";
-import {RoleAPI} from "../../../service/index.service";
+import {RoleAPI, StatusAPI} from "../../../service/index.service";
 
 interface getUserRoleRequest {
   searchText?: string;
@@ -182,23 +182,19 @@ class UserRole extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: userRoleUpdateRequest = {
-        roleId: data.roleId,
-        role: data.role,
-        description: data.description,
-        isActive: data.isActive === true ? false : true,
-        isAdminRole: data.isAdminRole,
-      };
-
-      const editUserRole = await RoleAPI.editUserRole(obj);
-      console.log("editUserRole", editUserRole);
-
-      if (editUserRole.status === 200) {
-        const msg = editUserRole.message;
+      const obj = {
+        moduleName: "Role",
+        id: data.roleId,
+        isActive: data.isActive === true ? false : true
+       }
+       var getStatusChange = await StatusAPI.getStatusChange(obj);
+       console.log("getStatusChange", getStatusChange);
+       if (getStatusChange.status === 200) {
+        const msg = getStatusChange.message;
         utils.showSuccess(msg);
         this.getRole();
       } else {
-        const msg1 = editUserRole.message;
+        const msg1 = getStatusChange.message;
         utils.showError(msg1);
       }
     }

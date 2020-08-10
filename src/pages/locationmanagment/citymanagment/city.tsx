@@ -16,7 +16,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import {LocationAPI} from "../../../service/index.service";
+import {LocationAPI, StatusAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { cityUpdateRequest } from "../../../modelController/index";
 
@@ -175,23 +175,20 @@ class City extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: cityUpdateRequest = {
-        cityId: data.cityId,
-        cityName: data.cityName,
-        stateId: data.stateId,
-        isActive: data.isActive === true ? false : true,
-      };
-
-      const editCity = await LocationAPI.editCity(obj, data.cityId);
-      console.log("editCity", editCity);
-
-      if (editCity.status === 200) {
-        const msg = editCity.message;
+      const obj = {
+        moduleName: "City",
+        id: data.cityId,
+        isActive: data.isActive === true ? false : true
+       }
+       var getStatusChange = await StatusAPI.getStatusChange(obj);
+       console.log("getStatusChange", getStatusChange);
+       if (getStatusChange.status === 200) {
+        const msg = getStatusChange.message;
         utils.showSuccess(msg);
         this.getCityData();
       } else {
-        const msg = editCity.message;
-        utils.showError(msg);
+        const msg1 = getStatusChange.message;
+        utils.showError(msg1);
       }
     }
   }

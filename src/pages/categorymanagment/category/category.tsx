@@ -16,7 +16,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import {CategoryAPI} from "../../../service/index.service";
+import {CategoryAPI, StatusAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class Category extends React.Component<{ history: any }> {
@@ -181,27 +181,19 @@ class Category extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      let formData = new FormData();
-      formData.append("categoryId", data.categoryId);
-      formData.append("category", data.category);
-      formData.append(
-        "isActive",
-        new Boolean(data.isActive === true ? false : true).toString()
-      );
-      formData.append(
-        "parentCategoryId",
-        data.parentCategoryId ? data.parentCategoryId : ""
-      );
-      formData.append("sortOrder", data.sortOrder);
-      formData.append("files", data.imagePath);
-      const editCategory = await CategoryAPI.editCategory(formData, data.categoryId);
-      console.log("editCategory", editCategory);
-      if (editCategory.status === 200) {
-        const msg = editCategory.message;
+      const obj = {
+        moduleName: "Category",
+        id: data.categoryId,
+        isActive: data.isActive === true ? false : true
+       }
+       var getStatusChange = await StatusAPI.getStatusChange(obj);
+       console.log("getStatusChange", getStatusChange);
+       if (getStatusChange.status === 200) {
+        const msg = getStatusChange.message;
         utils.showSuccess(msg);
         this.getCategory();
       } else {
-        const msg1 = editCategory.message;
+        const msg1 = getStatusChange.message;
         utils.showError(msg1);
       }
     }

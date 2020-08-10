@@ -11,7 +11,8 @@ const apiUrl = {
         createUser:'users',
         deleteUser:'users/',
         updatepassword:'users/change-password',
-        resetpassword:'users/reset-password'
+        resetpassword:'users/reset-password',
+        statusChange:'/status'
 
     },
     customerController: {

@@ -16,7 +16,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import {LocationAPI} from "../../../service/index.service";
+import {LocationAPI, StatusAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class CountryManagment extends React.Component<{ history: any }> {
@@ -179,26 +179,20 @@ class CountryManagment extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      let formData = new FormData();
-      formData.append("countryId", data.countryId);
-      formData.append("countryName", data.countryName);
-      formData.append("countryCode", data.countryCode);
-      formData.append(
-        "isActive",
-        new Boolean(data.isActive === true ? false : true).toString()
-      );
-      formData.append("files", data.imagePath);
-
-      const editCountry = await LocationAPI.editCountry(formData, data.countryId);
-      console.log("editCountry", editCountry);
-
-      if (editCountry.status === 200) {
-        const msg = editCountry.message;
+      const obj = {
+        moduleName: "Country",
+        id: data.countryId,
+        isActive: data.isActive === true ? false : true
+       }
+       var getStatusChange = await StatusAPI.getStatusChange(obj);
+       console.log("getStatusChange", getStatusChange);
+       if (getStatusChange.status === 200) {
+        const msg = getStatusChange.message;
         utils.showSuccess(msg);
         this.getCountryData();
       } else {
-        const msg = editCountry.message;
-        utils.showError(msg);
+        const msg1 = getStatusChange.message;
+        utils.showError(msg1);
       }
     }
   }

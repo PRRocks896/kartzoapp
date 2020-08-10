@@ -60,5 +60,7 @@ export default {
     },
     getUserById: async function (data:any) {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.userController.getDataById + data.id);
-    }
+    },
+   
+    
 }

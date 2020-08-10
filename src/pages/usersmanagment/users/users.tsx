@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import utils from "../../../utils";
-import { API, RoleAPI } from "../../../service/index.service";
+import { API, RoleAPI, StatusAPI } from "../../../service/index.service";
 import {
   Button,
   Card,
@@ -288,31 +288,22 @@ class Users extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      let formData = new FormData();
-      formData.append("id", data.userId);
-      formData.append("roleId", data.roleId);
-      formData.append("firstName", data.firstName);
-      formData.append("lastName", data.lastName);
-      formData.append("email", data.email);
-      formData.append("phone", data.phone);
-      formData.append("password", data.password);
-      formData.append("photo", data.photo ? data.photo : "");
-      formData.append(
-        "isActive",
-        new Boolean(data.isActive === true ? false : true).toString()
-      );
-      formData.append("files", data.imagePath);
-      formData.append("userId", "0");
-      const editUser: any = await API.editUser(formData, data.userId);
-      console.log("editUser", editUser);
-      if (editUser.status === 200) {
-        const msg = editUser.data.message;
-        utils.showSuccess(msg);
-        this.getUsers();
-      } else {
-        const msg1 = editUser.data.message;
-        utils.showError(msg1);
-      }
+     const obj = {
+      moduleName: "User",
+      id: data.userId,
+      isActive: data.isActive === true ? false : true
+     }
+     var getStatusChange = await StatusAPI.getStatusChange(obj);
+     console.log("getStatusChange", getStatusChange);
+     if (getStatusChange.status === 200) {
+      const msg = getStatusChange.message;
+      utils.showSuccess(msg);
+      this.getUsers();
+    } else {
+      const msg1 = getStatusChange.message;
+      utils.showError(msg1);
+    }
+
     }
   }
 

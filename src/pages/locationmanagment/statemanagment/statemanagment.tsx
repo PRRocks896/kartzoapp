@@ -17,7 +17,7 @@ import {
 } from "reactstrap";
 // import './adduser.css';
 import NavBar from "../../navbar/navbar";
-import {LocationAPI} from "../../../service/index.service";
+import {LocationAPI, StatusAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { stateUpdateRequest } from "../../../modelController/index";
 
@@ -182,23 +182,20 @@ class StateManagment extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: stateUpdateRequest = {
-        stateId: data.stateId,
-        stateName: data.stateName,
-        countryId: data.countryId,
-        isActive: false,
-      };
-
-      const editState = await LocationAPI.editState(obj, data.stateId);
-      console.log("editState", editState);
-
-      if (editState.status === 200) {
-        const msg = editState.message;
+      const obj = {
+        moduleName: "State",
+        id: data.stateId,
+        isActive: data.isActive === true ? false : true
+       }
+       var getStatusChange = await StatusAPI.getStatusChange(obj);
+       console.log("getStatusChange", getStatusChange);
+       if (getStatusChange.status === 200) {
+        const msg = getStatusChange.message;
         utils.showSuccess(msg);
         this.getStateData();
       } else {
-        const msg = editState.message;
-        utils.showError(msg);
+        const msg1 = getStatusChange.message;
+        utils.showError(msg1);
       }
     }
   }
