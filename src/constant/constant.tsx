@@ -470,4 +470,49 @@ export default {
       viewcountry:'View Country Details'
     }
   },
+
+  couponPage: {
+    title: {
+      counponTitle: "Coupon Management",
+      updateCouponTitle: "Update Counpon",
+      addCouponTitle: "Add Coupon",
+      viewCouponTitle: "View Coupon",
+    },
+    state: {
+      count: "10",
+      currentPage: "1",
+      items_per_page: "10",
+      upperPageBound: 3,
+      lowerPageBound: 0,
+      pageBound: 3,
+      onItemSelect: "",
+      coupondata: [],
+      switchSort: false,
+      isStatus: false,
+
+      // selectedFile: '',
+      // countryname: '',
+      // countrynameerror: '',
+      // countrycode: '',
+      // countrycodeerror: '',
+      // selectedFileerror: '',
+      // file:'',
+      // filetrue:false,
+      // updateTrue:false,
+      // countryid:0
+    },
+    couponTableColumn: {
+      couponCode: "Country Code",
+      description: "Description",
+      discountPrice: "Discount Price",
+      endDate:'End Date',
+      startDate:'Start Date',
+      minAmountOrder:'Min Amount Order',
+      title:'Title',
+      percentage:'Percentage'
+    },
+    viewcouponpagedetails : {
+      viewcoupon:'View Coupon Details'
+    }
+  },
 };

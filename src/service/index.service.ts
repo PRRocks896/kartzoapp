@@ -6,6 +6,7 @@ import OrderAPI from './order.service';
 import ProductAPI from './product.service';
 import CategoryAPI from './category.service';
 import StatusAPI from './status.service';
+import CouponAPI from './coupon.service';
 
 
 export * from './service';
@@ -13,6 +14,7 @@ export * from './role.service';
 export * from './location.service';
 export * from './category.service';
 export * from './status.service';
+export * from './coupon.service';
 
 
 export {
@@ -20,5 +22,6 @@ export {
     API,
     LocationAPI,
     CategoryAPI,
-    StatusAPI
+    StatusAPI,
+    CouponAPI
 }

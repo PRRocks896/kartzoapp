@@ -64,9 +64,19 @@ export default {
       },
       {
         name: 'Coupon',
-        url: '/coupon',
+        id: 'couponmanagement',
         icon: 'fa fa-gift fs-16',
-        type: 'link'
+        type: 'dropdown',
+        children: [
+          {
+            name: 'Coupon',
+            url: '/listcoupon'
+          },
+          // {
+          //   name: 'Business',
+          //   url: '/merchant-business'
+          // }
+        ]
       },
       {
         name: 'Merchant',

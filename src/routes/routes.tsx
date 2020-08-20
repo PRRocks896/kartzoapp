@@ -72,6 +72,7 @@ import AddCard from '../pages/customermanagment/addcard/addcard';
 import ViewCard from '../pages/customermanagment/viewcard/viewcard';
 import ChangePassword from '../pages/chnagepassword/changepassword';
 import Page404 from '../pages/pagenotfound/pagenotfound';
+import ListCoupon from '../pages/couponmanagment/listcoupon/listcoupon';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -117,7 +118,7 @@ class Main extends React.Component<{history:any}> {
             <Route path='/viewstate/:id' render={(props: any) => <ViewState {...props} />} />
             <Route path='/viewcountry/:id' render={(props: any) => <ViewCountry {...props} />} />
             <Route path='/table' render={(props: any) => <Tables {...props} />} />
-            <Route path='/coupon' render={(props: any) => <Coupon {...props} />} />
+        
             <Route path='/merchant' render={(props: any) => <Merchant {...props} />} />
             <Route path='/merchant-business' render={(props: any) => <MerchantBusiness {...props} />} />
             <Route path='/merchant-review' render={(props: any) => <MerchantReview {...props} />} />
@@ -163,6 +164,8 @@ class Main extends React.Component<{history:any}> {
             <Route path='/edit-card' render={(props: any) => <AddCard {...props} />} />
             <Route path='/view-card' render={(props: any) => <ViewCard {...props} />} />
             <Route path='/change-password' render={(props: any) => <ChangePassword {...props} />} />
+            <Route path='/listcoupon' render={(props: any) => <ListCoupon {...props} />} />
+            <Route path='/add-coupon' render={(props: any) => <Coupon {...props} />} />
             {
                     this.props.history.location.pathname != '/' ? (
                       <Route path="*" component={Page404}/>

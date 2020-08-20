@@ -67,7 +67,7 @@ const apiUrl = {
     },
     couponController: {
         addCoupon:'coupon',
-        getCoupon:'coupon',
+        getCoupon:'coupon/get-coupon-list',
         editCoupon:'coupon',
         deleteCoupon:'coupon'
     },

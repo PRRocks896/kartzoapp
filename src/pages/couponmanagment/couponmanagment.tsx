@@ -14,7 +14,7 @@ import {
 } from 'reactstrap';
 import './couponmanagment.css';
 import NavBar from '../navbar/navbar';
-import API from '../../service/coupon.service';
+import {CouponAPI} from '../../service/index.service';
 import Switch from "react-switch";
 import constant from '../../constant/constant';
 import { format } from "date-fns";
@@ -32,13 +32,18 @@ class Coupon extends React.Component<{ history: any }> {
         percentageerror: '',
         discountprice: '',
         discountpriceerror: '',
-        startdate: new Date(),
+        startdate: '',
         startdateerror: '',
         enddate: '',
         enddateerror: '',
         discription: '',
         discriptionerror: '',
-        isByPrice: false
+        minamountorder:'',
+        minamountordererror:'',
+        title:'',
+        titleerror:'',
+        isByPrice: false,
+        isActive:true
     }
 
     constructor(props: any) {
@@ -66,6 +71,8 @@ class Coupon extends React.Component<{ history: any }> {
         let startdateerror = "";
         let enddateerror = "";
         let discriptionerror = "";
+        let minamountordererror = "";
+        let titleerror = "";
 
         if (!this.state.couponcode) {
             couponcodeerror = "please enter coupon code";
@@ -91,14 +98,21 @@ class Coupon extends React.Component<{ history: any }> {
             enddateerror = "please select end date";
         }
 
+        if (!this.state.minamountorder) {
+            minamountordererror = "please enter min amount order";
+        }
+
+        if (!this.state.title) {
+            titleerror = "please enter title";
+        }
 
         if (!this.state.discription) {
             discriptionerror = "please enter discription";
         }
 
-        if (couponcodeerror || percentageerror || discountpriceerror || startdateerror || enddateerror || discriptionerror) {
+        if (couponcodeerror || percentageerror || discountpriceerror || startdateerror || enddateerror || discriptionerror || minamountordererror || titleerror) {
             this.setState({
-                couponcodeerror, percentageerror, discountpriceerror, startdateerror, enddateerror, discriptionerror
+                couponcodeerror, percentageerror, discountpriceerror, startdateerror, enddateerror, discriptionerror,minamountordererror,titleerror
             });
             return false;
         }
@@ -121,42 +135,60 @@ class Coupon extends React.Component<{ history: any }> {
                 discountpriceerror: '',
                 startdateerror: '',
                 enddateerror: '',
-                discriptionerror: ''
+                discriptionerror: '',
+                titleerror:'',
+                minamountordererror:''
             })
-            if (this.state.couponcode && this.state.percentage && this.state.discountprice && this.state.startdate && this.state.enddate && this.state.discription) {
+            if (this.state.couponcode && this.state.percentage && this.state.minamountorder && this.state.title && this.state.discountprice && this.state.startdate && this.state.enddate && this.state.discription) {
                 const obj : couponCreateRequest = {
-                    couponcode: this.state.couponcode,
-                    percentage: this.state.percentage,
-                    discountprice: this.state.discountprice,
-                    startdate: this.state.startdate,
-                    enddate: this.state.enddate,
-                    discription: this.state.discription,
-                    isByPrice: this.state.isByPrice
+                    couponCode: this.state.couponcode,
+                    percentage: parseInt(this.state.percentage),
+                    discountPrice: parseInt(this.state.discountprice),
+                    startDate: this.state.startdate,
+                    endDate: this.state.enddate,
+                    description: this.state.discription,
+                    isByPrice: this.state.isByPrice,
+                    title:this.state.title,
+                    isActive:this.state.isActive,
+                    minAmountOrder:parseInt(this.state.minamountorder)
                 }
-
-                const obj1 : couponUpdateRequest = {
-                    couponcode: this.state.couponcode,
-                    percentage: this.state.percentage,
-                    discountprice: this.state.discountprice,
-                    startdate: this.state.startdate,
-                    enddate: this.state.enddate,
-                    discription: this.state.discription,
-                    isByPrice: this.state.isByPrice
-                }
-
                 console.log("obj",obj);
 
-                // const addCoupon = await API.addCoupon(obj);
-                // console.log("addCoupon",addCoupon);
+                // const obj1 : couponUpdateRequest = {
+                //     couponcode: this.state.couponcode,
+                //     percentage: this.state.percentage,
+                //     discountprice: this.state.discountprice,
+                //     startdate: this.state.startdate,
+                //     enddate: this.state.enddate,
+                //     discription: this.state.discription,
+                //     isByPrice: this.state.isByPrice
+                // }
 
-                if (this.state.couponcode === obj.couponcode && this.state.percentage === obj.percentage && this.state.discountprice === obj.discountprice && this.state.startdate === obj.startdate && this.state.enddate === obj.enddate && this.state.discription === obj.discription && this.state.isByPrice === obj.isByPrice) {
-                    const msg = "Coupon Added Successfully";
-                    utils.showSuccess(msg);
-                    // this.props.history.push('/users');
-                } else {
-                    const msg1 = "Error";
+
+                const addCoupon = await CouponAPI.addCoupon(obj);
+                console.log("addCoupon",addCoupon);
+                if (addCoupon) {
+                    if (addCoupon.status === 200) {
+                      const msg = addCoupon.message;
+                      utils.showSuccess(msg);
+                      this.props.history.push("/list-coupon");
+                    } else {
+                      const msg1 = addCoupon.message;
+                      utils.showError(msg1);
+                    }
+                  } else {
+                    const msg1 = "Internal server error";
                     utils.showError(msg1);
-                }
+                  }
+
+                // if (this.state.couponcode === obj.couponcode && this.state.percentage === obj.percentage && this.state.discountprice === obj.discountprice && this.state.startdate === obj.startdate && this.state.enddate === obj.enddate && this.state.discription === obj.discription && this.state.isByPrice === obj.isByPrice) {
+                //     const msg = "Coupon Added Successfully";
+                //     utils.showSuccess(msg);
+                //     // this.props.history.push('/users');
+                // } else {
+                //     const msg1 = "Error";
+                //     utils.showError(msg1);
+                // }
             }
         };
     }
@@ -227,6 +259,45 @@ class Coupon extends React.Component<{ history: any }> {
                                                     />
                                                     <div className="mb-4 text-danger">
                                                         {this.state.percentageerror}
+                                                    </div>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                                <FormGroup>
+                                                    <Label htmlFor="minamount">Min Amount Order</Label>
+                                                    <Input
+                                                        type="number"
+                                                        id="minamount"
+                                                        name="minamountorder"
+                                                        className="form-control"
+                                                        value={this.state.minamountorder}
+                                                        onChange={this.handleChangeEvent}
+
+                                                        placeholder="Enter your min amount order"
+                                                        required
+                                                    />
+                                                    <div className="mb-4 text-danger">
+                                                        {this.state.minamountordererror}
+                                                    </div>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                                                <FormGroup>
+                                                    <Label htmlFor="title">Title</Label>
+                                                    <Input
+                                                        type="text"
+                                                        id="title"
+                                                        name="title"
+                                                        className="form-control"
+                                                        value={this.state.title}
+                                                        onChange={this.handleChangeEvent}
+                                                        placeholder="Enter your title"
+                                                        required
+                                                    />
+                                                    <div className="mb-4 text-danger">
+                                                        {this.state.titleerror}
                                                     </div>
                                                 </FormGroup>
                                             </Col>
