@@ -22,7 +22,7 @@ import { any } from 'prop-types';
 import moment from 'moment';
 import { couponCreateRequest, couponUpdateRequest } from '../../modelController/couponModel';
 
-class Coupon extends React.Component<{ history: any }> {
+class Coupon extends React.Component<{ history: any,location:any }> {
 
     state = {
         checked: false,
@@ -43,7 +43,8 @@ class Coupon extends React.Component<{ history: any }> {
         title:'',
         titleerror:'',
         isByPrice: false,
-        isActive:true
+        isActive:true,
+        updateTrue:false
     }
 
     constructor(props: any) {
@@ -60,7 +61,49 @@ class Coupon extends React.Component<{ history: any }> {
     }
 
     async componentDidMount() {
-        document.title = constant.couponManagement + utils.getAppName();
+        const couponId = this.props.location.pathname.split("/")[2];
+        if (couponId !== undefined) {
+          this.getCouponById(couponId);
+          this.setState({
+            updateTrue: this.state.updateTrue = true
+          })
+        }
+        if (this.state.updateTrue === true) {
+          document.title =
+          document.title = constant.couponPage.title.updateCouponTitle + utils.getAppName();
+        } else {
+          document.title = constant.couponPage.title.addCouponTitle + utils.getAppName();
+        }
+       
+    }
+
+    async getCouponById(id:any) {
+        const obj = {
+            id: id
+          };
+          const getCouponById: any = await CouponAPI.getCouponById(obj);
+          console.log("getCouponById", getCouponById);
+      
+          if (getCouponById.status === 200) {
+            // this.setState({
+            //   updateTrue: this.state.updateTrue = true,
+            //   filetrue: this.state.filetrue = true,
+            //   categoryname: this.state.categoryname =
+            //     getCategoryById.resultObject.category,
+            //   categoryid: this.state.categoryid =
+            //     getCategoryById.resultObject.categoryId,
+            //   file: this.state.file = getCategoryById.resultObject.imagePath,
+            //   sortorder: this.state.sortorder =
+            //     getCategoryById.resultObject.sortOrder,
+            //   parentCategory: this.state.parentCategory =
+            //     getCategoryById.resultObject.parentCategory,
+            //   selectedFile: this.state.selectedFile =
+            //     getCategoryById.resultObject.imagePath,
+            // });
+          } else {
+            const msg1 = getCouponById.message;
+            utils.showError(msg1);
+          }
     }
 
 

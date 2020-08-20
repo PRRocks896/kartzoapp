@@ -12,7 +12,7 @@ const apiUrl = {
         deleteUser:'users/',
         updatepassword:'users/change-password',
         resetpassword:'users/reset-password',
-        statusChange:'/status'
+        statusChange:'status'
 
     },
     customerController: {
@@ -69,6 +69,7 @@ const apiUrl = {
         addCoupon:'coupon',
         getCoupon:'coupon/get-coupon-list',
         editCoupon:'coupon',
+        getCouponById:'coupon/',
         deleteCoupon:'coupon'
     },
     merchantController: {

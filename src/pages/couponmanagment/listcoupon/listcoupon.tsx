@@ -16,7 +16,7 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import {CategoryAPI, StatusAPI, CouponAPI} from "../../../service/index.service";
+import {StatusAPI, CouponAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class ListCoupon extends React.Component<{ history: any }> {
@@ -113,7 +113,7 @@ class ListCoupon extends React.Component<{ history: any }> {
   }
 
   editCoupon(id: any) {
-    this.props.history.push("/editcoupon/" + id);
+    this.props.history.push("/edit-coupon/" + id);
   }
 
   viewCoupon(id: any) {
@@ -182,8 +182,8 @@ class ListCoupon extends React.Component<{ history: any }> {
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj = {
-        moduleName: "Category",
-        id: data.categoryId,
+        moduleName: "Coupon",
+        id: data.couponId,
         isActive: data.isActive === true ? false : true
        }
        var getStatusChange = await StatusAPI.getStatusChange(obj);
@@ -241,7 +241,7 @@ class ListCoupon extends React.Component<{ history: any }> {
     return res;
   }
 
-  getTable(categorydata: any) {
+  getTable(coupondata: any) {
     return (
       <table
         id="dtBasicExample"
@@ -279,7 +279,7 @@ class ListCoupon extends React.Component<{ history: any }> {
                         onClick={() =>
                           this.statusChange(
                             data,
-                            "You should be inActive category",
+                            "You should be inActive coupon",
                             "Yes, inActive it"
                           )
                         }
@@ -292,7 +292,7 @@ class ListCoupon extends React.Component<{ history: any }> {
                         onClick={() =>
                           this.statusChange(
                             data,
-                            "You should be Active category",
+                            "You should be Active coupon",
                             "Yes, Active it"
                           )
                         }
