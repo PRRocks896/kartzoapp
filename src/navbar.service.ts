@@ -72,10 +72,10 @@ export default {
             name: 'Coupon',
             url: '/listcoupon'
           },
-          // {
-          //   name: 'Business',
-          //   url: '/merchant-business'
-          // }
+          {
+            name: 'Coupon Mapping',
+            url: '/list-coupon-map'
+          }
         ]
       },
       {

@@ -68,9 +68,14 @@ const apiUrl = {
     couponController: {
         addCoupon:'coupon',
         getCoupon:'coupon/get-coupon-list',
-        editCoupon:'coupon',
+        editCoupon:'coupon/',
         getCouponById:'coupon/',
-        deleteCoupon:'coupon'
+        deleteCoupon:'coupon',
+        getList:'coupon/get-coupon-list-dropdown',
+        getCouponMapping:'couponmapping/get-couponmapping-list',
+        getCouponMappingById:'',
+        addCouponMapping:'',
+        editCouponMapping:''
     },
     merchantController: {
         addMerchant:'merchant',

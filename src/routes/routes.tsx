@@ -73,6 +73,9 @@ import ViewCard from '../pages/customermanagment/viewcard/viewcard';
 import ChangePassword from '../pages/chnagepassword/changepassword';
 import Page404 from '../pages/pagenotfound/pagenotfound';
 import ListCoupon from '../pages/couponmanagment/listcoupon/listcoupon';
+import ViewCoupon from '../pages/couponmanagment/viewcoupon/viewcoupon';
+import ListCouponMap from '../pages/couponmanagment/listcouponmapping/listmap';
+import AddCouponMapping from '../pages/couponmanagment/addcouponmapping/addmap';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -167,6 +170,9 @@ class Main extends React.Component<{history:any}> {
             <Route path='/listcoupon' render={(props: any) => <ListCoupon {...props} />} />
             <Route path='/add-coupon' render={(props: any) => <Coupon {...props} />} />
             <Route path='/edit-coupon/:id' render={(props: any) => <Coupon {...props} />} />
+            <Route path='/view-coupon/:id' render={(props: any) => <ViewCoupon {...props} />} />
+            <Route path='/list-coupon-map' render={(props: any) => <ListCouponMap {...props} />} />
+            <Route path='/add-coupon-map' render={(props: any) => <AddCouponMapping {...props} />} />
             {
                     this.props.history.location.pathname != '/' ? (
                       <Route path="*" component={Page404}/>

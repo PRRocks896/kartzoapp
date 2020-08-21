@@ -19,7 +19,7 @@ import NavBar from "../../navbar/navbar";
 import {StatusAPI, CouponAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
-class ListCoupon extends React.Component<{ history: any }> {
+class ListCouponMap extends React.Component<{ history: any }> {
   couponState = constant.couponPage.state;
   state = {
     count: this.couponState.count,
@@ -29,7 +29,7 @@ class ListCoupon extends React.Component<{ history: any }> {
     lowerPageBound: this.couponState.lowerPageBound,
     pageBound: this.couponState.pageBound,
     onItemSelect: this.couponState.onItemSelect,
-    coupondata: this.couponState.coupondata,
+    couponmapdata: this.couponState.couponmapdata,
     switchSort: this.couponState.switchSort,
     isStatus: this.couponState.isStatus,
   };
@@ -57,10 +57,10 @@ class ListCoupon extends React.Component<{ history: any }> {
     document.title =
       constant.categoryPage.title.categoryTitle + utils.getAppName();
       utils.dataTable();
-    this.getCoupon();
+    this.getCouponMapData();
   }
 
-  async getCoupon(
+  async getCouponMapData(
     searchText: string = "",
     page: number = 1,
     size: number = 10
@@ -71,17 +71,17 @@ class ListCoupon extends React.Component<{ history: any }> {
       size: size,
     };
 
-    var getCoupon = await CouponAPI.getCoupon(obj);
-    console.log("getCoupon", getCoupon);
+    var getCouponMapData = await CouponAPI.getCouponMapData(obj);
+    console.log("getCouponMapData", getCouponMapData);
 
-    if (getCoupon) {
-      if (getCoupon.status === 200) {
+    if (getCouponMapData) {
+      if (getCouponMapData.status === 200) {
         this.setState({
-          coupondata: this.state.coupondata = getCoupon.resultObject.data,
-          count: this.state.count = getCoupon.resultObject.totalcount,
+          couponmapdata: this.state.couponmapdata = getCouponMapData.resultObject.data,
+          count: this.state.count = getCouponMapData.resultObject.totalcount,
         });
       } else {
-        const msg1 = getCoupon.message;
+        const msg1 = getCouponMapData.message;
         utils.showError(msg1);
       }
     } else {
@@ -126,7 +126,7 @@ class ListCoupon extends React.Component<{ history: any }> {
         event.target.options[event.target.selectedIndex].value,
     });
 
-    this.getCoupon('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+    this.getCouponMapData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
   }
 
   async handleClick(event: any) {
@@ -139,7 +139,7 @@ class ListCoupon extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    this.getCoupon(obj.searchText, obj.page, obj.size);
+    this.getCouponMapData(obj.searchText, obj.page, obj.size);
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -149,17 +149,17 @@ class ListCoupon extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    this.getCoupon(obj.searchText, obj.page, obj.size);
+    this.getCouponMapData(obj.searchText, obj.page, obj.size);
   }
 
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
     });
-    let copyTableData = [...this.state.coupondata];
+    let copyTableData = [...this.state.couponmapdata];
     copyTableData.sort(this.compareByDesc(key));
     this.setState({
-      coupondata: this.state.coupondata = copyTableData,
+      couponmapdata: this.state.couponmapdata = copyTableData,
     });
   }
 
@@ -191,7 +191,7 @@ class ListCoupon extends React.Component<{ history: any }> {
        if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);
-        this.getCoupon();
+        this.getCouponMapData();
       } else {
         const msg1 = getStatusChange.message;
         utils.showError(msg1);
@@ -261,9 +261,9 @@ class ListCoupon extends React.Component<{ history: any }> {
           </tr>
         </thead>
         <tbody>
-          {this.state.coupondata.length > 0 ? (
+          {this.state.couponmapdata.length > 0 ? (
             <>
-              {this.state.coupondata.map((data: any, index: any) => (
+              {this.state.couponmapdata.map((data: any, index: any) => (
                 <tr key={index}>
                   <td>{data.couponCode}</td>
                   <td>{data.title}</td>
@@ -276,7 +276,7 @@ class ListCoupon extends React.Component<{ history: any }> {
                         onClick={() =>
                           this.statusChange(
                             data,
-                            "You should be inActive coupon",
+                            "You should be inActive coupon mapping",
                             "Yes, inActive it"
                           )
                         }
@@ -289,7 +289,7 @@ class ListCoupon extends React.Component<{ history: any }> {
                         onClick={() =>
                           this.statusChange(
                             data,
-                            "You should be Active coupon",
+                            "You should be Active coupon mapping",
                             "Yes, Active it"
                           )
                         }
@@ -406,12 +406,12 @@ class ListCoupon extends React.Component<{ history: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <CardTitle className="font">
-                          {constant.couponPage.title.counponTitle}
+                          {constant.couponPage.title.counponMappingTitle}
                         </CardTitle>
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <div className="right">
-                          <Link to="/add-coupon">
+                          <Link to="/add-coupon-map">
                             <Button
                               className="mb-2 mr-2 custom-button"
                               color="primary"
@@ -434,12 +434,12 @@ class ListCoupon extends React.Component<{ history: any }> {
                       />
                     </div>
 
-                    {this.state.coupondata.length > 0 ? (
-                      <>{this.getTable(this.state.coupondata)}</>
+                    {this.state.couponmapdata.length > 0 ? (
+                      <>{this.getTable(this.state.couponmapdata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
                     )}
-                    {this.state.coupondata.length > 0
+                    {this.state.couponmapdata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,
                           renderPageNumbers,
@@ -457,4 +457,4 @@ class ListCoupon extends React.Component<{ history: any }> {
   }
 }
 
-export default ListCoupon;
+export default ListCouponMap;

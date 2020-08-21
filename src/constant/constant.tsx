@@ -474,9 +474,13 @@ export default {
   couponPage: {
     title: {
       counponTitle: "Coupon Management",
-      updateCouponTitle: "Update Counpon",
+      counponMappingTitle: "Coupon Mapping Management",
+      updateCouponTitle: "Update Coupon",
+      updateCouponMappingTitle: "Update Coupon Mapping",
       addCouponTitle: "Add Coupon",
+      addCouponMappingTitle: "Add Coupon Mapping",
       viewCouponTitle: "View Coupon",
+      viewCouponMappingTitle: "View Coupon Mapping",
     },
     state: {
       count: "10",
@@ -487,19 +491,31 @@ export default {
       pageBound: 3,
       onItemSelect: "",
       coupondata: [],
+      couponmapdata:[],
       switchSort: false,
       isStatus: false,
 
-      // selectedFile: '',
-      // countryname: '',
-      // countrynameerror: '',
-      // countrycode: '',
-      // countrycodeerror: '',
-      // selectedFileerror: '',
-      // file:'',
-      // filetrue:false,
-      // updateTrue:false,
-      // countryid:0
+      checked: false,
+      couponcode: '',
+      couponcodeerror: '',
+      percentage: '',
+      percentageerror: '',
+      discountprice: '',
+      discountpriceerror: '',
+      startdate: '',
+      startdateerror: '',
+      enddate: '',
+      enddateerror: '',
+      discription: '',
+      discriptionerror: '',
+      minamountorder:'',
+      minamountordererror:'',
+      title:'',
+      titleerror:'',
+      isByPrice: false,
+      isActive:true,
+      updateTrue:false,
+      couponId:''
     },
     couponTableColumn: {
       couponCode: "Country Code",
@@ -509,10 +525,12 @@ export default {
       startDate:'Start Date',
       minAmountOrder:'Min Amount Order',
       title:'Title',
-      percentage:'Percentage'
+      percentage:'Percentage',
+      IsByPrice:'By Price'
     },
     viewcouponpagedetails : {
-      viewcoupon:'View Coupon Details'
+      viewcoupon:'View Coupon Details',
+      viewcouponmapping:'View Coupon Mapping Details'
     }
   },
 };

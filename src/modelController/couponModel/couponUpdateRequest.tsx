@@ -1,10 +1,13 @@
 export interface couponUpdateRequest {
-    id?:string,
-    couponcode?: string,
-    percentage?: string,
-    discountprice?: string,
-    startdate?: Date,
-    enddate?: string,
-    discription?: string,
-    isByPrice?: boolean
+    couponId?:string,
+    couponCode?: string,
+    percentage?: number,
+    discountPrice?: number,
+    startDate?: string,
+    endDate?: string,
+    description?: string,
+    isByPrice?: boolean,
+    isActive?:boolean,
+    title?:string,
+    minAmountOrder?:number
 }
