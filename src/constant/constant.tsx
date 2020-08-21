@@ -34,9 +34,9 @@ export default {
   changepassword: "Change Password",
   dashboardTitle: "Dashboard",
 
-  recoverPassword:'Recover Password',
+  recoverPassword: "Recover Password",
   rolePrivilegesTitle: "Role Privileges Management",
-  enter:'Enter your email to recover your password',
+  enter: "Enter your email to recover your password",
   subcategoryTitle: "Sub Category Management",
   addSubCategoryTitle: "Add SubCategory",
   viewSubCategoryTitle: "View SubCategory",
@@ -86,48 +86,48 @@ export default {
   },
 
   button: {
-    update:'Update',
-    Save:'Save',
-    back:'Back',
-    add:'Add'
+    update: "Update",
+    Save: "Save",
+    back: "Back",
+    add: "Add",
   },
 
   pageNotFound: {
-    gobackhome:'Go back home'
+    gobackhome: "Go back home",
   },
 
   navbarPage: {
-    profile:'Profile',
-    changepassword:'Change Password',
-    logout:'Log Out'
+    profile: "Profile",
+    changepassword: "Change Password",
+    logout: "Log Out",
   },
 
-  alertMsg:{
-    msg:'new password && confirm password are not same please check again',
-    newmsg:'new password && old password are same please change new password'
+  alertMsg: {
+    msg: "new password && confirm password are not same please check again",
+    newmsg: "new password && old password are same please change new password",
   },
 
   resetPasswordPage: {
-    resetpassword:'Reset Password',
-    resetButton:'Reset'
+    resetpassword: "Reset Password",
+    resetButton: "Reset",
   },
 
   changePasswordPage: {
-    state:{
-      oldpassword: '',
-      oldpassworderror:'',
-      newpassword: '',
-      newpassworderror:'',
-      confirmpassword:'',
-      confirmpassworderror:'',
-      userid:0
-  },
-  title: {
-    changepassword:'Change Password',
-    oldpassword:'Old Password',
-    newpassword:'New Password',
-    confirmpassword:'Confirm Password'
-  }
+    state: {
+      oldpassword: "",
+      oldpassworderror: "",
+      newpassword: "",
+      newpassworderror: "",
+      confirmpassword: "",
+      confirmpassworderror: "",
+      userid: 0,
+    },
+    title: {
+      changepassword: "Change Password",
+      oldpassword: "Old Password",
+      newpassword: "New Password",
+      confirmpassword: "Confirm Password",
+    },
   },
 
   recordPerPage: {
@@ -146,40 +146,40 @@ export default {
       passworderror: "",
       ipAddress: "",
       isButton: false,
-      type: 'password'
-    }
+      type: "password",
+    },
   },
 
   profilePage: {
-    state:{
-    selectedFile: '',
-    firstname: "",
-    firstnameerror: "",
-    lastname: "",
-    lastnameerror: "",
-    email: "",
-    emailerror: "",
-    mobilenumber: "",
-    mobilenumbererror: "",
-    selectedFileerror: "",
-    role: "",
-    roleerror: "",
-    roleid: 1,
-    roleiderror: "",
-    userid:0,
-    userrole:[],
-    updateTrue:false,
-    filetrue:false,
-    file:''
+    state: {
+      selectedFile: "",
+      firstname: "",
+      firstnameerror: "",
+      lastname: "",
+      lastnameerror: "",
+      email: "",
+      emailerror: "",
+      mobilenumber: "",
+      mobilenumbererror: "",
+      selectedFileerror: "",
+      role: "",
+      roleerror: "",
+      roleid: 1,
+      roleiderror: "",
+      userid: 0,
+      userrole: [],
+      updateTrue: false,
+      filetrue: false,
+      file: "",
     },
 
-    profile:{
-      profile:'My Profile',
-      userimage:'User Image',
-      lastname:'Last Name',
-      firstname:'First Name',
-      mobilenumber:'Mobile Number'
-    }
+    profile: {
+      profile: "My Profile",
+      userimage: "User Image",
+      lastname: "Last Name",
+      firstname: "First Name",
+      mobilenumber: "Mobile Number",
+    },
   },
 
   userPage: {
@@ -188,8 +188,8 @@ export default {
       updateUserTitle: "Update User",
       viewUserTitle: "View User",
       userTitle: "User Management",
-      editUser:'Edit User',
-      addUser:'Add User'
+      editUser: "Edit User",
+      addUser: "Add User",
     },
     state: {
       count: "10",
@@ -221,25 +221,26 @@ export default {
       selectedFileerror: "",
       onItemSelecterror: "",
       updateTrue: false,
-      filetrue:false,
+      filetrue: false,
       file: "",
-      userid:0,
+      userid: 0,
       rolename: "",
-      type:'password'
+      type: "password",
+      isActive:false
     },
     userTableColumn: {
       firstname: "First Name",
       lastname: "Last Name",
       email: "E-Mail",
       role: "Role",
-      mobilenumber:'Mobile Number',
-      password:'Password',
-      roleselect:'Select Role:',
-      userimage:'User Image'
+      mobilenumber: "Mobile Number",
+      password: "Password",
+      roleselect: "Select Role:",
+      userimage: "User Image",
     },
-    viewuser:{
-      viewdetails:'View User Details'
-    }
+    viewuser: {
+      viewdetails: "View User Details",
+    },
   },
 
   userRolePage: {
@@ -266,21 +267,22 @@ export default {
       description: "",
       descriptionerror: "",
       isOpen: false,
-      updateTrue:false,
-      roleid:0
+      updateTrue: false,
+      roleid: 0,
+      isActive:false
     },
     userRoleTableColumn: {
       rolename: "Role Name",
-      description:'Description',
-      isadminrole:'IsAdminRole'
+      description: "Description",
+      isadminrole: "IsAdminRole",
     },
-    viewrole:{
-      roleview:'View Role'
-    }
+    viewrole: {
+      roleview: "View Role",
+    },
   },
 
-  rolePrivileges:{
-    state:{
+  rolePrivileges: {
+    state: {
       userrole: [],
       roleid: "0",
       onItemSelect: "",
@@ -295,16 +297,16 @@ export default {
       _detailcheck: false,
       show: false,
     },
-    title:{
-      title:'Select Role To Manage The All Rights:',
-      roleprivileges:'Role Privileges',
-      name:'Name',
-      edit:'Edit',
-      view:'View',
-      delete:'Delete',
-      detail:'Detail',
-      add:'Add'
-    }
+    title: {
+      title: "Select Role To Manage The All Rights:",
+      roleprivileges: "Role Privileges",
+      name: "Name",
+      edit: "Edit",
+      view: "View",
+      delete: "Delete",
+      detail: "Detail",
+      add: "Add",
+    },
   },
 
   categoryPage: {
@@ -326,30 +328,31 @@ export default {
       switchSort: false,
       isStatus: false,
 
-      selectedFile: '',
-      file: '',
-      categoryname: '',
-      categorynameerror: '',
-      selectedFileerror: '',
+      selectedFile: "",
+      file: "",
+      categoryname: "",
+      categorynameerror: "",
+      selectedFileerror: "",
       sortorder: 0,
       updateTrue: false,
-      filetrue:false,
+      filetrue: false,
       categoryid: 0,
-      categorylist:[],
-      selectcategory:'',
-      selectcategoryerror:'',
-      parentCategory:''
+      categorylist: [],
+      selectcategory: "",
+      selectcategoryerror: "",
+      parentCategory: "",
+      isActive:false
     },
     caetgoryTableColumn: {
       categoryName: "Category Name",
       subCategoryName: "Sub Category Name",
       image: "Category Image",
-      selectparentcategory:'Select Parent Category',
-      sortorder:'Sort Order'
+      selectparentcategory: "Select Parent Category",
+      sortorder: "Sort Order",
     },
-    viewcategorydetail:{
-      viewcategory:'View Catgeory Details'
-    }
+    viewcategorydetail: {
+      viewcategory: "View Catgeory Details",
+    },
   },
 
   cityPage: {
@@ -357,7 +360,7 @@ export default {
       addCityTitle: "Add City",
       viewCityTitle: "View City",
       updateCityTitle: "Update City",
-      cityTitle: "City Management"
+      cityTitle: "City Management",
     },
     state: {
       count: "10",
@@ -381,15 +384,16 @@ export default {
       updateTrue: false,
       statename: "",
       cityid: 0,
+      isActive:false
     },
     cityTableColumn: {
       cityName: "City Name",
       stateName: "State Name",
-      selectstate:'Select State'
+      selectstate: "Select State",
     },
-    viewcitydetails:{
-      viewcity:'View City Details'
-    }
+    viewcitydetails: {
+      viewcity: "View City Details",
+    },
   },
 
   statePage: {
@@ -397,7 +401,7 @@ export default {
       addStateTitle: "Add State",
       stateTitle: "State Management",
       viewStateTitle: "View State",
-      updateStateTitle: "Update State"
+      updateStateTitle: "Update State",
     },
     state: {
       count: "10",
@@ -423,12 +427,13 @@ export default {
       updateTrue: false,
       filetrue: false,
       countryname: "",
+      isActive:false
     },
     stateTableColumn: {
       stateName: "State Name",
       countryName: "Country Name",
-      selectcountry:'Select Country'
-    }
+      selectcountry: "Select Country",
+    },
   },
 
   countryPage: {
@@ -450,25 +455,26 @@ export default {
       switchSort: false,
       isStatus: false,
 
-      selectedFile: '',
-      countryname: '',
-      countrynameerror: '',
-      countrycode: '',
-      countrycodeerror: '',
-      selectedFileerror: '',
-      file:'',
-      filetrue:false,
-      updateTrue:false,
-      countryid:0
+      selectedFile: "",
+      countryname: "",
+      countrynameerror: "",
+      countrycode: "",
+      countrycodeerror: "",
+      selectedFileerror: "",
+      file: "",
+      filetrue: false,
+      updateTrue: false,
+      countryid: 0,
+      isActive:false
     },
     countryTableColumn: {
       countryName: "Country Name",
       countryCode: "Country Code",
-      countryFlag: "Country Flag"
+      countryFlag: "Country Flag",
     },
-    viewcountrypagedetails : {
-      viewcountry:'View Country Details'
-    }
+    viewcountrypagedetails: {
+      viewcountry: "View Country Details",
+    },
   },
 
   couponPage: {
@@ -491,46 +497,135 @@ export default {
       pageBound: 3,
       onItemSelect: "",
       coupondata: [],
-      couponmapdata:[],
+      couponmapdata: [],
       switchSort: false,
       isStatus: false,
 
       checked: false,
-      couponcode: '',
-      couponcodeerror: '',
-      percentage: '',
-      percentageerror: '',
-      discountprice: '',
-      discountpriceerror: '',
-      startdate: '',
-      startdateerror: '',
-      enddate: '',
-      enddateerror: '',
-      discription: '',
-      discriptionerror: '',
-      minamountorder:'',
-      minamountordererror:'',
-      title:'',
-      titleerror:'',
+      couponcode: "",
+      couponcodeerror: "",
+      percentage: "",
+      percentageerror: "",
+      discountprice: "",
+      discountpriceerror: "",
+      startdate: "",
+      startdateerror: "",
+      enddate: "",
+      enddateerror: "",
+      discription: "",
+      discriptionerror: "",
+      minamountorder: "",
+      minamountordererror: "",
+      title: "",
+      titleerror: "",
       isByPrice: false,
-      isActive:true,
-      updateTrue:false,
-      couponId:''
+      isActive: true,
+      updateTrue: false,
+      couponId: "",
     },
     couponTableColumn: {
       couponCode: "Country Code",
       description: "Description",
       discountPrice: "Discount Price",
-      endDate:'End Date',
-      startDate:'Start Date',
-      minAmountOrder:'Min Amount Order',
-      title:'Title',
-      percentage:'Percentage',
-      IsByPrice:'By Price'
+      endDate: "End Date",
+      startDate: "Start Date",
+      minAmountOrder: "Min Amount Order",
+      title: "Title",
+      percentage: "Percentage",
+      IsByPrice: "By Price",
     },
-    viewcouponpagedetails : {
-      viewcoupon:'View Coupon Details',
-      viewcouponmapping:'View Coupon Mapping Details'
-    }
+    viewcouponpagedetails: {
+      viewcoupon: "View Coupon Details",
+      viewcouponmapping: "View Coupon Mapping Details",
+    },
+  },
+
+  merchantPage: {
+    title: {
+      merchantTitle: "Merchant Management",
+      updateMerchantTitle: "Update Merchant",
+      addMerchantTitle: "Add Merchant",
+      viewMerchantTitle: "View Merchant",
+    },
+    state: {
+      count: "10",
+      currentPage: "1",
+      items_per_page: "10",
+      upperPageBound: 3,
+      lowerPageBound: 0,
+      pageBound: 3,
+      onItemSelect: "",
+      countrydata: [],
+      switchSort: false,
+      isStatus: false,
+
+      selectedFile: "",
+      selectedProofFile: "",
+      selectedDocumentFile: "",
+      firstname: "",
+      firstnameerror: "",
+      lastname: "",
+      lastnameerror: "",
+      email: "",
+      emailerror: "",
+      mobilenumber: "",
+      mobilenumbererror: "",
+      shopname: "",
+      shopnamerror: "",
+      address: "",
+      addresserror: "",
+      city: "",
+      cityerror: "",
+      user: "",
+      usererror: "",
+      zipcode: "",
+      zipcodeerror: "",
+      latitude: "",
+      latitudeerror: "",
+      longitude: "",
+      longitudeerror: "",
+      website: "",
+      shoppingpolicy: "",
+      shoppingpolicyerror: "",
+      refundpolicy: "",
+      refundpolicyerror: "",
+      cancellationpolicy: "",
+      cancellationpolicyerror: "",
+      isOpen: false,
+      checked: false,
+      selectedFileerror: "",
+      selectedProofFileerror: "",
+      selectedDocumentFileerror: "",
+      password: "",
+      passworderror: "",
+      citydata: [],
+      type: "text",
+      file: "",
+      filetrue: false
+    },
+    merchantTableColumn: {
+      Firstname: "First Name",
+      lastname: "Last Name",
+      email: "E-Mail",
+      password: "Password",
+      phone: "Phone",
+      city: "Select City",
+      Address: "Address",
+      shopname: "Shop Name",
+      zipcode: "Zip Code",
+      latitude: "Latitude",
+      longitude: "Longitude",
+      website: "Website",
+      shoppingpolicy: "Shopping Policy",
+      refundpolicy: "Refund Policy",
+      cancellationpolicy: "Cancellation Policy",
+      isOpen: "Is Active",
+      selectedFile: "Select File",
+      selectMerchantIdProff: "Select Merchant ID Proof",
+      selectMerchantDocument: "Select Merchant Document",
+    },
+    viewmerchanrpagedetails: {
+      viewmerchant: "View Merchant Details",
+    },
   },
 };

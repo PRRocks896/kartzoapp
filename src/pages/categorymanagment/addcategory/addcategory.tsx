@@ -36,6 +36,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     selectcategory: this.categoryState.selectcategory,
     selectcategoryerror: this.categoryState.selectcategoryerror,
     parentCategory: this.categoryState.parentCategory,
+    isActive: this.categoryState.isActive
   };
 
   constructor(props: any) {
@@ -186,7 +187,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         let formData = new FormData();
 
         formData.append("category", this.state.categoryname);
-        formData.append("isActive", "true");
+        formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("parentCategoryId", this.state.selectcategory);
         formData.append("sortOrder", this.state.sortorder.toString());
         formData.append("files", this.state.selectedFile[0]);
@@ -221,7 +222,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         let formData = new FormData();
         formData.append("categoryId", this.state.categoryid.toString());
         formData.append("category", this.state.categoryname);
-        formData.append("isActive", "true");
+        formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("parentCategoryId", this.state.selectcategory);
         formData.append("sortOrder", this.state.sortorder.toString());
         formData.append("files", this.state.selectedFile[0]);

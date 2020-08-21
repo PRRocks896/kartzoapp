@@ -229,3 +229,8 @@ table.dataTable {
 .search_right {
   text-align: right;
 }
+
+table.table thead th {
+  border-top: none;
+  cursor: pointer !important;
+}

@@ -43,6 +43,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     userid: this.userState.userid,
     rolename: this.userState.rolename,
     type: this.userState.type,
+    isActive:this.userState.isActive
   };
 
   constructor(props: any) {
@@ -105,6 +106,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
           password: this.state.password = getUserById.resultObject.password
             ? getUserById.resultObject.password
             : "",
+            isActive:this.state.isActive = getUserById.resultObject.isActive
         });
       } else {
         const msg1 = getUserById.message;
@@ -325,7 +327,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         formData.append("email", this.state.email);
         formData.append("phone", this.state.mobilenumber.toString());
         formData.append("password", this.state.password);
-        formData.append("isActive", "true");
+        formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("files", this.state.selectedFile[0]);
         formData.append("userId", "0");
 
@@ -377,7 +379,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         formData.append("email", this.state.email);
         formData.append("phone", this.state.mobilenumber.toString());
         formData.append("password", this.state.password);
-        formData.append("isActive", "true");
+        formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("files", this.state.selectedFile[0]);
         formData.append("userId", "0");
 

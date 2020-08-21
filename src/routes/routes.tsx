@@ -76,6 +76,7 @@ import ListCoupon from '../pages/couponmanagment/listcoupon/listcoupon';
 import ViewCoupon from '../pages/couponmanagment/viewcoupon/viewcoupon';
 import ListCouponMap from '../pages/couponmanagment/listcouponmapping/listmap';
 import AddCouponMapping from '../pages/couponmanagment/addcouponmapping/addmap';
+import ListMerchant from '../pages/merchantmanagment/listmerchant/listmerchant';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -173,6 +174,7 @@ class Main extends React.Component<{history:any}> {
             <Route path='/view-coupon/:id' render={(props: any) => <ViewCoupon {...props} />} />
             <Route path='/list-coupon-map' render={(props: any) => <ListCouponMap {...props} />} />
             <Route path='/add-coupon-map' render={(props: any) => <AddCouponMapping {...props} />} />
+            <Route path='/list-merchant' render={(props: any) => <ListMerchant {...props} />} />
             {
                     this.props.history.location.pathname != '/' ? (
                       <Route path="*" component={Page404}/>

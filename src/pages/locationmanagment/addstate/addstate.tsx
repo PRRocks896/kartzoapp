@@ -38,7 +38,8 @@ class AddState extends React.Component<{ history: any; location: any }> {
     countrylist: this.stateState.countrylist,
     updateTrue: this.stateState.updateTrue,
     filetrue: this.stateState.filetrue,
-    countryname: this.stateState.countryname
+    countryname: this.stateState.countryname,
+    isActive: this.stateState.isActive
   };
 
   constructor(props: any) {
@@ -156,7 +157,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
         const obj: stateCreateRequest = {
           stateName: this.state.statename,
           countryId: JSON.parse(this.state.countryid),
-          isActive: true,
+          isActive: this.state.isActive,
         };
 
         const addState = await LocationAPI.addState(obj);
@@ -191,7 +192,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
           stateId: this.state.stateid,
           stateName: this.state.statename,
           countryId: JSON.parse(this.state.countryid),
-          isActive: true,
+          isActive: this.state.isActive,
         };
 
         const editState = await LocationAPI.editState(obj, this.state.stateid);

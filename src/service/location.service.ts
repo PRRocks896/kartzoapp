@@ -53,5 +53,9 @@ export default {
     },
     getCityById: async function (data: any) {
         return await WebReqUrl.get(Constant.mainUrl + apiUrl.locationController.getCityById + data.id);
-    }   
+    },
+    getCity: async function () {
+        return await WebReqUrl.get(Constant.mainUrl + apiUrl.locationController.getcitylist);
+    },
+       
 }

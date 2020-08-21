@@ -30,7 +30,8 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
     descriptionerror: this.userState.descriptionerror,
     isOpen: this.userState.isOpen,
     updateTrue: this.userState.updateTrue,
-    roleid: this.userState.roleid
+    roleid: this.userState.roleid,
+    isActive: this.userState.isActive
   };
 
   constructor(props: any) {
@@ -121,7 +122,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
         const obj: userRoleCreateRequest = {
           role: this.state.rolename,
           description: this.state.description,
-          isActive: true,
+          isActive: this.state.isActive,
           isAdminRole: this.state.isOpen,
         };
 
@@ -158,7 +159,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
           roleId: this.state.roleid,
           role: this.state.rolename,
           description: this.state.description,
-          isActive: true,
+          isActive: this.state.isActive,
           isAdminRole: this.state.isOpen,
         };
         console.log("userole", obj);

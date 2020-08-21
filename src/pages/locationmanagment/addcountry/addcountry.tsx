@@ -31,6 +31,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     filetrue: this.countryState.filetrue,
     updateTrue: this.countryState.updateTrue,
     countryid: this.countryState.countryid,
+    isActive:this.countryState.isActive
   };
 
   constructor(props: any) {
@@ -168,7 +169,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
 
         formData.append("countryName", this.state.countryname);
         formData.append("countryCode", this.state.countrycode);
-        formData.append("isActive", "true");
+        formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("files", this.state.selectedFile[0]);
 
         const addCountry = await LocationAPI.addCountry(formData);
@@ -208,7 +209,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         formData.append("countryId", this.state.countryid.toString());
         formData.append("countryName", this.state.countryname);
         formData.append("countryCode", this.state.countrycode);
-        formData.append("isActive", "true");
+        formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("files", this.state.selectedFile[0]);
 
         const editCountry = await LocationAPI.editCountry(

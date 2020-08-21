@@ -26,6 +26,8 @@ import {
 } from "../../../modelController";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
+import * as _ from 'lodash';
+
 const getItems = (count: any, offset = 0) =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
     id: `item-${k + offset}`,
@@ -109,6 +111,8 @@ class AddCouponMapping extends React.Component<{
   }
 
   async componentDidMount() {
+    document.title =
+    constant.couponPage.title.addCouponMappingTitle + utils.getAppName();
     var getCouponList = await CouponAPI.getCouponList();
     console.log("getCouponList", getCouponList);
 
@@ -125,20 +129,6 @@ class AddCouponMapping extends React.Component<{
       const msg1 = "Internal server error";
       utils.showError(msg1);
     }
-    // const couponId = this.props.location.pathname.split("/")[2];
-    // if (couponId !== undefined) {
-    //   this.getCouponById(couponId);
-    //   this.setState({
-    //     updateTrue: this.state.updateTrue = true,
-    //   });
-    // }
-    // if (this.state.updateTrue === true) {
-    //   document.title = document.title =
-    //     constant.couponPage.title.updateCouponTitle + utils.getAppName();
-    // } else {
-    //   document.title =
-    //     constant.couponPage.title.addCouponTitle + utils.getAppName();
-    // }
   }
 
   getList = (id: any) => this.state[this.id2List[id]];
@@ -185,6 +175,9 @@ class AddCouponMapping extends React.Component<{
   };
 
   render() {
+    let {items,
+        selected,
+        couponlistdata} = this.state;
     return (
       <>
         <NavBar>
@@ -227,7 +220,7 @@ class AddCouponMapping extends React.Component<{
                   <CardBody>
                     <Row className="main_coupon merchnat">
                       <DragDropContext onDragEnd={this.onDragEnd}>
-                        <div>
+                        <div  >
                           <p className="drag_select">
                             Please drag left to right for add coupon
                           </p>
@@ -284,7 +277,7 @@ class AddCouponMapping extends React.Component<{
                                 ref={provided.innerRef}
                                 style={getListStyle(snapshot.isDraggingOver)}
                               >
-                                {this.state.selected.map(
+                                {_.map(selected, (
                                   (item: any, index: any) => (
                                     <Draggable
                                       key={item.value}
@@ -307,7 +300,7 @@ class AddCouponMapping extends React.Component<{
                                       )}
                                     </Draggable>
                                   )
-                                )}
+                                ))}
                                 {provided.placeholder}
                               </div>
                             )}
@@ -315,7 +308,7 @@ class AddCouponMapping extends React.Component<{
                         </div>
                       </DragDropContext>
                     </Row>
-                    <Row className="main_coupon merchnat">
+                    {/* <Row className="main_coupon merchnat">
                       <DragDropContext onDragEnd={this.onDragEnd}>
                         <div>
                           <p className="drag_select">
@@ -344,6 +337,7 @@ class AddCouponMapping extends React.Component<{
                                           ref={provided.innerRef}
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
+                                        
                                           style={getItemStyle(
                                             snapshot.isDragging,
                                             provided.draggableProps.style
@@ -374,7 +368,7 @@ class AddCouponMapping extends React.Component<{
                                 ref={provided.innerRef}
                                 style={getListStyle(snapshot.isDraggingOver)}
                               >
-                                {this.state.selected.map(
+                                {_.map(selected, (
                                   (item: any, index: any) => (
                                     <Draggable
                                       key={item.value}
@@ -397,14 +391,14 @@ class AddCouponMapping extends React.Component<{
                                       )}
                                     </Draggable>
                                   )
-                                )}
+                                ))}
                                 {provided.placeholder}
                               </div>
                             )}
                           </Droppable>
                         </div>
                       </DragDropContext>
-                    </Row>
+                    </Row> */}
 
                     {/* <Row>
                       <Col xs="12" sm="12" md="12" lg="6" xl="6">

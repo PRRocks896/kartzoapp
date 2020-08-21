@@ -86,7 +86,7 @@ export default {
         children: [
           {
             name: 'Merchant',
-            url: '/merchant'
+            url: '/list-merchant'
           },
           {
             name: 'Business',

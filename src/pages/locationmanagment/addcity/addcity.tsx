@@ -37,6 +37,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     updateTrue: this.cityState.updateTrue,
     statename: this.cityState.statename,
     cityid: this.cityState.cityid,
+    isActive:this.cityState.isActive
   };
 
   constructor(props: any) {
@@ -155,7 +156,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         const obj: cityCreateRequest = {
           cityName: this.state.cityname,
           stateId: JSON.parse(this.state.stateid),
-          isActive: true,
+          isActive: this.state.isActive,
         };
 
         const addCity = await LocationAPI.addCity(obj);
@@ -190,7 +191,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
           cityId: this.state.cityid,
           cityName: this.state.cityname,
           stateId: JSON.parse(this.state.stateid),
-          isActive: true,
+          isActive: this.state.isActive,
         };
 
         const editCity = await LocationAPI.editCity(obj, this.state.cityid);

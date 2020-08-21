@@ -54,7 +54,8 @@ const apiUrl = {
         gedCity:'city',
         edidCity:'city/',
         deletdCity:'city/',
-        getCityById:'city/'
+        getCityById:'city/',
+        getcitylist:'city/get-city-list-dropdown'
     },
     categoryController: {
         addCatergory:'category',
