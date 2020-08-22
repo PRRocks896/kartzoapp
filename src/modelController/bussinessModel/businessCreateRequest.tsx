@@ -1,4 +1,6 @@
 export interface bussinessCreateRequest {
+    merchantId?:number,
     days?: string,
-    hours?: string
+    hours?: string,
+    isOpen?:boolean
 }

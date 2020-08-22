@@ -24,7 +24,7 @@ import {
   merchantCreateRequest,
   merchantUpdateRequest,
 } from "../../../modelController/merchantModel";
-import { LocationAPI } from "../../../service/index.service";
+import { LocationAPI, MerchantAPI } from "../../../service/index.service";
 
 class Merchant extends React.Component<{ history: any }> {
   merchantState = constant.merchantPage.state;
@@ -72,6 +72,11 @@ class Merchant extends React.Component<{ history: any }> {
     type: this.merchantState.type,
     file: this.merchantState.file,
     filetrue: this.merchantState.filetrue,
+    file1: this.merchantState.file1,
+    file1true: this.merchantState.file1true,
+    file2: this.merchantState.file2,
+    file2true: this.merchantState.file2true,
+    updateTrue: this.merchantState.updateTrue
   };
 
   constructor(props: any) {
@@ -81,6 +86,7 @@ class Merchant extends React.Component<{ history: any }> {
     this.handleChange = this.handleChange.bind(this);
     this.removeIcon = this.removeIcon.bind(this);
     this.addMerchant = this.addMerchant.bind(this);
+    this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onChangeIDProof = this.onChangeIDProof.bind(this);
     this.onChangeDocumentHandler = this.onChangeDocumentHandler.bind(this);
     this.onUserSelect = this.onUserSelect.bind(this);
@@ -89,6 +95,7 @@ class Merchant extends React.Component<{ history: any }> {
     this.handleEditorUpChange = this.handleEditorUpChange.bind(this);
     this.removeDocumentIcon = this.removeDocumentIcon.bind(this);
     this.removeProofIcon = this.removeProofIcon.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange(checked: boolean) {
@@ -130,33 +137,92 @@ class Merchant extends React.Component<{ history: any }> {
   }
 
   onChangeHandler(event: any) {
-    // let data = new FormData();
-    // data.append('file_name', event.target.files[0]);
-    // console.log("event",event.target.files[0].name);
-    this.setState({
-      selectedFile: this.state.selectedFile = event.target.files[0].name,
-    });
+    if (this.state.filetrue === true) {
+      this.setState({
+        filetrue: this.state.filetrue = false,
+        selectedFile: this.state.selectedFile = event.target.files,
+      });
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onloadend = (ev) => {
+        this.setState({
+          file: reader.result,
+        });
+      };
+    } else {
+      this.setState({
+        selectedFile: this.state.selectedFile = event.target.files,
+      });
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onloadend = (ev) => {
+        this.setState({
+          file: reader.result,
+        });
+      };
+    }
   }
 
   onChangeIDProof(event: any) {
-    // let data = new FormData();
-    // data.append('file_name', event.target.files[0]);
-    // console.log("event",event.target.files[0].name);
-    this.setState({
-      selectedProofFile: this.state.selectedProofFile =
-        event.target.files[0].name,
-    });
+    if (this.state.file1true === true) {
+      this.setState({
+        file1true: this.state.file1true = false,
+        selectedProofFile: this.state.selectedProofFile = event.target.files,
+      });
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onloadend = (ev) => {
+        this.setState({
+          file1: reader.result,
+        });
+      };
+    } else {
+      this.setState({
+        selectedProofFile: this.state.selectedProofFile = event.target.files,
+      });
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onloadend = (ev) => {
+        this.setState({
+          file1: reader.result,
+        });
+      };
+    }
   }
 
   onChangeDocumentHandler(event: any) {
-    // let data = new FormData();
-    // data.append('file_name', event.target.files[0]);
-    // console.log("event",event.target.files[0].name);
-    this.setState({
-      selectedDocumentFile: this.state.selectedDocumentFile =
-        event.target.files[0].name,
-    });
+    if (this.state.file2true === true) {
+      this.setState({
+        file2true: this.state.file2true = false,
+        selectedDocumentFile: this.state.selectedDocumentFile =
+          event.target.files,
+      });
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onloadend = (ev) => {
+        this.setState({
+          file2: reader.result,
+        });
+      };
+    } else {
+      this.setState({
+        selectedDocumentFile: this.state.selectedDocumentFile =
+          event.target.files,
+      });
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onloadend = (ev) => {
+        this.setState({
+          file2: reader.result,
+        });
+      };
+    }
   }
+
+  handleClick = () =>
+    this.setState(({ type }: any) => ({
+      type: type === "password" ? "text" : "password",
+    }));
 
   handleEditorChange = (content: any, editor: any) => {
     console.log("handleEditorChange Content was updated:", content);
@@ -361,47 +427,36 @@ class Merchant extends React.Component<{ history: any }> {
         this.state.longitude &&
         this.state.password
       ) {
-        // const obj: merchantCreateRequest = {
-        //   firstname: this.state.firstname,
-        //   lastname: this.state.lastname,
-        //   email: this.state.email,
-        //   mobilenumber: this.state.mobilenumber,
-        //   selectedDocumentFile: this.state.selectedDocumentFile,
-        //   selectedProofFile: this.state.selectedProofFile,
-        //   selectedFile: this.state.selectedFile,
-        //   latitude: this.state.latitude,
-        //   longitude: this.state.longitude,
-        //   address: this.state.address,
-        //   zipcode: this.state.zipcode,
-        //   shopname: this.state.shopname,
-        //   shoppingpolicy: this.state.shoppingpolicy,
-        //   refundpolicy: this.state.refundpolicy,
-        //   cancellationpolicy: this.state.cancellationpolicy,
-        //   city: this.state.city,
-        //   user: this.state.user,
-        // };
-        // const obj1: merchantUpdateRequest = {
-        //   id: "",
-        //   firstname: this.state.firstname,
-        //   lastname: this.state.lastname,
-        //   email: this.state.email,
-        //   mobilenumber: this.state.mobilenumber,
-        //   selectedDocumentFile: this.state.selectedDocumentFile,
-        //   selectedProofFile: this.state.selectedProofFile,
-        //   selectedFile: this.state.selectedFile,
-        //   latitude: this.state.latitude,
-        //   longitude: this.state.longitude,
-        //   address: this.state.address,
-        //   zipcode: this.state.zipcode,
-        //   shopname: this.state.shopname,
-        //   shoppingpolicy: this.state.shoppingpolicy,
-        //   refundpolicy: this.state.refundpolicy,
-        //   cancellationpolicy: this.state.cancellationpolicy,
-        //   city: this.state.city,
-        //   user: this.state.user,
-        // };
-        // const addMerchant = await API.addMerchant(obj);
-        // console.log("addMerchant",addMerchant);
+        let formData = new FormData();
+        formData.append("RoleId", this.state.user.toString());
+        formData.append("FirstName", this.state.firstname);
+        formData.append("LastName", this.state.lastname);
+        formData.append("ShopName", this.state.shopname);
+        formData.append("Email", this.state.email);
+        formData.append("Phone", this.state.mobilenumber.toString());
+        formData.append("Password", this.state.password);
+        formData.append("Address", this.state.address);
+        formData.append("CityId", this.state.city);
+        formData.append("ZipCode", this.state.zipcode);
+        formData.append("Latitude", this.state.latitude);
+        formData.append("Longitude", this.state.longitude);
+        formData.append("Website", this.state.website);
+        formData.append("MerchantIDPoof", this.state.selectedProofFile[0]);
+        formData.append("MerchantDocument", this.state.selectedDocumentFile[0]);
+        formData.append("ShippingPolicy", this.state.shoppingpolicy);
+        formData.append("RefundPolicy", this.state.refundpolicy);
+        formData.append("CancellationPolicy", this.state.cancellationpolicy);
+        formData.append("isActive", new Boolean(this.state.isOpen).toString());
+        formData.append("files", this.state.selectedFile[0]);
+        formData.append("UserId", "0");
+
+        const addMerchant = await MerchantAPI.addMerchant(formData);
+        console.log("addMerchant", addMerchant);
+        if (addMerchant) {
+        } else {
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
+        }
         // if (
         //   this.state.firstname === obj.firstname &&
         //   this.state.lastname === obj.lastname &&
@@ -421,32 +476,20 @@ class Merchant extends React.Component<{ history: any }> {
   }
 
   removeIcon() {
-    // const obj = {
-    //     id: this.props.auth.auth_data.id,
-    //     image_path: data
-    // }
     this.setState({
-      selectedFile: this.state.selectedFile = "",
+      file: this.state.file = "",
     });
   }
 
   removeDocumentIcon() {
-    // const obj = {
-    //     id: this.props.auth.auth_data.id,
-    //     image_path: data
-    // }
     this.setState({
-      selectedDocumentFile: this.state.selectedDocumentFile = "",
+      file2: this.state.file2 = "",
     });
   }
 
   removeProofIcon() {
-    // const obj = {
-    //     id: this.props.auth.auth_data.id,
-    //     image_path: data
-    // }
     this.setState({
-      selectedProofFile: this.state.selectedProofFile = "",
+      file1: this.state.file1 = "",
     });
   }
 
@@ -460,9 +503,20 @@ class Merchant extends React.Component<{ history: any }> {
                 <Card>
                   <CardHeader>
                     <Row>
-                      <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>{constant.merchantPage.title.merchantTitle}</h1>
-                      </Col>
+                      {this.state.updateTrue === true ? (
+                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                          <h1>
+                            {constant.merchantPage.title.updateMerchantTitle}
+                          </h1>
+                        </Col>
+                      ) : (
+                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                          <h1>
+                            {constant.merchantPage.title.addMerchantTitle}
+                          </h1>
+                        </Col>
+                      )}
+
                       <Col
                         xs="12"
                         sm="6"
@@ -610,8 +664,8 @@ class Merchant extends React.Component<{ history: any }> {
                               onChange={this.onUserSelect}
                             >
                               <option value="">Select User</option>
-                              <option value="User-1">User-1</option>
-                              <option value="User-2">User-2</option>
+                              <option value="0">User-1</option>
+                              <option value="1">User-2</option>
                               {/* {
                                                                         this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
                                                                             <option key={data.id} value={data.id}>{data.name}</option>
@@ -800,25 +854,25 @@ class Merchant extends React.Component<{ history: any }> {
                         </FormGroup>
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
-                        <FormGroup className="img-upload">
-                          {this.state.file !== "" ? (
+                        <FormGroup className="img-upload1">
+                          {this.state.file1 !== "" ? (
                             <div className="img-size">
-                              {this.state.file !== "" ? (
+                              {this.state.file1 !== "" ? (
                                 <div>
-                                  {this.state.filetrue === true ? (
+                                  {this.state.file1true === true ? (
                                     <img
                                       className="picture"
-                                      src={constant.filepath + this.state.file}
+                                      src={constant.filepath + this.state.file1}
                                     />
                                   ) : (
                                     <img
                                       className="picture"
-                                      src={this.state.file}
+                                      src={this.state.file1}
                                     />
                                   )}
                                   <i
                                     className="fa fa-times cursor"
-                                    onClick={() => this.removeIcon()}
+                                    onClick={() => this.removeProofIcon()}
                                   ></i>
                                 </div>
                               ) : null}
@@ -831,18 +885,18 @@ class Merchant extends React.Component<{ history: any }> {
                                     .selectMerchantIdProff
                                 }
                               </p>
-                              <Label className="imag" for="file-input">
+                              <Label className="imag" for="file-input1">
                                 <i
                                   className="fa fa-upload fa-lg"
                                   style={{ color: "#20a8d8" }}
                                 ></i>
                               </Label>
                               <Input
-                                id="file-input"
+                                id="file-input1"
                                 type="file"
                                 className="form-control"
-                                name="file"
-                                onChange={this.onChangeHandler.bind(this)}
+                                name="file1"
+                                onChange={this.onChangeIDProof.bind(this)}
                               />
                             </div>
                           )}
@@ -852,25 +906,25 @@ class Merchant extends React.Component<{ history: any }> {
                         </FormGroup>
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
-                        <FormGroup className="img-upload">
-                          {this.state.file !== "" ? (
+                        <FormGroup className="img-upload2">
+                          {this.state.file2 !== "" ? (
                             <div className="img-size">
-                              {this.state.file !== "" ? (
+                              {this.state.file2 !== "" ? (
                                 <div>
-                                  {this.state.filetrue === true ? (
+                                  {this.state.file2true === true ? (
                                     <img
                                       className="picture"
-                                      src={constant.filepath + this.state.file}
+                                      src={constant.filepath + this.state.file2}
                                     />
                                   ) : (
                                     <img
                                       className="picture"
-                                      src={this.state.file}
+                                      src={this.state.file2}
                                     />
                                   )}
                                   <i
                                     className="fa fa-times cursor"
-                                    onClick={() => this.removeIcon()}
+                                    onClick={() => this.removeDocumentIcon()}
                                   ></i>
                                 </div>
                               ) : null}
@@ -883,18 +937,20 @@ class Merchant extends React.Component<{ history: any }> {
                                     .selectMerchantDocument
                                 }
                               </p>
-                              <Label className="imag" for="file-input">
+                              <Label className="imag" for="file-input2">
                                 <i
                                   className="fa fa-upload fa-lg"
                                   style={{ color: "#20a8d8" }}
                                 ></i>
                               </Label>
                               <Input
-                                id="file-input"
+                                id="file-input2"
                                 type="file"
                                 className="form-control"
-                                name="file"
-                                onChange={this.onChangeHandler.bind(this)}
+                                name="file2"
+                                onChange={this.onChangeDocumentHandler.bind(
+                                  this
+                                )}
                               />
                             </div>
                           )}
@@ -1129,19 +1185,18 @@ class Merchant extends React.Component<{ history: any }> {
                           />
                           {this.state.type === "password" ? (
                             <i
-                              //   onClick={this.handleClick}
+                              onClick={this.handleClick}
                               className="fas fa-eye"
                             ></i>
                           ) : (
                             <i
-                              //   onClick={this.handleClick}
+                              onClick={this.handleClick}
                               className="fas fa-eye-slash"
                             ></i>
                           )}
-
-                          <div className="mb-4 text-danger">
-                            {/* {this.state.passworderror} */}
-                          </div>
+                        </div>
+                        <div className="text-danger">
+                          {this.state.passworderror}
                         </div>
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
@@ -1158,20 +1213,28 @@ class Merchant extends React.Component<{ history: any }> {
                           </div>
                         </label>
                       </Col>
-
-                      <div className="mb-4 text-danger">
-                        {/* {this.state.passworderror} */}
-                      </div>
                     </Row>
-                    <Button
-                      type="button"
-                      size="sm"
-                      color="primary"
-                      className="mb-2 mt-3 mr-2 custom-button"
-                      onClick={this.addMerchant}
-                    >
-                      {constant.button.Save}
-                    </Button>
+                    {this.state.updateTrue === true ? (
+                      <Button
+                        type="button"
+                        size="sm"
+                        color="primary"
+                        className="mb-2 mt-3 mr-2 custom-button"
+                        onClick={this.addMerchant}
+                      >
+                        {constant.button.update}
+                      </Button>
+                    ) : (
+                      <Button
+                        type="button"
+                        size="sm"
+                        color="primary"
+                        className="mb-2 mt-3 mr-2 custom-button"
+                        onClick={this.addMerchant}
+                      >
+                        {constant.button.Save}
+                      </Button>
+                    )}
                   </CardBody>
                 </Card>
               </Col>

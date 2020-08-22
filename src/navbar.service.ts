@@ -90,7 +90,7 @@ export default {
           },
           {
             name: 'Business',
-            url: '/merchant-business'
+            url: '/list-business-hours'
           },
           {
             name: 'Review',

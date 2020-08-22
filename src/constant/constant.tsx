@@ -21,8 +21,10 @@ export default {
   service: "Service",
   logout: "Logout",
   filepath: "http://api.kartzoapp.com/",
+  fileMerchantpath: "http://api-merchant.kartzoapp.com/",
   mainUrl: "http://api.kartzoapp.com/api/",
   apiUrl: "http://api.kartzoapp.com/v1/",
+  apiMerchantUrl:"http://api-merchant.kartzoapp.com/v1/",
   headers: {
     Authorization:
       "Bearer " +
@@ -558,6 +560,7 @@ export default {
       countrydata: [],
       switchSort: false,
       isStatus: false,
+      merchantdata:[],
 
       selectedFile: "",
       selectedProofFile: "",
@@ -601,7 +604,12 @@ export default {
       citydata: [],
       type: "text",
       file: "",
-      filetrue: false
+      filetrue: false,
+      file1: "",
+      file1true: false,
+      file2: "",
+      file2true: false,
+      updateTrue:false
     },
     merchantTableColumn: {
       Firstname: "First Name",
@@ -620,12 +628,50 @@ export default {
       refundpolicy: "Refund Policy",
       cancellationpolicy: "Cancellation Policy",
       isOpen: "Is Active",
-      selectedFile: "Select File",
+      selectedFile: "Shop Logo",
       selectMerchantIdProff: "Select Merchant ID Proof",
       selectMerchantDocument: "Select Merchant Document",
     },
     viewmerchanrpagedetails: {
       viewmerchant: "View Merchant Details",
+    },
+  },
+  merchantBussinessPage: {
+    title: {
+      addMerchantHoursTitle: "Add Merchant Business Hours",
+      merchantHoursTitle: "Merchant Business Hours",
+      viewMerchantHoursTitle: "View Merchant Business Hours",
+      updateMerchantHoursTitle: "Update Merchant Business Hours",
+    },
+    state: {
+      count: "10",
+      currentPage: "1",
+      items_per_page: "10",
+      upperPageBound: 3,
+      lowerPageBound: 0,
+      pageBound: 3,
+      onItemSelect: "",
+      businessdata:[],
+      switchSort: false,
+      isStatus: false,
+      
+      merchant:"",
+      merchanterror:"",
+      days: "",
+      dayserror: "",
+      hours: "",
+      hourserror: "",
+      isOpen: false,
+      updateTrue:false
+    },
+    merchantHoursTableColumn: {
+      merchantname: "Select Merchant",
+      days: "Days",
+      hours: "Hours",
+      IsOpen:'IsOpen'
+    },
+    viewmerchantbusinesshoursdetails: {
+      viewmerchant: "View Merchant Business Hours Details",
     },
   },
 };

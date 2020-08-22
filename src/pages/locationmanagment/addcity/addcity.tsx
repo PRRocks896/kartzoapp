@@ -102,6 +102,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
           stateid: this.state.stateid = getCityById.resultObject.stateId,
           cityid: this.state.cityid = getCityById.resultObject.cityId,
           cityname: this.state.cityname = getCityById.resultObject.cityName,
+          isActive: this.state.isActive = getCityById.resultObject.isActive
         });
       } else {
         const msg1 = getCityById.message;

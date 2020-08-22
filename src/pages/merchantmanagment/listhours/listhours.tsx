@@ -16,34 +16,30 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import {
-  StatusAPI,
-  CouponAPI,
-  MerchantAPI,
-} from "../../../service/index.service";
+import {StatusAPI, CouponAPI, MerchantAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
-class ListMerchant extends React.Component<{ history: any }> {
-  merchantState = constant.merchantPage.state;
+class ListBussinessHours extends React.Component<{ history: any }> {
+  merchantBusinessHoursState = constant.merchantBussinessPage.state;
   state = {
-    count: this.merchantState.count,
-    currentPage: this.merchantState.currentPage,
-    items_per_page: this.merchantState.items_per_page,
-    upperPageBound: this.merchantState.upperPageBound,
-    lowerPageBound: this.merchantState.lowerPageBound,
-    pageBound: this.merchantState.pageBound,
-    onItemSelect: this.merchantState.onItemSelect,
-    merchantdata: this.merchantState.merchantdata,
-    switchSort: this.merchantState.switchSort,
-    isStatus: this.merchantState.isStatus,
+    count: this.merchantBusinessHoursState.count,
+    currentPage: this.merchantBusinessHoursState.currentPage,
+    items_per_page: this.merchantBusinessHoursState.items_per_page,
+    upperPageBound: this.merchantBusinessHoursState.upperPageBound,
+    lowerPageBound: this.merchantBusinessHoursState.lowerPageBound,
+    pageBound: this.merchantBusinessHoursState.pageBound,
+    onItemSelect: this.merchantBusinessHoursState.onItemSelect,
+    businessdata: this.merchantBusinessHoursState.businessdata,
+    switchSort: this.merchantBusinessHoursState.switchSort,
+    isStatus: this.merchantBusinessHoursState.isStatus
   };
 
   constructor(props: any) {
     super(props);
-    this.editMerchant = this.editMerchant.bind(this);
+    this.editBusinessHours = this.editBusinessHours.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
-    this.viewMerchant = this.viewMerchant.bind(this);
+    this.viewBusinessHours = this.viewBusinessHours.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(
       this
@@ -60,11 +56,11 @@ class ListMerchant extends React.Component<{ history: any }> {
   async componentDidMount() {
     document.title =
       constant.categoryPage.title.categoryTitle + utils.getAppName();
-    utils.dataTable();
-    this.getMerchantData();
+      utils.dataTable();
+    this.getBusinessHoursData();
   }
 
-  async getMerchantData(
+  async getBusinessHoursData(
     searchText: string = "",
     page: number = 1,
     size: number = 10
@@ -75,18 +71,17 @@ class ListMerchant extends React.Component<{ history: any }> {
       size: size,
     };
 
-    var getMerchantData = await MerchantAPI.getMerchantData(obj);
-    console.log("getMerchantData", getMerchantData);
+    var getBusinessHoursData = await MerchantAPI.getBusinessHoursData(obj);
+    console.log("getBusinessHoursData", getBusinessHoursData);
 
-    if (getMerchantData) {
-      if (getMerchantData.status === 200) {
+    if (getBusinessHoursData) {
+      if (getBusinessHoursData.status === 200) {
         this.setState({
-          merchantdata: this.state.merchantdata =
-            getMerchantData.resultObject.data,
-          count: this.state.count = getMerchantData.resultObject.totalcount,
+          businessdata: this.state.businessdata = getBusinessHoursData.resultObject.data,
+          count: this.state.count = getBusinessHoursData.resultObject.totalcount,
         });
       } else {
-        const msg1 = getMerchantData.message;
+        const msg1 = getBusinessHoursData.message;
         utils.showError(msg1);
       }
     } else {
@@ -117,12 +112,12 @@ class ListMerchant extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
-  editMerchant(id: any) {
-    this.props.history.push("/edit-merchant/" + id);
+  editBusinessHours(id: any) {
+    this.props.history.push("/edit-merchant-business/" + id);
   }
 
-  viewMerchant(id: any) {
-    this.props.history.push("/view-merchant/" + id);
+  viewBusinessHours(id: any) {
+    this.props.history.push("/view-merchant-business/" + id);
   }
 
   onItemSelect(event: any) {
@@ -131,11 +126,7 @@ class ListMerchant extends React.Component<{ history: any }> {
         event.target.options[event.target.selectedIndex].value,
     });
 
-    this.getMerchantData(
-      "",
-      parseInt(this.state.currentPage),
-      parseInt(this.state.items_per_page)
-    );
+    this.getBusinessHoursData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
   }
 
   async handleClick(event: any) {
@@ -148,7 +139,7 @@ class ListMerchant extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    this.getMerchantData(obj.searchText, obj.page, obj.size);
+    this.getBusinessHoursData(obj.searchText, obj.page, obj.size);
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -158,17 +149,17 @@ class ListMerchant extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    this.getMerchantData(obj.searchText, obj.page, obj.size);
+    this.getBusinessHoursData(obj.searchText, obj.page, obj.size);
   }
 
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
     });
-    let copyTableData = [...this.state.merchantdata];
+    let copyTableData = [...this.state.businessdata];
     copyTableData.sort(this.compareByDesc(key));
     this.setState({
-      merchantdata: this.state.merchantdata = copyTableData,
+      businessdata: this.state.businessdata = copyTableData,
     });
   }
 
@@ -193,14 +184,14 @@ class ListMerchant extends React.Component<{ history: any }> {
       const obj = {
         moduleName: "Coupon",
         id: data.couponId,
-        isActive: data.isActive === true ? false : true,
-      };
-      var getStatusChange = await StatusAPI.getStatusChange(obj);
-      console.log("getStatusChange", getStatusChange);
-      if (getStatusChange.status === 200) {
+        isActive: data.isActive === true ? false : true
+       }
+       var getStatusChange = await StatusAPI.getStatusChange(obj);
+       console.log("getStatusChange", getStatusChange);
+       if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);
-        this.getMerchantData();
+        this.getBusinessHoursData();
       } else {
         const msg1 = getStatusChange.message;
         utils.showError(msg1);
@@ -250,7 +241,7 @@ class ListMerchant extends React.Component<{ history: any }> {
     return res;
   }
 
-  getTable(coupondata: any) {
+  getTable(merchantdata: any) {
     return (
       <table
         id="dtBasicExample"
@@ -258,11 +249,9 @@ class ListMerchant extends React.Component<{ history: any }> {
         width="100%"
       >
         <thead>
-          <tr onClick={() => this.handleSort("couponCode")}>
-            <th>{constant.merchantPage.merchantTableColumn.Firstname}</th>
-            <th>{constant.merchantPage.merchantTableColumn.lastname}</th>
-            <th>{constant.merchantPage.merchantTableColumn.email}</th>
-            <th>{constant.merchantPage.merchantTableColumn.Address}</th>
+          <tr onClick={() => this.handleSort("days")}>
+            <th>{constant.merchantBussinessPage.merchantHoursTableColumn.days}</th>
+            <th>{constant.merchantBussinessPage.merchantHoursTableColumn.hours}</th>
             <th style={{ textAlign: "center" }}>
               {constant.tableAction.status}
             </th>
@@ -270,14 +259,12 @@ class ListMerchant extends React.Component<{ history: any }> {
           </tr>
         </thead>
         <tbody>
-          {this.state.merchantdata.length > 0 ? (
+          {this.state.businessdata.length > 0 ? (
             <>
-              {this.state.merchantdata.map((data: any, index: any) => (
+              {this.state.businessdata.map((data: any, index: any) => (
                 <tr key={index}>
-                  <td>{data.firstName}</td>
-                  <td>{data.lastName}</td>
-                  <td>{data.email}</td>
-                  <td>{data.address}</td>
+                  <td>{data.days}</td>
+                  <td>{data.hours}</td>
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -285,7 +272,7 @@ class ListMerchant extends React.Component<{ history: any }> {
                         onClick={() =>
                           this.statusChange(
                             data,
-                            "You should be inActive merchant",
+                            "You should be inActive business hours",
                             "Yes, inActive it"
                           )
                         }
@@ -298,7 +285,7 @@ class ListMerchant extends React.Component<{ history: any }> {
                         onClick={() =>
                           this.statusChange(
                             data,
-                            "You should be Active merchant",
+                            "You should be Active business hours",
                             "Yes, Active it"
                           )
                         }
@@ -311,11 +298,11 @@ class ListMerchant extends React.Component<{ history: any }> {
                     <span className="padding">
                       <i
                         className="fa fa-eye"
-                        onClick={() => this.viewMerchant(data.merchantID)}
+                        onClick={() => this.viewBusinessHours(data.merchantBusinessHoursId)}
                       ></i>
                       <i
                         className="fas fa-edit"
-                        onClick={() => this.editMerchant(data.merchantID)}
+                        onClick={() => this.editBusinessHours(data.merchantBusinessHoursId)}
                       ></i>
                       {/* <i
                         className="far fa-trash-alt"
@@ -377,14 +364,7 @@ class ListMerchant extends React.Component<{ history: any }> {
 
   render() {
     var pageNumbers = [];
-    for (
-      let i = 1;
-      i <=
-      Math.ceil(
-        parseInt(this.state.count) / parseInt(this.state.items_per_page)
-      );
-      i++
-    ) {
+    for (let i = 1; i <= Math.ceil(parseInt(this.state.count) / parseInt(this.state.items_per_page)); i++) {
       pageNumbers.push(i);
     }
     var renderPageNumbers = this.pagination(pageNumbers);
@@ -422,12 +402,12 @@ class ListMerchant extends React.Component<{ history: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <CardTitle className="font">
-                          {constant.merchantPage.title.merchantTitle}
+                          {constant.merchantBussinessPage.title.merchantHoursTitle}
                         </CardTitle>
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <div className="right">
-                          <Link to="/merchant">
+                          <Link to="/merchant-business">
                             <Button
                               className="mb-2 mr-2 custom-button"
                               color="primary"
@@ -450,12 +430,12 @@ class ListMerchant extends React.Component<{ history: any }> {
                       />
                     </div>
 
-                    {this.state.merchantdata.length > 0 ? (
-                      <>{this.getTable(this.state.merchantdata)}</>
+                    {this.state.businessdata.length > 0 ? (
+                      <>{this.getTable(this.state.businessdata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
                     )}
-                    {this.state.merchantdata.length > 0
+                    {this.state.businessdata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,
                           renderPageNumbers,
@@ -473,4 +453,4 @@ class ListMerchant extends React.Component<{ history: any }> {
   }
 }
 
-export default ListMerchant;
+export default ListBussinessHours;

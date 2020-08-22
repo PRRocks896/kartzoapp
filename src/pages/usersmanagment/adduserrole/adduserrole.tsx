@@ -76,6 +76,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
           description: this.state.description =
             getRoleById.resultObject.description,
           isOpen: this.state.isOpen = getRoleById.resultObject.isAdminRole,
+          isActive: this.state.isActive = getRoleById.resultObject.isActive
         });
       } else {
         const msg1 = getRoleById.message;

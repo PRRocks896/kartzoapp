@@ -103,6 +103,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
           countryname: this.state.countryname =
             getStateById.resultObject.countryName,
           stateid: this.state.stateid = getStateById.resultObject.stateId,
+          isActive: this.state.isActive = getStateById.resultObject.isActive
         });
       } else {
         const msg1 = getStateById.message;

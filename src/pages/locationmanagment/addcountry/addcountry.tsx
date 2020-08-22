@@ -83,6 +83,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
           file: this.state.file = getCountryById.resultObject.imagePath,
           selectedFile: this.state.selectedFile =
             getCountryById.resultObject.imagePath,
+            isActive: this.state.isActive = getCountryById.resultObject.isActive
         });
       } else {
         const msg1 = getCountryById.message;

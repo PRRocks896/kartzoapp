@@ -77,6 +77,9 @@ import ViewCoupon from '../pages/couponmanagment/viewcoupon/viewcoupon';
 import ListCouponMap from '../pages/couponmanagment/listcouponmapping/listmap';
 import AddCouponMapping from '../pages/couponmanagment/addcouponmapping/addmap';
 import ListMerchant from '../pages/merchantmanagment/listmerchant/listmerchant';
+import ListBussinessHours from '../pages/merchantmanagment/listhours/listhours';
+import ViewBusinessHours from '../pages/merchantmanagment/viewhours/viewhours';
+import ViewMerchant from '../pages/merchantmanagment/viewmerchant/viewmerchant';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -123,8 +126,8 @@ class Main extends React.Component<{history:any}> {
             <Route path='/viewcountry/:id' render={(props: any) => <ViewCountry {...props} />} />
             <Route path='/table' render={(props: any) => <Tables {...props} />} />
         
-            <Route path='/merchant' render={(props: any) => <Merchant {...props} />} />
-            <Route path='/merchant-business' render={(props: any) => <MerchantBusiness {...props} />} />
+          
+        
             <Route path='/merchant-review' render={(props: any) => <MerchantReview {...props} />} />
             <Route path='/product' render={(props: any) => <AddProduct {...props} />} />
             <Route path='/edit-product' render={(props: any) => <AddProduct {...props} />} />
@@ -175,6 +178,13 @@ class Main extends React.Component<{history:any}> {
             <Route path='/list-coupon-map' render={(props: any) => <ListCouponMap {...props} />} />
             <Route path='/add-coupon-map' render={(props: any) => <AddCouponMapping {...props} />} />
             <Route path='/list-merchant' render={(props: any) => <ListMerchant {...props} />} />
+            <Route path='/merchant' render={(props: any) => <Merchant {...props} />} />
+            <Route path='/edit-merchant/:id' render={(props: any) => <Merchant {...props} />} />
+            <Route path='/view-merchant/:id' render={(props: any) => <ViewMerchant {...props} />} />
+            <Route path='/list-business-hours' render={(props: any) => <ListBussinessHours {...props} />} />
+            <Route path='/merchant-business' render={(props: any) => <MerchantBusiness {...props} />} />
+            <Route path='/edit-merchant-business/:id' render={(props: any) => <MerchantBusiness {...props} />} />
+            <Route path='/view-merchant-business/:id' render={(props: any) => <ViewBusinessHours {...props} />} />
             {
                     this.props.history.location.pathname != '/' ? (
                       <Route path="*" component={Page404}/>

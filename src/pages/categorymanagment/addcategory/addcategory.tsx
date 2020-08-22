@@ -104,6 +104,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
           getCategoryById.resultObject.parentCategory,
         selectedFile: this.state.selectedFile =
           getCategoryById.resultObject.imagePath,
+          isActive: this.state.isActive = getCategoryById.resultObject.isActive
       });
     } else {
       const msg1 = getCategoryById.message;

@@ -80,21 +80,24 @@ const apiUrl = {
     },
     merchantController: {
         addMerchant:'merchant',
-        getMerchant:'merchant',
+        getMerchant:'merchant/get-merchant-list',
         editMerchant:'merchant',
-        deleteMerchant:'merchant'
+        deleteMerchant:'merchant',
+        getMerchantById:'merchant/'
     },
     merchantBusinessController: {
-        addMerchantBusiness:'merchant',
+        addMerchantBusiness:'merchantbusinesshour',
         getMerchantBusiness:'merchant',
         editMerchantBusiness:'merchant',
-        deleteMerchantBusiness:'merchant'
+        deleteMerchantBusiness:'merchant',
+        getBusinessHoursData:'merchantbusinesshour/get-merchantbusinesshour-list',
+        getBusinessHoursById:'merchantbusinesshour/'
     },
     merchantReviewController: {
         addMerchantReview:'merchant',
         getMerchantReview:'merchant',
         editMerchantReview:'merchant',
-        deleteMerchantReview:'merchant'
+        deleteMerchantReview:'merchant',
     },
     productController: {
         addproduct:'product',
