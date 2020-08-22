@@ -16,6 +16,7 @@ export * from './category.service';
 export * from './status.service';
 export * from './coupon.service';
 export * from './merchant.service';
+export * from './product.service';
 
 
 export {
@@ -25,5 +26,6 @@ export {
     CategoryAPI,
     StatusAPI,
     CouponAPI,
-    MerchantAPI
+    MerchantAPI,
+    ProductAPI
 }

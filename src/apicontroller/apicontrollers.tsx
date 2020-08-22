@@ -101,7 +101,7 @@ const apiUrl = {
     },
     productController: {
         addproduct:'product',
-        getproduct:'product',
+        getproduct:'products/get-product-list',
         editproduct:'product',
         deleteproduct:'product',
         addImage:'product',

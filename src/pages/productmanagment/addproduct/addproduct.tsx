@@ -21,6 +21,7 @@ import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { Editor } from '@tinymce/tinymce-react';
 import { productCreateRequest, productUpdateRequest } from '../../../modelController/productModel';
+import { CategoryAPI } from '../../../service/index.service';
 
 class AddProduct extends React.Component<{ history: any }> {
 
@@ -73,8 +74,8 @@ class AddProduct extends React.Component<{ history: any }> {
     async componentDidMount() {
         document.title = constant.addProduct + utils.getAppName();
 
-        // const getProfile = await API.getProfile();
-        // console.log("getprofile",getProfile);
+        const getAllCategory = await CategoryAPI.getAllCategory();
+        console.log("getAllCategory",getAllCategory);
     }
 
     onMerchantSelect(event: any) {

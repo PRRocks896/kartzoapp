@@ -33,11 +33,8 @@ export default {
     editProductImage: async function (data: any) {
         return await WebReqUrl.put(Constant.apiUrl + apiUrl.productController.editproductImage,data);
     },
-    
-    
-    
-    
-    
-    
-    
+    getProductData: async function (data:any) {
+        return await WebReqUrl.post(Constant.apiMerchantUrl + apiUrl.productController.getproduct,data);
+    },
+
 }

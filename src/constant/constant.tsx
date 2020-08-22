@@ -674,4 +674,44 @@ export default {
       viewmerchant: "View Merchant Business Hours Details",
     },
   },
+
+  productPage: {
+    title: {
+      addProductTitle: "Add Product",
+      productTitle: "Product Management",
+      viewProductTitle: "View Product",
+      updateProductTitle: "Update Product",
+    },
+    state: {
+      count: "10",
+      currentPage: "1",
+      items_per_page: "10",
+      upperPageBound: 3,
+      lowerPageBound: 0,
+      pageBound: 3,
+      onItemSelect: "",
+      productdata:[],
+      switchSort: false,
+      isStatus: false,
+      
+      merchant:"",
+      merchanterror:"",
+      days: "",
+      dayserror: "",
+      hours: "",
+      hourserror: "",
+      isOpen: false,
+      updateTrue:false
+    },
+    productTableColumn: {
+    prodctname:'Product Name',
+    productdescription:'Product Description',
+    price:'Price',
+    sortOrder:'sortOrder',
+    discountPrice:'Discount Price'
+    },
+    viewproductdetails: {
+      viewproduct: "View Product Details",
+    },
+  },
 };
