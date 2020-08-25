@@ -19,3 +19,5 @@ export * from './productAddOnModel';
 export * from './orderModel';
 export * from './orderCartModel';
 export * from './loginModel';
+export * from './settingModel';
+export * from './feeModel';

@@ -80,6 +80,12 @@ import ListMerchant from '../pages/merchantmanagment/listmerchant/listmerchant';
 import ListBussinessHours from '../pages/merchantmanagment/listhours/listhours';
 import ViewBusinessHours from '../pages/merchantmanagment/viewhours/viewhours';
 import ViewMerchant from '../pages/merchantmanagment/viewmerchant/viewmerchant';
+import ListSetting from '../pages/settingmanagement/setting/setting';
+import AddSetting from '../pages/settingmanagement/setting/addsetting/addsetting';
+import ViewSetting from '../pages/settingmanagement/setting/viewsetting/viewsetting';
+import ListFee from '../pages/settingmanagement/fee/fee';
+import AddFee from '../pages/settingmanagement/fee/addfee/addfee';
+import ViewFee from '../pages/settingmanagement/fee/viewfee/viewfee';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -185,6 +191,14 @@ class Main extends React.Component<{history:any}> {
             <Route path='/merchant-business' render={(props: any) => <MerchantBusiness {...props} />} />
             <Route path='/edit-merchant-business/:id' render={(props: any) => <MerchantBusiness {...props} />} />
             <Route path='/view-merchant-business/:id' render={(props: any) => <ViewBusinessHours {...props} />} />
+            <Route path='/list-setting' render={(props: any) => <ListSetting {...props} />} />
+            <Route path='/add-setting' render={(props: any) => <AddSetting {...props} />} />
+            <Route path='/edit-setting/:id' render={(props: any) => <AddSetting {...props} />} />
+            <Route path='/view-setting/:id' render={(props: any) => <ViewSetting {...props} />} />
+            <Route path='/list-fee' render={(props: any) => <ListFee {...props} />} />
+            <Route path='/add-fee' render={(props: any) => <AddFee {...props} />} />
+            <Route path='/edit-fee/:id' render={(props: any) => <AddFee {...props} />} />
+            <Route path='/view-fee/:id' render={(props: any) => <ViewFee {...props} />} />
             {
                     this.props.history.location.pathname != '/' ? (
                       <Route path="*" component={Page404}/>

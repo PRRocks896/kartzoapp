@@ -7,6 +7,8 @@ import CategoryAPI from './category.service';
 import StatusAPI from './status.service';
 import CouponAPI from './coupon.service';
 import MerchantAPI from './merchant.service';
+import SettingAPI from './setting.service';
+import FeeAPI from './fee.service';
 
 
 export * from './service';
@@ -17,6 +19,8 @@ export * from './status.service';
 export * from './coupon.service';
 export * from './merchant.service';
 export * from './product.service';
+export * from './setting.service';
+export * from './fee.service';
 
 
 export {
@@ -27,5 +31,7 @@ export {
     StatusAPI,
     CouponAPI,
     MerchantAPI,
-    ProductAPI
+    ProductAPI,
+    SettingAPI,
+    FeeAPI
 }

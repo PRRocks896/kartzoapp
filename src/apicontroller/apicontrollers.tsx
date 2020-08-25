@@ -130,6 +130,20 @@ const apiUrl = {
         editAddress:'address',
         deleteAddress:'address'
     },
+    settingController: {
+        addsetting:'setting',
+        getsetting:'setting/',
+        editsetting:'setting/',
+        deletesetting:'setting',
+        getsettinglist:'setting/get-setting-list'
+    },
+    feeController: {
+        addfee:'fee',
+        getfee:'fee/',
+        editfee:'fee/',
+        deletefee:'fee',
+        getfeelist:'fee/get-fee-list'
+    },
 }
 
 export default apiUrl;

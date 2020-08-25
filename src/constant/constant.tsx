@@ -714,4 +714,75 @@ export default {
       viewproduct: "View Product Details",
     },
   },
+
+  settingPage: {
+    title: {
+      addSettingTitle: "Add Setting",
+      settingTitle: "Setting Management",
+      viewsettingTitle: "View Setting",
+      updatesettingTitle: "Update Setting",
+    },
+    state: {
+      count: "10",
+      currentPage: "1",
+      items_per_page: "10",
+      upperPageBound: 3,
+      lowerPageBound: 0,
+      pageBound: 3,
+      onItemSelect: "",
+      settingdata:[],
+      switchSort: false,
+      isStatus: false,
+      
+      identifier: '',
+      identifiererror: '',
+      value: '',
+      valueerror: '',
+      isActive: false,
+      updateTrue:false,
+      settingid:''
+    },
+    settingTableColumn: {
+    identifier:'Identifier',
+    value:'Value'
+    },
+    viewsettingdetails: {
+      viewsetting: "View Setting Details",
+    },
+  },
+  feePage: {
+    title: {
+      addFeeTitle: "Add Fee",
+      feeTitle: "Fee Management",
+      viewfeeTitle: "View Fee Details",
+      updatefeeTitle: "Update Fee",
+    },
+    state: {
+      count: "10",
+      currentPage: "1",
+      items_per_page: "10",
+      upperPageBound: 3,
+      lowerPageBound: 0,
+      pageBound: 3,
+      onItemSelect: "",
+      feedata:[],
+      switchSort: false,
+      isStatus: false,
+      
+      name: '',
+      nameerror: '',
+      description: '',
+      descriptionerror: '',
+      isActive: false,
+      updateTrue:false,
+      feeId:''
+    },
+    feeTableColumn: {
+    name:'Name',
+    description:'Description'
+    },
+    viewfeedetails: {
+      viewfee: "View Fee Details",
+    },
+  },
 };

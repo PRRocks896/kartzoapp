@@ -79,6 +79,38 @@ export default {
         ]
       },
       {
+        name: 'Setting',
+        id: 'settingmanagement',
+        icon: 'fa fa-cog fs-16',
+        type: 'dropdown',
+        children: [
+          {
+            name: 'Setting',
+            url: '/list-setting'
+          },
+          {
+            name: 'Tax',
+            url: '/list-tax'
+          },
+          {
+            name: 'Payout',
+            url: '/list-payout'
+          },
+          {
+            name: 'HomeSlider',
+            url: '/list-slider'
+          },
+          {
+            name: 'Fee',
+            url: '/list-fee'
+          },
+          {
+            name: 'Distance-Matrix',
+            url: '/list-matrix'
+          }
+        ]
+      },
+      {
         name: 'Merchant',
         id: 'merchantmanagement',
         icon: 'fa fa-location-arrow fs-16',

@@ -105,6 +105,7 @@ class AddCouponMapping extends React.Component<{
   constructor(props: any) {
     super(props);
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.getCouponList = this.getCouponList.bind(this);
     // this.Profile = this.Profile.bind(this);
 
     // this.handleStart = this.handleStart.bind(this);
@@ -113,6 +114,10 @@ class AddCouponMapping extends React.Component<{
   async componentDidMount() {
     document.title =
     constant.couponPage.title.addCouponMappingTitle + utils.getAppName();
+    this.getCouponList();
+  }
+
+  async getCouponList() {
     var getCouponList = await CouponAPI.getCouponList();
     console.log("getCouponList", getCouponList);
 
