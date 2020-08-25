@@ -785,4 +785,45 @@ export default {
       viewfee: "View Fee Details",
     },
   },
+  taxPage: {
+    title: {
+      addTaxTitle: "Add Tax",
+      taxTitle: "Tax Management",
+      viewtaxTitle: "View Tax Details",
+      updatetaxTitle: "Update Tax",
+    },
+    state: {
+      count: "10",
+      currentPage: "1",
+      items_per_page: "10",
+      upperPageBound: 3,
+      lowerPageBound: 0,
+      pageBound: 3,
+      onItemSelect: "",
+      taxdata:[],
+      switchSort: false,
+      isStatus: false,
+      categorydata:[],
+      
+      mainCategoryId: '',
+      mainCategoryIderror: '',
+      taxName: '',
+      taxNameerror: '',
+      percentage: '',
+      percentageerror: '',
+      isActive: false,
+      updateTrue:false,
+      taxId:'',
+      categoryname:''
+    },
+    taxTableColumn: {
+    taxname:'Tax Name',
+    percentage:'Tax Percentage',
+    categoryname:'Category Name',
+    category:'Select Category'
+    },
+    viewtaxdetails: {
+      viewtax: "View Tax Details",
+    },
+  },
 };

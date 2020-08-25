@@ -86,6 +86,9 @@ import ViewSetting from '../pages/settingmanagement/setting/viewsetting/viewsett
 import ListFee from '../pages/settingmanagement/fee/fee';
 import AddFee from '../pages/settingmanagement/fee/addfee/addfee';
 import ViewFee from '../pages/settingmanagement/fee/viewfee/viewfee';
+import ListTax from '../pages/settingmanagement/tax/tax';
+import AddTax from '../pages/settingmanagement/tax/addtax/addtax';
+import ViewTax from '../pages/settingmanagement/tax/viewtax/viewtax';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -199,6 +202,10 @@ class Main extends React.Component<{history:any}> {
             <Route path='/add-fee' render={(props: any) => <AddFee {...props} />} />
             <Route path='/edit-fee/:id' render={(props: any) => <AddFee {...props} />} />
             <Route path='/view-fee/:id' render={(props: any) => <ViewFee {...props} />} />
+            <Route path='/list-tax' render={(props: any) => <ListTax {...props} />} />
+            <Route path='/add-tax' render={(props: any) => <AddTax {...props} />} />
+            <Route path='/edit-tax/:id' render={(props: any) => <AddTax {...props} />} />
+            <Route path='/view-tax/:id' render={(props: any) => <ViewTax {...props} />} />
             {
                     this.props.history.location.pathname != '/' ? (
                       <Route path="*" component={Page404}/>

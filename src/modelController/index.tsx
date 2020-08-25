@@ -21,3 +21,4 @@ export * from './orderCartModel';
 export * from './loginModel';
 export * from './settingModel';
 export * from './feeModel';
+export * from './taxModel';

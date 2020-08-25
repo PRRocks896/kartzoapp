@@ -14,13 +14,14 @@ class NavBar extends React.Component {
         side: true,
         file:'',
         firstName:'',
-        lastName:''
+        lastName:'',
+        classshow:'has-chevron  nav-dropdown-toggle'
     };
 
     constructor(props:any) {
         super(props);
         // this.logout = this.logout.bind(this);
-
+        this.handleClick = this.handleClick.bind(this);
         EventEmitter.subscribe('imageUpload', (data:any) => {
             this.setState({
                 file: this.state.file = data,
@@ -43,13 +44,26 @@ class NavBar extends React.Component {
 
     activeRoute(routeName:any, props:any) {
         const route = window.location.hash.split('#')[1];
+        console.log("route",route);
+        console.log("routename",routeName);
         return route === routeName ? `nav-item nav-dropdown open` : `nav-item nav-dropdown`;
     
       }
 
-      handleClick(e:any) {
-        e.preventDefault();
-        e.target.parentElement.classList.toggle('open');
+      handleClick(url:any) {
+          console.log("url",url);
+          window.location.href=`/#${url}`
+        // this.props.history.push(`/${url}`);
+        // const elDropdown = document.getElementById(`dropdown-${id}`);
+        // const elCollapse = document.getElementById(`collapse-${id}`);
+        // if(elDropdown && elCollapse) {
+        //     if(elDropdown.classList.contains('open')) {
+        //         elDropdown.classList.remove('collapsed');
+        //     }
+        //     if(elCollapse.classList.contains('show')) {
+        //         elCollapse.classList.add('show');
+        //     }
+        // }
       }
 
     toggleCollapse = () => {
@@ -112,11 +126,11 @@ class NavBar extends React.Component {
             return (
               <div key={key} className={classes.item}>
                 {isExternal(url) ?
-                  <RsNavLink href={url} className={classes.link} active>
+                  <RsNavLink href={url} className="collapse show" active>
                     <i className={classes.icon}></i>{item.name}{badge(item.badge)}
                   </RsNavLink>
                   :
-                  <NavLink to={url} className={classes.link} activeClassName="active">
+                  <NavLink to={url} className="collapse show" activeClassName="active">
                     <i className={classes.icon}></i>{item.name}{badge(item.badge)}
                   </NavLink>
                 }
@@ -134,9 +148,9 @@ class NavBar extends React.Component {
                   }
                     {item?.type !== 'link' && 
                         <>
-                            <a href="#" className="has-chevron  nav-dropdown-toggle" data-toggle="collapse" data-target={`#${item.id}`} aria-expanded="false" aria-controls={`${item.id}`}  onClick={this.handleClick.bind(this)}> <span><i className={item.icon}></i>{item.name} </span>
+                            <a href="#" id={`dropdown-${item.id}`} className="has-chevron active collapsed" data-toggle="collapse" data-target={`#${item.id}`} aria-expanded="false" aria-controls={`${item.id}`}  onClick={() => this.handleClick(item.id)}> <span><i className={item.icon}></i>{item.name} </span>
                             </a>
-                            <ul id={`${item.id}`} className="collapse" aria-labelledby={`${item.id}`} data-parent="#side-nav-accordion">
+                            <ul id={`collapse-${item.id}`} className="collapse" aria-labelledby={`${item.id}`} data-parent="#side-nav-accordion">
                                 {navChildList(item.children)}
                             </ul>
                         </>
@@ -199,7 +213,21 @@ class NavBar extends React.Component {
                     <ul className="accordion ms-main-aside fs-14" id="side-nav-accordion">
                         <span className="arrow" style={{ color: '#fb3', fontSize: '25px', margin: '15px', fontWeight: 600 }} onClick={this.closeNav}>x</span>
                            <li className="menu-item">
-                           {navList(nav)}
+                               {
+                                   nav.items.map((menu:any,index:any) => (
+                                    menu.type === 'header' ? (
+                                        <span>{menu.name}</span>
+                                    ): (
+                                        <>
+                                        <a href="#" id={`dropdown-${menu.id}`} className=" active collapsed" data-toggle="collapse" data-target={`#${menu.id}`} aria-expanded="false" aria-controls={`${menu.id}`}  onClick={() => this.handleClick(menu.url)}> <span><i className={menu.icon}></i>{menu.name} </span>
+                                        </a>
+                                        {/* <ul id={`collapse-${menu.id}`} className="collapse" aria-labelledby={`${menu.id}`} data-parent="#side-nav-accordion">
+                                    <li>{menu.name}</li>
+                                        </ul> */}
+                                        </>
+                                    )
+                                   ))
+                               }
                                </li>
 
 

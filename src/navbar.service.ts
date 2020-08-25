@@ -1,47 +1,87 @@
 export default {
     items: [
       {
+        name:'General',
+        type:'header'
+      },
+      {
         name: 'Dashboard',
         url: '/dashboard',
         icon: 'fa fa-desktop fs-16',
         type: 'link',
       },
       {
+        name:'User Management',
+        type:'header'
+      },
+      {
         name: 'User',
-        id: 'usermanagement',
         icon: 'fa fa-user fs-16',
-        type: 'dropdown',
-        children: [
-          {
-            name: 'User',
-            url: '/users'
-          },
-          {
-            name: 'Role',
-            url: '/userrole'
-          },
-          {
-            name: 'Role Privileges',
-            url: '/userroletorights'
-          },
-        ]
+        url: '/users',
+        type:'simple'
+      },
+      {
+        name: 'Role',
+        icon: 'fa fa-user fs-16',
+        url: '/userrole',
+        type:'simple'
+      },
+      {
+        name: 'Role Privileges',
+        icon: 'fa fa-user fs-16',
+        url: '/userroletorights',
+        type:'simple'
+      },
+      // {
+      //   name: 'User',
+      //   id: 'usermanagement',
+      //   icon: 'fa fa-user fs-16',
+      //   type: 'dropdown',
+      //   children: [
+      //     {
+      //       name: 'User',
+      //       url: '/users'
+      //     },
+      //     {
+      //       name: 'Role',
+      //       url: '/userrole'
+      //     },
+      //     {
+      //       name: 'Role Privileges',
+      //       url: '/userroletorights'
+      //     },
+      //   ]
+      // },
+      {
+        name:'Category Management',
+        type:'header'
       },
       {
         name: 'Category',
-        id: 'categorymanagement',
-        icon: 'fa fa-list fs-16',
-        type: 'dropdown',
-        children: [
-          {
-            name: 'Category',
-            url: '/category'
-          },
-          {
-            name: 'Sub Category',
-            url: '/subcategory'
-          }
-        ]
+        url: '/category',
+        type:'simple'
       },
+      {
+        name: 'Sub Category',
+        url: '/subcategory',
+        type:'simple'
+      },
+      // {
+      //   name: 'Category',
+      //   id: 'categorymanagement',
+      //   icon: 'fa fa-list fs-16',
+      //   type: 'dropdown',
+      //   children: [
+      //     {
+      //       name: 'Category',
+      //       url: '/category'
+      //     },
+      //     {
+      //       name: 'Sub Category',
+      //       url: '/subcategory'
+      //     }
+      //   ]
+      // },
       {
         name: 'Location',
         id: 'locationmanagement',

@@ -144,6 +144,13 @@ const apiUrl = {
         deletefee:'fee',
         getfeelist:'fee/get-fee-list'
     },
+    taxController: {
+        addtax:'tax',
+        gettax:'tax/',
+        edittax:'tax/',
+        deletetax:'tax',
+        gettaxlist:'tax/get-tax-list'
+    },
 }
 
 export default apiUrl;

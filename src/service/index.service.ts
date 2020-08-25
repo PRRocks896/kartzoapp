@@ -1,7 +1,6 @@
 import RoleAPI from './role.service';
 import API from './service';
 import LocationAPI from './location.service';
-import OrderAPI from './order.service';
 import ProductAPI from './product.service';
 import CategoryAPI from './category.service';
 import StatusAPI from './status.service';
@@ -9,6 +8,7 @@ import CouponAPI from './coupon.service';
 import MerchantAPI from './merchant.service';
 import SettingAPI from './setting.service';
 import FeeAPI from './fee.service';
+import TaxAPI from './tax.service';
 
 
 export * from './service';
@@ -21,6 +21,7 @@ export * from './merchant.service';
 export * from './product.service';
 export * from './setting.service';
 export * from './fee.service';
+export * from './tax.service';
 
 
 export {
@@ -33,5 +34,6 @@ export {
     MerchantAPI,
     ProductAPI,
     SettingAPI,
-    FeeAPI
+    FeeAPI,
+    TaxAPI
 }
