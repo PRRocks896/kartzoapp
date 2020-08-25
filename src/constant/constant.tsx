@@ -526,7 +526,7 @@ export default {
       couponId: "",
     },
     couponTableColumn: {
-      couponCode: "Country Code",
+      couponCode: "Coupon Code",
       description: "Description",
       discountPrice: "Discount Price",
       endDate: "End Date",
