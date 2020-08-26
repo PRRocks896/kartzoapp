@@ -578,7 +578,7 @@ pre{
   font-size: 14px;
 }
 .fs-16{
-  font-size: 16px;
+  font-size: 14px;
 }
 .medium{
   font-weight: 500;
@@ -990,11 +990,12 @@ body:not(.ms-aside-left-open) .ms-aside-toggler .ms-toggler-bar{
 }
 .side-nav ul li.menu-item {
   padding: 0;
+  margin-top: 15px;
 }
 .side-nav .menu-item a {
   position: relative;
   display: block;
-  padding: 15px 0 15px 25px;
+  padding: 12px 0 10px 25px;
   color: #000000de;
   -webkit-transition: 0s;
   transition: 0s;

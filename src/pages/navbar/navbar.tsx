@@ -15,11 +15,12 @@ class NavBar extends React.Component {
         file:'',
         firstName:'',
         lastName:'',
-        classshow:'has-chevron  nav-dropdown-toggle'
+        classshow:'collapsed sidebar-manage'
     };
 
     constructor(props:any) {
         super(props);
+        this.activeRoute = this.activeRoute.bind(this);
         // this.logout = this.logout.bind(this);
         this.handleClick = this.handleClick.bind(this);
         EventEmitter.subscribe('imageUpload', (data:any) => {
@@ -42,17 +43,20 @@ class NavBar extends React.Component {
         }
     }
 
-    activeRoute(routeName:any, props:any) {
+    activeRoute(routeName:any) {
         const route = window.location.hash.split('#')[1];
         console.log("route",route);
         console.log("routename",routeName);
-        return route === routeName ? `nav-item nav-dropdown open` : `nav-item nav-dropdown`;
+        return route === routeName ? `active collapsed sidebar-manage` : `collapsed sidebar-manage`;
     
       }
 
       handleClick(url:any) {
           console.log("url",url);
-          window.location.href=`/#${url}`
+          window.location.href=`/#${url}`;
+        //   this.setState({
+        //     classshow:'active collapsed sidebar-manage'
+        //   })
         // this.props.history.push(`/${url}`);
         // const elDropdown = document.getElementById(`dropdown-${id}`);
         // const elCollapse = document.getElementById(`collapse-${id}`);
@@ -141,7 +145,7 @@ class NavBar extends React.Component {
           // nav dropdown
           const navDropdown = (item:any, key:any) => {
             return (
-              <div key={key} className={this.activeRoute(item.url, this.props)}>
+              <div key={key} className={this.activeRoute(item.url)}>
                   {item?.type === 'link' && 
                     <a href="#" className="has-chevron" data-toggle="collapse"> <span><i className={item.icon}></i>{item.name} </span>
                     </a>
@@ -216,10 +220,13 @@ class NavBar extends React.Component {
                                {
                                    nav.items.map((menu:any,index:any) => (
                                     menu.type === 'header' ? (
-                                        <span>{menu.name}</span>
+                                        <div className="menu_name">
+
+                                            <span key={index} className="header_side">{menu.name}</span>
+                                        </div>
                                     ): (
                                         <>
-                                        <a href="#" id={`dropdown-${menu.id}`} className=" active collapsed" data-toggle="collapse" data-target={`#${menu.id}`} aria-expanded="false" aria-controls={`${menu.id}`}  onClick={() => this.handleClick(menu.url)}> <span><i className={menu.icon}></i>{menu.name} </span>
+                                        <a  key={index} href="#" id={`dropdown-${menu.id}`} className={this.activeRoute(menu.url)} data-toggle="collapse" data-target={`#${menu.id}`} aria-expanded="false" aria-controls={`${menu.id}`}  onClick={() => this.handleClick(menu.url)}> <span><i className={menu.icon}></i>{menu.name} </span>
                                         </a>
                                         {/* <ul id={`collapse-${menu.id}`} className="collapse" aria-labelledby={`${menu.id}`} data-parent="#side-nav-accordion">
                                     <li>{menu.name}</li>
