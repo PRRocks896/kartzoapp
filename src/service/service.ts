@@ -61,6 +61,10 @@ export default {
     getUserById: async function (data:any) {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.userController.getDataById + data.id);
     },
+    getToken: async function (data:any) {
+        return await WebReqUrl.post(Constant.apiUrl + apiUrl.merchantController.gettoken,data);
+    },
+    
    
     
 }

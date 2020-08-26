@@ -1,4 +1,8 @@
 import Swal from "sweetalert2";
+import Constant from './constant/constant';
+import apiUrl from "./apicontroller/apicontrollers";
+import axios from 'axios';
+const publicIp = require("public-ip");
 const $ = require("jquery");
 $.DataTable = require("datatables.net");
 
@@ -22,6 +26,13 @@ const utils = {
   getHeaderDetail: () => {
     return {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Access-Control-Allow-Origin": "*",
+      crossdomain: true,
+    };
+  },
+  getMerchantHeaderDetail: () => {
+    return {
+      Authorization: `Bearer ${localStorage.getItem("merchantToken")}`,
       "Access-Control-Allow-Origin": "*",
       crossdomain: true,
     };
@@ -54,7 +65,7 @@ const utils = {
       ordering: false,
     });
     return table;
-  }
+  },
 };
 
 export default utils;

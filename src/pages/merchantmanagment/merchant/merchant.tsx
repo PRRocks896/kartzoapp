@@ -20,11 +20,13 @@ import API from "../../../service/merchant.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import { Editor } from "@tinymce/tinymce-react";
+
 import {
   merchantCreateRequest,
   merchantUpdateRequest,
 } from "../../../modelController/merchantModel";
 import { LocationAPI, MerchantAPI } from "../../../service/index.service";
+import apiUrl from "../../../apicontroller/apicontrollers";
 
 class Merchant extends React.Component<{ history: any }> {
   merchantState = constant.merchantPage.state;
@@ -103,6 +105,7 @@ class Merchant extends React.Component<{ history: any }> {
   }
 
   async componentDidMount() {
+  
     document.title =
       constant.merchantPage.title.addMerchantTitle + utils.getAppName();
 
@@ -122,6 +125,7 @@ class Merchant extends React.Component<{ history: any }> {
       const msg1 = "Internal server error";
       utils.showError(msg1);
     }
+  
   }
 
   onUserSelect(event: any) {
@@ -428,7 +432,7 @@ class Merchant extends React.Component<{ history: any }> {
         this.state.password
       ) {
         let formData = new FormData();
-        formData.append("RoleId", this.state.user.toString());
+        formData.append("RoleId", "");
         formData.append("FirstName", this.state.firstname);
         formData.append("LastName", this.state.lastname);
         formData.append("ShopName", this.state.shopname);

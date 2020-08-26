@@ -78,7 +78,13 @@ const WebReqUrl = {
     post: async function (url: string, body: any) {
         try {
             let response;
-            response = await axios.post(url, body, {headers: utils.getHeaderDetail()})
+            const users: any = localStorage.getItem("merchantStatus");
+            console.log("users",users);
+            if(users === true){
+                response = await axios.post(url, body, {headers: utils.getMerchantHeaderDetail()})
+            } else {
+                response = await axios.post(url, body, {headers: utils.getHeaderDetail()})
+            }
             console.log("response",response);
             if(response) {
                 try {

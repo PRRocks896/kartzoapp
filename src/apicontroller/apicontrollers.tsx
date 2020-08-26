@@ -83,7 +83,8 @@ const apiUrl = {
         getMerchant:'merchant/get-merchant-list',
         editMerchant:'merchant',
         deleteMerchant:'merchant',
-        getMerchantById:'merchant/'
+        getMerchantById:'merchant/',
+        gettoken:'token/get-merchant-token'
     },
     merchantBusinessController: {
         addMerchantBusiness:'merchantbusinesshour',

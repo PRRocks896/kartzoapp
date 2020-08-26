@@ -609,7 +609,8 @@ export default {
       file1true: false,
       file2: "",
       file2true: false,
-      updateTrue:false
+      updateTrue:false,
+      token:''
     },
     merchantTableColumn: {
       Firstname: "First Name",

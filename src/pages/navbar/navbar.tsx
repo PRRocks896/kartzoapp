@@ -45,8 +45,6 @@ class NavBar extends React.Component {
 
     activeRoute(routeName:any) {
         const route = window.location.hash.split('#')[1];
-        console.log("route",route);
-        console.log("routename",routeName);
         return route === routeName ? `active collapsed sidebar-manage` : `collapsed sidebar-manage`;
     
       }
@@ -54,20 +52,6 @@ class NavBar extends React.Component {
       handleClick(url:any) {
           console.log("url",url);
           window.location.href=`/#${url}`;
-        //   this.setState({
-        //     classshow:'active collapsed sidebar-manage'
-        //   })
-        // this.props.history.push(`/${url}`);
-        // const elDropdown = document.getElementById(`dropdown-${id}`);
-        // const elCollapse = document.getElementById(`collapse-${id}`);
-        // if(elDropdown && elCollapse) {
-        //     if(elDropdown.classList.contains('open')) {
-        //         elDropdown.classList.remove('collapsed');
-        //     }
-        //     if(elCollapse.classList.contains('show')) {
-        //         elCollapse.classList.add('show');
-        //     }
-        // }
       }
 
     toggleCollapse = () => {

@@ -20,8 +20,12 @@ import {
   StatusAPI,
   CouponAPI,
   MerchantAPI,
+  API,
 } from "../../../service/index.service";
+import axios from 'axios';
 import constant from "../../../constant/constant";
+import apiUrl from "../../../apicontroller/apicontrollers";
+const publicIp = require("public-ip");
 
 class ListMerchant extends React.Component<{ history: any }> {
   merchantState = constant.merchantPage.state;
@@ -36,6 +40,7 @@ class ListMerchant extends React.Component<{ history: any }> {
     merchantdata: this.merchantState.merchantdata,
     switchSort: this.merchantState.switchSort,
     isStatus: this.merchantState.isStatus,
+    token:this.merchantState.token
   };
 
   constructor(props: any) {
@@ -55,12 +60,33 @@ class ListMerchant extends React.Component<{ history: any }> {
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
+    this.getMerchantData = this.getMerchantData.bind(this);
   }
 
   async componentDidMount() {
     document.title =
       constant.categoryPage.title.categoryTitle + utils.getAppName();
     utils.dataTable();
+    const ipaddress = publicIp.v4();
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj ={
+      deviceType: 1,
+              deviceId: "deviceId",
+              ipAddress: await ipaddress,
+              loginToken: user.token,
+              refreshToken: user.refreshToken,
+    }
+    var getToken = await API.getToken(obj);
+    console.log("getToken", getToken);
+    if(getToken) {
+      this.setState({
+        token:this.state.token = getToken.token
+      })
+      localStorage.setItem('merchantToken',this.state.token);
+      localStorage.setItem('merchantStatus',new Boolean(true).toString());
+    }
+  
     this.getMerchantData();
   }
 
@@ -70,9 +96,11 @@ class ListMerchant extends React.Component<{ history: any }> {
     size: number = 10
   ) {
     const obj = {
+      roleID: 0,
       searchText: searchText,
       page: page,
       size: size,
+      isActive:true
     };
 
     var getMerchantData = await MerchantAPI.getMerchantData(obj);
