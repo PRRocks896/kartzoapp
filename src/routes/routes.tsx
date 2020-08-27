@@ -89,6 +89,11 @@ import ViewFee from '../pages/settingmanagement/fee/viewfee/viewfee';
 import ListTax from '../pages/settingmanagement/tax/tax';
 import AddTax from '../pages/settingmanagement/tax/addtax/addtax';
 import ViewTax from '../pages/settingmanagement/tax/viewtax/viewtax';
+import ListPayout from '../pages/settingmanagement/payout/listpayout';
+import AddPayout from '../pages/settingmanagement/payout/addpayout/addpayout';
+import ViewPayout from '../pages/settingmanagement/payout/viewpayout/viewpayout';
+import ListMatrix from '../pages/settingmanagement/matrix/matrix';
+import AddMatrix from '../pages/settingmanagement/matrix/addmatrix/addmatrix';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -206,6 +211,12 @@ class Main extends React.Component<{history:any}> {
             <Route path='/add-tax' render={(props: any) => <AddTax {...props} />} />
             <Route path='/edit-tax/:id' render={(props: any) => <AddTax {...props} />} />
             <Route path='/view-tax/:id' render={(props: any) => <ViewTax {...props} />} />
+            <Route path='/list-payout' render={(props: any) => <ListPayout {...props} />} />
+            <Route path='/add-payout' render={(props: any) => <AddPayout {...props} />} />
+            <Route path='/edit-payout/:id' render={(props: any) => <AddPayout {...props} />} />
+            <Route path='/view-payout/:id' render={(props: any) => <ViewPayout {...props} />} />
+            <Route path='/list-matrix' render={(props: any) => <ListMatrix {...props} />} />
+            <Route path='/add-matrix' render={(props: any) => <AddMatrix {...props} />} />
             {
                     this.props.history.location.pathname != '/' ? (
                       <Route path="*" component={Page404}/>

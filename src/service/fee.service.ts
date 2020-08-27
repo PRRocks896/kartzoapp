@@ -14,5 +14,9 @@ export default {
     },
     updateFee: async function (data: any,id:any) {
         return await WebReqUrl.put(Constant.apiUrl + apiUrl.feeController.editfee + id,data,false);
-    }   
+    },
+    getFee: async function () {
+        return await WebReqUrl.get(Constant.apiUrl + apiUrl.feeController.getFeeData,false);
+    },
+       
 }

@@ -58,6 +58,7 @@
     "react-images-uploading": "^2.2.1",
     "react-js-pagination": "^3.0.3",
     "react-protected-route-component": "^0.1.1",
+    "react-render-html": "^0.6.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-switch": "^5.0.1",

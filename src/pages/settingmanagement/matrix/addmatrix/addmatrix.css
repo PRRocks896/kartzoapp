@@ -1,0 +1,25 @@
+.add_icon {
+    background: #0e8e18;
+    display: inline-block;
+    padding: 7px 20px;
+    color: #fff;
+    border-radius: 7px;
+    cursor: pointer;
+    margin-bottom: 23px;
+}
+
+.add_more{
+    max-height: 210px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.remove_icon{
+    margin: 0;
+    background: #ff3547;
+    padding: 7px 20px;
+    color: #fff;
+    border-radius: 7px;
+    cursor: pointer;
+    display: inline-block;
+}

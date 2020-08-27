@@ -92,6 +92,7 @@ export default {
     Save: "Save",
     back: "Back",
     add: "Add",
+    remove:'Remove'
   },
 
   pageNotFound: {
@@ -610,7 +611,8 @@ export default {
       file2: "",
       file2true: false,
       updateTrue:false,
-      token:''
+      token:'',
+      merchantId:''
     },
     merchantTableColumn: {
       Firstname: "First Name",
@@ -825,6 +827,101 @@ export default {
     },
     viewtaxdetails: {
       viewtax: "View Tax Details",
+    },
+  },
+  payoutPage: {
+    title: {
+      addPayoutTitle: "Add Payout",
+      payoutTitle: "Payout Management",
+      viewpayoutTitle: "View Payout Details",
+      updatepayoutTitle: "Update Payout",
+    },
+    state: {
+      count: "10",
+      currentPage: "1",
+      items_per_page: "10",
+      upperPageBound: 3,
+      lowerPageBound: 0,
+      pageBound: 3,
+      onItemSelect: "",
+      payoutdata:[],
+      switchSort: false,
+      isStatus: false,
+      merchantdata:[],
+      merchant: '',
+    merchanterror: '',
+    merchantOrderAmount: '',
+    merchantOrderAmounterror: '',
+    isActive: false,
+    updateTrue: false,
+    payoutId:'',
+    commission:'',
+    commissionerror:'',
+    merchantPayAmount:'',
+    merchantPayAmounterror:'',
+    firstname:'',
+    lastname:'',
+    shopname:''
+    },
+    payoutTableColumn: {
+    merchantamount:'Merchant Order Amount',
+    commision:'Commission',
+    merchantpayamount:'Merchant Payment Amount',
+    merchant:'Select Merchant',
+    merchantname:'Merchant Name'
+    },
+    viewpayoutdetails: {
+      viewpayout: "View Payout Details",
+    },
+  },
+  matrixPage: {
+    title: {
+      addMatrixTitle: "Add Matrix",
+      matrixTitle: "Matrix Management",
+      viewmatrixTitle: "View Matrix Details",
+      updatematrixTitle: "Update Matrix",
+    },
+    state: {
+      count: "10",
+      currentPage: "1",
+      items_per_page: "10",
+      upperPageBound: 3,
+      lowerPageBound: 0,
+      pageBound: 3,
+      onItemSelect: "",
+      taxdata:[],
+      switchSort: false,
+      isStatus: false,
+      matrixdata:[],
+      feedata:[],
+    
+      isActive: false,
+      updateTrue:false,
+      matrixId:'',
+      matrix:[{
+        from:'',
+        to:'',
+        fee:''
+      }],
+      feetype:'',
+      feetypeerror:'',
+      to:'',
+      toerror:'',
+      from:'',
+      fromerror:'',
+      fee:'',
+      feeerror:''
+    },
+    matrixTableColumn: {
+    feeType:'Fee Type',
+    Fee:'Fee',
+    selectfeetype:'Select Fee Type',
+    to:'To',
+    from:'From',
+    fee:'Fee'
+    },
+    viewMatrixdetails: {
+      viewMatrix: "View Matrix Details",
     },
   },
 };

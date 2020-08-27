@@ -72,6 +72,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     file2: this.merchantState.file2,
     file2true: this.merchantState.file2true,
     updateTrue: this.merchantState.updateTrue,
+    merchantId: this.merchantState.merchantId
   };
 
   constructor(props: any) {
@@ -81,6 +82,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     this.handleChange = this.handleChange.bind(this);
     this.removeIcon = this.removeIcon.bind(this);
     this.addMerchant = this.addMerchant.bind(this);
+    this.editMerchant = this.editMerchant.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onChangeIDProof = this.onChangeIDProof.bind(this);
     this.onChangeDocumentHandler = this.onChangeDocumentHandler.bind(this);
@@ -124,6 +126,8 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     if (getMerchantById) {
       if (getMerchantById.status === 200) {
         this.setState({
+          merchantId:this.state.merchantId = getMerchantById.resultObject.merchantID,
+          filetrue:this.state.filetrue = true,
           selectedFile: this.state.selectedFile =
             getMerchantById.resultObject.photoPath,
           selectedProofFile: this.state.selectedProofFile =
@@ -152,6 +156,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
             getMerchantById.resultObject.cancellationPolicy,
           password: this.state.password = getMerchantById.resultObject.password,
           file: this.state.file = getMerchantById.resultObject.photoPath,
+          isOpen: this.state.isOpen =  getMerchantById.resultObject.isActive
           // filetrue: this.state.filetrue = getMerchantById.resultObject.
           // file1: this.state.file1 = getMerchantById.resultObject.
           // file1true: this.state.file1true = getMerchantById.resultObject.
@@ -489,20 +494,77 @@ class Merchant extends React.Component<{ history: any; location: any }> {
           const msg1 = "Internal server error";
           utils.showError(msg1);
         }
-        // if (
-        //   this.state.firstname === obj.firstname &&
-        //   this.state.lastname === obj.lastname &&
-        //   this.state.email === obj.email &&
-        //   this.state.mobilenumber === obj.mobilenumber &&
-        //   this.state.selectedFile === obj.selectedFile
-        // ) {
-        //   const msg = "Merchant Added Successfully";
-        //   utils.showSuccess(msg);
-        //   // this.props.history.push('/users');
-        // } else {
-        //   const msg1 = "Error";
-        //   utils.showError(msg1);
-        // }
+      }
+    }
+  }
+
+  async editMerchant() {
+    const isValid = this.validate();
+    if (isValid) {
+      this.setState({
+        firstnameerror: "",
+        lastnameerror: "",
+        emailerror: "",
+        mobilenumbererror: "",
+        addresserror: "",
+        zipcodeerror: "",
+
+        latitudeerror: "",
+        longitudeerror: "",
+        shopnamerror: "",
+
+        cityerror: "",
+        passworderror: "",
+      });
+      if (
+        this.state.firstname &&
+        this.state.lastname &&
+        this.state.email &&
+        this.state.mobilenumber &&
+        this.state.shopname &&
+        this.state.latitude &&
+        this.state.longitude &&
+        this.state.password
+      ) {
+        let formData = new FormData();
+        formData.append("Id", this.state.merchantId);
+        formData.append("RoleId", "");
+        formData.append("FirstName", this.state.firstname);
+        formData.append("LastName", this.state.lastname);
+        formData.append("ShopName", this.state.shopname);
+        formData.append("Email", this.state.email);
+        formData.append("Phone", this.state.mobilenumber.toString());
+        formData.append("Password", this.state.password);
+        formData.append("Address", this.state.address);
+        formData.append("CityId", this.state.city);
+        formData.append("ZipCode", this.state.zipcode);
+        formData.append("Latitude", this.state.latitude);
+        formData.append("Longitude", this.state.longitude);
+        formData.append("Website", this.state.website);
+        formData.append("MerchantIDPoof", this.state.selectedProofFile?this.state.selectedProofFile[0]:'');
+        formData.append("MerchantDocument", this.state.selectedDocumentFile?this.state.selectedDocumentFile[0]:'');
+        formData.append("ShippingPolicy", this.state.shoppingpolicy);
+        formData.append("RefundPolicy", this.state.refundpolicy);
+        formData.append("CancellationPolicy", this.state.cancellationpolicy);
+        formData.append("isActive", new Boolean(this.state.isOpen).toString());
+        formData.append("files", this.state.selectedFile?this.state.selectedFile[0]:'');
+        formData.append("UserId", "0");
+
+        const editMerchant = await MerchantAPI.editMerchant(formData,this.state.merchantId);
+        console.log("editMerchant", editMerchant);
+        if (editMerchant) {
+          if (editMerchant.status === 200) {
+            const msg = editMerchant.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/list-merchant");
+          } else {
+            const msg1 = editMerchant.message;
+            utils.showError(msg1);
+          }
+        } else {
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
+        }
       }
     }
   }
@@ -686,7 +748,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                         </Form>
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
-                        <Form>
+                       
                           <FormGroup>
                             <Label for="exampleCustomSelect">
                               {
@@ -720,7 +782,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                               {this.state.passworderror}
                             </div>
                           </FormGroup>
-                        </Form>
+                      
                       </Col>
                       {/* <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <Form>
@@ -876,8 +938,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                                     <img
                                       className="picture"
                                       src={
-                                        constant.fileMerchantpath +
-                                        this.state.file
+                                        constant.fileMerchantpath + this.state.file
                                       }
                                     />
                                   ) : (
@@ -1050,7 +1111,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                             style={{ display: "none" }}
                           />
                           <Editor
-                            initialValue="<p>This is the initial content of the editor</p>"
+                            initialValue={this.state.shoppingpolicy}
                             init={{
                               height: 200,
                               menubar: false,
@@ -1119,7 +1180,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                             style={{ display: "none" }}
                           />
                           <Editor
-                            initialValue="<p>This is the initial content of the editor</p>"
+                            initialValue={this.state.refundpolicy}
                             init={{
                               height: 200,
                               menubar: false,
@@ -1188,7 +1249,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                             style={{ display: "none" }}
                           />
                           <Editor
-                            initialValue="<p>This is the initial content of the editor</p>"
+                            initialValue={this.state.cancellationpolicy}
                             init={{
                               height: 200,
                               menubar: false,
@@ -1265,7 +1326,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                         size="sm"
                         color="primary"
                         className="mb-2 mt-3 mr-2 custom-button"
-                        onClick={this.addMerchant}
+                        onClick={this.editMerchant}
                       >
                         {constant.button.update}
                       </Button>

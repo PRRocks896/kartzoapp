@@ -14,7 +14,7 @@ import {
 } from "reactstrap";
 import "./addmap.css";
 import NavBar from "../../navbar/navbar";
-import { CouponAPI } from "../../../service/index.service";
+import { CouponAPI, MerchantAPI } from "../../../service/index.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import { format } from "date-fns";
@@ -27,12 +27,6 @@ import {
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import * as _ from 'lodash';
-
-const getItems = (count: any, offset = 0) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k + offset}`,
-    content: `item ${k + offset}`,
-  }));
 
 // a little function to help us with reordering the result
 const reorder = (list: any, startIndex: any, endIndex: any) => {
@@ -95,6 +89,8 @@ class AddCouponMapping extends React.Component<{
     items: [],
     selected: [],
     couponlistdata: [],
+    merchantdata:[],
+    selectedmerchantdata:[]
   };
 
   id2List: any = {
@@ -102,10 +98,17 @@ class AddCouponMapping extends React.Component<{
     droppable2: "selected",
   };
 
+  id4List: any = {
+    droppable: "merchantdata",
+    droppable4: "selectedmerchantdata",
+  };
+
   constructor(props: any) {
     super(props);
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.onDragMerchantEnd = this.onDragMerchantEnd.bind(this);
     this.getCouponList = this.getCouponList.bind(this);
+    this.getMerchantList = this.getMerchantList.bind(this);
     // this.Profile = this.Profile.bind(this);
 
     // this.handleStart = this.handleStart.bind(this);
@@ -115,6 +118,7 @@ class AddCouponMapping extends React.Component<{
     document.title =
     constant.couponPage.title.addCouponMappingTitle + utils.getAppName();
     this.getCouponList();
+    this.getMerchantList();
   }
 
   async getCouponList() {
@@ -136,7 +140,28 @@ class AddCouponMapping extends React.Component<{
     }
   }
 
+  async getMerchantList() {
+    var getMerchantList = await MerchantAPI.getMerchantList();
+    console.log("getMerchantList", getMerchantList);
+
+    if (getMerchantList) {
+      if (getMerchantList.status === 200) {
+        this.setState({
+          merchantdata: this.state.merchantdata = getMerchantList.resultObject
+        });
+      } else {
+        const msg1 = getMerchantList.message;
+        utils.showError(msg1);
+      }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
+    }
+  }
+
   getList = (id: any) => this.state[this.id2List[id]];
+
+  getMerchantListdata = (id: any) => this.state[this.id4List[id]];
 
   onDragEnd = (result: any) => {
     console.log("result", result);
@@ -179,9 +204,51 @@ class AddCouponMapping extends React.Component<{
     }
   };
 
+  onDragMerchantEnd = (result: any) => {
+    console.log("result", result);
+    const { source, destination } = result;
+    console.log("source", source);
+    console.log("destination", destination);
+
+    // dropped outside the list
+    if (!destination) {
+      return;
+    }
+
+    if (source.droppableId === destination.droppableId) {
+      const merchantdata = reorder(
+        this.getMerchantListdata(source.droppableId),
+        source.index,
+        destination.index
+      );
+
+      let state: any = { merchantdata };
+
+      if (source.droppableId === "droppable4") {
+        state = { selectedmerchantdata: merchantdata };
+      }
+
+      this.setState(state);
+    } else {
+      const result = move(
+        this.getMerchantListdata(source.droppableId),
+        this.getMerchantListdata(destination.droppableId),
+        source,
+        destination
+      );
+      console.log("result", result);
+
+      this.setState({
+        merchantdata: result.droppable,
+        selectedmerchantdata: result.droppable4,
+      });
+    }
+  };
+
   render() {
     let {items,
         selected,
+        selectedmerchantdata,
         couponlistdata} = this.state;
     return (
       <>
@@ -222,7 +289,7 @@ class AddCouponMapping extends React.Component<{
                       </Col>
                     </Row>
                   </CardHeader>
-                  <CardBody>
+                  <CardBody className="container">
                     <Row className="main_coupon merchnat">
                       <DragDropContext onDragEnd={this.onDragEnd}>
                         <div  >
@@ -268,6 +335,9 @@ class AddCouponMapping extends React.Component<{
                             )}
                           </Droppable>
                         </div>
+                        {/* <div>
+                          <img src={require('../../../assets/img/exchange.png')}/>
+                        </div> */}
                         <div>
                           <p className="drag_select">
                             Please drag right to left for remove coupon
@@ -313,8 +383,8 @@ class AddCouponMapping extends React.Component<{
                         </div>
                       </DragDropContext>
                     </Row>
-                    {/* <Row className="main_coupon merchnat">
-                      <DragDropContext onDragEnd={this.onDragEnd}>
+                    <Row className="main_coupon merchnat">
+                      <DragDropContext onDragEnd={this.onDragMerchantEnd}>
                         <div>
                           <p className="drag_select">
                             Please drag left to right for add merchant
@@ -329,7 +399,7 @@ class AddCouponMapping extends React.Component<{
                                 ref={provided.innerRef}
                                 style={getListStyle(snapshot.isDraggingOver)}
                               >
-                                {this.state.items.map(
+                                {this.state.merchantdata.map(
                                   (item: any, index: any) => (
                                     <Draggable
                                       key={item.value}
@@ -366,14 +436,14 @@ class AddCouponMapping extends React.Component<{
                           <Label>
                             <b>Selected Merchant</b>
                           </Label>
-                          <Droppable droppableId="droppable2">
+                          <Droppable droppableId="droppable4">
                             {(provided, snapshot) => (
                               <div
                                 className="coupon"
                                 ref={provided.innerRef}
                                 style={getListStyle(snapshot.isDraggingOver)}
                               >
-                                {_.map(selected, (
+                                {_.map(selectedmerchantdata, (
                                   (item: any, index: any) => (
                                     <Draggable
                                       key={item.value}
@@ -403,7 +473,7 @@ class AddCouponMapping extends React.Component<{
                           </Droppable>
                         </div>
                       </DragDropContext>
-                    </Row> */}
+                    </Row>
 
                     {/* <Row>
                       <Col xs="12" sm="12" md="12" lg="6" xl="6">

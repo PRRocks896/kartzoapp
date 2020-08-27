@@ -191,7 +191,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("parentCategoryId", this.state.selectcategory);
         formData.append("sortOrder", this.state.sortorder.toString());
-        formData.append("files", this.state.selectedFile[0]);
+        formData.append("files",this.state.selectedFile?this.state.selectedFile[0]:'');
 
         const addCategory = await CategoryAPI.addCategory(formData);
         console.log("addCategory", addCategory);
@@ -226,7 +226,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("parentCategoryId", this.state.selectcategory);
         formData.append("sortOrder", this.state.sortorder.toString());
-        formData.append("files", this.state.selectedFile[0]);
+        formData.append("files", this.state.selectedFile?this.state.selectedFile[0]:'');
         const editCategory = await CategoryAPI.editCategory(
           formData,
           this.state.categoryid.toString()

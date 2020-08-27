@@ -81,10 +81,31 @@ const apiUrl = {
     merchantController: {
         addMerchant:'merchant',
         getMerchant:'merchant/get-merchant-list',
-        editMerchant:'merchant',
+        editMerchant:'merchant/',
         deleteMerchant:'merchant',
         getMerchantById:'merchant/',
-        gettoken:'token/get-merchant-token'
+        gettoken:'token/get-merchant-token',
+        getList:'merchant/get-merchant-list-dropdown'
+    },
+    payoutController: {
+        addPayout:'payout',
+        getPayout:'payout/get-payout-list',
+        editPayout:'payout/',
+        deleteMerchant:'merchant',
+        getMerchantById:'merchant/',
+        gettoken:'token/get-merchant-token',
+        getList:'merchant/get-merchant-list-dropdown',
+        getPayoutById:'payout/'
+    },
+    matrixController: {
+        addmatrix:'distancematrix',
+        getmatrix:'distancematrix/get-distancematrix-list',
+        editPayout:'payout/',
+        deleteMerchant:'merchant',
+        getMerchantById:'merchant/',
+        gettoken:'token/get-merchant-token',
+        getList:'merchant/get-merchant-list-dropdown',
+        getPayoutById:'payout/'
     },
     merchantBusinessController: {
         addMerchantBusiness:'merchantbusinesshour',
@@ -143,7 +164,8 @@ const apiUrl = {
         getfee:'fee/',
         editfee:'fee/',
         deletefee:'fee',
-        getfeelist:'fee/get-fee-list'
+        getfeelist:'fee/get-fee-list',
+        getFeeData:'fee/get-fee-list-dropdown'
     },
     taxController: {
         addtax:'tax',

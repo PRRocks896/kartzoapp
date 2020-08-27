@@ -6,6 +6,9 @@ export default {
     addMerchant: async function (data: any) {
         return await WebReqUrl.post(Constant.apiMerchantUrl + apiUrl.merchantController.addMerchant, data,true);
     },
+    editMerchant: async function (data: any,id:any) {
+        return await WebReqUrl.put(Constant.apiMerchantUrl + apiUrl.merchantController.editMerchant + id, data,true);
+    },
     addMerchantBusiness: async function (data: any) {
         return await WebReqUrl.post(Constant.apiMerchantUrl + apiUrl.merchantBusinessController.addMerchantBusiness, data,false);
     },
@@ -27,5 +30,8 @@ export default {
     getToken: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.merchantController.gettoken,data,false);
     },
-       
+    getMerchantList: async function () {
+        return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.merchantController.getList,true);
+    },
+    
 }
