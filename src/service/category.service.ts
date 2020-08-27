@@ -4,25 +4,25 @@ import apiUrl from '../apicontroller/apicontrollers';
 
 export default {
     addCategory: async function (data: any) {
-        return await WebReqUrl.post(Constant.mainUrl + apiUrl.categoryController.addCatergory,data);
+        return await WebReqUrl.post(Constant.mainUrl + apiUrl.categoryController.addCatergory,data,false);
     },
     editCategory: async function (data: any,id:any) {
-        return await WebReqUrl.put(Constant.mainUrl + apiUrl.categoryController.editCategory + id,data);
+        return await WebReqUrl.put(Constant.mainUrl + apiUrl.categoryController.editCategory + id,data,false);
     },
     deleteCategory: async function (data: any) {
         return await WebReqUrl.delete(Constant.mainUrl + apiUrl.categoryController.deleteCategory + data);
     },
     getCategory: async function (data:any) {
-        return await WebReqUrl.post(Constant.mainUrl + apiUrl.categoryController.getCategory,data);
+        return await WebReqUrl.post(Constant.mainUrl + apiUrl.categoryController.getCategory,data,false);
     },
     getCategoryById: async function (data:any) {
-        return await WebReqUrl.get(Constant.mainUrl + apiUrl.categoryController.getCategoryById + data.id);
+        return await WebReqUrl.get(Constant.mainUrl + apiUrl.categoryController.getCategoryById + data.id,false);
     },
     getAllCategory: async function () {
-        return await WebReqUrl.get(Constant.mainUrl + apiUrl.categoryController.getAllCategory);
+        return await WebReqUrl.get(Constant.mainUrl + apiUrl.categoryController.getAllCategory,false);
     },
     addSubCategory: async function (data:any) {
-        return await WebReqUrl.post(Constant.apiUrl + apiUrl.categoryController.addsubCategory,data);
+        return await WebReqUrl.post(Constant.apiUrl + apiUrl.categoryController.addsubCategory,data,false);
     }
     
 }

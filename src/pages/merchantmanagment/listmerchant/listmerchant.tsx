@@ -84,7 +84,6 @@ class ListMerchant extends React.Component<{ history: any }> {
         token:this.state.token = getToken.token
       })
       localStorage.setItem('merchantToken',this.state.token);
-      localStorage.setItem('merchantStatus',new Boolean(true).toString());
     }
   
     this.getMerchantData();
@@ -219,8 +218,8 @@ class ListMerchant extends React.Component<{ history: any }> {
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj = {
-        moduleName: "Coupon",
-        id: data.couponId,
+        moduleName: "Merchant",
+        id: data.merchantId,
         isActive: data.isActive === true ? false : true,
       };
       var getStatusChange = await StatusAPI.getStatusChange(obj);

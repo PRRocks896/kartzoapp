@@ -4,10 +4,10 @@ import apiUrl from '../apicontroller/apicontrollers';
 
 export default {
     addAddress: async function (data: any) {
-        return await WebReqUrl.post(Constant.apiUrl + apiUrl.addressController.addAddress, data);
+        return await WebReqUrl.post(Constant.apiUrl + apiUrl.addressController.addAddress, data,false);
     },
     editAddress: async function (data: any) {
-        return await WebReqUrl.put(Constant.apiUrl + apiUrl.addressController.editAddress,data);
+        return await WebReqUrl.put(Constant.apiUrl + apiUrl.addressController.editAddress,data,false);
     },
     deleteAddress: async function () {
         return await WebReqUrl.delete(Constant.apiUrl + apiUrl.addressController.deleteAddress);

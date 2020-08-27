@@ -69,6 +69,7 @@ class NavBar extends React.Component {
     logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('merchantToken');
         // this.props.history.push('/login');
         window.location.href="/#/login";
     }
@@ -204,9 +205,9 @@ class NavBar extends React.Component {
                                {
                                    nav.items.map((menu:any,index:any) => (
                                     menu.type === 'header' ? (
-                                        <div className="menu_name">
+                                        <div key={index} className="menu_name">
 
-                                            <span key={index} className="header_side">{menu.name}</span>
+                                            <span  className="header_side">{menu.name}</span>
                                         </div>
                                     ): (
                                         <>

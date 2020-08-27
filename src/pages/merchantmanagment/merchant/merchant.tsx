@@ -16,19 +16,12 @@ import {
 } from "reactstrap";
 import "./merchant.css";
 import NavBar from "../../navbar/navbar";
-import API from "../../../service/merchant.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import { Editor } from "@tinymce/tinymce-react";
-
-import {
-  merchantCreateRequest,
-  merchantUpdateRequest,
-} from "../../../modelController/merchantModel";
 import { LocationAPI, MerchantAPI } from "../../../service/index.service";
-import apiUrl from "../../../apicontroller/apicontrollers";
 
-class Merchant extends React.Component<{ history: any }> {
+class Merchant extends React.Component<{ history: any; location: any }> {
   merchantState = constant.merchantPage.state;
   state = {
     selectedFile: this.merchantState.selectedFile,
@@ -78,7 +71,7 @@ class Merchant extends React.Component<{ history: any }> {
     file1true: this.merchantState.file1true,
     file2: this.merchantState.file2,
     file2true: this.merchantState.file2true,
-    updateTrue: this.merchantState.updateTrue
+    updateTrue: this.merchantState.updateTrue,
   };
 
   constructor(props: any) {
@@ -98,6 +91,8 @@ class Merchant extends React.Component<{ history: any }> {
     this.removeDocumentIcon = this.removeDocumentIcon.bind(this);
     this.removeProofIcon = this.removeProofIcon.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.getCity = this.getCity.bind(this);
+    this.getMerchantById = this.getMerchantById.bind(this);
   }
 
   handleChange(checked: boolean) {
@@ -105,10 +100,75 @@ class Merchant extends React.Component<{ history: any }> {
   }
 
   async componentDidMount() {
-  
-    document.title =
-      constant.merchantPage.title.addMerchantTitle + utils.getAppName();
+    if (this.state.updateTrue === true) {
+      document.title =
+        constant.merchantPage.title.updateMerchantTitle + utils.getAppName();
+    } else {
+      document.title =
+        constant.merchantPage.title.addMerchantTitle + utils.getAppName();
+    }
+    this.getCity();
+    const merchantId = this.props.location.pathname.split("/")[2];
+    if (merchantId !== undefined) {
+      this.getMerchantById(merchantId);
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+      });
+    }
+  }
 
+  async getMerchantById(id: any) {
+    const getMerchantById: any = await MerchantAPI.getMerchantById(id);
+    console.log("getMerchantById", getMerchantById);
+
+    if (getMerchantById) {
+      if (getMerchantById.status === 200) {
+        this.setState({
+          selectedFile: this.state.selectedFile =
+            getMerchantById.resultObject.photoPath,
+          selectedProofFile: this.state.selectedProofFile =
+            getMerchantById.resultObject.merchantIDPoof,
+          selectedDocumentFile: this.state.selectedDocumentFile =
+            getMerchantById.resultObject.merchantDocument,
+          firstname: this.state.firstname =
+            getMerchantById.resultObject.firstName,
+          lastname: this.state.lastname = getMerchantById.resultObject.lastName,
+          email: this.state.email = getMerchantById.resultObject.email,
+          mobilenumber: this.state.mobilenumber =
+            getMerchantById.resultObject.phone,
+          shopname: this.state.shopname = getMerchantById.resultObject.shopname,
+          address: this.state.address = getMerchantById.resultObject.address,
+          city: this.state.city = getMerchantById.resultObject.cityID,
+          zipcode: this.state.zipcode = getMerchantById.resultObject.zipCode,
+          latitude: this.state.latitude = getMerchantById.resultObject.latitude,
+          longitude: this.state.longitude =
+            getMerchantById.resultObject.longitude,
+          website: this.state.website = getMerchantById.resultObject.website,
+          shoppingpolicy: this.state.shoppingpolicy =
+            getMerchantById.resultObject.shippingPolicy,
+          refundpolicy: this.state.refundpolicy =
+            getMerchantById.resultObject.refundPolicy,
+          cancellationpolicy: this.state.cancellationpolicy =
+            getMerchantById.resultObject.cancellationPolicy,
+          password: this.state.password = getMerchantById.resultObject.password,
+          file: this.state.file = getMerchantById.resultObject.photoPath,
+          // filetrue: this.state.filetrue = getMerchantById.resultObject.
+          // file1: this.state.file1 = getMerchantById.resultObject.
+          // file1true: this.state.file1true = getMerchantById.resultObject.
+          // file2: this.state.file2 = getMerchantById.resultObject.
+          // file2true: this.state.file2true = getMerchantById.resultObject.
+        });
+      } else {
+        const msg1 = getMerchantById.message;
+        utils.showError(msg1);
+      }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
+    }
+  }
+
+  async getCity() {
     const getCity = await LocationAPI.getCity();
     console.log("getCity", getCity);
 
@@ -125,7 +185,6 @@ class Merchant extends React.Component<{ history: any }> {
       const msg1 = "Internal server error";
       utils.showError(msg1);
     }
-  
   }
 
   onUserSelect(event: any) {
@@ -229,21 +288,18 @@ class Merchant extends React.Component<{ history: any }> {
     }));
 
   handleEditorChange = (content: any, editor: any) => {
-    console.log("handleEditorChange Content was updated:", content);
     this.setState({
       refundpolicy: this.state.refundpolicy = content,
     });
   };
 
   handleEditorMainChange = (content: any, editor: any) => {
-    console.log("handleEditorMainChange Content was updated:", content);
     this.setState({
       shoppingpolicy: this.state.shoppingpolicy = content,
     });
   };
 
   handleEditorUpChange = (content: any, editor: any) => {
-    console.log("handleEditorMainChange Content was updated:", content);
     this.setState({
       cancellationpolicy: this.state.cancellationpolicy = content,
     });
@@ -300,17 +356,17 @@ class Merchant extends React.Component<{ history: any }> {
       passworderror = "please enter password";
     }
 
-    if (!this.state.selectedDocumentFile) {
-      selectedDocumentFileerror = "please select document image";
-    }
+    // if (!this.state.selectedDocumentFile) {
+    //   selectedDocumentFileerror = "please select document image";
+    // }
 
-    if (!this.state.selectedFile) {
-      selectedFileerror = "please select shop image";
-    }
+    // if (!this.state.selectedFile) {
+    //   selectedFileerror = "please select shop image";
+    // }
 
-    if (!this.state.selectedProofFile) {
-      selectedProofFileerror = "please select proof image";
-    }
+    // if (!this.state.selectedProofFile) {
+    //   selectedProofFileerror = "please select proof image";
+    // }
 
     if (!this.state.latitude) {
       latitudeerror = "please enter latitude";
@@ -324,22 +380,6 @@ class Merchant extends React.Component<{ history: any }> {
       shopnamerror = "please enter shop name";
     }
 
-    if (!this.state.shoppingpolicy) {
-      shoppingpolicyerror = "please enter shopping policy";
-    }
-
-    if (!this.state.refundpolicy) {
-      refundpolicyerror = "please enter refund policy";
-    }
-
-    if (!this.state.cancellationpolicy) {
-      cancellationpolicyerror = "please enter cancellation policy";
-    }
-
-    if (!this.state.user) {
-      usererror = "please select user";
-    }
-
     if (!this.state.city) {
       cityerror = "please select city";
     }
@@ -351,16 +391,9 @@ class Merchant extends React.Component<{ history: any }> {
       zipcodeerror ||
       emailerror ||
       mobilenumbererror ||
-      selectedDocumentFileerror ||
-      selectedFileerror ||
-      selectedProofFileerror ||
       latitudeerror ||
       longitudeerror ||
       shopnamerror ||
-      shoppingpolicyerror ||
-      cancellationpolicyerror ||
-      refundpolicyerror ||
-      usererror ||
       cityerror ||
       passworderror
     ) {
@@ -371,16 +404,10 @@ class Merchant extends React.Component<{ history: any }> {
         zipcodeerror,
         emailerror,
         mobilenumbererror,
-        selectedDocumentFileerror,
-        selectedFileerror,
-        selectedProofFileerror,
+
         latitudeerror,
         longitudeerror,
         shopnamerror,
-        shoppingpolicyerror,
-        cancellationpolicyerror,
-        refundpolicyerror,
-        usererror,
         cityerror,
         passworderror,
       });
@@ -406,16 +433,11 @@ class Merchant extends React.Component<{ history: any }> {
         mobilenumbererror: "",
         addresserror: "",
         zipcodeerror: "",
-        selectedDocumentFileerror: "",
-        selectedFileerror: "",
-        selectedProofFileerror: "",
+
         latitudeerror: "",
         longitudeerror: "",
         shopnamerror: "",
-        shoppingpolicyerror: "",
-        refundpolicyerror: "",
-        cancellationpolicyerror: "",
-        usererror: "",
+
         cityerror: "",
         passworderror: "",
       });
@@ -424,9 +446,7 @@ class Merchant extends React.Component<{ history: any }> {
         this.state.lastname &&
         this.state.email &&
         this.state.mobilenumber &&
-        this.state.selectedFile &&
-        this.state.selectedDocumentFile &&
-        this.state.selectedProofFile &&
+        this.state.shopname &&
         this.state.latitude &&
         this.state.longitude &&
         this.state.password
@@ -457,6 +477,14 @@ class Merchant extends React.Component<{ history: any }> {
         const addMerchant = await MerchantAPI.addMerchant(formData);
         console.log("addMerchant", addMerchant);
         if (addMerchant) {
+          if (addMerchant.status === 200) {
+            const msg = addMerchant.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/list-merchant");
+          } else {
+            const msg1 = addMerchant.message;
+            utils.showError(msg1);
+          }
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -660,6 +688,43 @@ class Merchant extends React.Component<{ history: any }> {
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <Form>
                           <FormGroup>
+                            <Label for="exampleCustomSelect">
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .password
+                              }
+                            </Label>
+
+                            <div className="right-inner-addon input-group">
+                              <input
+                                type={this.state.type}
+                                name="password"
+                                className="form-control"
+                                id="validationCustom09"
+                                placeholder="Password"
+                                onChange={this.handleChangeEvent}
+                              />
+                              {this.state.type === "password" ? (
+                                <i
+                                  onClick={this.handleClick}
+                                  className="fas fa-eye"
+                                ></i>
+                              ) : (
+                                <i
+                                  onClick={this.handleClick}
+                                  className="fas fa-eye-slash"
+                                ></i>
+                              )}
+                            </div>
+                            <div className="text-danger">
+                              {this.state.passworderror}
+                            </div>
+                          </FormGroup>
+                        </Form>
+                      </Col>
+                      {/* <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                        <Form>
+                          <FormGroup>
                             <Label for="exampleCustomSelect">Select User</Label>
                             <CustomInput
                               type="select"
@@ -670,18 +735,14 @@ class Merchant extends React.Component<{ history: any }> {
                               <option value="">Select User</option>
                               <option value="0">User-1</option>
                               <option value="1">User-2</option>
-                              {/* {
-                                                                        this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-                                                                            <option key={data.id} value={data.id}>{data.name}</option>
-                                                                        ) : ''
-                                                                    } */}
+                            
                             </CustomInput>
                             <div className="mb-4 text-danger">
                               {this.state.usererror}
                             </div>
                           </FormGroup>
                         </Form>
-                      </Col>
+                      </Col> */}
                     </Row>
                     <Row>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
@@ -694,7 +755,7 @@ class Merchant extends React.Component<{ history: any }> {
                             id="shopname"
                             name="shopname"
                             className="form-control"
-                            // value={this.state.shopname}
+                            value={this.state.shopname}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your shop name"
                           />
@@ -713,7 +774,7 @@ class Merchant extends React.Component<{ history: any }> {
                             id="Address"
                             name="address"
                             className="form-control"
-                            // value={this.state.shopname}
+                            value={this.state.address}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your address"
                           />
@@ -732,7 +793,7 @@ class Merchant extends React.Component<{ history: any }> {
                             id="ZIP-Code"
                             name="zipcode"
                             className="form-control"
-                            // value={this.state.shopname}
+                            value={this.state.zipcode}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your zipe-code"
                           />
@@ -753,7 +814,7 @@ class Merchant extends React.Component<{ history: any }> {
                             id="Website"
                             name="website"
                             className="form-control"
-                            // value={this.state.shopname}
+                            value={this.state.website}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your website"
                           />
@@ -772,7 +833,7 @@ class Merchant extends React.Component<{ history: any }> {
                             id="Latitude"
                             name="latitude"
                             className="form-control"
-                            // value={this.state.shopname}
+                            value={this.state.latitude}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your latitude"
                           />
@@ -794,7 +855,7 @@ class Merchant extends React.Component<{ history: any }> {
                             id="Longitude"
                             name="longitude"
                             className="form-control"
-                            // value={this.state.shopname}
+                            value={this.state.longitude}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your longitude"
                           />
@@ -814,7 +875,10 @@ class Merchant extends React.Component<{ history: any }> {
                                   {this.state.filetrue === true ? (
                                     <img
                                       className="picture"
-                                      src={constant.filepath + this.state.file}
+                                      src={
+                                        constant.fileMerchantpath +
+                                        this.state.file
+                                      }
                                     />
                                   ) : (
                                     <img
@@ -866,7 +930,10 @@ class Merchant extends React.Component<{ history: any }> {
                                   {this.state.file1true === true ? (
                                     <img
                                       className="picture"
-                                      src={constant.filepath + this.state.file1}
+                                      src={
+                                        constant.fileMerchantpath +
+                                        this.state.file1
+                                      }
                                     />
                                   ) : (
                                     <img
@@ -918,7 +985,10 @@ class Merchant extends React.Component<{ history: any }> {
                                   {this.state.file2true === true ? (
                                     <img
                                       className="picture"
-                                      src={constant.filepath + this.state.file2}
+                                      src={
+                                        constant.fileMerchantpath +
+                                        this.state.file2
+                                      }
                                     />
                                   ) : (
                                     <img
@@ -1174,35 +1244,6 @@ class Merchant extends React.Component<{ history: any }> {
                       </Col>
                     </Row>
                     <Row style={{ marginTop: "20px" }}>
-                      <Col xs="12" sm="12" md="4" lg="4" xl="4">
-                        <p style={{ fontSize: "16px" }}>
-                          {constant.merchantPage.merchantTableColumn.password}
-                        </p>
-                        <div className="right-inner-addon input-group">
-                          <input
-                            type={this.state.type}
-                            name="password"
-                            className="form-control"
-                            id="validationCustom09"
-                            placeholder="Password"
-                            onChange={this.handleChangeEvent}
-                          />
-                          {this.state.type === "password" ? (
-                            <i
-                              onClick={this.handleClick}
-                              className="fas fa-eye"
-                            ></i>
-                          ) : (
-                            <i
-                              onClick={this.handleClick}
-                              className="fas fa-eye-slash"
-                            ></i>
-                          )}
-                        </div>
-                        <div className="text-danger">
-                          {this.state.passworderror}
-                        </div>
-                      </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <label>
                           <span>
