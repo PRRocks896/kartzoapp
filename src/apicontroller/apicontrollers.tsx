@@ -105,7 +105,8 @@ const apiUrl = {
         getMerchantById:'merchant/',
         gettoken:'token/get-merchant-token',
         getList:'merchant/get-merchant-list-dropdown',
-        getPayoutById:'payout/'
+        getPayoutById:'payout/',
+        getMatrixById:'distancematrix/'
     },
     merchantBusinessController: {
         addMerchantBusiness:'merchantbusinesshour',

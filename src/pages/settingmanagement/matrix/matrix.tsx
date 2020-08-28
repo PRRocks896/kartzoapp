@@ -264,9 +264,9 @@ class ListMatrix extends React.Component<{ history: any }> {
         width="100%"
       >
         <thead>
-          <tr onClick={() => this.handleSort("merchantOrderAmount")}>
+          <tr onClick={() => this.handleSort("feeType")}>
             <th>{constant.matrixPage.matrixTableColumn.feeType}</th>
-            {/* <th>{constant.payoutPage.payoutTableColumn.merchantpayamount}</th> */}
+            <th>{constant.payoutPage.payoutTableColumn.distanceid}</th>
             <th className="action">{constant.tableAction.action}</th>
           </tr>
         </thead>
@@ -275,17 +275,17 @@ class ListMatrix extends React.Component<{ history: any }> {
             <>
               {this.state.matrixdata.map((data: any, index: any) => (
                 <tr key={index}>
-                  <td>{data.merchantOrderAmount}</td>
-               
+                  <td>{data.feeType}</td>
+                  <td>{data.distanceId}</td>
                   <td className="action">
                     <span className="padding">
                       <i
                         className="fa fa-eye"
-                        onClick={() => this.viewmatrix(data.matrixId)}
+                        onClick={() => this.viewmatrix(data.distanceId)}
                       ></i>
                       <i
                         className="fas fa-edit"
-                        onClick={() => this.editmatrix(data.matrixId)}
+                        onClick={() => this.editmatrix(data.distanceId)}
                       ></i>
                     </span>
                   </td>

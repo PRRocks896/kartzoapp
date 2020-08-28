@@ -94,6 +94,7 @@ import AddPayout from '../pages/settingmanagement/payout/addpayout/addpayout';
 import ViewPayout from '../pages/settingmanagement/payout/viewpayout/viewpayout';
 import ListMatrix from '../pages/settingmanagement/matrix/matrix';
 import AddMatrix from '../pages/settingmanagement/matrix/addmatrix/addmatrix';
+import ViewMatrix from '../pages/settingmanagement/matrix/viewmatrix/viewmatrix';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -217,6 +218,8 @@ class Main extends React.Component<{history:any}> {
             <Route path='/view-payout/:id' render={(props: any) => <ViewPayout {...props} />} />
             <Route path='/list-matrix' render={(props: any) => <ListMatrix {...props} />} />
             <Route path='/add-matrix' render={(props: any) => <AddMatrix {...props} />} />
+            <Route path='/edit-matrix/:id' render={(props: any) => <AddMatrix {...props} />} />
+            <Route path='/view-matrix/:id' render={(props: any) => <ViewMatrix {...props} />} />
             {
                     this.props.history.location.pathname != '/' ? (
                       <Route path="*" component={Page404}/>

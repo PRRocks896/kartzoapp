@@ -868,7 +868,8 @@ export default {
     commision:'Commission',
     merchantpayamount:'Merchant Payment Amount',
     merchant:'Select Merchant',
-    merchantname:'Merchant Name'
+    merchantname:'Merchant Name',
+    distanceid:'Distance Id'
     },
     viewpayoutdetails: {
       viewpayout: "View Payout Details",
@@ -899,10 +900,11 @@ export default {
       updateTrue:false,
       matrixId:'',
       matrix:[{
-        from:'',
-        to:'',
-        fee:''
+        from:0,
+        to:0,
+        fee:0
       }],
+      addflag:false,
       feetype:'',
       feetypeerror:'',
       to:'',

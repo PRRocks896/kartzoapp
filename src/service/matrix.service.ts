@@ -6,11 +6,11 @@ export default {
     getMatrixData: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.matrixController.getmatrix, data,false);
     },
-    addPayout: async function (data: any) {
-        return await WebReqUrl.post(Constant.apiUrl + apiUrl.payoutController.addPayout, data,false);
+    addMatrix: async function (data: any) {
+        return await WebReqUrl.post(Constant.apiUrl + apiUrl.matrixController.addmatrix, data,false);
     },
-    getPayoutById: async function (data: any) {
-        return await WebReqUrl.get(Constant.apiUrl + apiUrl.payoutController.getPayoutById + data.id,false);
+    getMatrixById: async function (data: any) {
+        return await WebReqUrl.get(Constant.apiUrl + apiUrl.matrixController.getMatrixById + data.id,false);
     },
     editPayout: async function (data: any,id:any) {
         return await WebReqUrl.put(Constant.apiUrl + apiUrl.payoutController.editPayout + id, data,false);

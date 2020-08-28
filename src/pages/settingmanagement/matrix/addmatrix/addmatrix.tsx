@@ -19,6 +19,7 @@ import {
   FeeAPI,
   PayoutAPI,
   MerchantAPI,
+  MatrixAPI,
 } from "../../../../service/index.service";
 import constant from "../../../../constant/constant";
 import {
@@ -29,7 +30,7 @@ import {
   payoutCreateRequest,
   payoutUpdateRequest,
 } from "../../../../modelController/payoutModel";
-import './addmatrix.css';
+import "./addmatrix.css";
 
 class AddMatrix extends React.Component<{ history: any; location: any }> {
   matrixState = constant.matrixPage.state;
@@ -41,6 +42,8 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     feedata: this.matrixState.feedata,
     feetype: this.matrixState.feetype,
     feetypeerror: this.matrixState.feetypeerror,
+    addflag: this.matrixState.addflag,
+    to:this.matrixState.matrix
   };
 
   constructor(props: any) {
@@ -48,7 +51,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     this.handleChange = this.handleChange.bind(this);
     this.addClick = this.addClick.bind(this);
     // this.handleChange = this.handleChange.bind(this);
-    // this.addPayout = this.addPayout.bind(this);
+    this.addMatrix = this.addMatrix.bind(this);
     // this.updatePayout = this.updatePayout.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.getFee = this.getFee.bind(this);
@@ -58,6 +61,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
 
   addClick() {
     this.setState((prevState: any) => ({
+      addflag: this.state.addflag = true,
       matrix: [...prevState.matrix, { to: "", from: "", fee: "" }],
     }));
   }
@@ -66,6 +70,16 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     let matrix = [...this.state.matrix];
     matrix.splice(i, 1);
     this.setState({ matrix });
+    console.log("remove matrix",this.state.matrix);
+    if(this.state.matrix.length === 2) {
+      this.setState({
+        addflag:this.state.addflag = false
+      })
+    } else {
+      this.setState({
+        addflag:this.state.addflag = true
+      })
+    }
   }
 
   async componentDidMount() {
@@ -112,23 +126,14 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
 
   validate() {
     let feetypeerror = "";
-    let merchantOrderAmounterror = "";
-    let merchantPayAmounterror = "";
 
     if (!this.state.feetype) {
       feetypeerror = "please select fee type";
     }
 
-    // if (!this.state.merchantOrderAmount) {
-    //     merchantOrderAmounterror = "please enter merchant amount";
-    // }
-
-    // if (!this.state.merchantPayAmount) {
-    //     merchantPayAmounterror = "please enter merchant pay amount";
-    // }
 
     if (feetypeerror) {
-      this.setState({ feetypeerror });
+      this.setState({ feetypeerror});
       return false;
     }
     return true;
@@ -137,14 +142,12 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
   handleChange(i: number, e: any) {
     const { name, value } = e.target;
     let matrix = [...this.state.matrix];
-    matrix[i] = { ...matrix[i], [name]: value };
+    matrix[i] = { ...matrix[i], [name]: parseInt(value) };
     this.setState({ matrix });
   }
 
   matrixUI() {
     return this.state.matrix.map((el, i) => (
-        
-
       <Row>
         <Col xs="12" sm="12" md="3" lg="3" xl="3">
           <FormGroup>
@@ -188,7 +191,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
               name="fee"
               className="form-control"
               value={el.fee || ""}
-              placeholder=  {constant.matrixPage.matrixTableColumn.fee}
+              placeholder={constant.matrixPage.matrixTableColumn.fee}
               onChange={this.handleChange.bind(this, i)}
               required
             />
@@ -197,59 +200,72 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
             </div> */}
           </FormGroup>
         </Col>
-        <Col xs="12" sm="12" md="3" lg="3" xl="3">
-        <FormGroup className="remove_icon">
-        <i className="fas fa-trash-alt"  onClick={this.removeClick.bind(this, i)}></i>
-        {/* <Button
-          type="button"
-          size="sm"
-          color="primary"
-          className="mb-2 mt-4 mr-2 custom-button"
-          onClick={this.removeClick.bind(this, i)}
-        >
-          {constant.button.remove}
-        </Button> */}
-     </FormGroup>
-        </Col>
+        {this.state.addflag === true? (
+          <Col xs="12" sm="12" md="3" lg="3" xl="3">
+            <FormGroup className="remove_icon">
+              <i
+                className="fas fa-trash-alt"
+                onClick={this.removeClick.bind(this, i)}
+              ></i>
+              {/* <Button
+                type="button"
+                size="sm"
+                color="primary"
+                className="mb-2 mt-4 mr-2 custom-button"
+                onClick={this.removeClick.bind(this, i)}
+              >
+                {constant.button.remove}
+              </Button> */}
+            </FormGroup>
+          </Col>
+        ) : (
+          ""
+        )}
       </Row>
     ));
   }
 
-  //   async addPayout() {
-  //     const isValid = this.validate();
-  //     if (isValid) {
-  //       this.setState({
-  //         merchanterror: "",
-  //         merchantOrderAmounterror: "",
-  //         merchantPayAmounterror: ""
-  //       });
-  //       if (this.state.merchant && this.state.merchantOrderAmount && this.state.merchantPayAmount) {
-  //         const obj: payoutCreateRequest = {
-  //             merchantId: parseInt(this.state.merchant),
-  //             merchantOrderAmount: parseInt(this.state.merchantOrderAmount),
-  //             commission: parseInt(this.state.commission),
-  //             merchantPayAmount:parseInt(this.state.merchantPayAmount)
-  //         };
+  async addMatrix() {
+    console.log("feetype", this.state.feetype);
+    console.log("matrix", this.state.matrix);
+  
+    const isValid = this.validate();
+    if (isValid) {
+      this.setState({
+      feetypeerror:''
+      });
+      let temparray:any = [];
+      this.state.matrix.map((data:any,index:number) => (
+        (data.to !== 0 && data.from !== 0 && data.fee !== 0) ? (
+         temparray.push(data)
+        ) : ('')
+      ))
+      console.log("matrix updated", temparray);
+      if (this.state.feetype && temparray.length>0) {
+        const obj = {
+          feeTypeId: parseInt(this.state.feetype),
+          fees:temparray
+        };
 
-  //         const addPayout = await PayoutAPI.addPayout(obj);
-  //         console.log("addPayout", addPayout);
+        const addMatrix = await MatrixAPI.addMatrix(obj);
+        console.log("addMatrix", addMatrix);
 
-  //         if (addPayout) {
-  //           if (addPayout.status === 200) {
-  //             const msg = addPayout.message;
-  //             utils.showSuccess(msg);
-  //             this.props.history.push("/list-payout");
-  //           } else {
-  //             const msg1 = addPayout.message;
-  //             utils.showError(msg1);
-  //           }
-  //         } else {
-  //           const msg1 = "Internal server error";
-  //           utils.showError(msg1);
-  //         }
-  //       }
-  //     }
-  //   }
+        if (addMatrix) {
+          if (addMatrix.status === 200) {
+            const msg = addMatrix.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/list-matrix");
+          } else {
+            const msg1 = addMatrix.message;
+            utils.showError(msg1);
+          }
+        } else {
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
+        }
+      }
+    }
+  }
 
   //   async updatePayout() {
   //     const isValid = this.validate();
@@ -369,9 +385,18 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
                         </Form>
                       </Col>
                     </Row>
-                    <div className="add_icon">
-                    <i className="fa fa-plus" aria-hidden="true" onClick={this.addClick}></i>
-                    </div>
+                    {
+                      this.state.matrix[0].to !== 0 && this.state.matrix[0].from !== 0 && this.state.matrix[0].fee !== 0 ? (
+                        <div className="add_icon">
+                        <i
+                          className="fa fa-plus"
+                          aria-hidden="true"
+                          onClick={this.addClick}
+                        ></i>
+                      </div>
+                      ) : ('')
+                    }
+                   
                     {/* <Button
                         type="button"
                         size="sm"
@@ -381,10 +406,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
                       >
                         {constant.button.add}
                       </Button> */}
-                      <div className="add_more">
-
-                    {this.matrixUI()}
-                      </div>
+                    <div className="add_more">{this.matrixUI()}</div>
                     {/* <input
                       type="button"
                       value="add more"
@@ -452,31 +474,30 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
                         </FormGroup>
                       </Col>
                     </Row> */}
-                
+
                     <div className="mt-3">
-                    {this.state.updateTrue === true ? (
-                      <Button
-                        type="button"
-                        size="sm"
-                        color="primary"
-                        className="mb-2 mr-2 custom-button"
-                        // onClick={this.updatePayout}
-                      >
-                        {constant.button.update}
-                      </Button>
-                    ) : (
-                      <Button
-                        type="button"
-                        size="sm"
-                        color="primary"
-                        className="mb-2 mr-2 custom-button"
-                        // onClick={this.addPayout}
-                      >
-                        {constant.button.Save}
-                      </Button>
-                    )}
+                      {this.state.updateTrue === true ? (
+                        <Button
+                          type="button"
+                          size="sm"
+                          color="primary"
+                          className="mb-2 mr-2 custom-button"
+                          // onClick={this.updatePayout}
+                        >
+                          {constant.button.update}
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          size="sm"
+                          color="primary"
+                          className="mb-2 mr-2 custom-button"
+                          onClick={this.addMatrix}
+                        >
+                          {constant.button.Save}
+                        </Button>
+                      )}
                     </div>
-                  
                   </CardBody>
                 </Card>
               </Col>
