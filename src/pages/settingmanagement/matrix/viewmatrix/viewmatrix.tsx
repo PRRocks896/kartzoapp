@@ -120,7 +120,7 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
                       </Col>
                     </Row>
                     <Row>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                      <Col xs="12" sm="12" md="12" lg="12" xl="12">
                         <FormGroup>
                           <Label htmlFor="role_name">
                             <b>{constant.matrixPage.matrixTableColumn.fee}:</b>
@@ -128,7 +128,7 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
                           <span className="ml-5">
                             <table
                               id="dtBasicExample"
-                              className="table table-striped table-bordered table-sm"
+                              className="table table-striped table-bordered table-sm text-center"
                               width="100%"
                             >
                               <thead>
