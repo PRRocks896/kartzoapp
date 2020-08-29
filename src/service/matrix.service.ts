@@ -12,8 +12,8 @@ export default {
     getMatrixById: async function (data: any) {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.matrixController.getMatrixById + data.id,false);
     },
-    editPayout: async function (data: any,id:any) {
-        return await WebReqUrl.put(Constant.apiUrl + apiUrl.payoutController.editPayout + id, data,false);
+    editMatrix: async function (data: any,id:any) {
+        return await WebReqUrl.put(Constant.apiUrl + apiUrl.matrixController.editMatrix + id, data,false);
     },
     
     

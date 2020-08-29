@@ -263,7 +263,7 @@ class Category extends React.Component<{ history: any }> {
           {this.state.categorydata.length > 0 ? (
             <>
               {this.state.categorydata.map((data: any, index: any) => (
-                <tr>
+                <tr key={index}>
                   <td>{data.category}</td>
 
                   {data.parentCategory ? (

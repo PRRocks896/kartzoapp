@@ -261,7 +261,7 @@ class CountryManagment extends React.Component<{ history: any }> {
           {this.state.countrydata.length > 0 ? (
             <>
               {this.state.countrydata.map((data: any, index: any) => (
-                <tr>
+                <tr key={index}>
                   <td>{data.countryName}</td>
                   <td>{data.countryCode}</td>
                   <td>

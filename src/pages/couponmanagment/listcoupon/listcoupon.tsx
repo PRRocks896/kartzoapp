@@ -55,7 +55,7 @@ class ListCoupon extends React.Component<{ history: any }> {
 
   async componentDidMount() {
     document.title =
-      constant.categoryPage.title.categoryTitle + utils.getAppName();
+      constant.couponPage.title.counponTitle + utils.getAppName();
       utils.dataTable();
     this.getCoupon();
   }

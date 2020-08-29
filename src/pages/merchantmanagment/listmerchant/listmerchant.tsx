@@ -67,24 +67,7 @@ class ListMerchant extends React.Component<{ history: any }> {
     document.title =
       constant.categoryPage.title.categoryTitle + utils.getAppName();
     utils.dataTable();
-    const ipaddress = publicIp.v4();
-    const users: any = localStorage.getItem("user");
-    let user = JSON.parse(users);
-    const obj ={
-      deviceType: 1,
-              deviceId: "deviceId",
-              ipAddress: await ipaddress,
-              loginToken: user.token,
-              refreshToken: user.refreshToken,
-    }
-    var getToken = await API.getToken(obj);
-    console.log("getToken", getToken);
-    if(getToken) {
-      this.setState({
-        token:this.state.token = getToken.token
-      })
-      localStorage.setItem('merchantToken',this.state.token);
-    }
+   
   
     this.getMerchantData();
   }

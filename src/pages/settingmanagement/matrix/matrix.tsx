@@ -65,7 +65,7 @@ class ListMatrix extends React.Component<{ history: any }> {
 
   async componentDidMount() {
     document.title =
-      constant.payoutPage.title.payoutTitle + utils.getAppName();
+      constant.matrixPage.title.matrixTitle + utils.getAppName();
     utils.dataTable();
     this.getMatrixData();
   }
@@ -266,7 +266,6 @@ class ListMatrix extends React.Component<{ history: any }> {
         <thead>
           <tr onClick={() => this.handleSort("feeType")}>
             <th>{constant.matrixPage.matrixTableColumn.feeType}</th>
-            <th>{constant.payoutPage.payoutTableColumn.distanceid}</th>
             <th className="action">{constant.tableAction.action}</th>
           </tr>
         </thead>
@@ -276,7 +275,6 @@ class ListMatrix extends React.Component<{ history: any }> {
               {this.state.matrixdata.map((data: any, index: any) => (
                 <tr key={index}>
                   <td>{data.feeType}</td>
-                  <td>{data.distanceId}</td>
                   <td className="action">
                     <span className="padding">
                       <i

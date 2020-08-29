@@ -62,12 +62,12 @@ export default {
         icon: 'fa fa-list fs-16',
         type:'simple'
       },
-      {
-        name: 'Sub Category',
-        url: '/subcategory',
-        icon: 'fa fa-list fs-16',
-        type:'simple'
-      },
+      // {
+      //   name: 'Sub Category',
+      //   url: '/subcategory',
+      //   icon: 'fa fa-list fs-16',
+      //   type:'simple'
+      // },
       {
         name:'Location Management',
         type:'header'

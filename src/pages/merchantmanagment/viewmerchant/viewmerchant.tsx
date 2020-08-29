@@ -99,7 +99,7 @@ class ViewMerchant extends React.Component<{
             lastname: this.state.lastname = getMerchantById.resultObject.lastName,
             email: this.state.email = getMerchantById.resultObject.email,
             mobilenumber: this.state.mobilenumber = getMerchantById.resultObject.phone,
-            shopname: this.state.shopname = getMerchantById.resultObject.shopname,
+            shopname: this.state.shopname = getMerchantById.resultObject.shopName,
             address: this.state.address = getMerchantById.resultObject.address,
             city: this.state.city = getMerchantById.resultObject.cityID,
             zipcode: this.state.zipcode = getMerchantById.resultObject.zipCode,

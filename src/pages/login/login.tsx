@@ -153,7 +153,7 @@ class Login extends React.Component<{ history: any }> {
 
         axios
           .post(constant.apiUrl + apiUrl.userController.createData, obj)
-          .then((res: any) => {
+          .then(async(res: any) => {
             console.log("login", res);
             if (res) {
               if (res.data.status === 200) {
@@ -164,6 +164,21 @@ class Login extends React.Component<{ history: any }> {
                 localStorage.setItem("user", JSON.stringify(userData));
                 localStorage.setItem("token", userData.token);
                 const msg = res.data.message;
+                const ipaddress = publicIp.v4();
+                const users: any = localStorage.getItem("user");
+                let user = JSON.parse(users);
+                const obj ={
+                  deviceType: 1,
+                          deviceId: "deviceId",
+                          ipAddress: await ipaddress,
+                          loginToken: user.token,
+                          refreshToken: user.refreshToken,
+                }
+                var getToken = await API.getToken(obj);
+                console.log("getToken", getToken);
+                if(getToken) {
+                  localStorage.setItem('merchantToken',getToken.token);
+                }
                 utils.showSuccess(msg);
                 this.props.history.push("/dashboard");
               } else {
@@ -175,6 +190,8 @@ class Login extends React.Component<{ history: any }> {
               utils.showError(msg1);
             }
           });
+
+
       }
     }
   }

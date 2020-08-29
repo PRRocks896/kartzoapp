@@ -100,7 +100,7 @@ const apiUrl = {
     matrixController: {
         addmatrix:'distancematrix',
         getmatrix:'distancematrix/get-distancematrix-list',
-        editPayout:'payout/',
+        editMatrix:'distancematrix/',
         deleteMerchant:'merchant',
         getMerchantById:'merchant/',
         gettoken:'token/get-merchant-token',
