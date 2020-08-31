@@ -123,7 +123,7 @@ const apiUrl = {
         deleteMerchantReview:'merchant',
     },
     productController: {
-        addproduct:'product',
+        addproduct:'products',
         getproduct:'products/get-product-list',
         editproduct:'product',
         deleteproduct:'product',

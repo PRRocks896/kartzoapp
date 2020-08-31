@@ -728,9 +728,16 @@ export default {
     productTableColumn: {
     prodctname:'Product Name',
     productdescription:'Product Description',
-    price:'Price',
+    price:'Product Price',
     sortOrder:'sortOrder',
-    discountPrice:'Discount Price'
+    discountPrice:'Product Discount Price',
+    selectmerchant:'Select Merchant',
+    selectcategory:'Select Category',
+    metatitle:'Meta Title',
+    isFeatured:'Is Featured',
+    metadescritption:'Meta Description',
+    metakeyword:'Meta Keyword'
+
     },
     viewproductdetails: {
       viewproduct: "View Product Details",

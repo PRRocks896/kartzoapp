@@ -190,8 +190,73 @@ class Login extends React.Component<{ history: any }> {
               utils.showError(msg1);
             }
           });
+      }
+    }
+  }
 
-
+  enterPressed(event: any) {
+    var code = event.keyCode || event.which;
+    if (code === 13) {
+      //13 is the enter keycode
+      this.setState({
+        isButton: true,
+      });
+      const isValid = this.validate();
+      if (isValid) {
+        this.setState({
+          emailerror: this.state.emailerror = "",
+          passworderror: this.state.passworderror = "",
+        });
+        if (this.state.email && this.state.password) {
+          const obj: loginCreateRequest = {
+            email: this.state.email,
+            password: this.state.password,
+            deviceType: 1,
+            deviceId: "deviceId",
+            ipAddress: this.state.ipAddress,
+            userId: 0,
+          };
+  
+          axios
+            .post(constant.apiUrl + apiUrl.userController.createData, obj)
+            .then(async(res: any) => {
+              console.log("login", res);
+              if (res) {
+                if (res.data.status === 200) {
+                  this.setState({
+                    isButton: false,
+                  });
+                  var userData = res.data.resultObject;
+                  localStorage.setItem("user", JSON.stringify(userData));
+                  localStorage.setItem("token", userData.token);
+                  const msg = res.data.message;
+                  const ipaddress = publicIp.v4();
+                  const users: any = localStorage.getItem("user");
+                  let user = JSON.parse(users);
+                  const obj ={
+                    deviceType: 1,
+                            deviceId: "deviceId",
+                            ipAddress: await ipaddress,
+                            loginToken: user.token,
+                            refreshToken: user.refreshToken,
+                  }
+                  var getToken = await API.getToken(obj);
+                  console.log("getToken", getToken);
+                  if(getToken) {
+                    localStorage.setItem('merchantToken',getToken.token);
+                  }
+                  utils.showSuccess(msg);
+                  this.props.history.push("/dashboard");
+                } else {
+                  const msg = res.data.message;
+                  utils.showError(msg);
+                }
+              } else {
+                const msg1 = "Internal server error";
+                utils.showError(msg1);
+              }
+            });
+        }
       }
     }
   }
@@ -251,6 +316,7 @@ class Login extends React.Component<{ history: any }> {
                           className="form-control"
                           id="validationCustom08"
                           placeholder="Email Address"
+                          onKeyPress={this.enterPressed.bind(this)}
                           onChange={this.handleChangeEvent}
                         />
                       </div>
@@ -269,6 +335,7 @@ class Login extends React.Component<{ history: any }> {
                           className="form-control"
                           id="validationCustom09"
                           placeholder="Password"
+                          onKeyPress={this.enterPressed.bind(this)}
                           onChange={this.handleChangeEvent}
                         />
                         {this.state.type === "password" ? (

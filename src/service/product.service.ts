@@ -4,7 +4,7 @@ import apiUrl from '../apicontroller/apicontrollers';
 
 export default {
     addProduct: async function (data: any) {
-        return await WebReqUrl.post(Constant.apiUrl + apiUrl.productController.addproduct, data,false);
+        return await WebReqUrl.post(Constant.apiMerchantUrl + apiUrl.productController.addproduct, data,true);
     },
     deleteProduct: async function () {
         return await WebReqUrl.delete(Constant.apiUrl + apiUrl.productController.deleteproduct);

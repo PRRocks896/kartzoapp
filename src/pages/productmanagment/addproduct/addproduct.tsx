@@ -24,8 +24,9 @@ import {
   productCreateRequest,
   productUpdateRequest,
 } from "../../../modelController/productModel";
-import { CategoryAPI, MerchantAPI } from "../../../service/index.service";
+import { CategoryAPI, MerchantAPI, ProductAPI } from "../../../service/index.service";
 import ImageUploading from "react-images-uploading";
+import { any } from "prop-types";
 
 const maxNumber = 10;
 const maxMbFileSize = 5 * 1024 * 1024;
@@ -58,6 +59,7 @@ class AddProduct extends React.Component<{ history: any }> {
     imageserror: this.productState.imageserror,
     categorylist: this.productState.categorylist,
     merchantlist: this.productState.merchantlist,
+    imagesPreviewUrls: [],
   };
 
   constructor(props: any) {
@@ -70,7 +72,26 @@ class AddProduct extends React.Component<{ history: any }> {
     this.handleMainChange = this.handleMainChange.bind(this);
     this.handleDescChange = this.handleDescChange.bind(this);
     this.handleKeywordChange = this.handleKeywordChange.bind(this);
-    this.onChange  = this.onChange.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this._handleImageChange = this._handleImageChange.bind(this);
+  }
+
+  _handleImageChange(e: any) {
+    e.preventDefault();
+    let images: any = Array.from(e.target.files);
+    this.setState({
+      images:this.state.images = images
+    });
+    images.forEach((file:any) => {
+      let reader:any = new FileReader();
+      reader.onloadend = () => {
+        this.setState({
+          imagesPreviewUrls: [...this.state.imagesPreviewUrls, reader.result],
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+    console.log("files ARRAY",this.state.images)
   }
 
   handleChange(checked: boolean) {
@@ -142,14 +163,14 @@ class AddProduct extends React.Component<{ history: any }> {
     });
   };
 
-  onChange = (imageList:any, addUpdateIndex:any) => {
+  onChange = (imageList: any, addUpdateIndex: any) => {
     // data for submi
     this.setState({
-        images:this.state.images = imageList
-    })
-    console.log('index of new chosen images: ', addUpdateIndex)
+      images: this.state.images = imageList,
+    });
+    console.log("index of new chosen images: ", addUpdateIndex);
   };
-  onError = (errors:any, files:any) => {
+  onError = (errors: any, files: any) => {
     console.log(errors, files);
   };
 
@@ -157,13 +178,13 @@ class AddProduct extends React.Component<{ history: any }> {
     let merchantiderror = "";
     let maincategoryiderror = "";
     let productnameerror = "";
-    let productdescriptionerror = "";
+    // let productdescriptionerror = "";
     let priceerror = "";
-    let discountpriceerror = "";
-    let metatitleerror = "";
-    let metadiscriptionerror = "";
-    let metakeyworderror = "";
-    let sortordererror = "";
+    // let discountpriceerror = "";
+    // let metatitleerror = "";
+    // let metadiscriptionerror = "";
+    // let metakeyworderror = "";
+    // let sortordererror = "";
 
     if (!this.state.merchantid) {
       merchantiderror = "please select merchant";
@@ -177,57 +198,57 @@ class AddProduct extends React.Component<{ history: any }> {
       productnameerror = "please enter product name";
     }
 
-    if (!this.state.productdescription) {
-      productdescriptionerror = "please enter product description";
-    }
+    // if (!this.state.productdescription) {
+    //   productdescriptionerror = "please enter product description";
+    // }
 
     if (!this.state.price) {
       priceerror = "please enter price";
     }
 
-    if (!this.state.discountprice) {
-      discountpriceerror = "please enter discount price";
-    }
+    // if (!this.state.discountprice) {
+    //   discountpriceerror = "please enter discount price";
+    // }
 
-    if (!this.state.metatitle) {
-      metatitleerror = "please enter meta title";
-    }
+    // if (!this.state.metatitle) {
+    //   metatitleerror = "please enter meta title";
+    // }
 
-    if (!this.state.metadiscription) {
-      metadiscriptionerror = "please enter meta description";
-    }
+    // if (!this.state.metadiscription) {
+    //   metadiscriptionerror = "please enter meta description";
+    // }
 
-    if (!this.state.metakeyword) {
-      metakeyworderror = "please enter meta keyword";
-    }
+    // if (!this.state.metakeyword) {
+    //   metakeyworderror = "please enter meta keyword";
+    // }
 
-    if (!this.state.sortorder) {
-      sortordererror = "please enter sort order";
-    }
+    // if (!this.state.sortorder) {
+    //   sortordererror = "please enter sort order";
+    // }
 
     if (
       merchantiderror ||
       maincategoryiderror ||
       productnameerror ||
-      productdescriptionerror ||
-      priceerror ||
-      discountpriceerror ||
-      metatitleerror ||
-      metadiscriptionerror ||
-      metakeyworderror ||
-      sortordererror
+      // productdescriptionerror ||
+      priceerror
+      // discountpriceerror ||
+      // metatitleerror ||
+      // metadiscriptionerror ||
+      // metakeyworderror ||
+      // sortordererror
     ) {
       this.setState({
         merchantiderror,
         maincategoryiderror,
         productnameerror,
-        productdescriptionerror,
+        // productdescriptionerror,
         priceerror,
-        discountpriceerror,
-        metatitleerror,
-        metadiscriptionerror,
-        metakeyworderror,
-        sortordererror,
+        // discountpriceerror,
+        // metatitleerror,
+        // metadiscriptionerror,
+        // metakeyworderror,
+        // sortordererror,
       });
       return false;
     }
@@ -249,37 +270,78 @@ class AddProduct extends React.Component<{ history: any }> {
         maincategoryiderror: "",
         subcategoryiderror: "",
         productnameerror: "",
-        productdescriptionerror: "",
+        // productdescriptionerror: "",
         priceerror: "",
-        discountpriceerror: "",
-        metatitleerror: "",
-        metadiscriptionerror: "",
-        metakeyworderror: "",
-        sortordererror: "",
+        // discountpriceerror: "",
+        // metatitleerror: "",
+        // metadiscriptionerror: "",
+        // metakeyworderror: "",
+        // sortordererror: "",
       });
       if (
         this.state.merchantid &&
         this.state.maincategoryid &&
-        this.state.productdescription &&
-        this.state.price &&
-        this.state.discountprice &&
-        this.state.metadiscription &&
-        this.state.metatitle &&
-        this.state.metakeyword &&
-        this.state.sortorder
+        this.state.productname &&
+        this.state.price
+        // this.state.discountprice &&
+        // this.state.metadiscription &&
+        // this.state.metatitle &&
+        // this.state.metakeyword &&
+        // this.state.sortorder
       ) {
-        const obj: productCreateRequest = {
-          merchantid: this.state.merchantid,
-          maincategoryid: this.state.maincategoryid,
-          productname: this.state.productname,
-          productdescription: this.state.productdescription,
-          price: this.state.price,
-          discountprice: this.state.discountprice,
-          metadiscription: this.state.metadiscription,
-          metatitle: this.state.metatitle,
-          metakeyword: this.state.metakeyword,
-          sortorder: this.state.sortorder,
-        };
+        // const obj: productCreateRequest = {
+        //   merchantid: this.state.merchantid,
+        //   maincategoryid: this.state.maincategoryid,
+        //   productname: this.state.productname,
+        //   productdescription: this.state.productdescription,
+        //   price: this.state.price,
+        //   discountprice: this.state.discountprice,
+        //   metadiscription: this.state.metadiscription,
+        //   metatitle: this.state.metatitle,
+        //   metakeyword: this.state.metakeyword,
+        //   sortorder: this.state.sortorder,
+        // };
+
+        let formData = new FormData();
+        formData.append("MerchantId", this.state.merchantid);
+        formData.append("CategoryId", this.state.maincategoryid);
+        formData.append("ProductName", this.state.productname);
+        formData.append("Price", this.state.price);
+        this.state.images.map((image:any,index:number) => (
+          formData.append("Images", image)
+        ))
+
+         const addProduct = await ProductAPI.addProduct(formData);
+        console.log("addProduct",addProduct);
+
+        // formData.append("Email", this.state.email);
+        // formData.append("Phone", this.state.mobilenumber.toString());
+        // formData.append("Password", this.state.password);
+        // formData.append("Address", this.state.address);
+        // formData.append("CityId", this.state.city);
+        // formData.append("ZipCode", this.state.zipcode);
+        // formData.append("Latitude", this.state.latitude);
+        // formData.append("Longitude", this.state.longitude);
+        // formData.append("Website", this.state.website);
+        // formData.append(
+        //   "MerchantIDPoof",
+        //   this.state.selectedProofFile ? this.state.selectedProofFile[0] : ""
+        // );
+        // formData.append(
+        //   "MerchantDocument",
+        //   this.state.selectedDocumentFile
+        //     ? this.state.selectedDocumentFile[0]
+        //     : ""
+        // );
+        // formData.append("ShippingPolicy", this.state.shoppingpolicy);
+        // formData.append("RefundPolicy", this.state.refundpolicy);
+        // formData.append("CancellationPolicy", this.state.cancellationpolicy);
+        // formData.append("isActive", new Boolean(this.state.isOpen).toString());
+        // formData.append(
+        //   "files",
+        //   this.state.selectedFile ? this.state.selectedFile[0] : ""
+        // );
+        // formData.append("UserId", "0");
 
         // const obj1 : productUpdateRequest = {
         //     id:'',
@@ -327,7 +389,7 @@ class AddProduct extends React.Component<{ history: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>Add Product</h1>
+                        <h1>{constant.productPage.title.addProductTitle}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -335,7 +397,7 @@ class AddProduct extends React.Component<{ history: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        style={{ textAlign: "right" }}
+                        className="search_right"
                       >
                         <Link to="/list-product">
                           <Button
@@ -344,7 +406,7 @@ class AddProduct extends React.Component<{ history: any }> {
                             color="primary"
                             className="mb-2 mr-2 custom-button"
                           >
-                            Back
+                            {constant.button.back}
                           </Button>
                         </Link>
                       </Col>
@@ -356,7 +418,7 @@ class AddProduct extends React.Component<{ history: any }> {
                         <Form>
                           <FormGroup>
                             <Label for="exampleCustomSelect">
-                              Select Merchant
+                              {constant.productPage.productTableColumn.selectmerchant}
                             </Label>
                             <CustomInput
                               type="select"
@@ -364,7 +426,7 @@ class AddProduct extends React.Component<{ history: any }> {
                               name="merchantid"
                               onChange={this.onMerchantSelect}
                             >
-                              <option value="">Select Merchant</option>
+                              <option value=""> {constant.productPage.productTableColumn.selectmerchant}</option>
                               {this.state.merchantlist.length > 0
                                 ? this.state.merchantlist.map(
                                     (data: any, index: any) => (
@@ -385,7 +447,7 @@ class AddProduct extends React.Component<{ history: any }> {
                         <Form>
                           <FormGroup>
                             <Label for="exampleCustomSelect">
-                              Select MainCategory
+                            {constant.productPage.productTableColumn.selectcategory}
                             </Label>
                             <CustomInput
                               type="select"
@@ -393,7 +455,7 @@ class AddProduct extends React.Component<{ history: any }> {
                               name="maincategoryid"
                               onChange={this.onMainCategorySelect}
                             >
-                              <option value="">Select Category</option>
+                              <option value=""> {constant.productPage.productTableColumn.selectcategory}</option>
 
                               {this.state.categorylist.length > 0
                                 ? this.state.categorylist.map(
@@ -415,13 +477,13 @@ class AddProduct extends React.Component<{ history: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
-                          <Label htmlFor="Product Name">Product Name</Label>
+                          <Label htmlFor="Product Name"> {constant.productPage.productTableColumn.prodctname}</Label>
                           <Input
                             type="text"
                             id="Product Name"
                             name="productname"
                             className="form-control"
-                            // value={this.state.mobilenumber}
+                            value={this.state.productname}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your product name"
                           />
@@ -432,13 +494,13 @@ class AddProduct extends React.Component<{ history: any }> {
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
-                          <Label htmlFor="Product Price">Product Price</Label>
+                          <Label htmlFor="Product Price"> {constant.productPage.productTableColumn.price}</Label>
                           <Input
                             type="number"
                             id="Product Price"
                             name="price"
                             className="form-control"
-                            // value={this.state.mobilenumber}
+                            value={this.state.price}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your product price"
                           />
@@ -450,14 +512,14 @@ class AddProduct extends React.Component<{ history: any }> {
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
                           <Label htmlFor="Product Discount">
-                            Product Discount Price
+                          {constant.productPage.productTableColumn.discountPrice}
                           </Label>
                           <Input
                             type="number"
                             id="Product Discount"
                             name="discountprice"
                             className="form-control"
-                            // value={this.state.mobilenumber}
+                            value={this.state.discountprice}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your product discount price"
                           />
@@ -470,13 +532,13 @@ class AddProduct extends React.Component<{ history: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
-                          <Label htmlFor="metatitle">Meta Title</Label>
+                          <Label htmlFor="metatitle"> {constant.productPage.productTableColumn.metatitle}</Label>
                           <Input
                             type="text"
                             id="metatitle"
                             name="metatitle"
                             className="form-control"
-                            // value={this.state.mobilenumber}
+                            value={this.state.metatitle}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your meta title"
                           />
@@ -487,13 +549,13 @@ class AddProduct extends React.Component<{ history: any }> {
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
-                          <Label htmlFor="sortorder">Sort Order</Label>
+                          <Label htmlFor="sortorder"> {constant.productPage.productTableColumn.sortOrder}</Label>
                           <Input
                             type="number"
                             id="sortorder"
                             name="sortorder"
                             className="form-control"
-                            // value={this.state.mobilenumber}
+                            value={this.state.sortorder}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your sort order"
                           />
@@ -504,7 +566,7 @@ class AddProduct extends React.Component<{ history: any }> {
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <label>
-                          <span>IsFeatured</span>
+                          <span> {constant.productPage.productTableColumn.isFeatured}</span>
                           <br />
                           <div style={{ marginTop: "10px" }}>
                             <Switch
@@ -519,7 +581,7 @@ class AddProduct extends React.Component<{ history: any }> {
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <div>
                           <p style={{ fontSize: "16px" }}>
-                            Product Description
+                          {constant.productPage.productTableColumn.productdescription}
                           </p>
                           <input
                             id="my-file"
@@ -585,7 +647,7 @@ class AddProduct extends React.Component<{ history: any }> {
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
                           <Label htmlFor="Meta Description">
-                            Meta Description
+                          {constant.productPage.productTableColumn.metadescritption}
                           </Label>
                           <Input
                             type="textarea"
@@ -593,7 +655,7 @@ class AddProduct extends React.Component<{ history: any }> {
                             rows={8}
                             name="metadiscription"
                             className="form-control"
-                            // value={this.state.mobilenumber}
+                            value={this.state.metadiscription}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your meta discription"
                           />
@@ -604,14 +666,14 @@ class AddProduct extends React.Component<{ history: any }> {
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
-                          <Label htmlFor="Meta keyword">Meta keyword</Label>
+                          <Label htmlFor="Meta keyword"> {constant.productPage.productTableColumn.metakeyword}</Label>
                           <Input
                             type="textarea"
                             id="Meta keyword"
                             rows={8}
                             name="metakeyword"
                             className="form-control"
-                            // value={this.state.mobilenumber}
+                            value={this.state.metakeyword}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your meta keyword"
                           />
@@ -620,6 +682,32 @@ class AddProduct extends React.Component<{ history: any }> {
                           </div>
                         </FormGroup>
                       </Col>
+                    </Row>
+                    <Row>
+                      <form>
+                        <input
+                          className="upload"
+                          type="file"
+                          accept="image/*"
+                          onChange={this._handleImageChange}
+                          multiple
+                        />
+                        <button type="submit">Upload Image</button>
+                      </form>
+                    </Row>
+                    <Row className="mt-5">
+                    <div className="image_margin">
+                        {this.state.imagesPreviewUrls.map((imagePreviewUrl) => {
+                          return (
+                            <img
+                              key={imagePreviewUrl}
+                              className="picture"
+                              alt="previewImg"
+                              src={imagePreviewUrl}
+                            />
+                          );
+                        })}
+                      </div>
                     </Row>
                     {/* <Row>
                       <ImageUploading
