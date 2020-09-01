@@ -95,6 +95,9 @@ import ViewPayout from '../pages/settingmanagement/payout/viewpayout/viewpayout'
 import ListMatrix from '../pages/settingmanagement/matrix/matrix';
 import AddMatrix from '../pages/settingmanagement/matrix/addmatrix/addmatrix';
 import ViewMatrix from '../pages/settingmanagement/matrix/viewmatrix/viewmatrix';
+import ListSlider from '../pages/settingmanagement/homeslider/listslider';
+import AddSlider from '../pages/settingmanagement/homeslider/addslider/addslider';
+import ViewSlider from '../pages/settingmanagement/homeslider/viewslider/viewslider';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -145,8 +148,8 @@ class Main extends React.Component<{history:any}> {
         
             <Route path='/merchant-review' render={(props: any) => <MerchantReview {...props} />} />
             <Route path='/product' render={(props: any) => <AddProduct {...props} />} />
-            <Route path='/edit-product' render={(props: any) => <AddProduct {...props} />} />
-            <Route path='/view-product' render={(props: any) => <ViewProduct {...props} />} />
+            <Route path='/edit-product/:id' render={(props: any) => <AddProduct {...props} />} />
+            <Route path='/view-product/:id' render={(props: any) => <ViewProduct {...props} />} />
             <Route path='/product-image' render={(props: any) => <ImageProduct {...props} />} />
             <Route path='/product-inventory' render={(props: any) => <InventoryProduct {...props} />} />
             <Route path='/list-product' render={(props: any) => <ListProduct {...props} />} />
@@ -220,6 +223,10 @@ class Main extends React.Component<{history:any}> {
             <Route path='/add-matrix' render={(props: any) => <AddMatrix {...props} />} />
             <Route path='/edit-matrix/:id' render={(props: any) => <AddMatrix {...props} />} />
             <Route path='/view-matrix/:id' render={(props: any) => <ViewMatrix {...props} />} />
+            <Route path='/list-slider' render={(props: any) => <ListSlider {...props} />} />
+            <Route path='/add-slider' render={(props: any) => <AddSlider {...props} />} />
+            <Route path='/edit-slider/:id' render={(props: any) => <AddSlider {...props} />} />
+            <Route path='/view-slider/:id' render={(props: any) => <ViewSlider {...props} />} />
             {
                     this.props.history.location.pathname != '/' ? (
                       <Route path="*" component={Page404}/>

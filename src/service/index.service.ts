@@ -11,7 +11,7 @@ import FeeAPI from './fee.service';
 import TaxAPI from './tax.service';
 import PayoutAPI from './payout.service';
 import MatrixAPI from './matrix.service';
-
+import SliderAPI from './slider.service';
 
 export * from './service';
 export * from './role.service';
@@ -26,6 +26,7 @@ export * from './fee.service';
 export * from './tax.service';
 export * from './payout.service';
 export * from './matrix.service';
+export * from './slider.service';
 
 
 export {
@@ -41,5 +42,6 @@ export {
     FeeAPI,
     TaxAPI,
     PayoutAPI,
-    MatrixAPI
+    MatrixAPI,
+    SliderAPI
 }

@@ -21,30 +21,35 @@ import {
   ProductAPI,
   CouponAPI,
   MerchantAPI,
+  SettingAPI,
+  FeeAPI,
+  PayoutAPI,
+  MatrixAPI,
+  SliderAPI,
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
-class ListProduct extends React.Component<{ history: any }> {
-  productState = constant.productPage.state;
+class ListSlider extends React.Component<{ history: any }> {
+  homesliderState = constant.homesliderPage.state;
   state = {
-    count: this.productState.count,
-    currentPage: this.productState.currentPage,
-    items_per_page: this.productState.items_per_page,
-    upperPageBound: this.productState.upperPageBound,
-    lowerPageBound: this.productState.lowerPageBound,
-    pageBound: this.productState.pageBound,
-    onItemSelect: this.productState.onItemSelect,
-    productdata: this.productState.productdata,
-    switchSort: this.productState.switchSort,
-    isStatus: this.productState.isStatus,
+    count: this.homesliderState.count,
+    currentPage: this.homesliderState.currentPage,
+    items_per_page: this.homesliderState.items_per_page,
+    upperPageBound: this.homesliderState.upperPageBound,
+    lowerPageBound: this.homesliderState.lowerPageBound,
+    pageBound: this.homesliderState.pageBound,
+    onItemSelect: this.homesliderState.onItemSelect,
+    sliderdata: this.homesliderState.sliderdata,
+    switchSort: this.homesliderState.switchSort,
+    isStatus: this.homesliderState.isStatus,
   };
 
   constructor(props: any) {
     super(props);
-    this.editProduct = this.editProduct.bind(this);
+    this.editSlider = this.editSlider.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
-    this.viewProduct = this.viewProduct.bind(this);
+    this.viewSlider = this.viewSlider.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(
       this
@@ -56,16 +61,17 @@ class ListProduct extends React.Component<{ history: any }> {
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
+    this.getSliderData = this.getSliderData.bind(this);
   }
 
   async componentDidMount() {
     document.title =
-      constant.productPage.title.productTitle + utils.getAppName();
+      constant.homesliderPage.title.homeSliderTitle + utils.getAppName();
     utils.dataTable();
-    this.getProductData();
+    this.getSliderData();
   }
 
-  async getProductData(
+  async getSliderData(
     searchText: string = "",
     page: number = 1,
     size: number = 10
@@ -76,18 +82,18 @@ class ListProduct extends React.Component<{ history: any }> {
       size: size,
     };
 
-    var getProductData = await ProductAPI.getProductData(obj);
-    console.log("getProductData", getProductData);
+    var getSliderData = await SliderAPI.getSliderData(obj);
+    console.log("getSliderData", getSliderData);
 
-    if (getProductData) {
-      if (getProductData.status === 200) {
+    if (getSliderData) {
+      if (getSliderData.status === 200) {
         this.setState({
-          productdata: this.state.productdata =
-            getProductData.resultObject.data,
-          count: this.state.count = getProductData.resultObject.totalcount,
+          sliderdata: this.state.sliderdata =
+            getSliderData.resultObject.data,
+          count: this.state.count = getSliderData.resultObject.totalcount,
         });
       } else {
-        const msg1 = getProductData.message;
+        const msg1 = getSliderData.message;
         utils.showError(msg1);
       }
     } else {
@@ -118,12 +124,12 @@ class ListProduct extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
-  editProduct(id: any) {
-    this.props.history.push("/edit-product/" + id);
+  editSlider(id: any) {
+    this.props.history.push("/edit-slider/" + id);
   }
 
-  viewProduct(id: any) {
-    this.props.history.push("/view-product/" + id);
+  viewSlider(id: any) {
+    this.props.history.push("/view-slider/" + id);
   }
 
   onItemSelect(event: any) {
@@ -132,7 +138,7 @@ class ListProduct extends React.Component<{ history: any }> {
         event.target.options[event.target.selectedIndex].value,
     });
 
-    this.getProductData(
+    this.getSliderData(
       "",
       parseInt(this.state.currentPage),
       parseInt(this.state.items_per_page)
@@ -149,7 +155,7 @@ class ListProduct extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    this.getProductData(obj.searchText, obj.page, obj.size);
+    this.getSliderData(obj.searchText, obj.page, obj.size);
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -159,17 +165,17 @@ class ListProduct extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    this.getProductData(obj.searchText, obj.page, obj.size);
+    this.getSliderData(obj.searchText, obj.page, obj.size);
   }
 
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
     });
-    let copyTableData = [...this.state.productdata];
+    let copyTableData = [...this.state.sliderdata];
     copyTableData.sort(this.compareByDesc(key));
     this.setState({
-      productdata: this.state.productdata = copyTableData,
+      sliderdata: this.state.sliderdata = copyTableData,
     });
   }
 
@@ -192,8 +198,8 @@ class ListProduct extends React.Component<{ history: any }> {
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj = {
-        moduleName: "Coupon",
-        id: data.couponId,
+        moduleName: "Payout",
+        id: data.pauoutId,
         isActive: data.isActive === true ? false : true,
       };
       var getStatusChange = await StatusAPI.getStatusChange(obj);
@@ -201,7 +207,7 @@ class ListProduct extends React.Component<{ history: any }> {
       if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);
-        this.getProductData();
+        this.getSliderData();
       } else {
         const msg1 = getStatusChange.message;
         utils.showError(msg1);
@@ -251,7 +257,7 @@ class ListProduct extends React.Component<{ history: any }> {
     return res;
   }
 
-  getTable(coupondata: any) {
+  getTable(sliderdata: any) {
     return (
       <table
         id="dtBasicExample"
@@ -259,69 +265,48 @@ class ListProduct extends React.Component<{ history: any }> {
         width="100%"
       >
         <thead>
-          <tr onClick={() => this.handleSort("productName")}>
-            <th>{constant.productPage.productTableColumn.prodctname}</th>
-            <th>{constant.productPage.productTableColumn.price}</th>
-            <th>{constant.productPage.productTableColumn.discountPrice}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
+          <tr onClick={() => this.handleSort("imageName")}>
+            <th>{constant.homesliderPage.homeSliderTableColumn.sliderimage}</th>
+            <th>{constant.homesliderPage.homeSliderTableColumn.alterTag}</th>
             <th className="action">{constant.tableAction.action}</th>
           </tr>
         </thead>
         <tbody>
-          {this.state.productdata.length > 0 ? (
+          {this.state.sliderdata.length > 0 ? (
             <>
-              {this.state.productdata.map((data: any, index: any) => (
+              {this.state.sliderdata.map((data: any, index: any) => (
                 <tr key={index}>
-                  <td>{data.productName}</td>
-                  <td>{data.price}</td>
-                  <td>{data.discountPrice}</td>
-                  <td style={{ textAlign: "center" }}>
-                    {data.isActive === true ? (
-                      <button
-                        className="status_active_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be inActive product",
-                            "Yes, inActive it"
-                          )
-                        }
-                      >
-                        Active
-                      </button>
+                   <td>
+                    {data.photoPath != null ? (
+                      <div className="img-size">
+                        {data.photoPath ? (
+                          <div>
+                            <img
+                              className="table-picture"
+                              src={constant.filepath + data.photoPath}
+                            />
+                            {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
+                          </div>
+                        ) : null}
+                      </div>
                     ) : (
-                      <button
-                        className="status_inactive_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Active product",
-                            "Yes, Active it"
-                          )
-                        }
-                      >
-                        InActive
-                      </button>
+                      <div>
+                        <i className="fa fa-user picture"></i>
+                        {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
+                      </div>
                     )}
                   </td>
+                  <td>{data.alterTag}</td>
                   <td className="action">
                     <span className="padding">
                       <i
                         className="fa fa-eye"
-                        onClick={() => this.viewProduct(data.productId)}
+                        onClick={() => this.viewSlider(data.homeSliderId)}
                       ></i>
                       <i
                         className="fas fa-edit"
-                        onClick={() => this.editProduct(data.productId)}
+                        onClick={() => this.editSlider(data.homeSliderId)}
                       ></i>
-                      {/* <i
-                        className="far fa-trash-alt"
-                        onClick={() =>
-                          this.deleteCategory(data.categoryId)
-                        }
-                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -421,12 +406,12 @@ class ListProduct extends React.Component<{ history: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <CardTitle className="font">
-                          {constant.productPage.title.productTitle}
+                          {constant.homesliderPage.title.homeSliderTitle}
                         </CardTitle>
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <div className="right">
-                          <Link to="/product">
+                          <Link to="/add-slider">
                             <Button
                               className="mb-2 mr-2 custom-button"
                               color="primary"
@@ -449,12 +434,12 @@ class ListProduct extends React.Component<{ history: any }> {
                       />
                     </div>
 
-                    {this.state.productdata.length > 0 ? (
-                      <>{this.getTable(this.state.productdata)}</>
+                    {this.state.sliderdata.length > 0 ? (
+                      <>{this.getTable(this.state.sliderdata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
                     )}
-                    {this.state.productdata.length > 0
+                    {this.state.sliderdata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,
                           renderPageNumbers,
@@ -472,4 +457,4 @@ class ListProduct extends React.Component<{ history: any }> {
   }
 }
 
-export default ListProduct;
+export default ListSlider;

@@ -50,7 +50,6 @@ class NavBar extends React.Component {
       }
 
       handleClick(url:any) {
-          console.log("url",url);
           window.location.href=`/#${url}`;
       }
 

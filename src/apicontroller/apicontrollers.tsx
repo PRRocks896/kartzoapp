@@ -125,7 +125,7 @@ const apiUrl = {
     productController: {
         addproduct:'products',
         getproduct:'products/get-product-list',
-        editproduct:'product',
+        editproduct:'products/',
         deleteproduct:'product',
         addImage:'product',
         addInventory:'product',
@@ -133,6 +133,8 @@ const apiUrl = {
         addOnProduct:'product',
         deleteproductImage:'product',
         editproductImage:'product',
+        getProductById:'products/',
+        getAllProduct:'products/get-product-list-dropdown'
     },
     deliveryController: {
         addDelivery:'delivery',
@@ -174,6 +176,12 @@ const apiUrl = {
         edittax:'tax/',
         deletetax:'tax',
         gettaxlist:'tax/get-tax-list'
+    },
+    sliderController: {
+        addslider:'homeslider',
+        getslider:'homeslider/get-homeslider-list',
+        editslider:'homeslider/',
+        getsliderlist:'homeslider/',
     },
 }
 

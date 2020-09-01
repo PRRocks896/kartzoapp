@@ -182,10 +182,16 @@ class Login extends React.Component<{ history: any }> {
                 utils.showSuccess(msg);
                 this.props.history.push("/dashboard");
               } else {
+                this.setState({
+                  isButton: this.state.isButton = false,
+                });
                 const msg = res.data.message;
                 utils.showError(msg);
               }
             } else {
+              this.setState({
+                isButton: this.state.isButton = false,
+              });
               const msg1 = "Internal server error";
               utils.showError(msg1);
             }
@@ -248,10 +254,16 @@ class Login extends React.Component<{ history: any }> {
                   utils.showSuccess(msg);
                   this.props.history.push("/dashboard");
                 } else {
+                  this.setState({
+                    isButton: this.state.isButton = false,
+                  });
                   const msg = res.data.message;
                   utils.showError(msg);
                 }
               } else {
+                this.setState({
+                  isButton: this.state.isButton = false,
+                });
                 const msg1 = "Internal server error";
                 utils.showError(msg1);
               }

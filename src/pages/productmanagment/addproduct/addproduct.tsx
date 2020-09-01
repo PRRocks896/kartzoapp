@@ -31,7 +31,7 @@ import { any } from "prop-types";
 const maxNumber = 10;
 const maxMbFileSize = 5 * 1024 * 1024;
 
-class AddProduct extends React.Component<{ history: any }> {
+class AddProduct extends React.Component<{ history: any,location:any }> {
   productState = constant.productPage.state;
   state = {
     merchantid: this.productState.merchantid,
@@ -59,7 +59,9 @@ class AddProduct extends React.Component<{ history: any }> {
     imageserror: this.productState.imageserror,
     categorylist: this.productState.categorylist,
     merchantlist: this.productState.merchantlist,
-    imagesPreviewUrls: [],
+    imagesPreviewUrls: this.productState.imagesPreviewUrls,
+    updateTrue:this.productState.updateTrue,
+    productid:this.productState.productid
   };
 
   constructor(props: any) {
@@ -74,6 +76,8 @@ class AddProduct extends React.Component<{ history: any }> {
     this.handleKeywordChange = this.handleKeywordChange.bind(this);
     this.onChange = this.onChange.bind(this);
     this._handleImageChange = this._handleImageChange.bind(this);
+    this.getProductById = this.getProductById.bind(this);
+    this.editProduct = this.editProduct.bind(this);
   }
 
   _handleImageChange(e: any) {
@@ -91,7 +95,6 @@ class AddProduct extends React.Component<{ history: any }> {
       };
       reader.readAsDataURL(file);
     });
-    console.log("files ARRAY",this.state.images)
   }
 
   handleChange(checked: boolean) {
@@ -99,9 +102,52 @@ class AddProduct extends React.Component<{ history: any }> {
   }
 
   async componentDidMount() {
-    document.title = constant.addProduct + utils.getAppName();
+   
     this.getAllCategory();
     this.getAllMerchant();
+    const productId = this.props.location.pathname.split("/")[2];
+    if (productId !== undefined) {
+      this.getProductById(productId);
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        productid:this.state.productid = productId
+      });
+    }
+    if(this.state.updateTrue === true) {
+      document.title = constant.productPage.title.updateProductTitle + utils.getAppName();
+    } else {
+      document.title = constant.productPage.title.addProductTitle + utils.getAppName();
+    }
+  }
+
+  async getProductById(id: any) {
+    const getProductById: any = await ProductAPI.getProductById(id);
+    console.log("getProductById", getProductById);
+
+    if (getProductById) {
+      if (getProductById.status === 200) {
+        this.setState({
+         merchantid:this.state.merchantid = getProductById.resultObject.merchantId,
+         maincategoryid:this.state.maincategoryid = getProductById.resultObject.categoryId,
+         prodctname: this.state.productname = getProductById.resultObject.productName,
+        price:this.state.price =  getProductById.resultObject.price,
+        discountprice: this.state.discountprice = getProductById.resultObject.discountPrice,
+        metatitle:this.state.metatitle = getProductById.resultObject.metaTitle,
+        metadescritption:this.state.metadiscription = getProductById.resultObject.metaDescription,
+        metakeyword: this.state.metakeyword = getProductById.resultObject.metaKeyword,
+        productdescription:this.state.productdescription = getProductById.resultObject.productDesc,
+        sortorder:this.state.sortorder = getProductById.resultObject.sortOrder,
+        isFeatured:this.state.isFeatured =  getProductById.resultObject.isFeatured,
+        images:this.state.images = getProductById.resultObject.productImages
+        });
+      } else {
+        const msg1 = getProductById.message;
+        utils.showError(msg1);
+      }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
+    }
   }
 
   async getAllCategory() {
@@ -143,7 +189,6 @@ class AddProduct extends React.Component<{ history: any }> {
   }
 
   handleMainChange = (content: any, editor: any) => {
-    console.log("handleEditorChange Content was updated:", content);
     this.setState({
       productdescription: this.state.productdescription = content,
     });
@@ -289,91 +334,108 @@ class AddProduct extends React.Component<{ history: any }> {
         // this.state.metakeyword &&
         // this.state.sortorder
       ) {
-        // const obj: productCreateRequest = {
-        //   merchantid: this.state.merchantid,
-        //   maincategoryid: this.state.maincategoryid,
-        //   productname: this.state.productname,
-        //   productdescription: this.state.productdescription,
-        //   price: this.state.price,
-        //   discountprice: this.state.discountprice,
-        //   metadiscription: this.state.metadiscription,
-        //   metatitle: this.state.metatitle,
-        //   metakeyword: this.state.metakeyword,
-        //   sortorder: this.state.sortorder,
-        // };
 
         let formData = new FormData();
         formData.append("MerchantId", this.state.merchantid);
         formData.append("CategoryId", this.state.maincategoryid);
         formData.append("ProductName", this.state.productname);
         formData.append("Price", this.state.price);
+        formData.append("ProductDesc", this.state.productdescription);
+        formData.append("DiscountPrice", this.state.discountprice);
+        formData.append("IsFeatured", new Boolean(this.state.isFeatured).toString());
+        formData.append("MetaTitle", this.state.metatitle);
+        formData.append("MetaDescription", this.state.metadiscription);
+        formData.append("MetaKeyword", this.state.metakeyword);
+        formData.append("IsActive", "true");
+        formData.append("SortOrder", this.state.sortorder);
         this.state.images.map((image:any,index:number) => (
           formData.append("Images", image)
         ))
+        formData.append("UserId", "0");
 
-         const addProduct = await ProductAPI.addProduct(formData);
+        const addProduct = await ProductAPI.addProduct(formData);
         console.log("addProduct",addProduct);
 
-        // formData.append("Email", this.state.email);
-        // formData.append("Phone", this.state.mobilenumber.toString());
-        // formData.append("Password", this.state.password);
-        // formData.append("Address", this.state.address);
-        // formData.append("CityId", this.state.city);
-        // formData.append("ZipCode", this.state.zipcode);
-        // formData.append("Latitude", this.state.latitude);
-        // formData.append("Longitude", this.state.longitude);
-        // formData.append("Website", this.state.website);
-        // formData.append(
-        //   "MerchantIDPoof",
-        //   this.state.selectedProofFile ? this.state.selectedProofFile[0] : ""
-        // );
-        // formData.append(
-        //   "MerchantDocument",
-        //   this.state.selectedDocumentFile
-        //     ? this.state.selectedDocumentFile[0]
-        //     : ""
-        // );
-        // formData.append("ShippingPolicy", this.state.shoppingpolicy);
-        // formData.append("RefundPolicy", this.state.refundpolicy);
-        // formData.append("CancellationPolicy", this.state.cancellationpolicy);
-        // formData.append("isActive", new Boolean(this.state.isOpen).toString());
-        // formData.append(
-        //   "files",
-        //   this.state.selectedFile ? this.state.selectedFile[0] : ""
-        // );
-        // formData.append("UserId", "0");
+        if (addProduct) {
+          if (addProduct.status === 200) {
+            const msg = addProduct.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/list-product");
+          } else {
+            const msg1 = addProduct.message;
+            utils.showError(msg1);
+          }
+        } else {
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
+        }
+      }
+    }
+  }
 
-        // const obj1 : productUpdateRequest = {
-        //     id:'',
-        //     merchantid: this.state.merchantid,
-        //     maincategoryid: this.state.maincategoryid,
-        //     subcategoryid: this.state.subcategoryid,
-        //     productname: this.state.productname,
-        //     productdescription: this.state.productdescription,
-        //     price: this.state.price,
-        //     discountprice: this.state.discountprice,
-        //     metadiscription: this.state.metadiscription,
-        //     metatitle: this.state.metatitle,
-        //     metakeyword: this.state.metakeyword,
-        //     sortorder: this.state.sortorder
-        // }
+  async editProduct() {
+    const isValid = this.validate();
+    if (isValid) {
+      this.setState({
+        merchantiderror: "",
+        maincategoryiderror: "",
+        subcategoryiderror: "",
+        productnameerror: "",
+        // productdescriptionerror: "",
+        priceerror: "",
+        // discountpriceerror: "",
+        // metatitleerror: "",
+        // metadiscriptionerror: "",
+        // metakeyworderror: "",
+        // sortordererror: "",
+      });
+      if (
+        this.state.merchantid &&
+        this.state.maincategoryid &&
+        this.state.productname &&
+        this.state.price
+        // this.state.discountprice &&
+        // this.state.metadiscription &&
+        // this.state.metatitle &&
+        // this.state.metakeyword &&
+        // this.state.sortorder
+      ) {
 
-        // const addProduct = await API.addProduct(obj);
-        // console.log("addProduct",addProduct);
+        let formData = new FormData();
+        formData.append("productId", this.state.productid);
+        formData.append("MerchantId", this.state.merchantid);
+        formData.append("CategoryId", this.state.maincategoryid);
+        formData.append("ProductName", this.state.productname);
+        formData.append("Price", this.state.price);
+        formData.append("ProductDesc", this.state.productdescription);
+        formData.append("DiscountPrice", this.state.discountprice);
+        formData.append("IsFeatured", new Boolean(this.state.isFeatured).toString());
+        formData.append("MetaTitle", this.state.metatitle);
+        formData.append("MetaDescription", this.state.metadiscription);
+        formData.append("MetaKeyword", this.state.metakeyword);
+        formData.append("IsActive", "true");
+        formData.append("SortOrder", this.state.sortorder);
+        this.state.images.map((image:any,index:number) => (
+          formData.append("Images", image)
+        ))
+        formData.append("UserId", "0");
 
-        // const editProduct = await API.editProduct(obj);
-        // console.log("editProduct",editProduct);
+        const editProduct = await ProductAPI.editProduct(formData,this.state.productid);
+        console.log("editProduct",editProduct);
 
-        // if (this.state.merchantid === obj.merchantid && this.state.maincategoryid === obj.maincategoryid && this.state.subcategoryid === obj.subcategoryid && this.state.productname === obj.productname
-        //     && this.state.productdescription === obj.productdescription && this.state.price === obj.price && this.state.discountprice === obj.discountprice && this.state.metadiscription === obj.metadiscription
-        //     && this.state.metatitle === obj.metatitle && this.state.metakeyword === obj.metakeyword && this.state.sortorder === obj.sortorder) {
-        //     const msg = "Product Added Successfully";
-        //     utils.showSuccess(msg);
-        //     this.props.history.push('/product');
-        // } else {
-        //     const msg1 = "Error";
-        //     utils.showError(msg1);
-        // }
+        if (editProduct) {
+          if (editProduct.status === 200) {
+            const msg = editProduct.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/list-product");
+          } else {
+            const msg1 = editProduct.message;
+            utils.showError(msg1);
+          }
+        } else {
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
+        }
       }
     }
   }
@@ -388,9 +450,18 @@ class AddProduct extends React.Component<{ history: any }> {
                 <Card>
                   <CardHeader>
                     <Row>
-                      <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>{constant.productPage.title.addProductTitle}</h1>
-                      </Col>
+                      {
+                        this.state.updateTrue === true ? (
+                          <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                          <h1>{constant.productPage.title.updateProductTitle}</h1>
+                        </Col>
+                        ) : (
+                          <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                          <h1>{constant.productPage.title.addProductTitle}</h1>
+                        </Col>
+                        )
+                      }
+                     
                       <Col
                         xs="12"
                         sm="6"
@@ -425,6 +496,7 @@ class AddProduct extends React.Component<{ history: any }> {
                               id="exampleCustomSelect"
                               name="merchantid"
                               onChange={this.onMerchantSelect}
+                              value={this.state.merchantid ? this.state.merchantid : ''}
                             >
                               <option value=""> {constant.productPage.productTableColumn.selectmerchant}</option>
                               {this.state.merchantlist.length > 0
@@ -454,6 +526,7 @@ class AddProduct extends React.Component<{ history: any }> {
                               id="exampleCustomSelect"
                               name="maincategoryid"
                               onChange={this.onMainCategorySelect}
+                              value={this.state.maincategoryid ? this.state.maincategoryid : ''}
                             >
                               <option value=""> {constant.productPage.productTableColumn.selectcategory}</option>
 
@@ -538,7 +611,7 @@ class AddProduct extends React.Component<{ history: any }> {
                             id="metatitle"
                             name="metatitle"
                             className="form-control"
-                            value={this.state.metatitle}
+                            value={this.state.metatitle ? this.state.metatitle : ''}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your meta title"
                           />
@@ -555,7 +628,7 @@ class AddProduct extends React.Component<{ history: any }> {
                             id="sortorder"
                             name="sortorder"
                             className="form-control"
-                            value={this.state.sortorder}
+                            value={this.state.sortorder ? this.state.sortorder : ''}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your sort order"
                           />
@@ -590,7 +663,7 @@ class AddProduct extends React.Component<{ history: any }> {
                             style={{ display: "none" }}
                           />
                           <Editor
-                            initialValue="<p>This is the initial content of the editor</p>"
+                            initialValue={this.state.productdescription ? this.state.productdescription : "<p>This is the initial content of the editor</p>"}
                             init={{
                               height: 200,
                               menubar: false,
@@ -655,7 +728,7 @@ class AddProduct extends React.Component<{ history: any }> {
                             rows={8}
                             name="metadiscription"
                             className="form-control"
-                            value={this.state.metadiscription}
+                            value={this.state.metadiscription ? this.state.metadiscription: ''}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your meta discription"
                           />
@@ -673,7 +746,7 @@ class AddProduct extends React.Component<{ history: any }> {
                             rows={8}
                             name="metakeyword"
                             className="form-control"
-                            value={this.state.metakeyword}
+                            value={this.state.metakeyword ? this.state.metakeyword : ''}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your meta keyword"
                           />
@@ -696,18 +769,38 @@ class AddProduct extends React.Component<{ history: any }> {
                       </form>
                     </Row>
                     <Row className="mt-5">
-                    <div className="image_margin">
-                        {this.state.imagesPreviewUrls.map((imagePreviewUrl) => {
-                          return (
-                            <img
-                              key={imagePreviewUrl}
-                              className="picture"
-                              alt="previewImg"
-                              src={imagePreviewUrl}
-                            />
-                          );
-                        })}
-                      </div>
+                      {
+                        this.state.updateTrue === true ? (
+                          <div className="image_margin">
+                          {this.state.images.map((img:any,index:any) => (
+                            img.imagePath !== null ? (
+                              <img
+                                key={index}
+                                className="picture"
+                                alt="previewImg"
+                                src={constant.apiMerchantUrl + img.imagePath}
+                              />
+                            ) : (
+                              ''
+                            )
+                          ))}
+                        </div>
+                        ) : (
+                          <div className="image_margin">
+                          {this.state.imagesPreviewUrls.map((imagePreviewUrl) => {
+                            return (
+                              <img
+                                key={imagePreviewUrl}
+                                className="picture"
+                                alt="previewImg"
+                                src={imagePreviewUrl}
+                              />
+                            );
+                          })}
+                        </div>
+                        )
+                      }
+                  
                     </Row>
                     {/* <Row>
                       <ImageUploading
@@ -751,16 +844,30 @@ class AddProduct extends React.Component<{ history: any }> {
                         )}
                       </ImageUploading>
                     </Row> */}
-
-                    <Button
+                    {
+                      this.state.updateTrue === true ? (
+                        <Button
+                      type="button"
+                      size="sm"
+                      color="primary"
+                      className="mb-2 mt-3 mr-2 custom-button"
+                      onClick={this.editProduct}
+                    >
+                      {constant.button.update}
+                    </Button>
+                      ) : (
+                        <Button
                       type="button"
                       size="sm"
                       color="primary"
                       className="mb-2 mt-3 mr-2 custom-button"
                       onClick={this.addProduct}
                     >
-                      Save
+                       {constant.button.Save}
                     </Button>
+                      )
+                    }
+                    
                   </CardBody>
                 </Card>
               </Col>

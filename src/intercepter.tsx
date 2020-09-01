@@ -49,7 +49,11 @@ axios.interceptors.response.use(
         } else if( err.response.data.message.length>0 && err.response.data.status === 500) {
           const msg1 = err.response.data.message[0].message;
           utils.showError(msg1);
-        } else if(err.response.data.status === 401) {
+        } else if(err.response.status === 415) {
+          const msg1 = err.response.statusText;
+          utils.showError(msg1);
+        }
+         else if(err.response.data.status === 401) {
           const users: any = localStorage.getItem("user");
           let user = JSON.parse(users);
           return new Promise(async (resolve, reject) => {

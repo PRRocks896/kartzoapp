@@ -9,8 +9,8 @@ export default {
     deleteProduct: async function () {
         return await WebReqUrl.delete(Constant.apiUrl + apiUrl.productController.deleteproduct);
     },
-    editProduct: async function (data: any) {
-        return await WebReqUrl.put(Constant.apiUrl + apiUrl.productController.editproduct,data,false);
+    editProduct: async function (data: any,id:any) {
+        return await WebReqUrl.put(Constant.apiMerchantUrl + apiUrl.productController.editproduct + id,data,true);
     },
     getProduct: async function () {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.productController.getproduct,false);
@@ -35,6 +35,12 @@ export default {
     },
     getProductData: async function (data:any) {
         return await WebReqUrl.post(Constant.apiMerchantUrl + apiUrl.productController.getproduct,data,true);
+    },
+    getProductById: async function (data:any) {
+        return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.productController.getProductById + data,true);
+    },
+    getAllProduct: async function () {
+        return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.productController.getAllProduct,true);
     },
 
 }
