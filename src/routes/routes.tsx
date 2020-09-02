@@ -102,6 +102,7 @@ import ListProductType from '../pages/productmanagment/listcustomisetype/listtyp
 import AddProductType from '../pages/productmanagment/addproducttype/addtype';
 import ViewProductType from '../pages/productmanagment/viewcustomisetype/viewtype';
 import ListProductAddOn from '../pages/productmanagment/listaddon/listaddon';
+import ViewProductCustomise from '../pages/productmanagment/viewcustomise/viewcustomise';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -237,6 +238,8 @@ class Main extends React.Component<{history:any}> {
             <Route path='/view-type/:id' render={(props: any) => <ViewProductType {...props} />} />
             <Route path='/list-product-customise' render={(props: any) => <ListProductAddOn {...props} />} />
             <Route path='/product-addondetail' render={(props: any) => <AddOnProduct {...props} />} />
+            <Route path='/edit-customise/:id' render={(props: any) => <AddOnProduct {...props} />} />
+            <Route path='/view-customise/:id' render={(props: any) => <ViewProductCustomise {...props} />} />
             {
                     this.props.history.location.pathname != '/' ? (
                       <Route path="*" component={Page404}/>

@@ -144,7 +144,8 @@ const apiUrl = {
         getcustomise:'productcustomize/get-productcustomize-list',
         addcustomise:'productcustomize',
         editcustomise:'productcustomize/',
-        getcustomisebyid:'productcustomize/'
+        getcustomisebyid:'productcustomize/',
+        getAllProductType:'productcustomizetype/get-productcustomizetype-list-dropdown'
     },
     deliveryController: {
         addDelivery:'delivery',

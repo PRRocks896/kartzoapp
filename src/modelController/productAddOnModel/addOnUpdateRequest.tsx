@@ -1,4 +1,5 @@
-export interface addOnCreateRequest {
+export interface addOnUpdateRequest {
+    productCustomizeId?:number,
     productId?: number,
     productCustomizeTypeId?:number,
     addOnDetail?:string,

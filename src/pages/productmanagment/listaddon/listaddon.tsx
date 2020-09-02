@@ -267,7 +267,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
         width="100%"
       >
         <thead>
-          <tr onClick={() => this.handleSort("typeName")}>
+          <tr onClick={() => this.handleSort("product")}>
             <th>
               {
                 constant.productCustomPage.productCustomiseTableColumn.productname

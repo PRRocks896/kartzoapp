@@ -25,8 +25,12 @@ export default {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.productController.addReview,data,false);
     },
     addOnProduct: async function (data: any) {
-        return await WebReqUrl.post(Constant.apiUrl + apiUrl.productController.addOnProduct,data,false);
+        return await WebReqUrl.post(Constant.apiMerchantUrl + apiUrl.productTypeController.addcustomise,data,true);
     },
+    editaddOnProduct: async function (data: any,id:any) {
+        return await WebReqUrl.put(Constant.apiMerchantUrl + apiUrl.productTypeController.editcustomise + id,data,true);
+    },
+    
     deleteImageProduct: async function () {
         return await WebReqUrl.delete(Constant.apiUrl + apiUrl.productController.deleteproductImage);
     },
@@ -57,6 +61,13 @@ export default {
     getProductCustomiseData: async function (data:any) {
         return await WebReqUrl.post(Constant.apiMerchantUrl + apiUrl.productTypeController.getcustomise,data,true);
     },
+    getAllProductTypeType: async function () {
+        return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.productTypeController.getAllProductType,true);
+    },
+    getCustomiseById: async function (data:any) {
+        return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.productTypeController.getcustomisebyid + data.id,true);
+    },
+    
     
     
     

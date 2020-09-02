@@ -136,6 +136,7 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
         isFeatured:this.state.isFeatured =  getProductById.resultObject.isFeatured,
         images:this.state.images = getProductById.resultObject.productImages
         });
+        console.log("images",this.state.images);
       } else {
         const msg1 = getProductById.message;
         utils.showError(msg1);

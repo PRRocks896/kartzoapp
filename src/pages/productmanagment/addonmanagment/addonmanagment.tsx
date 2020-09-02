@@ -20,9 +20,10 @@ import API from "../../../service/product.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import { Editor } from "@tinymce/tinymce-react";
-import { addOnCreateRequest } from "../../../modelController/productAddOnModel";
+import { addOnCreateRequest, addOnUpdateRequest } from "../../../modelController/productAddOnModel";
+import { ProductAPI } from "../../../service/index.service";
 
-class AddOnProduct extends React.Component<{ history: any }> {
+class AddOnProduct extends React.Component<{ history: any,location:any }> {
   productCustomiseState = constant.productCustomPage.state;
   state = {
     productid: this.productCustomiseState.productid,
@@ -36,26 +37,110 @@ class AddOnProduct extends React.Component<{ history: any }> {
     updateTrue: this.productCustomiseState.updateTrue,
     typeid: this.productCustomiseState.typeid,
     isActive: this.productCustomiseState.isActive,
+    productdata: this.productCustomiseState.productdata,
+    productdatatype: this.productCustomiseState.productdatatype,
   };
 
   constructor(props: any) {
     super(props);
 
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
-    // this.addOnProduct = this.addOnProduct.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.addOnProduct = this.addOnProduct.bind(this);
     this.onProductSelect = this.onProductSelect.bind(this);
+    this.onProductTypeSelect = this.onProductTypeSelect.bind(this);
     this.handleEditorMainChange = this.handleEditorMainChange.bind(this);
+    this.getCustomiseById = this.getCustomiseById.bind(this);
+    this.updateaddOnProduct = this.updateaddOnProduct.bind(this);
   }
+
   async componentDidMount() {
-    document.title = constant.addonProduct + utils.getAppName();
-    // this.getAllProduct();
-    // const getProduct = await API.getProduct();
-    // console.log("getProduct",getProduct);
+      this.getAllProduct();
+      this.getAllProductType();
+      const profuctCustomiseTypeId = this.props.location.pathname.split("/")[2];
+    if (profuctCustomiseTypeId !== undefined) {
+      this.getCustomiseById(profuctCustomiseTypeId);
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        typeid:this.state.typeid = profuctCustomiseTypeId
+      })
+    }
+    if (this.state.updateTrue === true) {
+      document.title =
+      constant.productCustomPage.title.updatecustomiseTitle + utils.getAppName();
+    } else {
+        document.title =
+      constant.productCustomPage.title.addcustomiseTitle + utils.getAppName();
+    }
+  }
+
+  async getCustomiseById(profuctCustomiseTypeId: any) {
+    const obj = {
+      id: profuctCustomiseTypeId,
+    };
+    const getCustomiseTypeById: any = await ProductAPI.getCustomiseById(obj);
+    console.log("getCustomiseTypeById", getCustomiseTypeById);
+
+    if (getCustomiseTypeById) {
+      if (getCustomiseTypeById.status === 200) {
+        this.setState({
+          updateTrue: this.state.updateTrue = true,
+          productid: this.state.productid = getCustomiseTypeById.resultObject.productId,
+          producttypeid: this.state.producttypeid = getCustomiseTypeById.resultObject.productCustomizeTypeId,
+          isActive: this.state.isActive = getCustomiseTypeById.resultObject.isActive,
+          amount:this.state.amount = getCustomiseTypeById.resultObject.amount,
+          addondetails: this.state.addondetails = getCustomiseTypeById.resultObject.addOnDetail
+        });
+      } else {
+        const msg1 = getCustomiseTypeById.message;
+        utils.showError(msg1);
+      }
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
+    }
+  }
+
+  handleChange(checked: boolean) {
+    this.setState({ isActive: this.state.isActive = checked });
+  }
+
+  async getAllProduct() {
+    const getAllProduct = await ProductAPI.getAllProduct();
+    console.log("getAllProduct", getAllProduct);
+    if (getAllProduct.status === 200) {
+      this.setState({
+        productdata: this.state.productdata = getAllProduct.resultObject,
+      });
+    } else {
+      const msg1 = getAllProduct.message;
+      utils.showError(msg1);
+    }
+  }
+
+  async getAllProductType() {
+    const getAllProductType = await ProductAPI.getAllProductTypeType();
+    console.log("getAllProductType", getAllProductType);
+    if (getAllProductType.status === 200) {
+      this.setState({
+        productdatatype: this.state.productdatatype =
+          getAllProductType.resultObject,
+      });
+    } else {
+      const msg1 = getAllProductType.message;
+      utils.showError(msg1);
+    }
   }
 
   onProductSelect(event: any) {
     this.setState({
       productid: this.state.productid = event.target.value,
+    });
+  }
+
+  onProductTypeSelect(event: any) {
+    this.setState({
+      producttypeid: this.state.producttypeid = event.target.value,
     });
   }
 
@@ -70,19 +155,29 @@ class AddOnProduct extends React.Component<{ history: any }> {
     }
 
     if (!this.state.producttypeid) {
-        producttypeiderror = "please select product type";
-      }
+      producttypeiderror = "please select product type";
+    }
 
-      if (!this.state.amount) {
-        amounterror = "please enter amount";
-      }
+    if (!this.state.amount) {
+      amounterror = "please enter amount";
+    }
 
     if (!this.state.addondetails) {
       addondetailerror = "please enter details";
     }
 
-    if (productiderror || producttypeiderror || amounterror || addondetailerror) {
-      this.setState({ productiderror,producttypeiderror,amounterror, addondetailerror });
+    if (
+      productiderror ||
+      producttypeiderror ||
+      amounterror ||
+      addondetailerror
+    ) {
+      this.setState({
+        productiderror,
+        producttypeiderror,
+        amounterror,
+        addondetailerror,
+      });
       return false;
     }
     return true;
@@ -101,36 +196,82 @@ class AddOnProduct extends React.Component<{ history: any }> {
     this.setState(state);
   }
 
-//   async addOnProduct() {
-//     const isValid = this.validate();
-//     if (isValid) {
-//       this.setState({
-//         productiderror: "",
-//         addondetailerror: "",
-//       });
-//       if (this.state.productid && this.state.addondetail) {
-//         const obj: addOnCreateRequest = {
-//           productid: this.state.productid,
-//           addondetail: this.state.addondetail,
-//         };
+    async addOnProduct() {
+      const isValid = this.validate();
+      if (isValid) {
+        this.setState({
+            productiderror:"",
+            producttypeiderror:"",
+            amounterror:"",
+            addondetailerror:"",
+        });
+        if (this.state.productid && this.state.producttypeid && this.state.amount && this.state.addondetails) {
+          const obj: addOnCreateRequest = {
+            productId: parseInt(this.state.productid),
+            productCustomizeTypeId: parseInt(this.state.producttypeid),
+            addOnDetail: this.state.addondetails,
+            isActive:this.state.isActive,
+            amount:parseInt(this.state.amount)
+          };
 
-//         // const addOnProduct = await API.addOnProduct(obj);
-//         // console.log("addOnProduct",addOnProduct);
+          const addOnProduct = await ProductAPI.addOnProduct(obj);
+          console.log("addOnProduct",addOnProduct);
 
-//         if (
-//           this.state.productid === obj.productid &&
-//           this.state.addondetail === obj.addondetail
-//         ) {
-//           const msg = "Product details Added Successfully";
-//           utils.showSuccess(msg);
-//           // this.props.history.push('/users');
-//         } else {
-//           const msg1 = "Error";
-//           utils.showError(msg1);
-//         }
-//       }
-//     }
-//   }
+          if (addOnProduct) {
+            if (addOnProduct.status === 200) {
+              const msg = addOnProduct.message;
+              utils.showSuccess(msg);
+              this.props.history.push("/list-product-customise");
+            } else {
+              const msg1 = addOnProduct.message;
+              utils.showError(msg1);
+            }
+          } else {
+            const msg1 = "Internal server error";
+            utils.showError(msg1);
+          }
+        }
+      }
+    }
+
+    async updateaddOnProduct() {
+        const isValid = this.validate();
+        if (isValid) {
+          this.setState({
+              productiderror:"",
+              producttypeiderror:"",
+              amounterror:"",
+              addondetailerror:"",
+          });
+          if (this.state.productid && this.state.producttypeid && this.state.amount && this.state.addondetails) {
+            const obj: addOnUpdateRequest = {
+              productCustomizeId: parseInt(this.state.typeid),
+              productId: parseInt(this.state.productid),
+              productCustomizeTypeId: parseInt(this.state.producttypeid),
+              addOnDetail: this.state.addondetails,
+              isActive:this.state.isActive,
+              amount:parseInt(this.state.amount)
+            };
+  
+            const editaddOnProduct = await ProductAPI.editaddOnProduct(obj,obj.productCustomizeId);
+            console.log("editaddOnProduct",editaddOnProduct);
+  
+            if (editaddOnProduct) {
+              if (editaddOnProduct.status === 200) {
+                const msg = editaddOnProduct.message;
+                utils.showSuccess(msg);
+                this.props.history.push("/list-product-customise");
+              } else {
+                const msg1 = editaddOnProduct.message;
+                utils.showError(msg1);
+              }
+            } else {
+              const msg1 = "Internal server error";
+              utils.showError(msg1);
+            }
+          }
+        }
+      }
 
   render() {
     return (
@@ -196,6 +337,9 @@ class AddOnProduct extends React.Component<{ history: any }> {
                               id="exampleCustomSelect"
                               name="productid"
                               onChange={this.onProductSelect}
+                              value={
+                                this.state.productid ? this.state.productid : ""
+                              }
                             >
                               <option value="">
                                 {
@@ -203,12 +347,15 @@ class AddOnProduct extends React.Component<{ history: any }> {
                                     .productCustomiseTableColumn.selectproduct
                                 }
                               </option>
-
-                              {/* {
-                                                                        this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-                                                                            <option key={data.id} value={data.id}>{data.name}</option>
-                                                                        ) : ''
-                                                                    } */}
+                              {this.state.productdata.length > 0
+                                ? this.state.productdata.map(
+                                    (data: any, index: number) => (
+                                      <option key={index} value={data.value}>
+                                        {data.name}
+                                      </option>
+                                    )
+                                  )
+                                : ""}
                             </CustomInput>
                             <div className="mb-4 text-danger">
                               {this.state.productiderror}
@@ -231,7 +378,12 @@ class AddOnProduct extends React.Component<{ history: any }> {
                               type="select"
                               id="exampleCustomSelect1"
                               name="productid1"
-                              //   onChange={this.onProductTypeSelect}
+                              onChange={this.onProductTypeSelect}
+                              value={
+                                this.state.producttypeid
+                                  ? this.state.producttypeid
+                                  : ""
+                              }
                             >
                               <option value="">
                                 {
@@ -240,13 +392,15 @@ class AddOnProduct extends React.Component<{ history: any }> {
                                     .selectproducttype
                                 }
                               </option>
-                              <option value="Product-1">Product-1</option>
-                              <option value="Product-2">Product-2</option>
-                              {/* {
-                                                                        this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
-                                                                            <option key={data.id} value={data.id}>{data.name}</option>
-                                                                        ) : ''
-                                                                    } */}
+                              {this.state.productdatatype.length > 0
+                                ? this.state.productdatatype.map(
+                                    (data: any, index: number) => (
+                                      <option key={index} value={data.value}>
+                                        {data.name}
+                                      </option>
+                                    )
+                                  )
+                                : ""}
                             </CustomInput>
                             <div className="mb-4 text-danger">
                               {this.state.producttypeiderror}
@@ -297,7 +451,7 @@ class AddOnProduct extends React.Component<{ history: any }> {
                             style={{ display: "none" }}
                           />
                           <Editor
-                            initialValue="<p>This is the initial content of the editor</p>"
+                            initialValue={this.state.addondetails ? this.state.addondetails : "<p>This is the initial content of the editor</p>"}
                             init={{
                               height: 200,
                               menubar: false,
@@ -352,13 +506,27 @@ class AddOnProduct extends React.Component<{ history: any }> {
                         </div>
                       </Col>
                     </Row>
+                    <Row className="mt-4">
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <label>
+                      <span>{constant.productCustomPage.productCustomiseTableColumn.isActive}</span>
+                          <br />
+                          <div style={{ marginTop: "10px" }}>
+                            <Switch
+                              onChange={this.handleChange}
+                              checked={this.state.isActive}
+                            />
+                          </div>
+                        </label>
+                      </Col>
+                    </Row>
                     {this.state.updateTrue === true ? (
                       <Button
                         type="button"
                         size="sm"
                         color="primary"
                         className="mb-2 mt-3 mr-2 custom-button"
-                        // onClick={this.addOnProduct}
+                        onClick={this.updateaddOnProduct}
                       >
                         {constant.button.update}
                       </Button>
@@ -368,7 +536,7 @@ class AddOnProduct extends React.Component<{ history: any }> {
                         size="sm"
                         color="primary"
                         className="mb-2 mt-3 mr-2 custom-button"
-                        // onClick={this.addOnProduct}
+                        onClick={this.addOnProduct}
                       >
                         {constant.button.Save}
                       </Button>

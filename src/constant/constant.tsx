@@ -1108,7 +1108,8 @@ export default {
       switchSort: false,
       isStatus: false,
       productdata: [],
-      typeid: 0,
+      productdatatype:[],
+      typeid: '',
 
       productid: "",
       productiderror:"",
