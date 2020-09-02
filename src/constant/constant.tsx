@@ -699,6 +699,7 @@ export default {
       productdata: [],
       categorylist: [],
       merchantlist: [],
+      displayimage:[],
       switchSort: false,
       isStatus: false,
 

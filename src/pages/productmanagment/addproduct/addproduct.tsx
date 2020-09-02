@@ -57,7 +57,8 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
     merchantlist: this.productState.merchantlist,
     imagesPreviewUrls: this.productState.imagesPreviewUrls,
     updateTrue:this.productState.updateTrue,
-    productid:this.productState.productid
+    productid:this.productState.productid,
+    displayimage: this.productState.displayimage
   };
 
   constructor(props: any) {
@@ -210,6 +211,7 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
     this.setState({
       images: this.state.images = imageList,
     });
+  
     console.log("index of new chosen images: ", addUpdateIndex);
   };
   onError = (errors: any, files: any) => {
@@ -754,6 +756,7 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
                       </Col>
                     </Row>
                     <Row>
+                    <Col xs="12" sm="12" md="6" lg="6" xl="6">
                       <form>
                         <input
                           className="upload"
@@ -762,8 +765,8 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
                           onChange={this._handleImageChange}
                           multiple
                         />
-                        <button type="submit">Upload Image</button>
                       </form>
+                      </Col>
                     </Row>
                     <Row className="mt-5">
                       {
