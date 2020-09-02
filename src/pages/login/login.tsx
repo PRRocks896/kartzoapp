@@ -1,6 +1,6 @@
 import React from "react";
 import "./login.css";
-import { API } from "../../service/index.service";
+import { API, RoleAPI } from "../../service/index.service";
 import utils from "../../utils";
 import constant from "../../constant/constant";
 import axios from "axios";
@@ -280,6 +280,11 @@ class Login extends React.Component<{ history: any }> {
                   if (getToken) {
                     localStorage.setItem("merchantToken", getToken.token);
                   }
+                const roleid = {
+                  id:user.roleId
+                }
+                  var getRights = await RoleAPI.getRolePreveliges(roleid);
+                  console.log("getRights", getRights);
                   utils.showSuccess(msg);
                   this.props.history.push("/dashboard");
                 } else {
