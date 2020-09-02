@@ -20,10 +20,6 @@ import API from "../../../service/merchant.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import { Editor } from "@tinymce/tinymce-react";
-import {
-  productCreateRequest,
-  productUpdateRequest,
-} from "../../../modelController/productModel";
 import { CategoryAPI, MerchantAPI, ProductAPI } from "../../../service/index.service";
 import ImageUploading from "react-images-uploading";
 import { any } from "prop-types";

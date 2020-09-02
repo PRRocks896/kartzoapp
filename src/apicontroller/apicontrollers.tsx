@@ -136,6 +136,16 @@ const apiUrl = {
         getProductById:'products/',
         getAllProduct:'products/get-product-list-dropdown'
     },
+    productTypeController: {
+        addtype:'productcustomizetype',
+        gettype:'productcustomizetype/get-productcustomizetype-list',
+        edittype:'productcustomizetype/',
+        gettypebyid:'productcustomizetype/',
+        getcustomise:'productcustomize/get-productcustomize-list',
+        addcustomise:'productcustomize',
+        editcustomise:'productcustomize/',
+        getcustomisebyid:'productcustomize/'
+    },
     deliveryController: {
         addDelivery:'delivery',
         getDelivery:'delivery',

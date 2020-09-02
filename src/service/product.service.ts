@@ -42,5 +42,24 @@ export default {
     getAllProduct: async function () {
         return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.productController.getAllProduct,true);
     },
+    getProductCustomiseTypeData: async function (data:any) {
+        return await WebReqUrl.post(Constant.apiMerchantUrl + apiUrl.productTypeController.gettype,data,true);
+    },
+    addCustomiseType: async function (data: any) {
+        return await WebReqUrl.post(Constant.apiMerchantUrl + apiUrl.productTypeController.addtype,data,true);
+    },
+    getCustomiseTypeById: async function (data:any) {
+        return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.productTypeController.gettypebyid + data.id,true);
+    },
+    editCustomiseProduct: async function (data:any,id:any) {
+        return await WebReqUrl.put(Constant.apiMerchantUrl + apiUrl.productTypeController.gettypebyid + id,data,true);
+    },
+    getProductCustomiseData: async function (data:any) {
+        return await WebReqUrl.post(Constant.apiMerchantUrl + apiUrl.productTypeController.getcustomise,data,true);
+    },
+    
+    
+    
+    
 
 }

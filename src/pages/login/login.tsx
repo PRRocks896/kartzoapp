@@ -6,6 +6,25 @@ import constant from "../../constant/constant";
 import axios from "axios";
 import apiUrl from "../../apicontroller/apicontrollers";
 import { loginCreateRequest } from "../../modelController";
+import {
+  Button,
+  // Modal,
+  ModalFooter,
+  ModalHeader,
+  ModalBody,
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
+  Table,
+  Input,
+  Col,
+  FormGroup,
+  CustomInput,
+  Label,
+  Row,
+} from "reactstrap";
+import { Modal } from "react-bootstrap";
 const interceptor = require("../../intercepter");
 const publicIp = require("public-ip");
 
@@ -19,6 +38,7 @@ class Login extends React.Component<{ history: any }> {
     ipAddress: this.loginState.ipAddress,
     isButton: this.loginState.isButton,
     type: this.loginState.type,
+    forgot: this.loginState.forgot,
   };
 
   constructor(props: any) {
@@ -28,6 +48,16 @@ class Login extends React.Component<{ history: any }> {
     this.login = this.login.bind(this);
     this.forgotpassword = this.forgotpassword.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.forgotmodelOpen = this.forgotmodelOpen.bind(this);
+    this.handleCloseForgot = this.handleCloseForgot.bind(this);
+  }
+
+  forgotmodelOpen() {
+    this.setState({ forgot: !this.state.forgot });
+  }
+
+  handleCloseForgot() {
+    this.setState({ forgot: !this.state.forgot });
   }
 
   async componentDidMount() {
@@ -113,10 +143,9 @@ class Login extends React.Component<{ history: any }> {
 
         if (forgotPassword) {
           if (forgotPassword.status === 200) {
-            var ele = document.getElementById("modal-12");
-            if (ele != null) {
-              ele.style.display = "none";
-            }
+            this.setState({
+              forgot: this.state.forgot = false,
+            });
             const msg = forgotPassword.data.message;
             utils.showSuccess(msg);
           } else {
@@ -153,7 +182,7 @@ class Login extends React.Component<{ history: any }> {
 
         axios
           .post(constant.apiUrl + apiUrl.userController.createData, obj)
-          .then(async(res: any) => {
+          .then(async (res: any) => {
             console.log("login", res);
             if (res) {
               if (res.data.status === 200) {
@@ -167,17 +196,17 @@ class Login extends React.Component<{ history: any }> {
                 const ipaddress = publicIp.v4();
                 const users: any = localStorage.getItem("user");
                 let user = JSON.parse(users);
-                const obj ={
+                const obj = {
                   deviceType: 1,
-                          deviceId: "deviceId",
-                          ipAddress: await ipaddress,
-                          loginToken: user.token,
-                          refreshToken: user.refreshToken,
-                }
+                  deviceId: "deviceId",
+                  ipAddress: await ipaddress,
+                  loginToken: user.token,
+                  refreshToken: user.refreshToken,
+                };
                 var getToken = await API.getToken(obj);
                 console.log("getToken", getToken);
-                if(getToken) {
-                  localStorage.setItem('merchantToken',getToken.token);
+                if (getToken) {
+                  localStorage.setItem("merchantToken", getToken.token);
                 }
                 utils.showSuccess(msg);
                 this.props.history.push("/dashboard");
@@ -222,10 +251,10 @@ class Login extends React.Component<{ history: any }> {
             ipAddress: this.state.ipAddress,
             userId: 0,
           };
-  
+
           axios
             .post(constant.apiUrl + apiUrl.userController.createData, obj)
-            .then(async(res: any) => {
+            .then(async (res: any) => {
               console.log("login", res);
               if (res) {
                 if (res.data.status === 200) {
@@ -239,17 +268,17 @@ class Login extends React.Component<{ history: any }> {
                   const ipaddress = publicIp.v4();
                   const users: any = localStorage.getItem("user");
                   let user = JSON.parse(users);
-                  const obj ={
+                  const obj = {
                     deviceType: 1,
-                            deviceId: "deviceId",
-                            ipAddress: await ipaddress,
-                            loginToken: user.token,
-                            refreshToken: user.refreshToken,
-                  }
+                    deviceId: "deviceId",
+                    ipAddress: await ipaddress,
+                    loginToken: user.token,
+                    refreshToken: user.refreshToken,
+                  };
                   var getToken = await API.getToken(obj);
                   console.log("getToken", getToken);
-                  if(getToken) {
-                    localStorage.setItem('merchantToken',getToken.token);
+                  if (getToken) {
+                    localStorage.setItem("merchantToken", getToken.token);
                   }
                   utils.showSuccess(msg);
                   this.props.history.push("/dashboard");
@@ -356,11 +385,11 @@ class Login extends React.Component<{ history: any }> {
                             className="fas fa-eye"
                           ></i>
                         ) : (
-                            <i
-                              onClick={this.handleClick}
-                              className="fas fa-eye-slash"
-                            ></i>
-                          )}
+                          <i
+                            onClick={this.handleClick}
+                            className="fas fa-eye-slash"
+                          ></i>
+                        )}
                       </div>
 
                       <div className="mb-4 text-danger">
@@ -380,12 +409,7 @@ class Login extends React.Component<{ history: any }> {
                         <b> {constant.recoverPassword} </b>
                       </span>
                       <label className="d-block mt-3">
-                        <a
-                          href=""
-                          className="btn-link"
-                          data-toggle="modal"
-                          data-target="#modal-12"
-                        >
+                        <a className="btn-link" onClick={this.forgotmodelOpen}>
                           <b style={{ color: "#eea218" }}>{constant.forgot} </b>
                         </a>
                       </label>
@@ -404,23 +428,23 @@ class Login extends React.Component<{ history: any }> {
                         {constant.signin}
                       </button>
                     ) : (
-                        <div className="spinerButton">
-                          <div>
-                            <button
-                              className="btn mt-4 d-block w-100"
-                              type="button"
-                              style={{
-                                backgroundColor: "#eea218",
-                                color: "#fff",
-                                fontWeight: 500,
-                              }}
-                            >
-                              {constant.signin}
-                            </button>
-                          </div>
-                          <div className="spinners"></div>
+                      <div className="spinerButton">
+                        <div>
+                          <button
+                            className="btn mt-4 d-block w-100"
+                            type="button"
+                            style={{
+                              backgroundColor: "#eea218",
+                              color: "#fff",
+                              fontWeight: 500,
+                            }}
+                          >
+                            {constant.signin}
+                          </button>
                         </div>
-                      )}
+                        <div className="spinners"></div>
+                      </div>
+                    )}
                     {/* <p className="mb-0 mt-3 text-center">{constant.notmember} <b className="btn-link"><Link to="/signup" style={{ color: 'rgb(238, 162, 24)',fontWeight:600 }}>{constant.signup}</Link></b>
                                         </p> */}
                   </form>
@@ -429,60 +453,70 @@ class Login extends React.Component<{ history: any }> {
             </div>
           </div>
 
-          <div
-            className="modal fade"
-            id="modal-12"
-            tabIndex={1}
-            role="dialog"
-            aria-labelledby="modal-12"
-          >
-            <div
-              className="modal-dialog modal-dialog-centered modal-min"
-              role="document"
-            >
-              <div className="modal-content">
-                <div className="modal-body text-center">
-                  <button
-                    type="button"
-                    className="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>{" "}
-                  <i className="flaticon-secure-shield d-block"></i>
-                  <h1>
-                    <b>{constant.reset}</b>
-                  </h1>
-                  <p>
-                    <b>{constant.enter}</b>
-                  </p>
-                  <form method="post">
-                    <div className="ms-form-group has-icon">
-                      <input
-                        type="email"
-                        name="email"
-                        placeholder="Email Address"
-                        className="form-control"
-                        onChange={this.handleChangeEventPassword}
-                      />
-                      <i className="material-icons">email</i>
-                    </div>
-                    <div className="mb-4 text-danger">
-                      {this.state.emailerror}
-                    </div>
-                    <button
-                      type="button"
-                      className="btn btn-primary shadow-none"
-                      onClick={this.forgotpassword}
-                    >
-                      {constant.reset}
-                    </button>
-                  </form>
+          {/* <Modal isOpen={this.state.forgot} fade={this.state.forgot} toggle={this.handleCloseForgot}>
+            <ModalHeader>{constant.forgotpassword}</ModalHeader>
+            <ModalBody style={{ margin: "auto" }}>
+              <FormGroup>
+                <div className="text-center">
+                  <Label> {constant.email}:</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    className="form-control"
+                    onChange={this.handleChangeEventPassword}
+                    required
+                  />
+                  <div className="mb-4 text-danger">
+                    {this.state.emailerror}
+                  </div>
                 </div>
+              </FormGroup>
+            </ModalBody>
+            <ModalFooter>
+              <div className="button-ct">
+                <Button color="primary" onClick={this.forgotpassword}>
+                  {" "}
+                  {constant.reset}
+                </Button>{" "}
               </div>
-            </div>
-          </div>
+            </ModalFooter>
+          </Modal> */}
+
+          <Modal
+            className="modal-dialog-centered"
+            show={this.state.forgot}
+            onHide={this.handleCloseForgot}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>{constant.forgotpassword}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ margin: "auto" }}>
+              <FormGroup>
+                <div className="text-center">
+                  <Label> {constant.email}:</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    className="form-control"
+                    onChange={this.handleChangeEventPassword}
+                    required
+                  />
+                  <div className="mb-4 text-danger">
+                    {this.state.emailerror}
+                  </div>
+                </div>
+              </FormGroup>
+            </Modal.Body>
+            <Modal.Footer>
+              <div className="button-ct">
+                <Button variant="primary" onClick={this.forgotpassword}>
+                  {constant.reset}
+                </Button>
+              </div>
+            </Modal.Footer>
+          </Modal>
         </main>
       </div>
     );

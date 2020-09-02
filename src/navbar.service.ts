@@ -164,6 +164,16 @@ export default {
         url: '/list-product'
       },
       {
+        name: 'Customise',
+         icon: 'fa fa-shopping-cart fs-16',
+        url: '/list-product-customise'
+      },
+      {
+        name: 'Customise Type',
+         icon: 'fa fa-shopping-cart fs-16',
+        url: '/list-type'
+      },
+      {
         name: 'Image',
          icon: 'fa fa-shopping-cart fs-16',
         url: '/list-product-image'
@@ -178,11 +188,7 @@ export default {
          icon: 'fa fa-shopping-cart fs-16',
         url: '/list-product-review'
       },
-      {
-        name: 'AddOn',
-         icon: 'fa fa-shopping-cart fs-16',
-        url: '/product-addondetail'
-      },
+     
       // {
       //   name: 'Product',
       //   id: 'productmanagement',

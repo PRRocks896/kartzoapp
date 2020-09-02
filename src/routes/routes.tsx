@@ -98,6 +98,10 @@ import ViewMatrix from '../pages/settingmanagement/matrix/viewmatrix/viewmatrix'
 import ListSlider from '../pages/settingmanagement/homeslider/listslider';
 import AddSlider from '../pages/settingmanagement/homeslider/addslider/addslider';
 import ViewSlider from '../pages/settingmanagement/homeslider/viewslider/viewslider';
+import ListProductType from '../pages/productmanagment/listcustomisetype/listtype';
+import AddProductType from '../pages/productmanagment/addproducttype/addtype';
+import ViewProductType from '../pages/productmanagment/viewcustomisetype/viewtype';
+import ListProductAddOn from '../pages/productmanagment/listaddon/listaddon';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -154,7 +158,7 @@ class Main extends React.Component<{history:any}> {
             <Route path='/product-inventory' render={(props: any) => <InventoryProduct {...props} />} />
             <Route path='/list-product' render={(props: any) => <ListProduct {...props} />} />
             <Route path='/product-review' render={(props: any) => <ProductReview {...props} />} />
-            <Route path='/product-addondetail' render={(props: any) => <AddOnProduct {...props} />} />
+            
             <Route path='/delivery' render={(props: any) => <DeliveryManagement {...props} />} />
             <Route path='/add-delivery' render={(props: any) => <AddDelivery {...props} />} />
             <Route path='/editdelivery' render={(props: any) => <AddDelivery {...props} />} />
@@ -227,6 +231,12 @@ class Main extends React.Component<{history:any}> {
             <Route path='/add-slider' render={(props: any) => <AddSlider {...props} />} />
             <Route path='/edit-slider/:id' render={(props: any) => <AddSlider {...props} />} />
             <Route path='/view-slider/:id' render={(props: any) => <ViewSlider {...props} />} />
+            <Route path='/list-type' render={(props: any) => <ListProductType {...props} />} />
+            <Route path='/add-type' render={(props: any) => <AddProductType {...props} />} />
+            <Route path='/edit-type/:id' render={(props: any) => <AddProductType {...props} />} />
+            <Route path='/view-type/:id' render={(props: any) => <ViewProductType {...props} />} />
+            <Route path='/list-product-customise' render={(props: any) => <ListProductAddOn {...props} />} />
+            <Route path='/product-addondetail' render={(props: any) => <AddOnProduct {...props} />} />
             {
                     this.props.history.location.pathname != '/' ? (
                       <Route path="*" component={Page404}/>
