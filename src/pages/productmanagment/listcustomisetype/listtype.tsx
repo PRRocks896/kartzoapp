@@ -201,11 +201,11 @@ class ListProductType extends React.Component<{ history: any }> {
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
-        moduleName: "Payout",
-        id: data.pauoutId,
+        moduleName: "ProductCustomizeType",
+        id: data.productCustomizeTypeId,
         isActive: data.isActive === true ? false : true,
       };
-      var getStatusChange = await StatusAPI.getStatusChange(obj);
+      var getStatusChange = await StatusAPI.getMerchantPanelStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
       if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;

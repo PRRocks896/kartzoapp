@@ -201,10 +201,10 @@ class ListMerchant extends React.Component<{ history: any }> {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
         moduleName: "Merchant",
-        id: data.merchantId,
+        id: data.merchantID,
         isActive: data.isActive === true ? false : true,
       };
-      var getStatusChange = await StatusAPI.getStatusChange(obj);
+      var getStatusChange = await StatusAPI.getMerchantPanelStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
       if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;

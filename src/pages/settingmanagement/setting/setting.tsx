@@ -264,9 +264,9 @@ class ListSetting extends React.Component<{ history: any }> {
           <tr onClick={() => this.handleSort("identifier")}>
             <th>{constant.settingPage.settingTableColumn.identifier}</th>
             <th>{constant.settingPage.settingTableColumn.value}</th>
-            <th style={{ textAlign: "center" }}>
+            {/* <th style={{ textAlign: "center" }}>
               {constant.tableAction.status}
-            </th>
+            </th> */}
             <th className="action">{constant.tableAction.action}</th>
           </tr>
         </thead>
@@ -277,7 +277,7 @@ class ListSetting extends React.Component<{ history: any }> {
                 <tr key={index}>
                   <td>{data.identifier}</td>
                   <td>{data.value}</td>
-                  <td style={{ textAlign: "center" }}>
+                  {/* <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
                         className="status_active_color"
@@ -305,7 +305,7 @@ class ListSetting extends React.Component<{ history: any }> {
                         InActive
                       </button>
                     )}
-                  </td>
+                  </td> */}
                   <td className="action">
                     <span className="padding">
                       <i

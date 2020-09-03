@@ -197,7 +197,7 @@ class ListProduct extends React.Component<{ history: any }> {
         id: data.productId,
         isActive: data.isActive === true ? false : true,
       };
-      var getStatusChange = await StatusAPI.getStatusChange(obj);
+      var getStatusChange = await StatusAPI.getMerchantPanelStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
       if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;

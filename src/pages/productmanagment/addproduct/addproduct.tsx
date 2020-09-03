@@ -59,7 +59,8 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
     imagesPreviewUrls: this.productState.imagesPreviewUrls,
     updateTrue:this.productState.updateTrue,
     productid:this.productState.productid,
-    displayimage: this.productState.displayimage
+    productpreview: this.productState.productpreview,
+
   };
 
   constructor(props: any) {
@@ -76,6 +77,7 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
     this._handleImageChange = this._handleImageChange.bind(this);
     this.getProductById = this.getProductById.bind(this);
     this.editProduct = this.editProduct.bind(this);
+    this.deleteImage = this.deleteImage.bind(this);
   }
 
   _handleImageChange(e: any) {
@@ -84,6 +86,7 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
     this.setState({
       images:this.state.images = images
     });
+    console.log("images",this.state.images);
     images.forEach((file:any) => {
       let reader:any = new FileReader();
       reader.onloadend = () => {
@@ -136,7 +139,7 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
         productdescription:this.state.productdescription = getProductById.resultObject.productDesc,
         sortorder:this.state.sortorder = getProductById.resultObject.sortOrder,
         isFeatured:this.state.isFeatured =  getProductById.resultObject.isFeatured,
-        images:this.state.images = getProductById.resultObject.productImages
+        productpreview:this.state.productpreview = getProductById.resultObject.productImages
         });
         console.log("images",this.state.images);
       } else {
@@ -218,6 +221,13 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
   onError = (errors: any, files: any) => {
     console.log(errors, files);
   };
+
+  deleteImage() {
+    const hero = [{'id' : 1, 'name' : 'hero1'}, {'id': 2, 'name' : 'hero2'}];
+//remove hero1
+const updatedHero = hero.filter(item => item.id !== 2);
+console.log("hero",updatedHero);
+  }
 
   validate() {
     let merchantiderror = "";
@@ -757,7 +767,7 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
                       </Col>
                     </Row>
                     <Row>
-                    <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                    <Col xs="12" sm="12" md="12" lg="12" xl="12">
                       <form>
                         <input
                           className="upload"
@@ -770,22 +780,29 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
                       </Col>
                     </Row>
                     <Row className="mt-5">
+                    <Col xs="12" sm="12" md="12" lg="12" xl="12">
                       {
                         this.state.updateTrue === true ? (
-                          <div className="image_margin">
-                          {this.state.images.map((img:any,index:any) => (
+                         
+                            this.state.productpreview.map((img:any,index:any) => (
                             img.imagePath !== null ? (
+                              <div className="profile-pic">
                               <img
                                 key={index}
-                                className="picture"
                                 alt="previewImg"
-                                src={constant.apiMerchantUrl + img.imagePath}
+                                src={constant.fileMerchantpath + img.imagePath}
                               />
+                              <div className="edit">
+                              <i className="fas fa-trash" onClick={() => this.deleteImage()}></i></div>
+                           </div>
                             ) : (
                               ''
                             )
-                          ))}
-                        </div>
+                          ))
+                        
+                        
+                        
+                         
                         ) : (
                           <div className="image_margin">
                           {this.state.imagesPreviewUrls.map((imagePreviewUrl) => {
@@ -801,8 +818,28 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
                         </div>
                         )
                       }
-                  
+                  </Col>
                     </Row>
+                     {/* <div className="image_margin">
+                          {this.state.images.map((img:any,index:any) => (
+                            img.imagePath !== null ? (
+                              <>
+                              <img
+                                key={index}
+                                className="picture"
+                                alt="previewImg"
+                                src={constant.fileMerchantpath + img.imagePath}
+                              />
+                              <i
+                              className="fa fa-times cursor"
+                              // onClick={() => this.removeIcon()}
+                            ></i>
+                            </>
+                            ) : (
+                              ''
+                            )
+                          ))} 
+                        </div>*/}
                     {/* <Row>
                       <ImageUploading
                         value={this.state.images}

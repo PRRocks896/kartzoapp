@@ -43,13 +43,13 @@ axios.interceptors.response.use(
     console.log("err", err.response);
     if(err.response !== undefined) {
       if(err.response.data !== null) {
-        if(err.response.data.message.length>0 && err.response.data.status === 400) {
+        if(err.response.data.message && err.response.data.message.length>0 && err.response.data.status === 400) {
           const msg1 = err.response.data.message[0].message;
           utils.showError(msg1);
-        } else if( err.response.data.message.length>0 && err.response.data.status === 500) {
+        } else if(err.response.data.message &&  err.response.data.message.length>0 && err.response.data.status === 500) {
           const msg1 = err.response.data.message[0].message;
           utils.showError(msg1);
-        } else if(err.response.status === 415) {
+        } else if(err.response.data.status === 415) {
           const msg1 = err.response.statusText;
           utils.showError(msg1);
         }

@@ -1,3 +1,29 @@
 .image_margin img{
 margin-right: 15px;
 }
+
+.profile-pic {
+	position: relative;
+    display: inline-block;
+    width: 8%;
+    margin-right: 15px;
+}
+
+.profile-pic .edit {
+	display: block;
+}
+
+.edit {
+	padding-top: 3px;
+    padding-right: 5px;
+    padding-left: 6px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #eea218;
+    cursor: pointer;
+}
+
+.edit a {
+	color: #000;
+}

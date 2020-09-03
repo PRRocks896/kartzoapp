@@ -49,9 +49,13 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
     }
   }
 
-  createMarkup() {
-    return { __html: this.state.productdescription };
-  }
+  createMarkup()  { 
+    if(this.state.productdescription) {
+      return {__html: this.state.productdescription}; 
+    } else {
+      return {__html:'N/A'}
+    }
+};
 
   async getProductById(id: any) {
     const getProductById: any = await ProductAPI.getProductById(id);
@@ -283,6 +287,14 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                     </Row>
                     <Row className="mt-5">
                       <Col xs="12" sm="12" md="12" lg="12" xl="12">
+                      <Label htmlFor="mobile_no">
+                          <b>
+                            {
+                              constant.productPage.productTableColumn
+                                .images
+                            }
+                          </b>
+                        </Label>
                         <div className="image_margin">
                           {this.state.images.length > 0
                             ? this.state.images.map((img: any, index: any) =>

@@ -699,7 +699,7 @@ export default {
       productdata: [],
       categorylist: [],
       merchantlist: [],
-      displayimage:[],
+      productpreview:[],
       switchSort: false,
       isStatus: false,
 
@@ -746,7 +746,8 @@ export default {
       metakeyword: "Meta Keyword",
       merchantid: "Merchant ID",
       categoryid: "Category ID",
-      isActive:'Is Active'
+      isActive:'Is Active',
+      images:'Product Images'
     },
     viewproductdetails: {
       viewproduct: "View Product Details",
