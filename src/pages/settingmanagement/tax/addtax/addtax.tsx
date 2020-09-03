@@ -22,6 +22,7 @@ import constant from "../../../../constant/constant";
 import {
   taxCreateRequest,
   taxUpdateRequest,
+  getDataByIdRequest,
 } from "../../../../modelController";
 
 class AddTax extends React.Component<{ history: any; location: any }> {
@@ -81,7 +82,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
   }
 
   async getTaxById(taxId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: taxId,
     };
     const getTaxById: any = await TaxAPI.getTaxById(obj);
@@ -199,7 +200,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
           percentage: parseInt(this.state.percentage),
         };
 
-        const updateTax = await TaxAPI.updateTax(obj, obj.taxId);
+        const updateTax = await TaxAPI.updateTax(obj);
         console.log("updateTax", updateTax);
         if (updateTax) {
           if (updateTax.status === 200) {

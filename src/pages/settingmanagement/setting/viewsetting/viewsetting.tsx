@@ -14,6 +14,7 @@ import {
 import NavBar from "../../../navbar/navbar";
 import constant from "../../../../constant/constant";
 import { SettingAPI } from "../../../../service/index.service";
+import { getDataByIdRequest } from "../../../../modelController";
 
 class ViewSetting extends React.Component<{ history: any; location: any }> {
     settingState = constant.settingPage.state;
@@ -45,7 +46,7 @@ class ViewSetting extends React.Component<{ history: any; location: any }> {
   }
 
   async getSettingById(settingId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: settingId,
     };
     const getSettingById: any = await SettingAPI.getSettingById(obj);

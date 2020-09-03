@@ -14,6 +14,7 @@ import {
 import NavBar from "../../../navbar/navbar";
 import constant from "../../../../constant/constant";
 import {PayoutAPI, MerchantAPI } from "../../../../service/index.service";
+import { getDataByIdRequest } from "../../../../modelController";
 
 class ViewPayout extends React.Component<{ history: any; location: any }> {
     payoutState = constant.payoutPage.state;
@@ -47,7 +48,7 @@ class ViewPayout extends React.Component<{ history: any; location: any }> {
   }
 
   async getPayoutById(payoutId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: payoutId,
     };
     const getPayoutById: any = await PayoutAPI.getPayoutById(obj);

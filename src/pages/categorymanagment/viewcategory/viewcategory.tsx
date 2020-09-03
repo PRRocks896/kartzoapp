@@ -102,56 +102,53 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
                   <CardBody>
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
+                        <FormGroup className="view_user">
+                          <div>
                           <Label htmlFor="category_name">
                             <b>
                               {
                                 constant.categoryPage.caetgoryTableColumn
                                   .categoryName
-                              }
+                              } :
                             </b>
                           </Label>
-                          <p>{this.state.category}</p>
-                        </FormGroup>
-                      </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
+                          <span>{this.state.category}</span>
+                          </div>
+                          <div>
                           <Label htmlFor="category_name">
                             <b>
                               {
                                 constant.categoryPage.caetgoryTableColumn
                                   .subCategoryName
-                              }
+                              } :
                             </b>
                           </Label>
                           {this.state.parentCategory === "" ? (
-                            <p>N/A</p>
+                            <span>N/A</span>
                           ) : (
-                            <p>{this.state.parentCategory}</p>
+                            <span>{this.state.parentCategory}</span>
                           )}
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
+                          </div>
+                         
+                         <div>
                           <Label htmlFor="category_name">
-                          <b>{constant.categoryPage.caetgoryTableColumn.sortorder}</b>
+                          <b>{constant.categoryPage.caetgoryTableColumn.sortorder} :</b>
                           </Label>
-                          <p>{this.state.sortorder}</p>
+                          <span>{this.state.sortorder}</span>
+                         </div>
                         </FormGroup>
+                       
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
                           <p style={{ fontSize: "16px" }}>
-                          <b>{constant.categoryPage.caetgoryTableColumn.image}</b>
+                          <b>{constant.categoryPage.caetgoryTableColumn.image} :</b>
                           </p>
                           {this.state.file != null ? (
                             <div className="img-size">
                               {this.state.file ? (
                                 <div>
                                   <img
-                                    className="picture"
                                     src={constant.filepath + this.state.file}
                                   />
                                 </div>

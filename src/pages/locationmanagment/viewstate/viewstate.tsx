@@ -15,6 +15,7 @@ import {
 import NavBar from "../../navbar/navbar";
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
+import { getDataByIdRequest } from "../../../modelController";
 
 class ViewState extends React.Component<{ history: any; location: any }> {
   state = {
@@ -27,7 +28,7 @@ class ViewState extends React.Component<{ history: any; location: any }> {
       constant.statePage.title.viewStateTitle + utils.getAppName();
     const stateId = this.props.location.pathname.split("/")[2];
     if (stateId !== undefined) {
-      const obj = {
+      const obj:getDataByIdRequest = {
         id: stateId,
       };
       const getStateById: any = await LocationAPI.getStateById(obj);

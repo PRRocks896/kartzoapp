@@ -113,14 +113,14 @@ class MerchantBusiness extends React.Component<{ history: any }> {
           isOpen: this.state.isOpen,
         };
 
-        const addMerchantBusiness = await MerchantAPI.addMerchantBusiness(obj);
-        console.log("addMerchantBusiness", addMerchantBusiness);
+        // const addMerchantBusiness = await MerchantAPI.addMerchantBusiness(obj);
+        // console.log("addMerchantBusiness", addMerchantBusiness);
 
-        if (addMerchantBusiness) {
-        } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
-        }
+        // if (addMerchantBusiness) {
+        // } else {
+        //   const msg1 = "Internal server error";
+        //   utils.showError(msg1);
+        // }
 
         // if (this.state.days === obj.days && this.state.hours === obj.hours) {
         //   const msg = "Merchant Business Added Successfully";

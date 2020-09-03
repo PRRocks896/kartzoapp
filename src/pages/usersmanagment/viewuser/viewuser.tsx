@@ -13,11 +13,12 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import {API} from "../../../service/index.service";
+import { API } from "../../../service/index.service";
 import constant from "../../../constant/constant";
+import { getDataByIdRequest } from "../../../modelController";
+import './viewuser.css';
 
 class ViewUser extends React.Component<{ history: any; location: any }> {
-
   state = {
     userdata: {
       firstName: "",
@@ -36,7 +37,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
     document.title = constant.userPage.title.viewUserTitle + utils.getAppName();
     const usderId = this.props.location.pathname.split("/")[2];
     if (usderId !== undefined) {
-      const obj = {
+      const obj: getDataByIdRequest = {
         id: usderId,
       };
       const getUserById: any = await API.getUserById(obj);
@@ -73,7 +74,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-    <h1>{constant.userPage.viewuser.viewdetails}</h1>
+                        <h1>{constant.userPage.viewuser.viewdetails}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -99,50 +100,44 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                   <CardBody>
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
+                        <FormGroup className="view_user">
+                          <div>
                           <Label htmlFor="first_name">
-                            <b>{constant.userPage.userTableColumn.firstname}</b>
+                            <b>{constant.userPage.userTableColumn.firstname} :</b>
                           </Label>
-                          <p>{this.state.userdata.firstName}</p>
-                        </FormGroup>
-                      </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
+                          <span>{this.state.userdata.firstName}</span>
+                          </div>
+                          <div>
                           <Label htmlFor="last_name">
-                            <b>{constant.userPage.userTableColumn.lastname}</b>
+                            <b>{constant.userPage.userTableColumn.lastname} :</b>
                           </Label>
-                          <p>{this.state.userdata.lastName}</p>
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
+                          <span>{this.state.userdata.lastName}</span>
+                          </div>
+                          <div>
                           <Label htmlFor="email">
-                            <b>{constant.userPage.userTableColumn.email}</b>
+                            <b>{constant.userPage.userTableColumn.email} :</b>
                           </Label>
-                          <p>{this.state.userdata.email}</p>
-                        </FormGroup>
-                      </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
+                          <span>{this.state.userdata.email}</span>
+                          </div>
+                          <div>
                           <Label htmlFor="mobile_no">
-    <b>{constant.userPage.userTableColumn.mobilenumber}</b>
+                            <b>
+                              {constant.userPage.userTableColumn.mobilenumber} :
+                            </b>
                           </Label>
-                          <p>{this.state.userdata.phone}</p>
+                          <span>{this.state.userdata.phone}</span>
+                          </div>
                         </FormGroup>
                       </Col>
-                    </Row>
-                    <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
                           <p style={{ fontSize: "16px" }}>
-                            <b>{constant.userPage.userTableColumn.userimage}</b>
+                            <b>{constant.userPage.userTableColumn.userimage} :</b>
                           </p>
                           <div>
                             {this.state.userdata.file != null ? (
                               <img
-                                className="picture"
+                                className="user_pic"
                                 src={
                                   constant.filepath + this.state.userdata.file
                                 }

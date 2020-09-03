@@ -579,7 +579,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                                         key={data.roleId}
                                         value={data.roleId}
                                       >
-                                        {data.role}
+                                        {data.name}
                                       </option>
                                     )
                                   )
@@ -599,9 +599,6 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                               name="onItemSelect"
                               onChange={this.onItemSelect}
                             >
-                              {/* <option value="">Select UserRole:</option>
-                            <option id="1" value="User">User</option>
-                            <option id="2" value="Customer">Customer</option> */}
                               <option value="">{constant.userPage.userTableColumn.roleselect}</option>
                               {this.state.userrole.length > 0
                                 ? this.state.userrole.map(

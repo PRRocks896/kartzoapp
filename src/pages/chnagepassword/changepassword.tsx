@@ -14,6 +14,7 @@ import {
 import utils from '../../utils';
 import constant from '../../constant/constant';
 import NavBar from '../navbar/navbar';
+import { changePasswordRequest } from "../../modelController";
 
 class ChangePassword extends Component {
     changeState = constant.changePasswordPage.state;
@@ -73,7 +74,7 @@ class ChangePassword extends Component {
                 confirmpassworderror: ''
             })
             if (this.state.newpassword === this.state.confirmpassword && this.state.oldpassword !== this.state.newpassword) {
-                const obj = {
+                const obj:changePasswordRequest = {
                     userId: this.state.userid,
                     password: this.state.newpassword
                 }

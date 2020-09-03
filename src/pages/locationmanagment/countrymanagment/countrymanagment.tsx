@@ -18,6 +18,7 @@ import {
 import NavBar from "../../navbar/navbar";
 import {LocationAPI, StatusAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
+import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
 
 class CountryManagment extends React.Component<{ history: any }> {
   countryState = constant.countryPage.state;
@@ -65,7 +66,7 @@ class CountryManagment extends React.Component<{ history: any }> {
     page: number = 1,
     size: number = 10
   ) {
-    const obj = {
+    const obj:getAllTableDataListRequest = {
       searchText: searchText,
       page: page,
       size: size,
@@ -142,7 +143,7 @@ class CountryManagment extends React.Component<{ history: any }> {
   }
 
   async searchApplicationDataKeyUp(e: any) {
-    const obj = {
+    const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
       page: 1,
       size: parseInt(this.state.items_per_page),
@@ -179,7 +180,7 @@ class CountryManagment extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj = {
+      const obj:statusChangeRequest = {
         moduleName: "Country",
         id: data.countryId,
         isActive: data.isActive === true ? false : true

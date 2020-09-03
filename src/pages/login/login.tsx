@@ -5,7 +5,7 @@ import utils from "../../utils";
 import constant from "../../constant/constant";
 import axios from "axios";
 import apiUrl from "../../apicontroller/apicontrollers";
-import { loginCreateRequest } from "../../modelController";
+import { loginCreateRequest, forgotPasswordRequest } from "../../modelController";
 import {
   Button,
   // Modal,
@@ -134,7 +134,7 @@ class Login extends React.Component<{ history: any }> {
         emailerror: this.state.emailerror = "",
       });
       if (this.state.email) {
-        const obj = {
+        const obj:forgotPasswordRequest = {
           email: this.state.email,
         };
 
@@ -171,7 +171,7 @@ class Login extends React.Component<{ history: any }> {
         passworderror: this.state.passworderror = "",
       });
       if (this.state.email && this.state.password) {
-        const obj: loginCreateRequest = {
+        const obj = {
           email: this.state.email,
           password: this.state.password,
           deviceType: 1,
@@ -196,7 +196,7 @@ class Login extends React.Component<{ history: any }> {
                 const ipaddress = publicIp.v4();
                 const users: any = localStorage.getItem("user");
                 let user = JSON.parse(users);
-                const obj = {
+                const obj:loginCreateRequest = {
                   deviceType: 1,
                   deviceId: "deviceId",
                   ipAddress: await ipaddress,
@@ -243,7 +243,7 @@ class Login extends React.Component<{ history: any }> {
           passworderror: this.state.passworderror = "",
         });
         if (this.state.email && this.state.password) {
-          const obj: loginCreateRequest = {
+          const obj = {
             email: this.state.email,
             password: this.state.password,
             deviceType: 1,

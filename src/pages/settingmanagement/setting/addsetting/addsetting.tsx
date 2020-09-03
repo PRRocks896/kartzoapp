@@ -21,6 +21,7 @@ import {
   userRoleUpdateRequest,
   settingCreateRequest,
   settingUpdateRequest,
+  getDataByIdRequest,
 } from "../../../../modelController";
 
 class AddSetting extends React.Component<{ history: any; location: any }> {
@@ -62,7 +63,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
   }
 
   async getSettingById(settingId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: settingId,
     };
     const getSettingById: any = await SettingAPI.getSettingById(obj);
@@ -167,7 +168,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
          isActive: this.state.isActive
         };
 
-        const updateSetting = await SettingAPI.updateSetting(obj,obj.settingId);
+        const updateSetting = await SettingAPI.updateSetting(obj);
         console.log("updateSetting", updateSetting);
 
         if (updateSetting) {

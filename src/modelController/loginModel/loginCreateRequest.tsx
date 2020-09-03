@@ -1,8 +1,7 @@
 export interface loginCreateRequest {
-    email?: string,
-    password?: string,
-    deviceType?:Number,
-    deviceId?:string,
-    ipAddress?:string,   
-    userId?:Number
+    deviceType: number,
+    deviceId: string,
+    ipAddress: string,
+    loginToken: string,
+    refreshToken: string,
 }

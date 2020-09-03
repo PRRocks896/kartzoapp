@@ -22,6 +22,7 @@ import constant from "../../../constant/constant";
 import {
   cityCreateRequest,
   cityUpdateRequest,
+  getDataByIdRequest,
 } from "../../../modelController";
 
 class AddCity extends React.Component<{ history: any; location: any }> {
@@ -88,7 +89,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
   }
 
   async getCityById(cityId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: cityId,
     };
     const getCityById: any = await LocationAPI.getCityById(obj);
@@ -195,7 +196,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
           isActive: this.state.isActive,
         };
 
-        const editCity = await LocationAPI.editCity(obj, this.state.cityid);
+        const editCity = await LocationAPI.editCity(obj);
         console.log("editCity", editCity);
 
         if (editCity) {

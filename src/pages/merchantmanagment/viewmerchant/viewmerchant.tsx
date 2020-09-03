@@ -15,6 +15,7 @@ import {
 import NavBar from "../../navbar/navbar";
 import { LocationAPI, MerchantAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
+import { getDataByIdRequest } from "../../../modelController";
 
 class ViewMerchant extends React.Component<{
   history: any;
@@ -85,7 +86,7 @@ class ViewMerchant extends React.Component<{
     }
   }
 
-  async getMerchantById(id: any) {
+  async getMerchantById(id: getDataByIdRequest) {
     const getMerchantById: any = await MerchantAPI.getMerchantById(id);
     console.log("getMerchantById", getMerchantById);
 
@@ -110,7 +111,7 @@ class ViewMerchant extends React.Component<{
             refundpolicy: this.state.refundpolicy = getMerchantById.resultObject.refundPolicy,
             cancellationpolicy: this.state.cancellationpolicy = getMerchantById.resultObject.cancellationPolicy,
             password: this.state.password = getMerchantById.resultObject.password,
-            file: this.state.file =  getMerchantById.resultObject.photoPath
+            file: this.state.file =  getMerchantById.resultObject.logoPath
             // filetrue: this.state.filetrue = getMerchantById.resultObject.
             // file1: this.state.file1 = getMerchantById.resultObject.
             // file1true: this.state.file1true = getMerchantById.resultObject.

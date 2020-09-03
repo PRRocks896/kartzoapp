@@ -17,6 +17,7 @@ import {
 import NavBar from "../../navbar/navbar";
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
+import { getDataByIdRequest } from "../../../modelController";
 
 class AddCountry extends React.Component<{ history: any; location: any }> {
   countryState = constant.countryPage.state;
@@ -63,7 +64,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
   }
 
   async getCountryById(countryId:any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: countryId,
     };
     const getCountryById: any = await LocationAPI.getCountryById(obj);

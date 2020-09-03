@@ -15,7 +15,7 @@ import {
 import NavBar from "../../../navbar/navbar";
 import {FeeAPI} from "../../../../service/index.service";
 import constant from "../../../../constant/constant";
-import { feeCreateRequest, feeUpdateRequest } from "../../../../modelController";
+import { feeCreateRequest, feeUpdateRequest, getDataByIdRequest } from "../../../../modelController";
 
 class AddFee extends React.Component<{ history: any; location: any }> {
     feeState = constant.feePage.state;
@@ -56,7 +56,7 @@ class AddFee extends React.Component<{ history: any; location: any }> {
   }
 
   async getFeeById(settingId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: settingId,
     };
     const getFeeById: any = await FeeAPI.getFeeById(obj);
@@ -161,7 +161,7 @@ class AddFee extends React.Component<{ history: any; location: any }> {
          isActive: this.state.isActive
         };
 
-        const updateFee = await FeeAPI.updateFee(obj,obj.feeId);
+        const updateFee = await FeeAPI.updateFee(obj);
         console.log("updateFee", updateFee);
 
         if (updateFee) {

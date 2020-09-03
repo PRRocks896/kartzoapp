@@ -23,6 +23,7 @@ import moment from "moment";
 import {
   couponCreateRequest,
   couponUpdateRequest,
+  getDataByIdRequest,
 } from "../../modelController";
 
 class Coupon extends React.Component<{ history: any; location: any }> {
@@ -99,7 +100,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
   }
 
   async getCouponById(id: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: id,
     };
     const getCouponById: any = await CouponAPI.getCouponById(obj);
@@ -330,7 +331,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
         };
         console.log("obj", obj);
 
-        const editCoupon = await CouponAPI.editCoupon(obj,obj.couponId);
+        const editCoupon = await CouponAPI.editCoupon(obj);
         console.log("editCoupon", editCoupon);
         if (editCoupon) {
           if (editCoupon.status === 200) {

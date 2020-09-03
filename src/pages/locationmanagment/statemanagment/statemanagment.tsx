@@ -19,7 +19,7 @@ import {
 import NavBar from "../../navbar/navbar";
 import {LocationAPI, StatusAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { stateUpdateRequest } from "../../../modelController/index";
+import { stateUpdateRequest, getAllTableDataListRequest, statusChangeRequest } from "../../../modelController/index";
 
 class StateManagment extends React.Component<{ history: any }> {
   stateState = constant.statePage.state;
@@ -66,7 +66,7 @@ class StateManagment extends React.Component<{ history: any }> {
     page: number = 1,
     size: number = 10
   ) {
-    const obj = {
+    const obj:getAllTableDataListRequest = {
       searchText: searchText,
       page: page,
       size: size,
@@ -134,7 +134,7 @@ class StateManagment extends React.Component<{ history: any }> {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
     });
-    const obj = {
+    const obj:getAllTableDataListRequest = {
       searchText: "",
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
@@ -144,7 +144,7 @@ class StateManagment extends React.Component<{ history: any }> {
   }
 
   async searchApplicationDataKeyUp(e: any) {
-    const obj = {
+    const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
       page: 1,
       size: parseInt(this.state.items_per_page),
@@ -182,7 +182,7 @@ class StateManagment extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj = {
+      const obj:statusChangeRequest = {
         moduleName: "State",
         id: data.stateId,
         isActive: data.isActive === true ? false : true

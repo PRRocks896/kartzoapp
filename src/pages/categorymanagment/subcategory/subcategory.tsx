@@ -170,9 +170,9 @@ class SubCategory extends React.Component<{ history: any }> {
             cancelButtonText: 'No, keep it'
         }).then(async (result) => {
             if (result.value) {
-                var deleteCategory = await API.deleteCategory(id);
-                const msg = "Your Category has been deleted";
-                utils.showSuccess(msg);
+                // var deleteCategory = await API.deleteCategory(id);
+                // const msg = "Your Category has been deleted";
+                // utils.showSuccess(msg);
                 this.getSubCategory();
             } else if (result.dismiss === Swal.DismissReason.cancel) {
                 const msg1 = "Category is safe :";

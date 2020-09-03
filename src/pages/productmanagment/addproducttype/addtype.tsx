@@ -17,7 +17,7 @@ import {RoleAPI, ProductAPI} from "../../../service/index.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import {
-  productCustomiseTypeCreateRequest, productCustomiseTypeUpdateRequest,
+  productCustomiseTypeCreateRequest, productCustomiseTypeUpdateRequest, getDataByIdRequest,
 } from "../../../modelController";
 
 class AddProductType extends React.Component<{ history: any; location: any }> {
@@ -57,7 +57,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
   }
 
   async getCustomiseTypeById(profuctCustomiseTypeId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: profuctCustomiseTypeId,
     };
     const getCustomiseTypeById: any = await ProductAPI.getCustomiseTypeById(obj);
@@ -149,7 +149,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
           typeName: this.state.typeName,
           isActive: this.state.isActive
         };
-        const editCustomiseProduct = await ProductAPI.editCustomiseProduct(obj,obj.productCustomizeTypeId);
+        const editCustomiseProduct = await ProductAPI.editCustomiseProduct(obj);
         console.log("editCustomiseProduct", editCustomiseProduct);
 
         if (editCustomiseProduct) {

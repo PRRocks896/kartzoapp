@@ -19,6 +19,7 @@ import {
   MatrixAPI,
   SliderAPI,
 } from "../../../../service/index.service";
+import { getDataByIdRequest } from "../../../../modelController";
 
 class ViewSlider extends React.Component<{ history: any; location: any }> {
   sliderState = constant.homesliderPage.state;
@@ -49,7 +50,7 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
   }
 
   async getSliderById(sliderId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: sliderId,
     };
     const getSliderDataById: any = await SliderAPI.getSliderDataById(obj);

@@ -25,6 +25,7 @@ import {
 import axios from 'axios';
 import constant from "../../../constant/constant";
 import apiUrl from "../../../apicontroller/apicontrollers";
+import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
 const publicIp = require("public-ip");
 
 class ListMerchant extends React.Component<{ history: any }> {
@@ -77,12 +78,10 @@ class ListMerchant extends React.Component<{ history: any }> {
     page: number = 1,
     size: number = 10
   ) {
-    const obj = {
-      roleID: 0,
+    const obj:getAllTableDataListRequest = {
       searchText: searchText,
       page: page,
-      size: size,
-      isActive:true
+      size: size
     };
 
     var getMerchantData = await MerchantAPI.getMerchantData(obj);
@@ -152,7 +151,7 @@ class ListMerchant extends React.Component<{ history: any }> {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
     });
-    const obj = {
+    const obj:getAllTableDataListRequest = {
       searchText: "",
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
@@ -162,7 +161,7 @@ class ListMerchant extends React.Component<{ history: any }> {
   }
 
   async searchApplicationDataKeyUp(e: any) {
-    const obj = {
+    const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
       page: 1,
       size: parseInt(this.state.items_per_page),
@@ -200,7 +199,7 @@ class ListMerchant extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj = {
+      const obj:statusChangeRequest = {
         moduleName: "Merchant",
         id: data.merchantId,
         isActive: data.isActive === true ? false : true,

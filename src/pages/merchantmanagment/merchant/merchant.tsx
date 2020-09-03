@@ -20,6 +20,7 @@ import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import { Editor } from "@tinymce/tinymce-react";
 import { LocationAPI, MerchantAPI } from "../../../service/index.service";
+import { getDataByIdRequest } from "../../../modelController";
 
 class Merchant extends React.Component<{ history: any; location: any }> {
   merchantState = constant.merchantPage.state;
@@ -121,7 +122,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
-  async getMerchantById(id: any) {
+  async getMerchantById(id: getDataByIdRequest) {
     const getMerchantById: any = await MerchantAPI.getMerchantById(id);
     console.log("getMerchantById", getMerchantById);
 
@@ -178,7 +179,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
   }
 
   async getCityById(id: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: id,
     };
     const getCity = await LocationAPI.getCityById(obj);

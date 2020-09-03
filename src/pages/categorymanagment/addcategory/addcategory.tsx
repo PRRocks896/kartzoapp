@@ -19,6 +19,7 @@ import {
 import NavBar from "../../navbar/navbar";
 import {CategoryAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
+import { getDataByIdRequest } from "../../../modelController";
 
 class AddCategory extends React.Component<{ history: any; location: any }> {
   categoryState = constant.categoryPage.state;
@@ -83,7 +84,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
   }
 
   async getCategoryById(categoryId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: categoryId
     };
     const getCategoryById: any = await CategoryAPI.getCategoryById(obj);

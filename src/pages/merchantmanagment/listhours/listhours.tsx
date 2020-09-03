@@ -71,23 +71,23 @@ class ListBussinessHours extends React.Component<{ history: any }> {
       size: size,
     };
 
-    var getBusinessHoursData = await MerchantAPI.getBusinessHoursData(obj);
-    console.log("getBusinessHoursData", getBusinessHoursData);
+    // var getBusinessHoursData = await MerchantAPI.getBusinessHoursData(obj);
+    // console.log("getBusinessHoursData", getBusinessHoursData);
 
-    if (getBusinessHoursData) {
-      if (getBusinessHoursData.status === 200) {
-        this.setState({
-          businessdata: this.state.businessdata = getBusinessHoursData.resultObject.data,
-          count: this.state.count = getBusinessHoursData.resultObject.totalcount,
-        });
-      } else {
-        const msg1 = getBusinessHoursData.message;
-        utils.showError(msg1);
-      }
-    } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
-    }
+    // if (getBusinessHoursData) {
+    //   if (getBusinessHoursData.status === 200) {
+    //     this.setState({
+    //       businessdata: this.state.businessdata = getBusinessHoursData.resultObject.data,
+    //       count: this.state.count = getBusinessHoursData.resultObject.totalcount,
+    //     });
+    //   } else {
+    //     const msg1 = getBusinessHoursData.message;
+    //     utils.showError(msg1);
+    //   }
+    // } else {
+    //   const msg1 = "Internal server error";
+    //   utils.showError(msg1);
+    // }
   }
 
   btnIncrementClick() {

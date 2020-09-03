@@ -49,9 +49,9 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
     }
   }
 
-  createMarkup() 
-  { return {__html: this.state.productdescription}; 
-};
+  createMarkup() {
+    return { __html: this.state.productdescription };
+  }
 
   async getProductById(id: any) {
     const getProductById: any = await ProductAPI.getProductById(id);
@@ -80,7 +80,8 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
           sortorder: this.state.sortorder =
             getProductById.resultObject.sortOrder,
           isFeatured: this.state.isFeatured =
-            getProductById.resultObject.isFeatured
+            getProductById.resultObject.isFeatured,
+          images: this.state.images = getProductById.resultObject.productImages,
         });
       } else {
         const msg1 = getProductById.message;
@@ -140,7 +141,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                               }
                             </b>
                           </Label>
-                          <p>{this.state.merchantid}</p>
+                          <p>{this.state.merchantid ? this.state.merchantid : 'N/A'}</p>
                         </FormGroup>
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
@@ -153,11 +154,9 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                               }
                             </b>
                           </Label>
-                          <p>{this.state.maincategoryid}</p>
+                          <p>{this.state.maincategoryid ? this.state.maincategoryid : 'N/A'}</p>
                         </FormGroup>
                       </Col>
-                    </Row>
-                    <Row>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
                           <Label htmlFor="mobile_no">
@@ -168,7 +167,22 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                               }
                             </b>
                           </Label>
-                          <p>{this.state.productname}</p>
+                          <p>{this.state.productname ? this.state.productname : 'N/A'}</p>
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                    <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                        <FormGroup>
+                          <Label htmlFor="mobile_no">
+                            <b>
+                              {
+                                constant.productPage.productTableColumn
+                                  .metakeyword
+                              }
+                            </b>
+                          </Label>
+                          <p>{this.state.metakeyword ? this.state.metakeyword : 'N/A'}</p>
                         </FormGroup>
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
@@ -178,7 +192,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                               {constant.productPage.productTableColumn.price}
                             </b>
                           </Label>
-                          <p>{this.state.price}</p>
+                          <p>{this.state.price ? this.state.price : 'N/A'}</p>
                         </FormGroup>
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
@@ -191,7 +205,51 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                               }
                             </b>
                           </Label>
-                          <p>{this.state.discountprice}</p>
+                          <p>{this.state.discountprice ? this.state.discountprice : 'N/A'}</p>
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                     
+                    </Row>
+                    <Row>
+                      <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                        <FormGroup>
+                          <Label htmlFor="mobile_no">
+                            <b>
+                              {
+                                constant.productPage.productTableColumn
+                                  .metatitle
+                              }
+                            </b>
+                          </Label>
+                          <p>{this.state.metatitle ? this.state.metatitle : 'N/A'}</p>
+                        </FormGroup>
+                      </Col>
+                      <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                        <FormGroup>
+                          <Label htmlFor="mobile_no">
+                            <b>
+                              {
+                                constant.productPage.productTableColumn
+                                  .sortOrder
+                              }
+                            </b>
+                          </Label>
+                          <p>{this.state.sortorder ? this.state.sortorder : 'N/A'}</p>
+                        </FormGroup>
+                      </Col>
+                      <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                        <FormGroup>
+                          <Label htmlFor="mobile_no">
+                            <b>
+                              {
+                                constant.productPage.productTableColumn
+                                  .isFeatured
+                              }
+                            </b>
+                          </Label>
+                          <p>{this.state.isFeatured ? this.state.isFeatured : 'N/A'}</p>
                         </FormGroup>
                       </Col>
                     </Row>
@@ -219,62 +277,30 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                               }
                             </b>
                           </Label>
-                          <p>{this.state.metadiscription}</p>
-                        </FormGroup>
-                      </Col>
-                      <Col xs="12" sm="12" md="4" lg="4" xl="4">
-                        <FormGroup>
-                          <Label htmlFor="mobile_no">
-                            <b>
-                              {
-                                constant.productPage.productTableColumn
-                                  .metakeyword
-                              }
-                            </b>
-                          </Label>
-                          <p>{this.state.metakeyword}</p>
+                          <p>{this.state.metadiscription ? this.state.metadiscription : 'N/A'}</p>
                         </FormGroup>
                       </Col>
                     </Row>
-                    <Row>
-                      <Col xs="12" sm="12" md="4" lg="4" xl="4">
-                        <FormGroup>
-                          <Label htmlFor="mobile_no">
-                            <b>
-                              {
-                                constant.productPage.productTableColumn
-                                  .metatitle
-                              }
-                            </b>
-                          </Label>
-                          <p>{this.state.metatitle}</p>
-                        </FormGroup>
-                      </Col>
-                      <Col xs="12" sm="12" md="4" lg="4" xl="4">
-                        <FormGroup>
-                          <Label htmlFor="mobile_no">
-                            <b>
-                              {
-                                constant.productPage.productTableColumn
-                                  .sortOrder
-                              }
-                            </b>
-                          </Label>
-                          <p>{this.state.sortorder}</p>
-                        </FormGroup>
-                      </Col>
-                      <Col xs="12" sm="12" md="4" lg="4" xl="4">
-                        <FormGroup>
-                          <Label htmlFor="mobile_no">
-                            <b>
-                              {
-                                constant.productPage.productTableColumn
-                                  .isFeatured
-                              }
-                            </b>
-                          </Label>
-                          <p>{this.state.isFeatured}</p>
-                        </FormGroup>
+                    <Row className="mt-5">
+                      <Col xs="12" sm="12" md="12" lg="12" xl="12">
+                        <div className="image_margin">
+                          {this.state.images.length > 0
+                            ? this.state.images.map((img: any, index: any) =>
+                                img.imagePath !== null ? (
+                                  <img
+                                    key={index}
+                                    className="picture"
+                                    alt="previewImg"
+                                    src={
+                                      constant.fileMerchantpath + img.imagePath
+                                    }
+                                  />
+                                ) : (
+                                  ""
+                                )
+                              )
+                            : "N/A"}
+                        </div>
                       </Col>
                     </Row>
                   </CardBody>

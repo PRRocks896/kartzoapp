@@ -14,6 +14,7 @@ import {
 import NavBar from "../../navbar/navbar";
 import { RoleAPI, ProductAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
+import { getDataByIdRequest } from "../../../modelController";
 
 class ViewProductCustomise extends React.Component<{
   history: any;
@@ -43,7 +44,7 @@ class ViewProductCustomise extends React.Component<{
   }
 
   async getCustomiseById(profuctCustomiseTypeId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: profuctCustomiseTypeId,
     };
     const getCustomiseTypeById: any = await ProductAPI.getCustomiseById(obj);

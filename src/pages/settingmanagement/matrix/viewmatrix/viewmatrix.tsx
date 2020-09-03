@@ -18,6 +18,7 @@ import {
   MerchantAPI,
   MatrixAPI,
 } from "../../../../service/index.service";
+import { getDataByIdRequest } from "../../../../modelController";
 
 class ViewMatrix extends React.Component<{ history: any; location: any }> {
   matrixState = constant.matrixPage.state;
@@ -49,7 +50,7 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
   }
 
   async getMatrixById(payoutId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: payoutId,
     };
     const getMatrixById: any = await MatrixAPI.getMatrixById(obj);

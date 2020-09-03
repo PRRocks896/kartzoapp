@@ -1,21 +1,22 @@
 import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
+import { getAllTableDataListRequest, getDataByIdRequest, couponCreateRequest, couponUpdateRequest } from '../modelController';
 
 export default {
-    addCoupon: async function (data: any) {
+    addCoupon: async function (data: couponCreateRequest) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.couponController.addCoupon, data,false);
     },
-    getCoupon: async function (data:any) {
+    getCoupon: async function (data:getAllTableDataListRequest) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.couponController.getCoupon,data,false);
     },    
-    getCouponById: async function (data:any) {
+    getCouponById: async function (data:getDataByIdRequest) {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.couponController.getCouponById + data.id,false);
     },
-    editCoupon: async function (data: any,id:any) {
-        return await WebReqUrl.put(Constant.apiUrl + apiUrl.couponController.editCoupon + id , data,false);
+    editCoupon: async function (data: couponUpdateRequest) {
+        return await WebReqUrl.put(Constant.apiUrl + apiUrl.couponController.editCoupon + data.couponId , data,false);
     },
-    getCouponMapData: async function (data:any) {
+    getCouponMapData: async function (data:getAllTableDataListRequest) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.couponController.getCouponMapping,data,false);
     }, 
     getCouponList: async function () {

@@ -43,23 +43,23 @@ class ViewBusinessHours extends React.Component<{
   }
 
   async getBusinessById(id: any) {
-    const getBusinessById: any = await MerchantAPI.getBusinessById(id);
-    console.log("getBusinessById", getBusinessById);
+    // const getBusinessById: any = await MerchantAPI.getBusinessById(id);
+    // console.log("getBusinessById", getBusinessById);
 
-    if (getBusinessById) {
-      if (getBusinessById.status === 200) {
-        this.setState({
-          days: this.state.days = getBusinessById.resultObject.days,
-          hours: this.state.hours = getBusinessById.resultObject.hours,
-        });
-      } else {
-        const msg1 = getBusinessById.message;
-        utils.showError(msg1);
-      }
-    } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
-    }
+    // if (getBusinessById) {
+    //   if (getBusinessById.status === 200) {
+    //     this.setState({
+    //       days: this.state.days = getBusinessById.resultObject.days,
+    //       hours: this.state.hours = getBusinessById.resultObject.hours,
+    //     });
+    //   } else {
+    //     const msg1 = getBusinessById.message;
+    //     utils.showError(msg1);
+    //   }
+    // } else {
+    //   const msg1 = "Internal server error";
+    //   utils.showError(msg1);
+    // }
   }
 
   render() {

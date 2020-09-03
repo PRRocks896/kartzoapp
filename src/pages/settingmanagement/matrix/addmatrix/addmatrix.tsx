@@ -25,6 +25,9 @@ import constant from "../../../../constant/constant";
 import {
   feeCreateRequest,
   feeUpdateRequest,
+  getDataByIdRequest,
+  matrixCreateRequest,
+  matrixUpdateRequest,
 } from "../../../../modelController";
 import {
   payoutCreateRequest,
@@ -105,7 +108,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
   }
 
   async getMatrixById(matrixId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: matrixId,
     };
     const getMatrixById: any = await MatrixAPI.getMatrixById(obj);
@@ -297,7 +300,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
       );
       console.log("matrix updated", temparray);
       if (this.state.feetype && temparray.length > 0) {
-        const obj = {
+        const obj:matrixCreateRequest = {
           feeTypeId: parseInt(this.state.feetype),
           fees: temparray,
         };
@@ -339,16 +342,13 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
       );
       console.log("matrix updated", temparray);
       if (this.state.feetype && temparray.length > 0) {
-        const obj = {
+        const obj:matrixUpdateRequest= {
           distanceMatrixId: parseInt(this.state.matrixId),
           feeTypeId: this.state.feetypeid,
           fees: temparray,
         };
 
-        const editMatrix = await MatrixAPI.editMatrix(
-          obj,
-          obj.distanceMatrixId
-        );
+        const editMatrix = await MatrixAPI.editMatrix(obj);
         console.log("editMatrix", editMatrix);
 
         if (editMatrix) {

@@ -17,7 +17,7 @@ import {
 import NavBar from "../../../navbar/navbar";
 import {FeeAPI, PayoutAPI, MerchantAPI} from "../../../../service/index.service";
 import constant from "../../../../constant/constant";
-import { feeCreateRequest, feeUpdateRequest } from "../../../../modelController";
+import { feeCreateRequest, feeUpdateRequest, getDataByIdRequest } from "../../../../modelController";
 import { payoutCreateRequest, payoutUpdateRequest } from "../../../../modelController/payoutModel";
 
 class AddPayout extends React.Component<{ history: any; location: any }> {
@@ -96,7 +96,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
  
 
   async getPayoutById(payoutId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: payoutId,
     };
     const getPayoutById: any = await PayoutAPI.getPayoutById(obj);
@@ -232,7 +232,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
             merchantPayAmount:parseInt(this.state.merchantPayAmount)
         };
 
-        const editPayout = await PayoutAPI.editPayout(obj,obj.payoutId);
+        const editPayout = await PayoutAPI.editPayout(obj);
         console.log("editPayout", editPayout);
 
         if (editPayout) {

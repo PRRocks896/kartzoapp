@@ -1,29 +1,26 @@
 import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
-import { da } from 'date-fns/locale';
 import axios from 'axios';
+import { loginCreateRequest, forgotPasswordRequest, profileGetRequest, resetPasswordRequest, changePasswordRequest, getAllTableDataListRequest, getDataByIdRequest } from "../modelController";
 
 export default {
-    loginUser: async function (data: any) {
+    loginUser: async function (data: loginCreateRequest) {
         return axios.post(Constant.apiUrl + apiUrl.userController.createData, data);
     },
-    signupUser: async function (data: any) {
-        return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.createData, data,false);
-    },
-    forgotPassword: async function (data: any) {
+    forgotPassword: async function (data: forgotPasswordRequest) {
         console.log("data",data);
         const params = data.email;
         return await axios.post(Constant.apiUrl + apiUrl.userController.forgotpassword + '?email=' +  params);
     },
-    resetPassword: async function (data: any) {
+    resetPassword: async function (data: resetPasswordRequest) {
         return await axios.post(Constant.apiUrl + apiUrl.userController.resetpassword, data);
     },
-    updatePassword: async function (data: any) {
+    updatePassword: async function (data: changePasswordRequest) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.updatepassword, data,false);
     },
     
-    getProfile: async function (data: any) {
+    getProfile: async function (data:profileGetRequest) {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.userController.getDataById + data.id,false);
     },
     updateProfile: async function (data: any) {
@@ -32,7 +29,7 @@ export default {
     getUserCount: async function () {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.userController.getCount,false);
     },
-    getUserDataPagination: async function (data:any) {
+    getUserDataPagination: async function (data:getAllTableDataListRequest) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.getUserPaginationData,data,false);
     },
     deleteUser: async function (data:any) {
@@ -58,10 +55,10 @@ export default {
         }
         return await axios.put(Constant.apiUrl + apiUrl.userController.updateData + id, data,config);
     },
-    getUserById: async function (data:any) {
+    getUserById: async function (data:getDataByIdRequest) {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.userController.getDataById + data.id,false);
     },
-    getToken: async function (data:any) {
+    getToken: async function (data:loginCreateRequest) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.merchantController.gettoken,data,false);
     },
     

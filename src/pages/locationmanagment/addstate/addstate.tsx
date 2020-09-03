@@ -22,6 +22,7 @@ import constant from "../../../constant/constant";
 import {
   stateCreateRequest,
   stateUpdateRequest,
+  getDataByIdRequest,
 } from "../../../modelController/index";
 
 class AddState extends React.Component<{ history: any; location: any }> {
@@ -88,7 +89,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
   }
 
   async getCountryById(stateId:any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: stateId,
     };
     const getStateById: any = await LocationAPI.getStateById(obj);
@@ -196,7 +197,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
           isActive: this.state.isActive,
         };
 
-        const editState = await LocationAPI.editState(obj, this.state.stateid);
+        const editState = await LocationAPI.editState(obj);
         console.log("editState", editState);
 
         if(editState) {

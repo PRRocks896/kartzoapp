@@ -22,6 +22,7 @@ import constant from "../../../constant/constant";
 import { Editor } from "@tinymce/tinymce-react";
 import { addOnCreateRequest, addOnUpdateRequest } from "../../../modelController/productAddOnModel";
 import { ProductAPI } from "../../../service/index.service";
+import { getDataByIdRequest } from "../../../modelController";
 
 class AddOnProduct extends React.Component<{ history: any,location:any }> {
   productCustomiseState = constant.productCustomPage.state;
@@ -75,7 +76,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
   }
 
   async getCustomiseById(profuctCustomiseTypeId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: profuctCustomiseTypeId,
     };
     const getCustomiseTypeById: any = await ProductAPI.getCustomiseById(obj);
@@ -253,7 +254,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
               amount:parseInt(this.state.amount)
             };
   
-            const editaddOnProduct = await ProductAPI.editaddOnProduct(obj,obj.productCustomizeId);
+            const editaddOnProduct = await ProductAPI.editaddOnProduct(obj);
             console.log("editaddOnProduct",editaddOnProduct);
   
             if (editaddOnProduct) {

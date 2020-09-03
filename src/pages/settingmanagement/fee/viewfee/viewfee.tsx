@@ -14,6 +14,7 @@ import {
 import NavBar from "../../../navbar/navbar";
 import constant from "../../../../constant/constant";
 import { SettingAPI, FeeAPI } from "../../../../service/index.service";
+import { getDataByIdRequest } from "../../../../modelController";
 
 class ViewFee extends React.Component<{ history: any; location: any }> {
     feeState = constant.feePage.state;
@@ -45,7 +46,7 @@ class ViewFee extends React.Component<{ history: any; location: any }> {
   }
 
   async getFeeById(feeId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: feeId,
     };
     const getFeeById: any = await FeeAPI.getFeeById(obj);

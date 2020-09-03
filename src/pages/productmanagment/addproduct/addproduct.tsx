@@ -23,6 +23,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { CategoryAPI, MerchantAPI, ProductAPI } from "../../../service/index.service";
 import ImageUploading from "react-images-uploading";
 import { any } from "prop-types";
+import { getDataByIdRequest } from "../../../modelController";
 
 const maxNumber = 10;
 const maxMbFileSize = 5 * 1024 * 1024;
@@ -117,7 +118,7 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
     }
   }
 
-  async getProductById(id: any) {
+  async getProductById(id: getDataByIdRequest) {
     const getProductById: any = await ProductAPI.getProductById(id);
     console.log("getProductById", getProductById);
 

@@ -14,6 +14,7 @@ import {
 import NavBar from "../../navbar/navbar";
 import { RoleAPI, ProductAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
+import { getDataByIdRequest } from "../../../modelController";
 
 class ViewProductType extends React.Component<{ history: any; location: any }> {
   productCustomiseState = constant.productCustomisePage.state;
@@ -37,7 +38,7 @@ class ViewProductType extends React.Component<{ history: any; location: any }> {
   }
 
   async getCustomiseTypeById(productCustomiseTypeId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: productCustomiseTypeId,
     };
     const getCustomiseTypeById: any = await ProductAPI.getCustomiseTypeById(

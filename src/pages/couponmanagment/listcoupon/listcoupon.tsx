@@ -18,6 +18,7 @@ import {
 import NavBar from "../../navbar/navbar";
 import {StatusAPI, CouponAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
+import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
 
 class ListCoupon extends React.Component<{ history: any }> {
   couponState = constant.couponPage.state;
@@ -65,7 +66,7 @@ class ListCoupon extends React.Component<{ history: any }> {
     page: number = 1,
     size: number = 10
   ) {
-    const obj = {
+    const obj:getAllTableDataListRequest = {
       searchText: searchText,
       page: page,
       size: size,
@@ -133,7 +134,7 @@ class ListCoupon extends React.Component<{ history: any }> {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
     });
-    const obj = {
+    const obj:getAllTableDataListRequest = {
       searchText: "",
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
@@ -143,7 +144,7 @@ class ListCoupon extends React.Component<{ history: any }> {
   }
 
   async searchApplicationDataKeyUp(e: any) {
-    const obj = {
+    const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
       page: 1,
       size: parseInt(this.state.items_per_page),
@@ -181,7 +182,7 @@ class ListCoupon extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj = {
+      const obj:statusChangeRequest = {
         moduleName: "Coupon",
         id: data.couponId,
         isActive: data.isActive === true ? false : true

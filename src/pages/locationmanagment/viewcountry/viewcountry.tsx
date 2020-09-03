@@ -14,6 +14,7 @@ import {
 import NavBar from "../../navbar/navbar";
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
+import { getDataByIdRequest } from "../../../modelController";
 
 class ViewCountry extends React.Component<{ history: any; location: any }> {
   state = {
@@ -27,7 +28,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
       constant.countryPage.title.viewCountryTitle + utils.getAppName();
     const countryId = this.props.location.pathname.split("/")[2];
     if (countryId !== undefined) {
-      const obj = {
+      const obj:getDataByIdRequest = {
         id: countryId,
       };
       const getCountryById: any = await LocationAPI.getCountryById(obj);
@@ -90,34 +91,32 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
                   <CardBody>
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
+                        <FormGroup className="view_user">
+                          <div>
                           <Label htmlFor="country_name">
                             <b>
                               {
                                 constant.countryPage.countryTableColumn
                                   .countryName
-                              }
+                              } :
                             </b>
                           </Label>
-                          <p>{this.state.countryname}</p>
-                        </FormGroup>
-                      </Col>
-
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
+                          <span>{this.state.countryname}</span>
+                          </div>
+                     
+                            <div>
                           <Label htmlFor="country_code">
                             <b>
                               {
                                 constant.countryPage.countryTableColumn
                                   .countryCode
-                              }
+                              } :
                             </b>
                           </Label>
-                          <p>{this.state.countrycode}</p>
+                          <span>{this.state.countrycode}</span>
+                            </div>
                         </FormGroup>
                       </Col>
-                    </Row>
-                    <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
                           <p style={{ fontSize: "16px" }}>
@@ -125,7 +124,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
                               {
                                 constant.countryPage.countryTableColumn
                                   .countryFlag
-                              }
+                              } :
                             </b>
                           </p>
                           {this.state.file != null ? (

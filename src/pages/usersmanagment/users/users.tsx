@@ -16,16 +16,9 @@ import {
 import "./users.css";
 import NavBar from "../../navbar/navbar";
 import constant from "../../../constant/constant";
+import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
 const $ = require("jquery");
 var _ = require('lodash');
-
-interface getUserRequest {
-  roleID?: number;
-  searchText?: string;
-  isActive?: any;
-  page?: number;
-  size?: number;
-}
 
 class Users extends React.Component<{ history: any }> {
   userState = constant.userPage.state;
@@ -120,7 +113,7 @@ class Users extends React.Component<{ history: any }> {
 
     console.log("roleid", this.state.roleid);
 
-    const obj: getUserRequest = {
+    const obj: getAllTableDataListRequest = {
       roleID: parseInt(this.state.roleid),
       searchText: "",
       page: 1,
@@ -232,7 +225,7 @@ class Users extends React.Component<{ history: any }> {
     page: number = 1,
     size: number = 10
   ) {
-    const obj: getUserRequest = {
+    const obj: getAllTableDataListRequest = {
       roleID: roleID,
       searchText: searchText,
       page: page,
@@ -265,7 +258,7 @@ class Users extends React.Component<{ history: any }> {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
     });
-    const obj: getUserRequest = {
+    const obj: getAllTableDataListRequest = {
       roleID: parseInt(this.state.roleid),
       searchText: "",
       page: parseInt(event.target.id),
@@ -276,7 +269,7 @@ class Users extends React.Component<{ history: any }> {
   }
 
   async searchApplicationDataKeyUp(e: any) {
-    const obj: getUserRequest = {
+    const obj: getAllTableDataListRequest = {
       roleID: parseInt(this.state.roleid),
       searchText: e.target.value,
       page: 1,
@@ -288,7 +281,7 @@ class Users extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-     const obj = {
+     const obj:statusChangeRequest = {
       moduleName: "User",
       id: data.userId,
       isActive: data.isActive === true ? false : true

@@ -17,6 +17,7 @@ import {
 import NavBar from "../../../navbar/navbar";
 import {CategoryAPI, TaxAPI} from "../../../../service/index.service";
 import constant from "../../../../constant/constant";
+import { getDataByIdRequest } from "../../../../modelController";
 
 class ViewTax extends React.Component<{ history: any; location: any }> {
   taxState = constant.taxPage.state;
@@ -50,7 +51,7 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
   }
 
   async getTaxById(taxId: any) {
-    const obj = {
+    const obj:getDataByIdRequest = {
       id: taxId
     };
     const getTaxById: any = await TaxAPI.getTaxById(obj);
