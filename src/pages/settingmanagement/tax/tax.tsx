@@ -26,10 +26,11 @@ import {
   TaxAPI,
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest } from "../../../modelController";
 
 class ListTax extends React.Component<{ history: any }> {
   taxState = constant.taxPage.state;
+  userState = constant.userPage.state;
   state = {
     count: this.taxState.count,
     currentPage: this.taxState.currentPage,
@@ -41,11 +42,15 @@ class ListTax extends React.Component<{ history: any }> {
     taxdata: this.taxState.taxdata,
     switchSort: this.taxState.switchSort,
     isStatus: this.taxState.isStatus,
+    deleteuserdata: this.userState.deleteuserdata,
+    _maincheck: this.userState._maincheck,
+    deleteFlag: this.userState.deleteFlag,
   };
 
   constructor(props: any) {
     super(props);
     this.editTax = this.editTax.bind(this);
+    this.deleteTax = this.deleteTax.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewTax = this.viewTax.bind(this);
@@ -60,6 +65,8 @@ class ListTax extends React.Component<{ history: any }> {
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
@@ -128,6 +135,28 @@ class ListTax extends React.Component<{ history: any }> {
 
   viewTax(id: any) {
     this.props.history.push("/view-tax/" + id);
+  }
+
+  async deleteTax(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteByIdRequest = {
+        id: data.taxId,
+      };
+      var deleteTax = await TaxAPI.deleteTax(obj);
+      console.log("deleteTax", deleteTax);
+      if (deleteTax.status === 200) {
+        const msg = deleteTax.message;
+        utils.showSuccess(msg);
+        this.getTaxData(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
+      } else {
+        const msg1 = deleteTax.message;
+        utils.showError(msg1);
+      }
+    }
   }
 
   onItemSelect(event: any) {
@@ -205,12 +234,100 @@ class ListTax extends React.Component<{ history: any }> {
       if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);
-        this.getTaxData();
+        this.getTaxData(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
       } else {
         const msg1 = getStatusChange.message;
         utils.showError(msg1);
       }
     }
+  }
+
+  handleChange(item: any, e: any) {
+    let _id = item.taxId;
+    let ind: any = this.state.taxdata.findIndex(
+      (x: any) => x.taxId === _id
+    );
+    let data: any = this.state.taxdata;
+    if (ind > -1) {
+      let newState: any = !item._rowChecked;
+      data[ind]._rowChecked = newState;
+      this.setState({
+        taxdata: this.state.taxdata = data,
+      });
+    }
+    let count = 0;
+    data.forEach((element: any) => {
+      if (element._rowChecked === true) {
+        element._rowChecked = true;
+        count++;
+      } else {
+        element._rowChecked = false;
+      }
+    });
+    if (count === data.length) {
+      this.setState({
+        _maincheck: true,
+      });
+    } else {
+      this.setState({
+        _maincheck: false,
+      });
+    }
+    let newarray: any = [];
+    for (var i = 0; i < this.state.taxdata.length; i++) {
+      if (this.state.taxdata[i]["_rowChecked"] === true) {
+        newarray.push(this.state.taxdata[i]["taxId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+  handleMainChange(e: any) {
+    let _val = e.target.checked;
+    this.state.taxdata.forEach((element: any) => {
+      element._rowChecked = _val;
+    });
+    this.setState({
+      taxdata: this.state.taxdata,
+    });
+    this.setState({
+      _maincheck: _val,
+    });
+    let newmainarray: any = [];
+    for (var i = 0; i < this.state.taxdata.length; i++) {
+      if (this.state.taxdata[i]["_rowChecked"] === true) {
+        newmainarray.push(this.state.taxdata[i]["taxId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newmainarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   pagination(pageNumbers: any) {
@@ -264,6 +381,16 @@ class ListTax extends React.Component<{ history: any }> {
       >
         <thead>
           <tr onClick={() => this.handleSort("categoryName")}>
+          <th className="centers">
+              <CustomInput
+                name="name"
+                defaultValue="value"
+                type="checkbox"
+                id="exampleCustomCheckbox"
+                onChange={this.handleMainChange}
+                checked={this.state._maincheck}
+              />
+            </th>
           <th>{constant.taxPage.taxTableColumn.categoryname}</th>
             <th>{constant.taxPage.taxTableColumn.taxname}</th>
             <th>{constant.taxPage.taxTableColumn.percentage}</th>
@@ -278,6 +405,17 @@ class ListTax extends React.Component<{ history: any }> {
             <>
               {this.state.taxdata.map((data: any, index: any) => (
                 <tr key={index}>
+                   <td className="centers">
+                    <CustomInput
+                      // name="name"
+                      type="checkbox"
+                      id={data.taxId}
+                      onChange={(e) => this.handleChange(data, e)}
+                      checked={
+                        this.state.taxdata[index]["_rowChecked"] === true
+                      }
+                    />
+                  </td>
                     <td>{data.categoryName}</td>
                   <td>{data.taxName}</td>
                   <td>{data.percentage}%</td>
@@ -320,12 +458,16 @@ class ListTax extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editTax(data.taxId)}
                       ></i>
-                      {/* <i
-                        className="far fa-trash-alt"
+                      <i
+                        className="fa fa-trash"
                         onClick={() =>
-                          this.deleteCategory(data.categoryId)
+                          this.deleteTax(
+                            data,
+                            "You should be Delete Tax",
+                            "Yes, Delete it"
+                          )
                         }
-                      ></i> */}
+                      ></i>
                     </span>
                   </td>
                 </tr>
@@ -457,6 +599,16 @@ class ListTax extends React.Component<{ history: any }> {
                       <>{this.getTable(this.state.taxdata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                     {this.state.deleteFlag === true ? (
+                      <Button
+                        className="mb-2 mr-2 custom-button"
+                        color="primary"
+                      >
+                        {constant.button.remove}
+                      </Button>
+                    ) : (
+                      ""
                     )}
                     {this.state.taxdata.length > 0
                       ? this.getPageData(

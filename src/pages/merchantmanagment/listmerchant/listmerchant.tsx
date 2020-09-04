@@ -22,14 +22,12 @@ import {
   MerchantAPI,
   API,
 } from "../../../service/index.service";
-import axios from 'axios';
 import constant from "../../../constant/constant";
-import apiUrl from "../../../apicontroller/apicontrollers";
-import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
-const publicIp = require("public-ip");
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest } from "../../../modelController";
 
 class ListMerchant extends React.Component<{ history: any }> {
   merchantState = constant.merchantPage.state;
+  userState = constant.userPage.state;
   state = {
     count: this.merchantState.count,
     currentPage: this.merchantState.currentPage,
@@ -41,12 +39,16 @@ class ListMerchant extends React.Component<{ history: any }> {
     merchantdata: this.merchantState.merchantdata,
     switchSort: this.merchantState.switchSort,
     isStatus: this.merchantState.isStatus,
-    token:this.merchantState.token
+    token:this.merchantState.token,
+    deleteuserdata: this.userState.deleteuserdata,
+    _maincheck: this.userState._maincheck,
+    deleteFlag: this.userState.deleteFlag,
   };
 
   constructor(props: any) {
     super(props);
     this.editMerchant = this.editMerchant.bind(this);
+    this.deleteMerchant = this.deleteMerchant.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewMerchant = this.viewMerchant.bind(this);
@@ -62,6 +64,8 @@ class ListMerchant extends React.Component<{ history: any }> {
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
     this.getMerchantData = this.getMerchantData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
@@ -132,6 +136,28 @@ class ListMerchant extends React.Component<{ history: any }> {
 
   viewMerchant(id: any) {
     this.props.history.push("/view-merchant/" + id);
+  }
+
+  async deleteMerchant(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteByIdRequest = {
+        id: data.merchantID,
+      };
+      var deleteMerchant = await MerchantAPI.deleteMerchant(obj);
+      console.log("deleteMerchant", deleteMerchant);
+      if (deleteMerchant.status === 200) {
+        const msg = deleteMerchant.message;
+        utils.showSuccess(msg);
+        this.getMerchantData(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
+      } else {
+        const msg1 = deleteMerchant.message;
+        utils.showError(msg1);
+      }
+    }
   }
 
   onItemSelect(event: any) {
@@ -209,12 +235,100 @@ class ListMerchant extends React.Component<{ history: any }> {
       if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);
-        this.getMerchantData();
+        this.getMerchantData(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
       } else {
         const msg1 = getStatusChange.message;
         utils.showError(msg1);
       }
     }
+  }
+
+  handleChange(item: any, e: any) {
+    let _id = item.merchantID;
+    let ind: any = this.state.merchantdata.findIndex(
+      (x: any) => x.merchantID === _id
+    );
+    let data: any = this.state.merchantdata;
+    if (ind > -1) {
+      let newState: any = !item._rowChecked;
+      data[ind]._rowChecked = newState;
+      this.setState({
+        merchantdata: this.state.merchantdata = data,
+      });
+    }
+    let count = 0;
+    data.forEach((element: any) => {
+      if (element._rowChecked === true) {
+        element._rowChecked = true;
+        count++;
+      } else {
+        element._rowChecked = false;
+      }
+    });
+    if (count === data.length) {
+      this.setState({
+        _maincheck: true,
+      });
+    } else {
+      this.setState({
+        _maincheck: false,
+      });
+    }
+    let newarray: any = [];
+    for (var i = 0; i < this.state.merchantdata.length; i++) {
+      if (this.state.merchantdata[i]["_rowChecked"] === true) {
+        newarray.push(this.state.merchantdata[i]["merchantID"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+  handleMainChange(e: any) {
+    let _val = e.target.checked;
+    this.state.merchantdata.forEach((element: any) => {
+      element._rowChecked = _val;
+    });
+    this.setState({
+      merchantdata: this.state.merchantdata,
+    });
+    this.setState({
+      _maincheck: _val,
+    });
+    let newmainarray: any = [];
+    for (var i = 0; i < this.state.merchantdata.length; i++) {
+      if (this.state.merchantdata[i]["_rowChecked"] === true) {
+        newmainarray.push(this.state.merchantdata[i]["merchantID"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newmainarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   pagination(pageNumbers: any) {
@@ -268,6 +382,16 @@ class ListMerchant extends React.Component<{ history: any }> {
       >
         <thead>
           <tr onClick={() => this.handleSort("couponCode")}>
+          <th className="centers">
+              <CustomInput
+                name="name"
+                defaultValue="value"
+                type="checkbox"
+                id="exampleCustomCheckbox"
+                onChange={this.handleMainChange}
+                checked={this.state._maincheck}
+              />
+            </th>
             <th>{constant.merchantPage.merchantTableColumn.Firstname}</th>
             <th>{constant.merchantPage.merchantTableColumn.lastname}</th>
             <th>{constant.merchantPage.merchantTableColumn.email}</th>
@@ -283,6 +407,17 @@ class ListMerchant extends React.Component<{ history: any }> {
             <>
               {this.state.merchantdata.map((data: any, index: any) => (
                 <tr key={index}>
+                   <td className="centers">
+                    <CustomInput
+                      // name="name"
+                      type="checkbox"
+                      id={data.merchantID}
+                      onChange={(e) => this.handleChange(data, e)}
+                      checked={
+                        this.state.merchantdata[index]["_rowChecked"] === true
+                      }
+                    />
+                  </td>
                   <td>{data.firstName}</td>
                   <td>{data.lastName}</td>
                   <td>{data.email}</td>
@@ -326,12 +461,16 @@ class ListMerchant extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editMerchant(data.merchantID)}
                       ></i>
-                      {/* <i
-                        className="far fa-trash-alt"
+                      <i
+                        className="fa fa-trash"
                         onClick={() =>
-                          this.deleteCategory(data.categoryId)
+                          this.deleteMerchant(
+                            data,
+                            "You should be Delete Merchant",
+                            "Yes, Delete it"
+                          )
                         }
-                      ></i> */}
+                      ></i>
                     </span>
                   </td>
                 </tr>
@@ -463,6 +602,16 @@ class ListMerchant extends React.Component<{ history: any }> {
                       <>{this.getTable(this.state.merchantdata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                      {this.state.deleteFlag === true ? (
+                      <Button
+                        className="mb-2 mr-2 custom-button"
+                        color="primary"
+                      >
+                        {constant.button.remove}
+                      </Button>
+                    ) : (
+                      ""
                     )}
                     {this.state.merchantdata.length > 0
                       ? this.getPageData(

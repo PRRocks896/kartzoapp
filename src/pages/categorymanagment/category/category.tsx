@@ -16,12 +16,17 @@ import {
   Row,
 } from "reactstrap";
 import NavBar from "../../navbar/navbar";
-import {CategoryAPI, StatusAPI} from "../../../service/index.service";
+import { CategoryAPI, StatusAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
+import {
+  getAllTableDataListRequest,
+  statusChangeRequest,
+  deleteByIdRequest,
+} from "../../../modelController";
 
 class Category extends React.Component<{ history: any }> {
   categoryState = constant.categoryPage.state;
+  userState = constant.userPage.state;
   state = {
     count: this.categoryState.count,
     currentPage: this.categoryState.currentPage,
@@ -33,11 +38,15 @@ class Category extends React.Component<{ history: any }> {
     categorydata: this.categoryState.categorydata,
     switchSort: this.categoryState.switchSort,
     isStatus: this.categoryState.isStatus,
+    deleteuserdata: this.userState.deleteuserdata,
+    _maincheck: this.userState._maincheck,
+    deleteFlag: this.userState.deleteFlag,
   };
 
   constructor(props: any) {
     super(props);
     this.editCategory = this.editCategory.bind(this);
+    this.deleteCategory = this.deleteCategory.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewCategory = this.viewCategory.bind(this);
@@ -52,12 +61,14 @@ class Category extends React.Component<{ history: any }> {
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
     document.title =
       constant.categoryPage.title.categoryTitle + utils.getAppName();
-      utils.dataTable();
+    utils.dataTable();
     this.getCategory();
   }
 
@@ -66,7 +77,7 @@ class Category extends React.Component<{ history: any }> {
     page: number = 1,
     size: number = 10
   ) {
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: searchText,
       page: page,
       size: size,
@@ -121,20 +132,46 @@ class Category extends React.Component<{ history: any }> {
     this.props.history.push("/viewcategory/" + id);
   }
 
+  async deleteCategory(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteByIdRequest = {
+        id: data.categoryId,
+      };
+      var deleteCategory = await CategoryAPI.deleteCategory(obj);
+      console.log("deleteCategory", deleteCategory);
+      if (deleteCategory.status === 200) {
+        const msg = deleteCategory.message;
+        utils.showSuccess(msg);
+        this.getCategory(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
+      } else {
+        const msg1 = deleteCategory.message;
+        utils.showError(msg1);
+      }
+    }
+  }
+
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
         event.target.options[event.target.selectedIndex].value,
     });
 
-    this.getCategory('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+    this.getCategory(
+      "",
+      parseInt(this.state.currentPage),
+      parseInt(this.state.items_per_page)
+    );
   }
 
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
     });
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: "",
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
@@ -144,7 +181,7 @@ class Category extends React.Component<{ history: any }> {
   }
 
   async searchApplicationDataKeyUp(e: any) {
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: e.target.value,
       page: 1,
       size: parseInt(this.state.items_per_page),
@@ -182,22 +219,110 @@ class Category extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj:statusChangeRequest = {
+      const obj: statusChangeRequest = {
         moduleName: "Category",
         id: data.categoryId,
-        isActive: data.isActive === true ? false : true
-       }
-       var getStatusChange = await StatusAPI.getStatusChange(obj);
-       console.log("getStatusChange", getStatusChange);
-       if (getStatusChange.status === 200) {
+        isActive: data.isActive === true ? false : true,
+      };
+      var getStatusChange = await StatusAPI.getStatusChange(obj);
+      console.log("getStatusChange", getStatusChange);
+      if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);
-        this.getCategory();
+        this.getCategory(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
       } else {
         const msg1 = getStatusChange.message;
         utils.showError(msg1);
       }
     }
+  }
+
+  handleChange(item: any, e: any) {
+    let _id = item.categoryId;
+    let ind: any = this.state.categorydata.findIndex(
+      (x: any) => x.categoryId === _id
+    );
+    let data: any = this.state.categorydata;
+    if (ind > -1) {
+      let newState: any = !item._rowChecked;
+      data[ind]._rowChecked = newState;
+      this.setState({
+        categorydata: this.state.categorydata = data,
+      });
+    }
+    let count = 0;
+    data.forEach((element: any) => {
+      if (element._rowChecked === true) {
+        element._rowChecked = true;
+        count++;
+      } else {
+        element._rowChecked = false;
+      }
+    });
+    if (count === data.length) {
+      this.setState({
+        _maincheck: true,
+      });
+    } else {
+      this.setState({
+        _maincheck: false,
+      });
+    }
+    let newarray: any = [];
+    for (var i = 0; i < this.state.categorydata.length; i++) {
+      if (this.state.categorydata[i]["_rowChecked"] === true) {
+        newarray.push(this.state.categorydata[i]["categoryId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+  handleMainChange(e: any) {
+    let _val = e.target.checked;
+    this.state.categorydata.forEach((element: any) => {
+      element._rowChecked = _val;
+    });
+    this.setState({
+      categorydata: this.state.categorydata,
+    });
+    this.setState({
+      _maincheck: _val,
+    });
+    let newmainarray: any = [];
+    for (var i = 0; i < this.state.categorydata.length; i++) {
+      if (this.state.categorydata[i]["_rowChecked"] === true) {
+        newmainarray.push(this.state.categorydata[i]["categoryId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newmainarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   pagination(pageNumbers: any) {
@@ -251,6 +376,16 @@ class Category extends React.Component<{ history: any }> {
       >
         <thead>
           <tr onClick={() => this.handleSort("category")}>
+            <th className="centers">
+              <CustomInput
+                name="name"
+                defaultValue="value"
+                type="checkbox"
+                id="exampleCustomCheckbox"
+                onChange={this.handleMainChange}
+                checked={this.state._maincheck}
+              />
+            </th>
             <th>{constant.categoryPage.caetgoryTableColumn.categoryName}</th>
             <th>{constant.categoryPage.caetgoryTableColumn.subCategoryName}</th>
             <th>{constant.categoryPage.caetgoryTableColumn.image}</th>
@@ -265,6 +400,17 @@ class Category extends React.Component<{ history: any }> {
             <>
               {this.state.categorydata.map((data: any, index: any) => (
                 <tr key={index}>
+                  <td className="centers">
+                    <CustomInput
+                      // name="name"
+                      type="checkbox"
+                      id={data.categoryId}
+                      onChange={(e) => this.handleChange(data, e)}
+                      checked={
+                        this.state.categorydata[index]["_rowChecked"] === true
+                      }
+                    />
+                  </td>
                   <td>{data.category}</td>
 
                   {data.parentCategory ? (
@@ -332,12 +478,16 @@ class Category extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editCategory(data.categoryId)}
                       ></i>
-                      {/* <i
-                        className="far fa-trash-alt"
+                      <i
+                        className="fa fa-trash"
                         onClick={() =>
-                          this.deleteCategory(data.categoryId)
+                          this.deleteCategory(
+                            data,
+                            "You should be Delete Category",
+                            "Yes, Category it"
+                          )
                         }
-                      ></i> */}
+                      ></i>
                     </span>
                   </td>
                 </tr>
@@ -392,7 +542,14 @@ class Category extends React.Component<{ history: any }> {
 
   render() {
     var pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(parseInt(this.state.count) / parseInt(this.state.items_per_page)); i++) {
+    for (
+      let i = 1;
+      i <=
+      Math.ceil(
+        parseInt(this.state.count) / parseInt(this.state.items_per_page)
+      );
+      i++
+    ) {
       pageNumbers.push(i);
     }
     var renderPageNumbers = this.pagination(pageNumbers);
@@ -462,6 +619,16 @@ class Category extends React.Component<{ history: any }> {
                       <>{this.getTable(this.state.categorydata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                    {this.state.deleteFlag === true ? (
+                      <Button
+                        className="mb-2 mr-2 custom-button"
+                        color="primary"
+                      >
+                        {constant.button.remove}
+                      </Button>
+                    ) : (
+                      ""
                     )}
                     {this.state.categorydata.length > 0
                       ? this.getPageData(

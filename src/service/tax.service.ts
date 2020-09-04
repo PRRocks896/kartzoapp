@@ -1,7 +1,7 @@
 import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
-import { getAllTableDataListRequest, getDataByIdRequest, taxCreateRequest, taxUpdateRequest } from '../modelController';
+import { getAllTableDataListRequest, getDataByIdRequest, taxCreateRequest, taxUpdateRequest, deleteByIdRequest } from '../modelController';
 
 export default {
     addTax: async function (data: taxCreateRequest) {
@@ -15,5 +15,9 @@ export default {
     },
     updateTax: async function (data: taxUpdateRequest) {
         return await WebReqUrl.put(Constant.apiUrl + apiUrl.taxController.edittax + data.taxId,data,false);
-    }   
+    },
+    deleteTax: async function (data: deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.taxController.deletetax + data.id,false);
+    },
+       
 }

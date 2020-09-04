@@ -1,7 +1,7 @@
 import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
-import { getAllTableDataListRequest, getDataByIdRequest } from '../modelController';
+import { getAllTableDataListRequest, getDataByIdRequest, deleteByIdRequest } from '../modelController';
 
 export default {
     addMerchant: async function (data: any) {
@@ -18,6 +18,9 @@ export default {
     },
     getMerchantList: async function () {
         return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.merchantController.getList,true);
+    },
+    deleteMerchant: async function (data:deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.apiMerchantUrl + apiUrl.merchantController.deleteMerchant + data.id,true);
     },
     
 }

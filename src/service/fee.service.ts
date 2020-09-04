@@ -1,7 +1,7 @@
 import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
-import { getAllTableDataListRequest, getDataByIdRequest, feeCreateRequest, feeUpdateRequest } from '../modelController';
+import { getAllTableDataListRequest, getDataByIdRequest, feeCreateRequest, feeUpdateRequest, deleteByIdRequest } from '../modelController';
 
 export default {
     addFee: async function (data: feeCreateRequest) {
@@ -19,5 +19,8 @@ export default {
     getFee: async function () {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.feeController.getFeeData,false);
     },
-       
+    deleteFee: async function (data:deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.feeController.deletefee + data.id,false);
+    },
+    
 }

@@ -28,10 +28,11 @@ import {
   SliderAPI,
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest } from "../../../modelController";
 
 class ListProductAddOn extends React.Component<{ history: any }> {
   productCustomiseState = constant.productCustomPage.state;
+  userState = constant.userPage.state;
   state = {
     count: this.productCustomiseState.count,
     currentPage: this.productCustomiseState.currentPage,
@@ -43,11 +44,15 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     addondata: this.productCustomiseState.addondata,
     switchSort: this.productCustomiseState.switchSort,
     isStatus: this.productCustomiseState.isStatus,
+    deleteuserdata: this.userState.deleteuserdata,
+    _maincheck: this.userState._maincheck,
+    deleteFlag: this.userState.deleteFlag,
   };
 
   constructor(props: any) {
     super(props);
     this.editCustomise = this.editCustomise.bind(this);
+    this.deleteCustomise  = this.deleteCustomise.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewCustomise = this.viewCustomise.bind(this);
@@ -65,6 +70,8 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     this.getProductCustomiseData = this.getProductCustomiseData.bind(
       this
     );
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
@@ -133,6 +140,28 @@ class ListProductAddOn extends React.Component<{ history: any }> {
 
   viewCustomise(id: any) {
     this.props.history.push("/view-customise/" + id);
+  }
+
+  async deleteCustomise(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteByIdRequest = {
+        id: data.productCustomizeId,
+      };
+      var deleteCustomise = await ProductAPI.deleteCustomise(obj);
+      console.log("deleteCustomise", deleteCustomise);
+      if (deleteCustomise.status === 200) {
+        const msg = deleteCustomise.message;
+        utils.showSuccess(msg);
+        this.getProductCustomiseData(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
+      } else {
+        const msg1 = deleteCustomise.message;
+        utils.showError(msg1);
+      }
+    }
   }
 
   onItemSelect(event: any) {
@@ -218,6 +247,91 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     }
   }
 
+  
+  handleChange(item: any, e: any) {
+    let _id = item.productCustomizeId;
+    let ind: any = this.state.addondata.findIndex(
+      (x: any) => x.productCustomizeId === _id
+    );
+    let data: any = this.state.addondata;
+    if (ind > -1) {
+      let newState: any = !item._rowChecked;
+      data[ind]._rowChecked = newState;
+      this.setState({
+        addondata: this.state.addondata = data,
+      });
+    }
+    let count = 0;
+    data.forEach((element: any) => {
+      if (element._rowChecked === true) {
+        element._rowChecked = true;
+        count++;
+      } else {
+        element._rowChecked = false;
+      }
+    });
+    if (count === data.length) {
+      this.setState({
+        _maincheck: true,
+      });
+    } else {
+      this.setState({
+        _maincheck: false,
+      });
+    }
+    let newarray: any = [];
+    for (var i = 0; i < this.state.addondata.length; i++) {
+      if (this.state.addondata[i]["_rowChecked"] === true) {
+        newarray.push(this.state.addondata[i]["productCustomizeId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+  handleMainChange(e: any) {
+    let _val = e.target.checked;
+    this.state.addondata.forEach((element: any) => {
+      element._rowChecked = _val;
+    });
+    this.setState({
+      addondata: this.state.addondata,
+    });
+    this.setState({
+      _maincheck: _val,
+    });
+    let newmainarray: any = [];
+    for (var i = 0; i < this.state.addondata.length; i++) {
+      if (this.state.addondata[i]["_rowChecked"] === true) {
+        newmainarray.push(this.state.addondata[i]["productCustomizeId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newmainarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -269,6 +383,16 @@ class ListProductAddOn extends React.Component<{ history: any }> {
       >
         <thead>
           <tr onClick={() => this.handleSort("product")}>
+          <th className="centers">
+              <CustomInput
+                name="name"
+                defaultValue="value"
+                type="checkbox"
+                id="exampleCustomCheckbox"
+                onChange={this.handleMainChange}
+                checked={this.state._maincheck}
+              />
+            </th>
             <th>
               {
                 constant.productCustomPage.productCustomiseTableColumn.productname
@@ -293,6 +417,17 @@ class ListProductAddOn extends React.Component<{ history: any }> {
             <>
               {this.state.addondata.map((data: any, index: any) => (
                 <tr key={index}>
+                   <td className="centers">
+                    <CustomInput
+                      // name="name"
+                      type="checkbox"
+                      id={data.productCustomizeId}
+                      onChange={(e) => this.handleChange(data, e)}
+                      checked={
+                        this.state.addondata[index]["_rowChecked"] === true
+                      }
+                    />
+                  </td>
                   <td>{data.product}</td>
                   <td>{data.amount}</td>
                   <td>{data.productCustomizeType}</td>
@@ -337,6 +472,16 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() =>
                           this.editCustomise(data.productCustomizeId)
+                        }
+                      ></i>
+                       <i
+                        className="fa fa-trash"
+                        onClick={() =>
+                          this.deleteCustomise(
+                            data,
+                            "You should be Delete Customise",
+                            "Yes, Delete it"
+                          )
                         }
                       ></i>
                     </span>
@@ -470,6 +615,16 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                       <>{this.getTable(this.state.addondata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                     {this.state.deleteFlag === true ? (
+                      <Button
+                        className="mb-2 mr-2 custom-button"
+                        color="primary"
+                      >
+                        {constant.button.remove}
+                      </Button>
+                    ) : (
+                      ""
                     )}
                     {this.state.addondata.length > 0
                       ? this.getPageData(

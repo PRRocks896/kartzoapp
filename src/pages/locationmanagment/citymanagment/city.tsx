@@ -18,10 +18,11 @@ import {
 import NavBar from "../../navbar/navbar";
 import {LocationAPI, StatusAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { cityUpdateRequest, getAllTableDataListRequest, statusChangeRequest } from "../../../modelController/index";
+import { cityUpdateRequest, getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest } from "../../../modelController/index";
 
 class City extends React.Component<{ history: any }> {
   cityState = constant.cityPage.state;
+  userState = constant.userPage.state;
   state = {
     count: this.cityState.count,
     currentPage: this.cityState.currentPage,
@@ -33,11 +34,15 @@ class City extends React.Component<{ history: any }> {
     citydata: this.cityState.citydata,
     switchSort: this.cityState.switchSort,
     isStatus: this.cityState.isStatus,
+    deleteuserdata: this.userState.deleteuserdata,
+    _maincheck: this.userState._maincheck,
+    deleteFlag: this.userState.deleteFlag,
   };
 
   constructor(props: any) {
     super(props);
     this.editCity = this.editCity.bind(this);
+    this.deleteState = this.deleteState.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewCity = this.viewCity.bind(this);
@@ -46,6 +51,8 @@ class City extends React.Component<{ history: any }> {
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
     this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
@@ -112,6 +119,24 @@ class City extends React.Component<{ history: any }> {
 
   viewCity(id: any) {
     this.props.history.push("/viewcity/" + id);
+  }
+
+  async deleteState(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteByIdRequest = {
+        id: data.cityId,
+      };
+      var deleteCity = await LocationAPI.deleteCity(obj);
+      console.log("deleteCity", deleteCity);
+      if (deleteCity.status === 200) {
+        const msg = deleteCity.message;
+        utils.showSuccess(msg);
+        this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+      } else {
+        const msg1 = deleteCity.message;
+        utils.showError(msg1);
+      }
+    }
   }
 
   onItemSelect(event: any) {
@@ -185,12 +210,96 @@ class City extends React.Component<{ history: any }> {
        if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);
-        this.getCityData();
+        this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
         const msg1 = getStatusChange.message;
         utils.showError(msg1);
       }
     }
+  }
+
+  handleChange(item: any, e: any) {
+    let _id = item.cityId;
+    let ind: any = this.state.citydata.findIndex(
+      (x: any) => x.cityId === _id
+    );
+    let data: any = this.state.citydata;
+    if (ind > -1) {
+      let newState: any = !item._rowChecked;
+      data[ind]._rowChecked = newState;
+      this.setState({
+        citydata: this.state.citydata = data,
+      });
+    }
+    let count = 0;
+    data.forEach((element: any) => {
+      if (element._rowChecked === true) {
+        element._rowChecked = true;
+        count++;
+      } else {
+        element._rowChecked = false;
+      }
+    });
+    if (count === data.length) {
+      this.setState({
+        _maincheck: true,
+      });
+    } else {
+      this.setState({
+        _maincheck: false,
+      });
+    }
+    let newarray: any = [];
+    for (var i = 0; i < this.state.citydata.length; i++) {
+      if (this.state.citydata[i]["_rowChecked"] === true) {
+        newarray.push(this.state.citydata[i]["cityId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+  handleMainChange(e: any) {
+    let _val = e.target.checked;
+    this.state.citydata.forEach((element: any) => {
+      element._rowChecked = _val;
+    });
+    this.setState({
+      citydata: this.state.citydata,
+    });
+    this.setState({
+      _maincheck: _val,
+    });
+    let newmainarray: any = [];
+    for (var i = 0; i < this.state.citydata.length; i++) {
+      if (this.state.citydata[i]["_rowChecked"] === true) {
+        newmainarray.push(this.state.citydata[i]["cityId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newmainarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   pagination(pageNumbers: any) {
@@ -244,6 +353,16 @@ class City extends React.Component<{ history: any }> {
       >
         <thead>
           <tr onClick={() => this.handleSort("cityName")}>
+          <th className="centers">
+              <CustomInput
+                name="name"
+                defaultValue="value"
+                type="checkbox"
+                id="exampleCustomCheckbox"
+                onChange={this.handleMainChange}
+                checked={this.state._maincheck}
+              />
+            </th>
             <th>{constant.cityPage.cityTableColumn.cityName}</th>
             <th>{constant.cityPage.cityTableColumn.stateName}</th>
             <th style={{ textAlign: "center" }}>
@@ -257,6 +376,17 @@ class City extends React.Component<{ history: any }> {
             <>
               {this.state.citydata.map((data: any, index: any) => (
                 <tr key={index}>
+                       <td className="centers">
+                    <CustomInput
+                      // name="name"
+                      type="checkbox"
+                      id={data.cityId}
+                      onChange={(e) => this.handleChange(data, e)}
+                      checked={
+                        this.state.citydata[index]["_rowChecked"] === true
+                      }
+                    />
+                  </td>
                   <td>{data.cityName}</td>
                   <td>{data.stateName}</td>
 
@@ -298,6 +428,16 @@ class City extends React.Component<{ history: any }> {
                       <i
                         className="fas fa-edit"
                         onClick={() => this.editCity(data.cityId)}
+                      ></i>
+                         <i
+                        className="fa fa-trash"
+                        onClick={() =>
+                          this.deleteState(
+                            data,
+                            "You should be Delete City",
+                            "Yes, Delete it"
+                          )
+                        }
                       ></i>
                     </span>
                   </td>
@@ -428,6 +568,16 @@ class City extends React.Component<{ history: any }> {
                       <>{this.getTable(this.state.citydata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                       {this.state.deleteFlag === true ? (
+                      <Button
+                        className="mb-2 mr-2 custom-button"
+                        color="primary"
+                      >
+                        {constant.button.remove}
+                      </Button>
+                    ) : (
+                      ""
                     )}
                     {this.state.citydata.length > 0
                       ? this.getPageData(

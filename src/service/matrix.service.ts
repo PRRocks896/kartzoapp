@@ -1,7 +1,7 @@
 import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
-import { getAllTableDataListRequest, getDataByIdRequest, matrixCreateRequest, matrixUpdateRequest } from '../modelController';
+import { getAllTableDataListRequest, getDataByIdRequest, matrixCreateRequest, matrixUpdateRequest, deleteByIdRequest } from '../modelController';
 
 export default {
     getMatrixData: async function (data: getAllTableDataListRequest) {
@@ -15,6 +15,9 @@ export default {
     },
     editMatrix: async function (data: matrixUpdateRequest) {
         return await WebReqUrl.put(Constant.apiUrl + apiUrl.matrixController.editMatrix + data.distanceMatrixId, data,false);
+    },
+    deleteMatrix: async function (data: deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.matrixController.deleteMatrix + data.id,false);
     },
     
     

@@ -1,7 +1,7 @@
 import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
-import { getAllTableDataListRequest, getDataByIdRequest } from '../modelController';
+import { getAllTableDataListRequest, getDataByIdRequest, deleteByIdRequest } from '../modelController';
 import { payoutCreateRequest, payoutUpdateRequest } from '../modelController/payoutModel';
 
 export default {
@@ -16,6 +16,9 @@ export default {
     },
     editPayout: async function (data: payoutUpdateRequest) {
         return await WebReqUrl.put(Constant.apiUrl + apiUrl.payoutController.editPayout + data.payoutId, data,false);
+    },
+    deletePayout: async function (data: deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.payoutController.deletePayout + data.id,false);
     },
     
     

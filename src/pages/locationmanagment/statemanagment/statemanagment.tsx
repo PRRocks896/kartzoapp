@@ -19,10 +19,11 @@ import {
 import NavBar from "../../navbar/navbar";
 import {LocationAPI, StatusAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { stateUpdateRequest, getAllTableDataListRequest, statusChangeRequest } from "../../../modelController/index";
+import { stateUpdateRequest, getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest } from "../../../modelController/index";
 
 class StateManagment extends React.Component<{ history: any }> {
   stateState = constant.statePage.state;
+  userState = constant.userPage.state;
   state = {
     count: this.stateState.count,
     currentPage: this.stateState.currentPage,
@@ -34,6 +35,9 @@ class StateManagment extends React.Component<{ history: any }> {
     statedata: this.stateState.statedata,
     switchSort: this.stateState.switchSort,
     isStatus: this.stateState.isStatus,
+    deleteuserdata: this.userState.deleteuserdata,
+    _maincheck: this.userState._maincheck,
+    deleteFlag: this.userState.deleteFlag,
   };
 
   constructor(props: any) {
@@ -53,6 +57,9 @@ class StateManagment extends React.Component<{ history: any }> {
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
+    this.deleteState = this.deleteState.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
@@ -119,6 +126,24 @@ class StateManagment extends React.Component<{ history: any }> {
 
   viewState(id: any) {
     this.props.history.push("/viewstate/" + id);
+  }
+
+  async deleteState(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteByIdRequest = {
+        id: data.stateId,
+      };
+      var deleteState = await LocationAPI.deleteState(obj);
+      console.log("deleteState", deleteState);
+      if (deleteState.status === 200) {
+        const msg = deleteState.message;
+        utils.showSuccess(msg);
+        this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+      } else {
+        const msg1 = deleteState.message;
+        utils.showError(msg1);
+      }
+    }
   }
 
   onItemSelect(event: any) {
@@ -192,13 +217,98 @@ class StateManagment extends React.Component<{ history: any }> {
        if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);
-        this.getStateData();
+        this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
         const msg1 = getStatusChange.message;
         utils.showError(msg1);
       }
     }
   }
+
+  handleChange(item: any, e: any) {
+    let _id = item.stateId;
+    let ind: any = this.state.statedata.findIndex(
+      (x: any) => x.stateId === _id
+    );
+    let data: any = this.state.statedata;
+    if (ind > -1) {
+      let newState: any = !item._rowChecked;
+      data[ind]._rowChecked = newState;
+      this.setState({
+        statedata: this.state.statedata = data,
+      });
+    }
+    let count = 0;
+    data.forEach((element: any) => {
+      if (element._rowChecked === true) {
+        element._rowChecked = true;
+        count++;
+      } else {
+        element._rowChecked = false;
+      }
+    });
+    if (count === data.length) {
+      this.setState({
+        _maincheck: true,
+      });
+    } else {
+      this.setState({
+        _maincheck: false,
+      });
+    }
+    let newarray: any = [];
+    for (var i = 0; i < this.state.statedata.length; i++) {
+      if (this.state.statedata[i]["_rowChecked"] === true) {
+        newarray.push(this.state.statedata[i]["stateId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+  handleMainChange(e: any) {
+    let _val = e.target.checked;
+    this.state.statedata.forEach((element: any) => {
+      element._rowChecked = _val;
+    });
+    this.setState({
+      statedata: this.state.statedata,
+    });
+    this.setState({
+      _maincheck: _val,
+    });
+    let newmainarray: any = [];
+    for (var i = 0; i < this.state.statedata.length; i++) {
+      if (this.state.statedata[i]["_rowChecked"] === true) {
+        newmainarray.push(this.state.statedata[i]["stateId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newmainarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
 
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
@@ -251,6 +361,16 @@ class StateManagment extends React.Component<{ history: any }> {
       >
         <thead>
           <tr onClick={() => this.handleSort("stateName")}>
+          <th className="centers">
+              <CustomInput
+                name="name"
+                defaultValue="value"
+                type="checkbox"
+                id="exampleCustomCheckbox"
+                onChange={this.handleMainChange}
+                checked={this.state._maincheck}
+              />
+            </th>
             <th>{constant.statePage.stateTableColumn.stateName}</th>
             <th>{constant.statePage.stateTableColumn.countryName}</th>
             <th style={{ textAlign: "center" }}>
@@ -264,6 +384,17 @@ class StateManagment extends React.Component<{ history: any }> {
             <>
               {this.state.statedata.map((data: any, index: any) => (
                 <tr key={index}>
+                    <td className="centers">
+                    <CustomInput
+                      // name="name"
+                      type="checkbox"
+                      id={data.stateId}
+                      onChange={(e) => this.handleChange(data, e)}
+                      checked={
+                        this.state.statedata[index]["_rowChecked"] === true
+                      }
+                    />
+                  </td>
                   <td>{data.stateName}</td>
                   <td>{data.countryName}</td>
                   <td style={{ textAlign: "center" }}>
@@ -304,6 +435,16 @@ class StateManagment extends React.Component<{ history: any }> {
                       <i
                         className="fas fa-edit"
                         onClick={() => this.editState(data.stateId)}
+                      ></i>
+                         <i
+                        className="fa fa-trash"
+                        onClick={() =>
+                          this.deleteState(
+                            data,
+                            "You should be Delete State",
+                            "Yes, Delete it"
+                          )
+                        }
                       ></i>
                     </span>
                   </td>
@@ -434,6 +575,16 @@ class StateManagment extends React.Component<{ history: any }> {
                       <>{this.getTable(this.state.statedata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                      {this.state.deleteFlag === true ? (
+                      <Button
+                        className="mb-2 mr-2 custom-button"
+                        color="primary"
+                      >
+                        {constant.button.remove}
+                      </Button>
+                    ) : (
+                      ""
                     )}
                     {this.state.statedata.length > 0
                       ? this.getPageData(

@@ -1,14 +1,20 @@
 import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
-import { getDataByIdRequest, addOnCreateRequest,addOnUpdateRequest,productCustomiseTypeCreateRequest,productCustomiseTypeUpdateRequest, getAllTableDataListRequest } from '../modelController';
+import { getDataByIdRequest, addOnCreateRequest,addOnUpdateRequest,productCustomiseTypeCreateRequest,productCustomiseTypeUpdateRequest, getAllTableDataListRequest, deleteByIdRequest } from '../modelController';
 
 export default {
     addProduct: async function (data: any) {
         return await WebReqUrl.post(Constant.apiMerchantUrl + apiUrl.productController.addproduct, data,true);
     },
-    deleteProduct: async function () {
-        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.productController.deleteproduct,false);
+    deleteProduct: async function (data:deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.apiMerchantUrl + apiUrl.productController.deleteproduct + data.id,true);
+    },
+    deleteCustomise: async function (data:deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.apiMerchantUrl + apiUrl.productTypeController.deleteCustomise + data.id,true);
+    },
+    deleteCustomiseType: async function (data:deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.apiMerchantUrl + apiUrl.productTypeController.deleteCustomiseType + data.id,true);
     },
     editProduct: async function (data: any,id:any) {
         return await WebReqUrl.put(Constant.apiMerchantUrl + apiUrl.productController.editproduct + id,data,true);
@@ -68,7 +74,6 @@ export default {
     getCustomiseById: async function (data:getDataByIdRequest) {
         return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.productTypeController.getcustomisebyid + data.id,true);
     },
-    
     
     
     

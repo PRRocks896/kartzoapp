@@ -18,10 +18,11 @@ import {
 import NavBar from "../../navbar/navbar";
 import {StatusAPI, CouponAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest } from "../../../modelController";
 
 class ListCoupon extends React.Component<{ history: any }> {
   couponState = constant.couponPage.state;
+  userState = constant.userPage.state;
   state = {
     count: this.couponState.count,
     currentPage: this.couponState.currentPage,
@@ -33,11 +34,15 @@ class ListCoupon extends React.Component<{ history: any }> {
     coupondata: this.couponState.coupondata,
     switchSort: this.couponState.switchSort,
     isStatus: this.couponState.isStatus,
+    deleteuserdata: this.userState.deleteuserdata,
+    _maincheck: this.userState._maincheck,
+    deleteFlag: this.userState.deleteFlag,
   };
 
   constructor(props: any) {
     super(props);
     this.editCoupon = this.editCoupon.bind(this);
+    this.deleteCoupon = this.deleteCoupon.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewCoupon = this.viewCoupon.bind(this);
@@ -52,6 +57,8 @@ class ListCoupon extends React.Component<{ history: any }> {
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
@@ -119,6 +126,24 @@ class ListCoupon extends React.Component<{ history: any }> {
 
   viewCoupon(id: any) {
     this.props.history.push("/view-coupon/" + id);
+  }
+
+  async deleteCoupon(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteByIdRequest = {
+        id: data.couponId,
+      };
+      var deleteCoupon = await CouponAPI.deleteCoupon(obj);
+      console.log("deleteCoupon", deleteCoupon);
+      if (deleteCoupon.status === 200) {
+        const msg = deleteCoupon.message;
+        utils.showSuccess(msg);
+        this.getCoupon('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+      } else {
+        const msg1 = deleteCoupon.message;
+        utils.showError(msg1);
+      }
+    }
   }
 
   onItemSelect(event: any) {
@@ -192,12 +217,97 @@ class ListCoupon extends React.Component<{ history: any }> {
        if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);
-        this.getCoupon();
+        this.getCoupon('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
         const msg1 = getStatusChange.message;
         utils.showError(msg1);
       }
     }
+  }
+
+  
+  handleChange(item: any, e: any) {
+    let _id = item.couponId;
+    let ind: any = this.state.coupondata.findIndex(
+      (x: any) => x.couponId === _id
+    );
+    let data: any = this.state.coupondata;
+    if (ind > -1) {
+      let newState: any = !item._rowChecked;
+      data[ind]._rowChecked = newState;
+      this.setState({
+        coupondata: this.state.coupondata = data,
+      });
+    }
+    let count = 0;
+    data.forEach((element: any) => {
+      if (element._rowChecked === true) {
+        element._rowChecked = true;
+        count++;
+      } else {
+        element._rowChecked = false;
+      }
+    });
+    if (count === data.length) {
+      this.setState({
+        _maincheck: true,
+      });
+    } else {
+      this.setState({
+        _maincheck: false,
+      });
+    }
+    let newarray: any = [];
+    for (var i = 0; i < this.state.coupondata.length; i++) {
+      if (this.state.coupondata[i]["_rowChecked"] === true) {
+        newarray.push(this.state.coupondata[i]["couponId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+  handleMainChange(e: any) {
+    let _val = e.target.checked;
+    this.state.coupondata.forEach((element: any) => {
+      element._rowChecked = _val;
+    });
+    this.setState({
+      coupondata: this.state.coupondata,
+    });
+    this.setState({
+      _maincheck: _val,
+    });
+    let newmainarray: any = [];
+    for (var i = 0; i < this.state.coupondata.length; i++) {
+      if (this.state.coupondata[i]["_rowChecked"] === true) {
+        newmainarray.push(this.state.coupondata[i]["couponId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newmainarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   pagination(pageNumbers: any) {
@@ -251,6 +361,16 @@ class ListCoupon extends React.Component<{ history: any }> {
       >
         <thead>
           <tr onClick={() => this.handleSort("couponCode")}>
+          <th className="centers">
+              <CustomInput
+                name="name"
+                defaultValue="value"
+                type="checkbox"
+                id="exampleCustomCheckbox"
+                onChange={this.handleMainChange}
+                checked={this.state._maincheck}
+              />
+            </th>
             <th>{constant.couponPage.couponTableColumn.couponCode}</th>
             <th>{constant.couponPage.couponTableColumn.title}</th>
             <th>{constant.couponPage.couponTableColumn.discountPrice}</th>
@@ -266,6 +386,17 @@ class ListCoupon extends React.Component<{ history: any }> {
             <>
               {this.state.coupondata.map((data: any, index: any) => (
                 <tr key={index}>
+                   <td className="centers">
+                    <CustomInput
+                      // name="name"
+                      type="checkbox"
+                      id={data.couponId}
+                      onChange={(e) => this.handleChange(data, e)}
+                      checked={
+                        this.state.coupondata[index]["_rowChecked"] === true
+                      }
+                    />
+                  </td>
                   <td>{data.couponCode}</td>
                   <td>{data.title}</td>
                   <td>{data.discountPrice}</td>
@@ -309,12 +440,16 @@ class ListCoupon extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editCoupon(data.couponId)}
                       ></i>
-                      {/* <i
-                        className="far fa-trash-alt"
+                     <i
+                        className="fa fa-trash"
                         onClick={() =>
-                          this.deleteCategory(data.categoryId)
+                          this.deleteCoupon(
+                            data,
+                            "You should be Delete Coupon",
+                            "Yes, Delete it"
+                          )
                         }
-                      ></i> */}
+                      ></i>
                     </span>
                   </td>
                 </tr>
@@ -439,6 +574,16 @@ class ListCoupon extends React.Component<{ history: any }> {
                       <>{this.getTable(this.state.coupondata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                     {this.state.deleteFlag === true ? (
+                      <Button
+                        className="mb-2 mr-2 custom-button"
+                        color="primary"
+                      >
+                        {constant.button.remove}
+                      </Button>
+                    ) : (
+                      ""
                     )}
                     {this.state.coupondata.length > 0
                       ? this.getPageData(

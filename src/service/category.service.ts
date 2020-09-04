@@ -1,7 +1,7 @@
 import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
-import { getAllTableDataListRequest, getDataByIdRequest } from '../modelController';
+import { getAllTableDataListRequest, getDataByIdRequest, deleteByIdRequest } from '../modelController';
 
 export default {
     addCategory: async function (data: any) {
@@ -18,5 +18,9 @@ export default {
     },
     getAllCategory: async function () {
         return await WebReqUrl.get(Constant.mainUrl + apiUrl.categoryController.getAllCategory,false);
+    },
+    deleteCategory: async function (data:deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.mainUrl + apiUrl.categoryController.deleteCategory + data.id,false);
     }
+    
 }

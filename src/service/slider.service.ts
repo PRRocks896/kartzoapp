@@ -1,7 +1,7 @@
 import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
-import { getAllTableDataListRequest, getDataByIdRequest } from '../modelController';
+import { getAllTableDataListRequest, getDataByIdRequest, deleteByIdRequest } from '../modelController';
 
 export default {
     addSlider: async function (data: any) {
@@ -15,5 +15,9 @@ export default {
     },
     editSlider: async function (data: any,id:any) {
         return await WebReqUrl.put(Constant.apiUrl + apiUrl.sliderController.editslider + id,data,false);
-    }   
+    },
+    deleteSlider: async function (data: deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.sliderController.deleteSlider + data.id,false);
+    },
+       
 }

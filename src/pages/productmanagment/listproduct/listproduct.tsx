@@ -23,10 +23,11 @@ import {
   MerchantAPI,
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest } from "../../../modelController";
 
 class ListProduct extends React.Component<{ history: any }> {
   productState = constant.productPage.state;
+  userState = constant.userPage.state;
   state = {
     count: this.productState.count,
     currentPage: this.productState.currentPage,
@@ -38,11 +39,15 @@ class ListProduct extends React.Component<{ history: any }> {
     productdata: this.productState.productdata,
     switchSort: this.productState.switchSort,
     isStatus: this.productState.isStatus,
+    deleteuserdata: this.userState.deleteuserdata,
+    _maincheck: this.userState._maincheck,
+    deleteFlag: this.userState.deleteFlag,
   };
 
   constructor(props: any) {
     super(props);
     this.editProduct = this.editProduct.bind(this);
+    this.deleteProduct = this.deleteProduct.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewProduct = this.viewProduct.bind(this);
@@ -57,6 +62,8 @@ class ListProduct extends React.Component<{ history: any }> {
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
@@ -125,6 +132,28 @@ class ListProduct extends React.Component<{ history: any }> {
 
   viewProduct(id: any) {
     this.props.history.push("/view-product/" + id);
+  }
+
+  async deleteProduct(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteByIdRequest = {
+        id: data.productId,
+      };
+      var deleteProduct = await ProductAPI.deleteProduct(obj);
+      console.log("deleteProduct", deleteProduct);
+      if (deleteProduct.status === 200) {
+        const msg = deleteProduct.message;
+        utils.showSuccess(msg);
+        this.getProductData(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
+      } else {
+        const msg1 = deleteProduct.message;
+        utils.showError(msg1);
+      }
+    }
   }
 
   onItemSelect(event: any) {
@@ -202,12 +231,100 @@ class ListProduct extends React.Component<{ history: any }> {
       if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);
-        this.getProductData();
+        this.getProductData(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
       } else {
         const msg1 = getStatusChange.message;
         utils.showError(msg1);
       }
     }
+  }
+
+  handleChange(item: any, e: any) {
+    let _id = item.productId;
+    let ind: any = this.state.productdata.findIndex(
+      (x: any) => x.productId === _id
+    );
+    let data: any = this.state.productdata;
+    if (ind > -1) {
+      let newState: any = !item._rowChecked;
+      data[ind]._rowChecked = newState;
+      this.setState({
+        productdata: this.state.productdata = data,
+      });
+    }
+    let count = 0;
+    data.forEach((element: any) => {
+      if (element._rowChecked === true) {
+        element._rowChecked = true;
+        count++;
+      } else {
+        element._rowChecked = false;
+      }
+    });
+    if (count === data.length) {
+      this.setState({
+        _maincheck: true,
+      });
+    } else {
+      this.setState({
+        _maincheck: false,
+      });
+    }
+    let newarray: any = [];
+    for (var i = 0; i < this.state.productdata.length; i++) {
+      if (this.state.productdata[i]["_rowChecked"] === true) {
+        newarray.push(this.state.productdata[i]["productId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+  handleMainChange(e: any) {
+    let _val = e.target.checked;
+    this.state.productdata.forEach((element: any) => {
+      element._rowChecked = _val;
+    });
+    this.setState({
+      productdata: this.state.productdata,
+    });
+    this.setState({
+      _maincheck: _val,
+    });
+    let newmainarray: any = [];
+    for (var i = 0; i < this.state.productdata.length; i++) {
+      if (this.state.productdata[i]["_rowChecked"] === true) {
+        newmainarray.push(this.state.productdata[i]["productId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newmainarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   pagination(pageNumbers: any) {
@@ -261,6 +378,16 @@ class ListProduct extends React.Component<{ history: any }> {
       >
         <thead>
           <tr onClick={() => this.handleSort("productName")}>
+          <th className="centers">
+              <CustomInput
+                name="name"
+                defaultValue="value"
+                type="checkbox"
+                id="exampleCustomCheckbox"
+                onChange={this.handleMainChange}
+                checked={this.state._maincheck}
+              />
+            </th>
             <th>{constant.productPage.productTableColumn.prodctname}</th>
             <th>{constant.productPage.productTableColumn.price}</th>
             <th>{constant.productPage.productTableColumn.discountPrice}</th>
@@ -275,6 +402,17 @@ class ListProduct extends React.Component<{ history: any }> {
             <>
               {this.state.productdata.map((data: any, index: any) => (
                 <tr key={index}>
+                   <td className="centers">
+                    <CustomInput
+                      // name="name"
+                      type="checkbox"
+                      id={data.productId}
+                      onChange={(e) => this.handleChange(data, e)}
+                      checked={
+                        this.state.productdata[index]["_rowChecked"] === true
+                      }
+                    />
+                  </td>
                   <td>{data.productName}</td>
                   <td>{data.price}</td>
                   <td>{data.discountPrice}</td>
@@ -317,12 +455,16 @@ class ListProduct extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editProduct(data.productId)}
                       ></i>
-                      {/* <i
-                        className="far fa-trash-alt"
+                       <i
+                        className="fa fa-trash"
                         onClick={() =>
-                          this.deleteCategory(data.categoryId)
+                          this.deleteProduct(
+                            data,
+                            "You should be Delete Product",
+                            "Yes, Delete it"
+                          )
                         }
-                      ></i> */}
+                      ></i>
                     </span>
                   </td>
                 </tr>
@@ -454,6 +596,16 @@ class ListProduct extends React.Component<{ history: any }> {
                       <>{this.getTable(this.state.productdata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                        {this.state.deleteFlag === true ? (
+                      <Button
+                        className="mb-2 mr-2 custom-button"
+                        color="primary"
+                      >
+                        {constant.button.remove}
+                      </Button>
+                    ) : (
+                      ""
                     )}
                     {this.state.productdata.length > 0
                       ? this.getPageData(

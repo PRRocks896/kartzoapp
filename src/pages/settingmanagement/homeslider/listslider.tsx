@@ -28,10 +28,11 @@ import {
   SliderAPI,
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest } from "../../../modelController";
 
 class ListSlider extends React.Component<{ history: any }> {
   homesliderState = constant.homesliderPage.state;
+  userState = constant.userPage.state;
   state = {
     count: this.homesliderState.count,
     currentPage: this.homesliderState.currentPage,
@@ -43,11 +44,15 @@ class ListSlider extends React.Component<{ history: any }> {
     sliderdata: this.homesliderState.sliderdata,
     switchSort: this.homesliderState.switchSort,
     isStatus: this.homesliderState.isStatus,
+    deleteuserdata: this.userState.deleteuserdata,
+    _maincheck: this.userState._maincheck,
+    deleteFlag: this.userState.deleteFlag,
   };
 
   constructor(props: any) {
     super(props);
     this.editSlider = this.editSlider.bind(this);
+    this.deleteSlider = this.deleteSlider.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewSlider = this.viewSlider.bind(this);
@@ -63,6 +68,8 @@ class ListSlider extends React.Component<{ history: any }> {
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
     this.getSliderData = this.getSliderData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
@@ -131,6 +138,28 @@ class ListSlider extends React.Component<{ history: any }> {
 
   viewSlider(id: any) {
     this.props.history.push("/view-slider/" + id);
+  }
+
+  async deleteSlider(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteByIdRequest = {
+        id: data.homeSliderId,
+      };
+      var deleteSlider = await SliderAPI.deleteSlider(obj);
+      console.log("deleteSlider", deleteSlider);
+      if (deleteSlider.status === 200) {
+        const msg = deleteSlider.message;
+        utils.showSuccess(msg);
+        this.getSliderData(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
+      } else {
+        const msg1 = deleteSlider.message;
+        utils.showError(msg1);
+      }
+    }
   }
 
   onItemSelect(event: any) {
@@ -216,6 +245,91 @@ class ListSlider extends React.Component<{ history: any }> {
     }
   }
 
+  handleChange(item: any, e: any) {
+    let _id = item.homeSliderId;
+    let ind: any = this.state.sliderdata.findIndex(
+      (x: any) => x.homeSliderId === _id
+    );
+    let data: any = this.state.sliderdata;
+    if (ind > -1) {
+      let newState: any = !item._rowChecked;
+      data[ind]._rowChecked = newState;
+      this.setState({
+        sliderdata: this.state.sliderdata = data,
+      });
+    }
+    let count = 0;
+    data.forEach((element: any) => {
+      if (element._rowChecked === true) {
+        element._rowChecked = true;
+        count++;
+      } else {
+        element._rowChecked = false;
+      }
+    });
+    if (count === data.length) {
+      this.setState({
+        _maincheck: true,
+      });
+    } else {
+      this.setState({
+        _maincheck: false,
+      });
+    }
+    let newarray: any = [];
+    for (var i = 0; i < this.state.sliderdata.length; i++) {
+      if (this.state.sliderdata[i]["_rowChecked"] === true) {
+        newarray.push(this.state.sliderdata[i]["homeSliderId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+  handleMainChange(e: any) {
+    let _val = e.target.checked;
+    this.state.sliderdata.forEach((element: any) => {
+      element._rowChecked = _val;
+    });
+    this.setState({
+      sliderdata: this.state.sliderdata,
+    });
+    this.setState({
+      _maincheck: _val,
+    });
+    let newmainarray: any = [];
+    for (var i = 0; i < this.state.sliderdata.length; i++) {
+      if (this.state.sliderdata[i]["_rowChecked"] === true) {
+        newmainarray.push(this.state.sliderdata[i]["homeSliderId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newmainarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -267,6 +381,16 @@ class ListSlider extends React.Component<{ history: any }> {
       >
         <thead>
           <tr onClick={() => this.handleSort("imageName")}>
+          <th className="centers">
+              <CustomInput
+                name="name"
+                defaultValue="value"
+                type="checkbox"
+                id="exampleCustomCheckbox"
+                onChange={this.handleMainChange}
+                checked={this.state._maincheck}
+              />
+            </th>
             <th>{constant.homesliderPage.homeSliderTableColumn.sliderimage}</th>
             <th>{constant.homesliderPage.homeSliderTableColumn.alterTag}</th>
             <th className="action">{constant.tableAction.action}</th>
@@ -277,6 +401,17 @@ class ListSlider extends React.Component<{ history: any }> {
             <>
               {this.state.sliderdata.map((data: any, index: any) => (
                 <tr key={index}>
+                   <td className="centers">
+                    <CustomInput
+                      // name="name"
+                      type="checkbox"
+                      id={data.homeSliderId}
+                      onChange={(e) => this.handleChange(data, e)}
+                      checked={
+                        this.state.sliderdata[index]["_rowChecked"] === true
+                      }
+                    />
+                  </td>
                    <td>
                     {data.photoPath != null ? (
                       <div className="img-size">
@@ -307,6 +442,16 @@ class ListSlider extends React.Component<{ history: any }> {
                       <i
                         className="fas fa-edit"
                         onClick={() => this.editSlider(data.homeSliderId)}
+                      ></i>
+                        <i
+                        className="fa fa-trash"
+                        onClick={() =>
+                          this.deleteSlider(
+                            data,
+                            "You should be Delete Slider",
+                            "Yes, Delete it"
+                          )
+                        }
                       ></i>
                     </span>
                   </td>
@@ -439,6 +584,16 @@ class ListSlider extends React.Component<{ history: any }> {
                       <>{this.getTable(this.state.sliderdata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                      {this.state.deleteFlag === true ? (
+                      <Button
+                        className="mb-2 mr-2 custom-button"
+                        color="primary"
+                      >
+                        {constant.button.remove}
+                      </Button>
+                    ) : (
+                      ""
                     )}
                     {this.state.sliderdata.length > 0
                       ? this.getPageData(

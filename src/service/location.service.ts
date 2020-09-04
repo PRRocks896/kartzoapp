@@ -1,7 +1,7 @@
 import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
-import { getDataByIdRequest, cityCreateRequest, cityUpdateRequest, stateCreateRequest, stateUpdateRequest, getAllTableDataListRequest } from '../modelController';
+import { getDataByIdRequest, cityCreateRequest, cityUpdateRequest, stateCreateRequest, stateUpdateRequest, getAllTableDataListRequest, deleteByIdRequest } from '../modelController';
 
 export default {
     addCountry: async function (data: any) {
@@ -13,9 +13,16 @@ export default {
     getCountryById: async function (data:getDataByIdRequest) {
         return await WebReqUrl.get(Constant.mainUrl + apiUrl.locationController.getCountryById + data.id,false);
     },
-    deleteCountry: async function (data: any) {
-        return await WebReqUrl.delete(Constant.mainUrl + apiUrl.locationController.deleteCountry + data,false);
+    deleteCountry: async function (data: deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.mainUrl + apiUrl.locationController.deleteCountry + data.id,false);
     },
+    deleteState: async function (data: deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.mainUrl + apiUrl.locationController.deleteState + data.id,false);
+    },
+    deleteCity: async function (data: deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.mainUrl + apiUrl.locationController.deletdCity + data.id,false);
+    },
+    
     editCountry: async function (data: any,id:any) {
         return await WebReqUrl.put(Constant.mainUrl + apiUrl.locationController.editCountry + id ,data,false);
     },

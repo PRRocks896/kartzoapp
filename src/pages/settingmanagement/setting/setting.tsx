@@ -24,10 +24,11 @@ import {
   SettingAPI,
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest } from "../../../modelController";
 
 class ListSetting extends React.Component<{ history: any }> {
   settingState = constant.settingPage.state;
+  userState = constant.userPage.state;
   state = {
     count: this.settingState.count,
     currentPage: this.settingState.currentPage,
@@ -39,11 +40,15 @@ class ListSetting extends React.Component<{ history: any }> {
     settingdata: this.settingState.settingdata,
     switchSort: this.settingState.switchSort,
     isStatus: this.settingState.isStatus,
+    deleteuserdata: this.userState.deleteuserdata,
+    _maincheck: this.userState._maincheck,
+    deleteFlag: this.userState.deleteFlag,
   };
 
   constructor(props: any) {
     super(props);
     this.editSetting = this.editSetting.bind(this);
+    this.deleteSetting = this.deleteSetting.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewSetting = this.viewSetting.bind(this);
@@ -58,6 +63,8 @@ class ListSetting extends React.Component<{ history: any }> {
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
@@ -127,6 +134,29 @@ class ListSetting extends React.Component<{ history: any }> {
   viewSetting(id: any) {
     this.props.history.push("/view-setting/" + id);
   }
+
+  async deleteSetting(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteByIdRequest = {
+        id: data.settingId,
+      };
+      var deleteSetting = await SettingAPI.deleteSetting(obj);
+      console.log("deleteSetting", deleteSetting);
+      if (deleteSetting.status === 200) {
+        const msg = deleteSetting.message;
+        utils.showSuccess(msg);
+        this.getSettingData(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
+      } else {
+        const msg1 = deleteSetting.message;
+        utils.showError(msg1);
+      }
+    }
+  }
+
 
   onItemSelect(event: any) {
     this.setState({
@@ -203,13 +233,103 @@ class ListSetting extends React.Component<{ history: any }> {
       if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);
-        this.getSettingData();
+        this.getSettingData(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
       } else {
         const msg1 = getStatusChange.message;
         utils.showError(msg1);
       }
     }
   }
+
+   
+  handleChange(item: any, e: any) {
+    let _id = item.settingId;
+    let ind: any = this.state.settingdata.findIndex(
+      (x: any) => x.settingId === _id
+    );
+    let data: any = this.state.settingdata;
+    if (ind > -1) {
+      let newState: any = !item._rowChecked;
+      data[ind]._rowChecked = newState;
+      this.setState({
+        settingdata: this.state.settingdata = data,
+      });
+    }
+    let count = 0;
+    data.forEach((element: any) => {
+      if (element._rowChecked === true) {
+        element._rowChecked = true;
+        count++;
+      } else {
+        element._rowChecked = false;
+      }
+    });
+    if (count === data.length) {
+      this.setState({
+        _maincheck: true,
+      });
+    } else {
+      this.setState({
+        _maincheck: false,
+      });
+    }
+    let newarray: any = [];
+    for (var i = 0; i < this.state.settingdata.length; i++) {
+      if (this.state.settingdata[i]["_rowChecked"] === true) {
+        newarray.push(this.state.settingdata[i]["settingId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+  handleMainChange(e: any) {
+    let _val = e.target.checked;
+    this.state.settingdata.forEach((element: any) => {
+      element._rowChecked = _val;
+    });
+    this.setState({
+      settingdata: this.state.settingdata,
+    });
+    this.setState({
+      _maincheck: _val,
+    });
+    let newmainarray: any = [];
+    for (var i = 0; i < this.state.settingdata.length; i++) {
+      if (this.state.settingdata[i]["_rowChecked"] === true) {
+        newmainarray.push(this.state.settingdata[i]["settingId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newmainarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
 
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
@@ -262,6 +382,16 @@ class ListSetting extends React.Component<{ history: any }> {
       >
         <thead>
           <tr onClick={() => this.handleSort("identifier")}>
+          <th className="centers">
+              <CustomInput
+                name="name"
+                defaultValue="value"
+                type="checkbox"
+                id="exampleCustomCheckbox"
+                onChange={this.handleMainChange}
+                checked={this.state._maincheck}
+              />
+            </th>
             <th>{constant.settingPage.settingTableColumn.identifier}</th>
             <th>{constant.settingPage.settingTableColumn.value}</th>
             {/* <th style={{ textAlign: "center" }}>
@@ -275,6 +405,17 @@ class ListSetting extends React.Component<{ history: any }> {
             <>
               {this.state.settingdata.map((data: any, index: any) => (
                 <tr key={index}>
+                   <td className="centers">
+                    <CustomInput
+                      // name="name"
+                      type="checkbox"
+                      id={data.settingId}
+                      onChange={(e) => this.handleChange(data, e)}
+                      checked={
+                        this.state.settingdata[index]["_rowChecked"] === true
+                      }
+                    />
+                  </td>
                   <td>{data.identifier}</td>
                   <td>{data.value}</td>
                   {/* <td style={{ textAlign: "center" }}>
@@ -316,12 +457,16 @@ class ListSetting extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editSetting(data.settingId)}
                       ></i>
-                      {/* <i
-                        className="far fa-trash-alt"
+                      <i
+                        className="fa fa-trash"
                         onClick={() =>
-                          this.deleteCategory(data.categoryId)
+                          this.deleteSetting(
+                            data,
+                            "You should be Delete Setting",
+                            "Yes, Delete it"
+                          )
                         }
-                      ></i> */}
+                      ></i>
                     </span>
                   </td>
                 </tr>
@@ -453,6 +598,16 @@ class ListSetting extends React.Component<{ history: any }> {
                       <>{this.getTable(this.state.settingdata)}</>
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
+                    )}
+                      {this.state.deleteFlag === true ? (
+                      <Button
+                        className="mb-2 mr-2 custom-button"
+                        color="primary"
+                      >
+                        {constant.button.remove}
+                      </Button>
+                    ) : (
+                      ""
                     )}
                     {this.state.settingdata.length > 0
                       ? this.getPageData(

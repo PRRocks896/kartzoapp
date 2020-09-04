@@ -1,7 +1,7 @@
 import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
-import { getAllTableDataListRequest, getDataByIdRequest, couponCreateRequest, couponUpdateRequest } from '../modelController';
+import { getAllTableDataListRequest, getDataByIdRequest, couponCreateRequest, couponUpdateRequest, deleteByIdRequest } from '../modelController';
 
 export default {
     addCoupon: async function (data: couponCreateRequest) {
@@ -22,5 +22,9 @@ export default {
     getCouponList: async function () {
         return await WebReqUrl.get(Constant.apiUrl + apiUrl.couponController.getList,false);
     }, 
+    deleteCoupon: async function (data:deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.couponController.deleteCoupon + data.id,false);
+    }, 
+    
     
 }

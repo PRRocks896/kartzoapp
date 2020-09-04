@@ -72,7 +72,7 @@ const apiUrl = {
         getCoupon:'coupon/get-coupon-list',
         editCoupon:'coupon/',
         getCouponById:'coupon/',
-        deleteCoupon:'coupon',
+        deleteCoupon:'coupon/',
         getList:'coupon/get-coupon-list-dropdown',
         getCouponMapping:'couponmapping/get-couponmapping-list',
         getCouponMappingById:'',
@@ -83,7 +83,7 @@ const apiUrl = {
         addMerchant:'merchant',
         getMerchant:'merchant/get-merchant-list',
         editMerchant:'merchant/',
-        deleteMerchant:'merchant',
+        deleteMerchant:'merchant/',
         getMerchantById:'merchant/',
         gettoken:'token/get-merchant-token',
         getList:'merchant/get-merchant-list-dropdown'
@@ -96,7 +96,8 @@ const apiUrl = {
         getMerchantById:'merchant/',
         gettoken:'token/get-merchant-token',
         getList:'merchant/get-merchant-list-dropdown',
-        getPayoutById:'payout/'
+        getPayoutById:'payout/',
+        deletePayout:'payout/'
     },
     matrixController: {
         addmatrix:'distancematrix',
@@ -107,7 +108,8 @@ const apiUrl = {
         gettoken:'token/get-merchant-token',
         getList:'merchant/get-merchant-list-dropdown',
         getPayoutById:'payout/',
-        getMatrixById:'distancematrix/'
+        getMatrixById:'distancematrix/',
+        deleteMatrix:'distancematrix/'
     },
     merchantBusinessController: {
         addMerchantBusiness:'merchantbusinesshour',
@@ -127,7 +129,7 @@ const apiUrl = {
         addproduct:'products',
         getproduct:'products/get-product-list',
         editproduct:'products/',
-        deleteproduct:'product',
+        deleteproduct:'products/',
         addImage:'product',
         addInventory:'product',
         addReview:'product',
@@ -142,6 +144,8 @@ const apiUrl = {
         gettype:'productcustomizetype/get-productcustomizetype-list',
         edittype:'productcustomizetype/',
         gettypebyid:'productcustomizetype/',
+        deleteCustomise:'productcustomize/',
+        deleteCustomiseType:'productcustomizetype/',
         getcustomise:'productcustomize/get-productcustomize-list',
         addcustomise:'productcustomize',
         editcustomise:'productcustomize/',
@@ -171,14 +175,14 @@ const apiUrl = {
         addsetting:'setting',
         getsetting:'setting/',
         editsetting:'setting/',
-        deletesetting:'setting',
+        deletesetting:'setting/',
         getsettinglist:'setting/get-setting-list'
     },
     feeController: {
         addfee:'fee',
         getfee:'fee/',
         editfee:'fee/',
-        deletefee:'fee',
+        deletefee:'fee/',
         getfeelist:'fee/get-fee-list',
         getFeeData:'fee/get-fee-list-dropdown'
     },
@@ -186,7 +190,7 @@ const apiUrl = {
         addtax:'tax',
         gettax:'tax/',
         edittax:'tax/',
-        deletetax:'tax',
+        deletetax:'tax/',
         gettaxlist:'tax/get-tax-list'
     },
     sliderController: {
@@ -194,6 +198,7 @@ const apiUrl = {
         getslider:'homeslider/get-homeslider-list',
         editslider:'homeslider/',
         getsliderlist:'homeslider/',
+        deleteSlider:'homeslider/'
     },
 }
 
