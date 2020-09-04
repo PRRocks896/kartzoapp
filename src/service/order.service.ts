@@ -9,9 +9,9 @@ export default {
     editOrder: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.orderController.editOrder, data,false);
     },
-    deleteOrder: async function () {
-        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.orderController.deleteOrder);
-    },
+    // deleteOrder: async function () {
+    //     return await WebReqUrl.delete(Constant.apiUrl + apiUrl.orderController.deleteOrder);
+    // },
     addOrderCart: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.orderController.addOrderCart,data,false);
     }

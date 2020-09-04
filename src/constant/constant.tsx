@@ -209,8 +209,11 @@ export default {
       onItemSelect: "",
       userrole: [],
       userdata: [],
+      deleteuserdata:[],
       switchSort: false,
       isStatus: false,
+      _maincheck:false,
+      deleteFlag:false,
 
       selectedFile: "",
       firstname: "",
@@ -700,6 +703,7 @@ export default {
       categorylist: [],
       merchantlist: [],
       productpreview:[],
+      newImageUpdatedArray:[],
       switchSort: false,
       isStatus: false,
 

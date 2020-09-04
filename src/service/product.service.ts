@@ -8,7 +8,7 @@ export default {
         return await WebReqUrl.post(Constant.apiMerchantUrl + apiUrl.productController.addproduct, data,true);
     },
     deleteProduct: async function () {
-        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.productController.deleteproduct);
+        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.productController.deleteproduct,false);
     },
     editProduct: async function (data: any,id:any) {
         return await WebReqUrl.put(Constant.apiMerchantUrl + apiUrl.productController.editproduct + id,data,true);
@@ -33,7 +33,7 @@ export default {
     },
     
     deleteImageProduct: async function () {
-        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.productController.deleteproductImage);
+        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.productController.deleteproductImage,false);
     },
     editProductImage: async function (data: any) {
         return await WebReqUrl.put(Constant.apiUrl + apiUrl.productController.editproductImage,data,false);

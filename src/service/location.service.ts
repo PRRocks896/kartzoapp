@@ -14,7 +14,7 @@ export default {
         return await WebReqUrl.get(Constant.mainUrl + apiUrl.locationController.getCountryById + data.id,false);
     },
     deleteCountry: async function (data: any) {
-        return await WebReqUrl.delete(Constant.mainUrl + apiUrl.locationController.deleteCountry + data);
+        return await WebReqUrl.delete(Constant.mainUrl + apiUrl.locationController.deleteCountry + data,false);
     },
     editCountry: async function (data: any,id:any) {
         return await WebReqUrl.put(Constant.mainUrl + apiUrl.locationController.editCountry + id ,data,false);

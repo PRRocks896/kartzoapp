@@ -20,7 +20,11 @@ import API from "../../../service/merchant.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import { Editor } from "@tinymce/tinymce-react";
-import { CategoryAPI, MerchantAPI, ProductAPI } from "../../../service/index.service";
+import {
+  CategoryAPI,
+  MerchantAPI,
+  ProductAPI,
+} from "../../../service/index.service";
 import ImageUploading from "react-images-uploading";
 import { any } from "prop-types";
 import { getDataByIdRequest } from "../../../modelController";
@@ -28,7 +32,7 @@ import { getDataByIdRequest } from "../../../modelController";
 const maxNumber = 10;
 const maxMbFileSize = 5 * 1024 * 1024;
 
-class AddProduct extends React.Component<{ history: any,location:any }> {
+class AddProduct extends React.Component<{ history: any; location: any }> {
   productState = constant.productPage.state;
   state = {
     merchantid: this.productState.merchantid,
@@ -57,10 +61,10 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
     categorylist: this.productState.categorylist,
     merchantlist: this.productState.merchantlist,
     imagesPreviewUrls: this.productState.imagesPreviewUrls,
-    updateTrue:this.productState.updateTrue,
-    productid:this.productState.productid,
+    updateTrue: this.productState.updateTrue,
+    productid: this.productState.productid,
     productpreview: this.productState.productpreview,
-
+    newImageUpdatedArray: this.productState.newImageUpdatedArray,
   };
 
   constructor(props: any) {
@@ -84,11 +88,11 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
     e.preventDefault();
     let images: any = Array.from(e.target.files);
     this.setState({
-      images:this.state.images = images
+      images: this.state.images = images,
     });
-    console.log("images",this.state.images);
-    images.forEach((file:any) => {
-      let reader:any = new FileReader();
+    // console.log("images", this.state.images);
+    images.forEach((file: any) => {
+      let reader: any = new FileReader();
       reader.onloadend = () => {
         this.setState({
           imagesPreviewUrls: [...this.state.imagesPreviewUrls, reader.result],
@@ -103,7 +107,6 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
   }
 
   async componentDidMount() {
-   
     this.getAllCategory();
     this.getAllMerchant();
     const productId = this.props.location.pathname.split("/")[2];
@@ -111,13 +114,15 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
       this.getProductById(productId);
       this.setState({
         updateTrue: this.state.updateTrue = true,
-        productid:this.state.productid = productId
+        productid: this.state.productid = productId,
       });
     }
-    if(this.state.updateTrue === true) {
-      document.title = constant.productPage.title.updateProductTitle + utils.getAppName();
+    if (this.state.updateTrue === true) {
+      document.title =
+        constant.productPage.title.updateProductTitle + utils.getAppName();
     } else {
-      document.title = constant.productPage.title.addProductTitle + utils.getAppName();
+      document.title =
+        constant.productPage.title.addProductTitle + utils.getAppName();
     }
   }
 
@@ -128,20 +133,31 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
     if (getProductById) {
       if (getProductById.status === 200) {
         this.setState({
-         merchantid:this.state.merchantid = getProductById.resultObject.merchantId,
-         maincategoryid:this.state.maincategoryid = getProductById.resultObject.categoryId,
-         prodctname: this.state.productname = getProductById.resultObject.productName,
-        price:this.state.price =  getProductById.resultObject.price,
-        discountprice: this.state.discountprice = getProductById.resultObject.discountPrice,
-        metatitle:this.state.metatitle = getProductById.resultObject.metaTitle,
-        metadescritption:this.state.metadiscription = getProductById.resultObject.metaDescription,
-        metakeyword: this.state.metakeyword = getProductById.resultObject.metaKeyword,
-        productdescription:this.state.productdescription = getProductById.resultObject.productDesc,
-        sortorder:this.state.sortorder = getProductById.resultObject.sortOrder,
-        isFeatured:this.state.isFeatured =  getProductById.resultObject.isFeatured,
-        productpreview:this.state.productpreview = getProductById.resultObject.productImages
+          merchantid: this.state.merchantid =
+            getProductById.resultObject.merchantId,
+          maincategoryid: this.state.maincategoryid =
+            getProductById.resultObject.categoryId,
+          prodctname: this.state.productname =
+            getProductById.resultObject.productName,
+          price: this.state.price = getProductById.resultObject.price,
+          discountprice: this.state.discountprice =
+            getProductById.resultObject.discountPrice,
+          metatitle: this.state.metatitle =
+            getProductById.resultObject.metaTitle,
+          metadescritption: this.state.metadiscription =
+            getProductById.resultObject.metaDescription,
+          metakeyword: this.state.metakeyword =
+            getProductById.resultObject.metaKeyword,
+          productdescription: this.state.productdescription =
+            getProductById.resultObject.productDesc,
+          sortorder: this.state.sortorder =
+            getProductById.resultObject.sortOrder,
+          isFeatured: this.state.isFeatured =
+            getProductById.resultObject.isFeatured,
+          productpreview: this.state.productpreview =
+            getProductById.resultObject.productImages,
         });
-        console.log("images",this.state.images);
+        console.log("images", this.state.images);
       } else {
         const msg1 = getProductById.message;
         utils.showError(msg1);
@@ -197,14 +213,14 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
   };
 
   handleDescChange = (content: any, editor: any) => {
-    console.log("handleDescChange Content was updated:", content);
+  
     this.setState({
       metadiscription: this.state.metadiscription = content,
     });
   };
 
   handleKeywordChange = (content: any, editor: any) => {
-    console.log("handleKeywordChange Content was updated:", content);
+  
     this.setState({
       metakeyword: this.state.metakeyword = content,
     });
@@ -215,31 +231,28 @@ class AddProduct extends React.Component<{ history: any,location:any }> {
     this.setState({
       images: this.state.images = imageList,
     });
+
   
-    console.log("index of new chosen images: ", addUpdateIndex);
   };
   onError = (errors: any, files: any) => {
     console.log(errors, files);
   };
 
-  deleteImage() {
-    const hero = [{'id' : 1, 'name' : 'hero1'}, {'id': 2, 'name' : 'hero2'}];
-//remove hero1
-const updatedHero = hero.filter(item => item.id !== 2);
-console.log("hero",updatedHero);
+  deleteImage(id: any, index: number) {
+    this.state.productpreview.splice(index, 1);
+    const updatedArray: any = this.state.productpreview;
+    this.setState({
+      newImageUpdatedArray: this.state.newImageUpdatedArray = updatedArray.map(
+        (photo: any) => photo.id
+      ),
+    })
   }
 
   validate() {
     let merchantiderror = "";
     let maincategoryiderror = "";
     let productnameerror = "";
-    // let productdescriptionerror = "";
     let priceerror = "";
-    // let discountpriceerror = "";
-    // let metatitleerror = "";
-    // let metadiscriptionerror = "";
-    // let metakeyworderror = "";
-    // let sortordererror = "";
 
     if (!this.state.merchantid) {
       merchantiderror = "please select merchant";
@@ -253,57 +266,21 @@ console.log("hero",updatedHero);
       productnameerror = "please enter product name";
     }
 
-    // if (!this.state.productdescription) {
-    //   productdescriptionerror = "please enter product description";
-    // }
-
     if (!this.state.price) {
       priceerror = "please enter price";
     }
-
-    // if (!this.state.discountprice) {
-    //   discountpriceerror = "please enter discount price";
-    // }
-
-    // if (!this.state.metatitle) {
-    //   metatitleerror = "please enter meta title";
-    // }
-
-    // if (!this.state.metadiscription) {
-    //   metadiscriptionerror = "please enter meta description";
-    // }
-
-    // if (!this.state.metakeyword) {
-    //   metakeyworderror = "please enter meta keyword";
-    // }
-
-    // if (!this.state.sortorder) {
-    //   sortordererror = "please enter sort order";
-    // }
 
     if (
       merchantiderror ||
       maincategoryiderror ||
       productnameerror ||
-      // productdescriptionerror ||
       priceerror
-      // discountpriceerror ||
-      // metatitleerror ||
-      // metadiscriptionerror ||
-      // metakeyworderror ||
-      // sortordererror
     ) {
       this.setState({
         merchantiderror,
         maincategoryiderror,
         productnameerror,
-        // productdescriptionerror,
-        priceerror,
-        // discountpriceerror,
-        // metatitleerror,
-        // metadiscriptionerror,
-        // metakeyworderror,
-        // sortordererror,
+        priceerror
       });
       return false;
     }
@@ -325,26 +302,14 @@ console.log("hero",updatedHero);
         maincategoryiderror: "",
         subcategoryiderror: "",
         productnameerror: "",
-        // productdescriptionerror: "",
-        priceerror: "",
-        // discountpriceerror: "",
-        // metatitleerror: "",
-        // metadiscriptionerror: "",
-        // metakeyworderror: "",
-        // sortordererror: "",
+        priceerror: ""
       });
       if (
         this.state.merchantid &&
         this.state.maincategoryid &&
         this.state.productname &&
         this.state.price
-        // this.state.discountprice &&
-        // this.state.metadiscription &&
-        // this.state.metatitle &&
-        // this.state.metakeyword &&
-        // this.state.sortorder
       ) {
-
         let formData = new FormData();
         formData.append("MerchantId", this.state.merchantid);
         formData.append("CategoryId", this.state.maincategoryid);
@@ -352,19 +317,22 @@ console.log("hero",updatedHero);
         formData.append("Price", this.state.price);
         formData.append("ProductDesc", this.state.productdescription);
         formData.append("DiscountPrice", this.state.discountprice);
-        formData.append("IsFeatured", new Boolean(this.state.isFeatured).toString());
+        formData.append(
+          "IsFeatured",
+          new Boolean(this.state.isFeatured).toString()
+        );
         formData.append("MetaTitle", this.state.metatitle);
         formData.append("MetaDescription", this.state.metadiscription);
         formData.append("MetaKeyword", this.state.metakeyword);
         formData.append("IsActive", "true");
         formData.append("SortOrder", this.state.sortorder);
-        this.state.images.map((image:any,index:number) => (
+        this.state.images.map((image: any, index: number) =>
           formData.append("Images", image)
-        ))
+        );
         formData.append("UserId", "0");
 
         const addProduct = await ProductAPI.addProduct(formData);
-        console.log("addProduct",addProduct);
+        console.log("addProduct", addProduct);
 
         if (addProduct) {
           if (addProduct.status === 200) {
@@ -391,26 +359,14 @@ console.log("hero",updatedHero);
         maincategoryiderror: "",
         subcategoryiderror: "",
         productnameerror: "",
-        // productdescriptionerror: "",
-        priceerror: "",
-        // discountpriceerror: "",
-        // metatitleerror: "",
-        // metadiscriptionerror: "",
-        // metakeyworderror: "",
-        // sortordererror: "",
+        priceerror: ""
       });
       if (
         this.state.merchantid &&
         this.state.maincategoryid &&
         this.state.productname &&
         this.state.price
-        // this.state.discountprice &&
-        // this.state.metadiscription &&
-        // this.state.metatitle &&
-        // this.state.metakeyword &&
-        // this.state.sortorder
       ) {
-
         let formData = new FormData();
         formData.append("productId", this.state.productid);
         formData.append("MerchantId", this.state.merchantid);
@@ -419,19 +375,37 @@ console.log("hero",updatedHero);
         formData.append("Price", this.state.price);
         formData.append("ProductDesc", this.state.productdescription);
         formData.append("DiscountPrice", this.state.discountprice);
-        formData.append("IsFeatured", new Boolean(this.state.isFeatured).toString());
+        formData.append(
+          "IsFeatured",
+          new Boolean(this.state.isFeatured).toString()
+        );
         formData.append("MetaTitle", this.state.metatitle);
         formData.append("MetaDescription", this.state.metadiscription);
         formData.append("MetaKeyword", this.state.metakeyword);
         formData.append("IsActive", "true");
         formData.append("SortOrder", this.state.sortorder);
-        this.state.images.map((image:any,index:number) => (
-          formData.append("Images", image)
-        ))
+        if (this.state.newImageUpdatedArray && this.state.newImageUpdatedArray.length > 0) {
+          this.state.newImageUpdatedArray.map((image: any) =>
+            formData.append("ProductImages", image)
+          );
+        } else {
+          formData.append("ProductImages", '')
+        }
+        if (this.state.images && this.state.images.length > 0) {
+          this.state.images.map((image: any, index: number) =>
+            formData.append("Images", image)
+          );
+        } else {
+          const blankArray:any = []
+          formData.append("Images", JSON.stringify(blankArray))
+        }
         formData.append("UserId", "0");
 
-        const editProduct = await ProductAPI.editProduct(formData,this.state.productid);
-        console.log("editProduct",editProduct);
+        const editProduct = await ProductAPI.editProduct(
+          formData,
+          this.state.productid
+        );
+        console.log("editProduct", editProduct);
 
         if (editProduct) {
           if (editProduct.status === 200) {
@@ -460,18 +434,18 @@ console.log("hero",updatedHero);
                 <Card>
                   <CardHeader>
                     <Row>
-                      {
-                        this.state.updateTrue === true ? (
-                          <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.productPage.title.updateProductTitle}</h1>
+                      {this.state.updateTrue === true ? (
+                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                          <h1>
+                            {constant.productPage.title.updateProductTitle}
+                          </h1>
                         </Col>
-                        ) : (
-                          <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                      ) : (
+                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
                           <h1>{constant.productPage.title.addProductTitle}</h1>
                         </Col>
-                        )
-                      }
-                     
+                      )}
+
                       <Col
                         xs="12"
                         sm="6"
@@ -499,16 +473,29 @@ console.log("hero",updatedHero);
                         <Form>
                           <FormGroup>
                             <Label for="exampleCustomSelect">
-                              {constant.productPage.productTableColumn.selectmerchant}
+                              {
+                                constant.productPage.productTableColumn
+                                  .selectmerchant
+                              }
                             </Label>
                             <CustomInput
                               type="select"
                               id="exampleCustomSelect"
                               name="merchantid"
                               onChange={this.onMerchantSelect}
-                              value={this.state.merchantid ? this.state.merchantid : ''}
+                              value={
+                                this.state.merchantid
+                                  ? this.state.merchantid
+                                  : ""
+                              }
                             >
-                              <option value=""> {constant.productPage.productTableColumn.selectmerchant}</option>
+                              <option value="">
+                                {" "}
+                                {
+                                  constant.productPage.productTableColumn
+                                    .selectmerchant
+                                }
+                              </option>
                               {this.state.merchantlist.length > 0
                                 ? this.state.merchantlist.map(
                                     (data: any, index: any) => (
@@ -529,16 +516,29 @@ console.log("hero",updatedHero);
                         <Form>
                           <FormGroup>
                             <Label for="exampleCustomSelect">
-                            {constant.productPage.productTableColumn.selectcategory}
+                              {
+                                constant.productPage.productTableColumn
+                                  .selectcategory
+                              }
                             </Label>
                             <CustomInput
                               type="select"
                               id="exampleCustomSelect"
                               name="maincategoryid"
                               onChange={this.onMainCategorySelect}
-                              value={this.state.maincategoryid ? this.state.maincategoryid : ''}
+                              value={
+                                this.state.maincategoryid
+                                  ? this.state.maincategoryid
+                                  : ""
+                              }
                             >
-                              <option value=""> {constant.productPage.productTableColumn.selectcategory}</option>
+                              <option value="">
+                                {" "}
+                                {
+                                  constant.productPage.productTableColumn
+                                    .selectcategory
+                                }
+                              </option>
 
                               {this.state.categorylist.length > 0
                                 ? this.state.categorylist.map(
@@ -560,7 +560,10 @@ console.log("hero",updatedHero);
                     <Row>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
-                          <Label htmlFor="Product Name"> {constant.productPage.productTableColumn.prodctname}</Label>
+                          <Label htmlFor="Product Name">
+                            {" "}
+                            {constant.productPage.productTableColumn.prodctname}
+                          </Label>
                           <Input
                             type="text"
                             id="Product Name"
@@ -577,7 +580,10 @@ console.log("hero",updatedHero);
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
-                          <Label htmlFor="Product Price"> {constant.productPage.productTableColumn.price}</Label>
+                          <Label htmlFor="Product Price">
+                            {" "}
+                            {constant.productPage.productTableColumn.price}
+                          </Label>
                           <Input
                             type="number"
                             id="Product Price"
@@ -595,7 +601,10 @@ console.log("hero",updatedHero);
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
                           <Label htmlFor="Product Discount">
-                          {constant.productPage.productTableColumn.discountPrice}
+                            {
+                              constant.productPage.productTableColumn
+                                .discountPrice
+                            }
                           </Label>
                           <Input
                             type="number"
@@ -615,13 +624,18 @@ console.log("hero",updatedHero);
                     <Row>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
-                          <Label htmlFor="metatitle"> {constant.productPage.productTableColumn.metatitle}</Label>
+                          <Label htmlFor="metatitle">
+                            {" "}
+                            {constant.productPage.productTableColumn.metatitle}
+                          </Label>
                           <Input
                             type="text"
                             id="metatitle"
                             name="metatitle"
                             className="form-control"
-                            value={this.state.metatitle ? this.state.metatitle : ''}
+                            value={
+                              this.state.metatitle ? this.state.metatitle : ""
+                            }
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your meta title"
                           />
@@ -632,13 +646,18 @@ console.log("hero",updatedHero);
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
-                          <Label htmlFor="sortorder"> {constant.productPage.productTableColumn.sortOrder}</Label>
+                          <Label htmlFor="sortorder">
+                            {" "}
+                            {constant.productPage.productTableColumn.sortOrder}
+                          </Label>
                           <Input
                             type="number"
                             id="sortorder"
                             name="sortorder"
                             className="form-control"
-                            value={this.state.sortorder ? this.state.sortorder : ''}
+                            value={
+                              this.state.sortorder ? this.state.sortorder : ""
+                            }
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your sort order"
                           />
@@ -649,7 +668,10 @@ console.log("hero",updatedHero);
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <label>
-                          <span> {constant.productPage.productTableColumn.isFeatured}</span>
+                          <span>
+                            {" "}
+                            {constant.productPage.productTableColumn.isFeatured}
+                          </span>
                           <br />
                           <div style={{ marginTop: "10px" }}>
                             <Switch
@@ -664,7 +686,10 @@ console.log("hero",updatedHero);
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <div>
                           <p style={{ fontSize: "16px" }}>
-                          {constant.productPage.productTableColumn.productdescription}
+                            {
+                              constant.productPage.productTableColumn
+                                .productdescription
+                            }
                           </p>
                           <input
                             id="my-file"
@@ -673,7 +698,11 @@ console.log("hero",updatedHero);
                             style={{ display: "none" }}
                           />
                           <Editor
-                            initialValue={this.state.productdescription ? this.state.productdescription : "<p>This is the initial content of the editor</p>"}
+                            initialValue={
+                              this.state.productdescription
+                                ? this.state.productdescription
+                                : "<p>This is the initial content of the editor</p>"
+                            }
                             init={{
                               height: 200,
                               menubar: false,
@@ -730,7 +759,10 @@ console.log("hero",updatedHero);
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
                           <Label htmlFor="Meta Description">
-                          {constant.productPage.productTableColumn.metadescritption}
+                            {
+                              constant.productPage.productTableColumn
+                                .metadescritption
+                            }
                           </Label>
                           <Input
                             type="textarea"
@@ -738,7 +770,11 @@ console.log("hero",updatedHero);
                             rows={8}
                             name="metadiscription"
                             className="form-control"
-                            value={this.state.metadiscription ? this.state.metadiscription: ''}
+                            value={
+                              this.state.metadiscription
+                                ? this.state.metadiscription
+                                : ""
+                            }
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your meta discription"
                           />
@@ -749,14 +785,24 @@ console.log("hero",updatedHero);
                       </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
-                          <Label htmlFor="Meta keyword"> {constant.productPage.productTableColumn.metakeyword}</Label>
+                          <Label htmlFor="Meta keyword">
+                            {" "}
+                            {
+                              constant.productPage.productTableColumn
+                                .metakeyword
+                            }
+                          </Label>
                           <Input
                             type="textarea"
                             id="Meta keyword"
                             rows={8}
                             name="metakeyword"
                             className="form-control"
-                            value={this.state.metakeyword ? this.state.metakeyword : ''}
+                            value={
+                              this.state.metakeyword
+                                ? this.state.metakeyword
+                                : ""
+                            }
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your meta keyword"
                           />
@@ -767,145 +813,110 @@ console.log("hero",updatedHero);
                       </Col>
                     </Row>
                     <Row>
-                    <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                      <form>
-                        <input
-                          className="upload"
-                          type="file"
-                          accept="image/*"
-                          onChange={this._handleImageChange}
-                          multiple
-                        />
-                      </form>
+                      <Col xs="12" sm="12" md="12" lg="12" xl="12">
+                        <form>
+                          <input
+                            className="upload"
+                            type="file"
+                            accept="image/*"
+                            onChange={this._handleImageChange}
+                            multiple
+                          />
+                        </form>
                       </Col>
                     </Row>
                     <Row className="mt-5">
-                    <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                      {
-                        this.state.updateTrue === true ? (
-                         
-                            this.state.productpreview.map((img:any,index:any) => (
-                            img.imagePath !== null ? (
-                              <div className="profile-pic">
-                              <img
-                                key={index}
-                                alt="previewImg"
-                                src={constant.fileMerchantpath + img.imagePath}
-                              />
-                              <div className="edit">
-                              <i className="fas fa-trash" onClick={() => this.deleteImage()}></i></div>
-                           </div>
-                            ) : (
-                              ''
-                            )
-                          ))
-                        
-                        
-                        
-                         
+                      <Col xs="12" sm="12" md="12" lg="12" xl="12">
+                        {this.state.updateTrue === true ? (
+                          this.state.productpreview.map(
+                            (img: any, index: any) =>
+                              img.imagePath !== null ? (
+                                <div key={index} className="profile-pic">
+                                  <img
+                                    key={index}
+                                    alt="previewImg"
+                                    src={
+                                      constant.fileMerchantpath + img.imagePath
+                                    }
+                                  />
+                                  <div className="edit">
+                                    <i
+                                      className="fas fa-trash"
+                                      onClick={() =>
+                                        this.deleteImage(img.id, index)
+                                      }
+                                    ></i>
+                                  </div>
+                                </div>
+                              ) : (
+                                ""
+                              )
+                          )
                         ) : (
                           <div className="image_margin">
-                          {this.state.imagesPreviewUrls.map((imagePreviewUrl) => {
-                            return (
-                              <img
-                                key={imagePreviewUrl}
-                                className="picture"
-                                alt="previewImg"
-                                src={imagePreviewUrl}
-                              />
-                            );
-                          })}
-                        </div>
-                        )
-                      }
-                  </Col>
-                    </Row>
-                     {/* <div className="image_margin">
-                          {this.state.images.map((img:any,index:any) => (
-                            img.imagePath !== null ? (
-                              <>
-                              <img
-                                key={index}
-                                className="picture"
-                                alt="previewImg"
-                                src={constant.fileMerchantpath + img.imagePath}
-                              />
-                              <i
-                              className="fa fa-times cursor"
-                              // onClick={() => this.removeIcon()}
-                            ></i>
-                            </>
-                            ) : (
-                              ''
-                            )
-                          ))} 
-                        </div>*/}
-                    {/* <Row>
-                      <ImageUploading
-                        value={this.state.images}
-                        onChange={this.onChange}
-                        maxNumber={maxNumber}
-                        multiple
-                        maxFileSize={maxMbFileSize}
-                        acceptType={["jpg", "gif", "png"]}
-                        onError={this.onError}
-                        dataURLKey="data_url"
-                      >
-                        {({
-                          imageList,
-                          onImageUpload,
-                          onImageRemoveAll,
-                          onImageUpdate,
-                          onImageRemove,
-                        }):any=> (
-                          // write your building UI
-                          <div>
-                            <button onClick={onImageUpload}>
-                              Upload images
-                            </button>
-                            <button onClick={onImageRemoveAll}>
-                              Remove all images
-                            </button>
-
-                            {imageList.map((image:any, index:any) => (
-                              <div key={index}>
-                                <img src={image.data_url} />
-                                <button onClick={() => this.onImageUpdate(index)}>
-                                  Update
-                                </button>
-                                <button onClick={() => onImageRemove(index)}>
-                                  Remove
-                                </button>
-                              </div>
-                            ))}
+                            {this.state.imagesPreviewUrls.map(
+                              (imagePreviewUrl) => {
+                                return (
+                                  <img
+                                    key={imagePreviewUrl}
+                                    className="picture"
+                                    alt="previewImg"
+                                    src={imagePreviewUrl}
+                                  />
+                                );
+                              }
+                            )}
                           </div>
                         )}
-                      </ImageUploading>
-                    </Row> */}
-                    {
-                      this.state.updateTrue === true ? (
-                        <Button
-                      type="button"
-                      size="sm"
-                      color="primary"
-                      className="mb-2 mt-3 mr-2 custom-button"
-                      onClick={this.editProduct}
-                    >
-                      {constant.button.update}
-                    </Button>
-                      ) : (
-                        <Button
-                      type="button"
-                      size="sm"
-                      color="primary"
-                      className="mb-2 mt-3 mr-2 custom-button"
-                      onClick={this.addProduct}
-                    >
-                       {constant.button.Save}
-                    </Button>
-                      )
-                    }
-                    
+                        <Row className="mt-5">
+                          <Col xs="12" sm="12" md="12" lg="12" xl="12">
+                            {this.state.updateTrue === true ? (
+                              <div className="image_margin">
+                                {this.state.imagesPreviewUrls.map(
+                                  (imagePreviewUrl: any, index: any) => {
+                                    return (
+                                      <div key={index} className="profile-pic">
+                                        <img
+                                          key={imagePreviewUrl}
+                                          className="picture"
+                                          alt="previewImg"
+                                          src={imagePreviewUrl}
+                                        />
+                                        
+                                      </div>
+                                    );
+                                  }
+                                )}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+
+                    {this.state.updateTrue === true ? (
+                      <Button
+                        type="button"
+                        size="sm"
+                        color="primary"
+                        className="mb-2 mt-3 mr-2 custom-button"
+                        onClick={this.editProduct}
+                      >
+                        {constant.button.update}
+                      </Button>
+                    ) : (
+                      <Button
+                        type="button"
+                        size="sm"
+                        color="primary"
+                        className="mb-2 mt-3 mr-2 custom-button"
+                        onClick={this.addProduct}
+                      >
+                        {constant.button.Save}
+                      </Button>
+                    )}
                   </CardBody>
                 </Card>
               </Col>

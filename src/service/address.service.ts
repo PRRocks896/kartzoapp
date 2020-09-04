@@ -9,7 +9,7 @@ export default {
     editAddress: async function (data: any) {
         return await WebReqUrl.put(Constant.apiUrl + apiUrl.addressController.editAddress,data,false);
     },
-    deleteAddress: async function () {
-        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.addressController.deleteAddress);
-    }
+    // deleteAddress: async function () {
+    //     return await WebReqUrl.delete(Constant.apiUrl + apiUrl.addressController.deleteAddress,false);
+    // }
 }

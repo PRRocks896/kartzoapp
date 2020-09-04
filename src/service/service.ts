@@ -2,7 +2,7 @@ import Constant from '../constant/constant';
 import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
 import axios from 'axios';
-import { loginCreateRequest, forgotPasswordRequest, profileGetRequest, resetPasswordRequest, changePasswordRequest, getAllTableDataListRequest, getDataByIdRequest } from "../modelController";
+import { loginCreateRequest, forgotPasswordRequest, profileGetRequest, resetPasswordRequest, changePasswordRequest, getAllTableDataListRequest, getDataByIdRequest, deleteByIdRequest } from "../modelController";
 
 export default {
     loginUser: async function (data: loginCreateRequest) {
@@ -32,8 +32,8 @@ export default {
     getUserDataPagination: async function (data:getAllTableDataListRequest) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.userController.getUserPaginationData,data,false);
     },
-    deleteUser: async function (data:any) {
-        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.userController.deleteUser + data);
+    deleteUser: async function (data:deleteByIdRequest) {
+        return await WebReqUrl.delete(Constant.apiUrl + apiUrl.userController.deleteUser + data.id,false);
     },
     addUser: async function (data: any) {
         const config = {     

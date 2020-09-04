@@ -16,9 +16,13 @@ import {
 import "./users.css";
 import NavBar from "../../navbar/navbar";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
+import {
+  getAllTableDataListRequest,
+  statusChangeRequest,
+  deleteByIdRequest,
+} from "../../../modelController";
 const $ = require("jquery");
-var _ = require('lodash');
+var _ = require("lodash");
 
 class Users extends React.Component<{ history: any }> {
   userState = constant.userPage.state;
@@ -35,7 +39,10 @@ class Users extends React.Component<{ history: any }> {
     userrole: this.userState.userrole,
     userdata: this.userState.userdata,
     switchSort: this.userState.switchSort,
-    isStatus: this.userState.isStatus
+    isStatus: this.userState.isStatus,
+    deleteuserdata: this.userState.deleteuserdata,
+    _maincheck: this.userState._maincheck,
+    deleteFlag: this.userState.deleteFlag,
   };
 
   constructor(props: any) {
@@ -45,6 +52,7 @@ class Users extends React.Component<{ history: any }> {
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.edituser = this.edituser.bind(this);
     this.viewuser = this.viewuser.bind(this);
+    this.deleteuser = this.deleteuser.bind(this);
     this.onRoleSelect = this.onRoleSelect.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(
@@ -56,6 +64,8 @@ class Users extends React.Component<{ history: any }> {
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
@@ -100,7 +110,12 @@ class Users extends React.Component<{ history: any }> {
       items_per_page: this.state.items_per_page =
         event.target.options[event.target.selectedIndex].value,
     });
-    this.getUsers(parseInt(this.state.roleid),'',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+    this.getUsers(
+      parseInt(this.state.roleid),
+      "",
+      parseInt(this.state.currentPage),
+      parseInt(this.state.items_per_page)
+    );
   }
 
   async onRoleSelect(event: any) {
@@ -175,30 +190,26 @@ class Users extends React.Component<{ history: any }> {
     }
   }
 
-  async deleteuser(id: any) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You should be remove user!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, keep it",
-    }).then(async (result) => {
-      if (result.value) {
-        var deleteUser = await API.deleteUser(id);
-        if (deleteUser.status === 200) {
-          const msg = deleteUser.message;
-          utils.showSuccess(msg);
-          this.getUsers();
-        } else {
-          const msg = deleteUser.message;
-          utils.showSuccess(msg);
-        }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        const msg1 = "User is safe :";
-        utils.showError(msg1);
+  async deleteuser(data: any, text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteByIdRequest = {
+        id: data.userId,
+      };
+      var deleteUser = await API.deleteUser(obj);
+      if (deleteUser.status === 200) {
+        const msg = deleteUser.message;
+        utils.showSuccess(msg);
+        this.getUsers(
+          parseInt(this.state.roleid),
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
+      } else {
+        const msg = deleteUser.message;
+        utils.showSuccess(msg);
       }
-    });
+    }
   }
 
   async getUserRole() {
@@ -281,23 +292,109 @@ class Users extends React.Component<{ history: any }> {
 
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-     const obj:statusChangeRequest = {
-      moduleName: "User",
-      id: data.userId,
-      isActive: data.isActive === true ? false : true
-     }
-     var getStatusChange = await StatusAPI.getStatusChange(obj);
-     console.log("getStatusChange", getStatusChange);
-     if (getStatusChange.status === 200) {
-      const msg = getStatusChange.message;
-      utils.showSuccess(msg);
-      this.getUsers();
-    } else {
-      const msg1 = getStatusChange.message;
-      utils.showError(msg1);
+      const obj: statusChangeRequest = {
+        moduleName: "User",
+        id: data.userId,
+        isActive: data.isActive === true ? false : true,
+      };
+      var getStatusChange = await StatusAPI.getStatusChange(obj);
+      console.log("getStatusChange", getStatusChange);
+      if (getStatusChange.status === 200) {
+        const msg = getStatusChange.message;
+        utils.showSuccess(msg);
+        this.getUsers(
+          parseInt(this.state.roleid),
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
+      } else {
+        const msg1 = getStatusChange.message;
+        utils.showError(msg1);
+      }
     }
+  }
 
+  handleChange(item: any, e: any) {
+    let _id = item.userId;
+    let ind: any = this.state.userdata.findIndex((x: any) => x.userId === _id);
+    let data: any = this.state.userdata;
+    if (ind > -1) {
+      let newState: any = !item._rowChecked;
+      data[ind]._rowChecked = newState;
+      this.setState({
+        userdata: this.state.userdata = data
+      });
     }
+    let count = 0;
+    data.forEach((element: any) => {
+      if (element._rowChecked === true) {
+        element._rowChecked = true;
+        count++;
+      } else {
+        element._rowChecked = false;
+      }
+    });
+    if (count === data.length) {
+      this.setState({
+        _maincheck: true,
+      });
+    } else {
+      this.setState({
+        _maincheck: false,
+      });
+    }
+    let newarray: any = [];
+    for (var i = 0; i < this.state.userdata.length; i++) {
+      if (this.state.userdata[i]["_rowChecked"] === true) {
+        newarray.push(this.state.userdata[i]["userId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newarray,
+    });
+    if(this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+  handleMainChange(e: any) {
+    let _val = e.target.checked;
+    this.state.userdata.forEach((element: any) => {
+      element._rowChecked = _val;
+    });
+    this.setState({
+      userdata: this.state.userdata,
+    });
+    this.setState({
+      _maincheck: _val,
+    });
+    let newmainarray: any = [];
+    for (var i = 0; i < this.state.userdata.length; i++) {
+      if (this.state.userdata[i]["_rowChecked"] === true) {
+        newmainarray.push(this.state.userdata[i]["userId"]);
+      }
+    }
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newmainarray,
+    });
+    if(this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   pagination(pageNumbers: any) {
@@ -351,6 +448,16 @@ class Users extends React.Component<{ history: any }> {
       >
         <thead>
           <tr onClick={() => this.handleSort("firstName")}>
+            <th className="centers">
+              <CustomInput
+                name="name"
+                defaultValue="value"
+                type="checkbox"
+                id="exampleCustomCheckbox"
+                onChange={this.handleMainChange}
+                checked={this.state._maincheck}
+              />
+            </th>
             <th>{constant.userPage.userTableColumn.firstname}</th>
             <th>{constant.userPage.userTableColumn.lastname}</th>
             <th>{constant.userPage.userTableColumn.email}</th>
@@ -366,6 +473,15 @@ class Users extends React.Component<{ history: any }> {
             <>
               {userdata.map((data: any, index: any) => (
                 <tr key={index}>
+                  <td className="centers">
+                    <CustomInput
+                      // name="name"
+                      type="checkbox"
+                      id={data.userId}
+                      onChange={(e) => this.handleChange(data, e)}
+                      checked={userdata[index]["_rowChecked"] === true}
+                    />
+                  </td>
                   <td className="sorting_1">{data.firstName}</td>
                   <td>{data.lastName}</td>
                   <td>{data.email}</td>
@@ -409,6 +525,16 @@ class Users extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.edituser(data)}
                       ></i>
+                      <i
+                        className="fas fa-trash"
+                        onClick={() =>
+                          this.deleteuser(
+                            data,
+                            "You should be Delete user",
+                            "Yes, Delete it"
+                          )
+                        }
+                      ></i>
                     </span>
                   </td>
                 </tr>
@@ -422,41 +548,43 @@ class Users extends React.Component<{ history: any }> {
     );
   }
 
-  getPageData(pageDecrementBtn:any,renderPageNumbers:any,pageIncrementBtn:any){
+  getPageData(
+    pageDecrementBtn: any,
+    renderPageNumbers: any,
+    pageIncrementBtn: any
+  ) {
     return (
       <div className="filter">
-      <CustomInput
-        type="select"
-        id="item"
-        className="custom_text_width"
-        name="customSelect"
-        onChange={this.onItemSelect}
-      >
-        <option value="10">
-          {constant.recordPerPage.recordperPage}
-        </option>
-        <option value={constant.recordPerPage.fifteen}>
-          {constant.recordPerPage.fifteen}
-        </option>
-        <option value={constant.recordPerPage.twenty}>
-          {constant.recordPerPage.twenty}
-        </option>
-        <option value={constant.recordPerPage.thirty}>
-          {constant.recordPerPage.thirty}
-        </option>
-        <option value={constant.recordPerPage.fifty}>
-          {constant.recordPerPage.fifty}
-        </option>
-      </CustomInput>
-      <div>
-        <ul className="pagination" id="page-numbers">
-          {pageDecrementBtn}
-          {renderPageNumbers}
-          {pageIncrementBtn}
-        </ul>
+        <CustomInput
+          type="select"
+          id="item"
+          className="custom_text_width"
+          name="customSelect"
+          onChange={this.onItemSelect}
+        >
+          <option value="10">{constant.recordPerPage.recordperPage}</option>
+          <option value={constant.recordPerPage.fifteen}>
+            {constant.recordPerPage.fifteen}
+          </option>
+          <option value={constant.recordPerPage.twenty}>
+            {constant.recordPerPage.twenty}
+          </option>
+          <option value={constant.recordPerPage.thirty}>
+            {constant.recordPerPage.thirty}
+          </option>
+          <option value={constant.recordPerPage.fifty}>
+            {constant.recordPerPage.fifty}
+          </option>
+        </CustomInput>
+        <div>
+          <ul className="pagination" id="page-numbers">
+            {pageDecrementBtn}
+            {renderPageNumbers}
+            {pageIncrementBtn}
+          </ul>
+        </div>
       </div>
-    </div>
-    )
+    );
   }
 
   render() {
@@ -552,11 +680,24 @@ class Users extends React.Component<{ history: any }> {
                     ) : (
                       <h1 className="text-center mt-5">No Data Found</h1>
                     )}
-                    {this.state.userdata.length > 0 ? (
-                     this.getPageData(pageIncrementBtn,renderPageNumbers,pageDecrementBtn)
+                    {this.state.deleteFlag === true ? (
+                      <Button
+                        className="mb-2 mr-2 custom-button"
+                        color="primary"
+                      >
+                        {constant.button.remove}
+                      </Button>
                     ) : (
                       ""
                     )}
+
+                    {this.state.userdata.length > 0
+                      ? this.getPageData(
+                          pageIncrementBtn,
+                          renderPageNumbers,
+                          pageDecrementBtn
+                        )
+                      : ""}
                   </CardBody>
                 </Card>
               </Col>

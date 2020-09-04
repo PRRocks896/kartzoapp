@@ -30,3 +30,4 @@ export * from './rightsModel';
 export * from './forgotModel';
 export * from './resetPasswordModel';
 export * from './changepasswordModel';
+export * from './deleteDataByIdModel';
