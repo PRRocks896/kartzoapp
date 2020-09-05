@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import utils from '../../../utils';
 import {
     Button,
@@ -15,9 +14,6 @@ import {
     Row,
 } from 'reactstrap';
 import './cart.css';
-
-import API from '../../../service/order.service';
-import Switch from "react-switch";
 import constant from '../../../constant/constant';
 
 class OrderCartManagement extends React.Component<{ history: any }> {

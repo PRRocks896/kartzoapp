@@ -100,7 +100,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
   }
 
   handleChange(checked: boolean) {
-    this.setState({ isOpen: this.state.isOpen = checked });
+    this.setState({ isOpen:checked });
   }
 
   async componentDidMount() {
@@ -157,7 +157,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         cancellationpolicy: this.state.cancellationpolicy =
           getMerchantById.resultObject.cancellationPolicy,
         password: this.state.password = getMerchantById.resultObject.password,
-        file: this.state.file = getMerchantById.resultObject.photoPath,
+        file: this.state.file = getMerchantById.resultObject.logoPath,
         isOpen: this.state.isOpen = getMerchantById.resultObject.isActive,
         // filetrue: this.state.filetrue = getMerchantById.resultObject.
         // file1: this.state.file1 = getMerchantById.resultObject.

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import API from '../../service/user.service';
 import utils from '../../utils';
-import history from '../../history';
 import Constant from '../../constant/constant';
 import constant from '../../constant/constant';
 import { registerCreateRequest } from '../../modelController/registerModel';

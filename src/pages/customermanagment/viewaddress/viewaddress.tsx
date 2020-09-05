@@ -6,16 +6,12 @@ import {
     Card,
     CardBody,
     CardHeader,
-    Input,
     Col,
     FormGroup,
     Label,
     Row,
 } from 'reactstrap';
 // import './adduser.css';
-
-import API from '../../../service/user.service';
-import Switch from "react-switch";
 import constant from '../../../constant/constant';
 
 class ViewAddress extends React.Component<{ history: any }> {

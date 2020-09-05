@@ -7,12 +7,8 @@ import {
   CardBody,
   CardHeader,
   CardTitle,
-  Table,
-  Input,
   Col,
-  FormGroup,
   CustomInput,
-  Label,
   Row,
 } from "reactstrap";
 
@@ -123,7 +119,7 @@ class ListCouponMap extends React.Component<{ history: any }> {
 
   onItemSelect(event: any) {
     this.setState({
-      items_per_page: this.state.items_per_page =
+      items_per_page: 
         event.target.options[event.target.selectedIndex].value,
     });
 

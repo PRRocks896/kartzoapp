@@ -8,20 +8,14 @@ import {
     CardBody,
     CardHeader,
     CardTitle,
-    Table,
-    Input,
     Col,
     CustomInput,
-    FormGroup,
-    Label,
     Row,
 } from 'reactstrap';
 // import './adduser.css';
 import API from '../../../service/category.service';
-import Switch from "react-switch";
-import { MDBDataTable } from 'mdbreact';
 import constant from '../../../constant/constant';
-import { subCategoryListRequest } from '../../../modelController/subCategoryModel';
+// import { subCategoryListRequest } from '../../../modelController/subCategoryModel';
 const $ = require('jquery');
 $.DataTable = require('datatables.net')
 

@@ -99,11 +99,11 @@ class UserRoleToRights extends React.Component {
    
         data.forEach((element: any) => {
           if (
-            element.view == true &&
-            element.delete == true &&
-            element.add == true &&
-            element.edit == true &&
-            element.detail == true
+            element.view === true &&
+            element.delete === true &&
+            element.add === true &&
+            element.edit === true &&
+            element.detail === true
           ) {
             element._rowChecked = true;
            
@@ -128,11 +128,11 @@ class UserRoleToRights extends React.Component {
     let count = 0;
     data.forEach((element: any) => {
       if (
-        element.view == true &&
-        element.add == true &&
-        element.edit == true &&
-        element.delete == true &&
-        element.detail == true
+        element.view === true &&
+        element.add === true &&
+        element.edit === true &&
+        element.delete === true &&
+        element.detail === true
       ) {
         element._rowChecked = true;
         count++;
@@ -199,11 +199,11 @@ class UserRoleToRights extends React.Component {
     let _val = e.target.checked;
     this.state.roleprivileges.forEach((element: any) => {
       element._rowChecked = _val;
-      element.view = _val == true ? true : false;
-      element.add = _val == true ? true : false;
-      element.edit = _val == true ? true : false;
-      element.delete = _val == true ? true : false;
-      element.detail = _val == true ? true : false;
+      element.view = _val === true ? true : false;
+      element.add = _val === true ? true : false;
+      element.edit = _val === true ? true : false;
+      element.delete = _val === true ? true : false;
+      element.detail = _val === true ? true : false;
     });
     this.setState({
       roleprivileges: this.state.roleprivileges,
@@ -216,7 +216,7 @@ class UserRoleToRights extends React.Component {
   handleViewChange(e: any) {
     let _val = e.target.checked;
     this.state.roleprivileges.forEach((element: any) => {
-      element.view = _val == true ? true : false;
+      element.view = _val === true ? true : false;
     });
     this.setState({
       roleprivileges: this.state.roleprivileges,
@@ -229,7 +229,7 @@ class UserRoleToRights extends React.Component {
   handleAddChange(e: any) {
     let _val = e.target.checked;
     this.state.roleprivileges.forEach((element: any) => {
-      element.add = _val == true ? true : false;
+      element.add = _val === true ? true : false;
     });
     this.setState({
       roleprivileges: this.state.roleprivileges,
@@ -242,7 +242,7 @@ class UserRoleToRights extends React.Component {
   handleEditChange(e: any) {
     let _val = e.target.checked;
     this.state.roleprivileges.forEach((element: any) => {
-      element.edit = _val == true ? true : false;
+      element.edit = _val === true ? true : false;
     });
     this.setState({
       roleprivileges: this.state.roleprivileges,
@@ -255,7 +255,7 @@ class UserRoleToRights extends React.Component {
   handleDeleteChange(e: any) {
     let _val = e.target.checked;
     this.state.roleprivileges.forEach((element: any) => {
-      element.delete = _val == true ? true : false;
+      element.delete = _val === true ? true : false;
     });
     this.setState({
       roleprivileges: this.state.roleprivileges,
@@ -268,7 +268,7 @@ class UserRoleToRights extends React.Component {
   handleDetailChange(e: any) {
     let _val = e.target.checked;
     this.state.roleprivileges.forEach((element: any) => {
-      element.detail = _val == true ? true : false;
+      element.detail = _val === true ? true : false;
     });
     this.setState({
       roleprivileges: this.state.roleprivileges,

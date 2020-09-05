@@ -10,15 +10,14 @@ import {
     CardHeader,
     Col,
     CardTitle,
-    Form,
+  
     CustomInput,
-    FormGroup,
-    Label,
+ 
+  
     // Table,
     Row,
 } from 'reactstrap';
 import './deliverymanagment.css';
-import { MDBDataTable } from 'mdbreact';
 import constant from '../../constant/constant';
 const $ = require('jquery');
 $.DataTable = require('datatables.net')
@@ -128,10 +127,10 @@ class DeliveryManagement extends React.Component<{ history: any }> {
     }
 
     handleClick(event:any) {
-        const obj = {
-            page_no: '' + event.target.id,
-            items_per_page: this.state.items_per_page
-        }
+        // const obj = {
+        //     page_no: '' + event.target.id,
+        //     items_per_page: this.state.items_per_page
+        // }
         // var getUserDataPagination = await API.getUserDataPagination();
         // console.log("getUserDataPagination",getUserDataPagination);
     }

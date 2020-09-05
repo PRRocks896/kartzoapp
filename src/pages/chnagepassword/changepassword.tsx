@@ -129,8 +129,10 @@ class ChangePassword extends Component<{ history: any }> {
                           id="oldpassword"
                           name="oldpassword"
                           className="form-control"
-                          onChange={(e) =>
-                            (this.state.oldpassword = e.target.value)
+                          onChange={(e) => this.setState({
+                            oldpassword: e.target.value
+                          })
+                            // (this.state.oldpassword = e.target.value)
                           }
                           placeholder="Enter your Old Password"
                           required

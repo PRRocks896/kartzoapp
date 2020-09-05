@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import utils from '../../../utils';
-import API from '../../../service/customer.service';
 import {
     Button,
     Card,
@@ -10,20 +9,12 @@ import {
     CardHeader,
     Col,
     CardTitle,
-    Form,
     CustomInput,
-    FormGroup,
-    Label,
     // Table,
     Row,
 } from 'reactstrap';
 import './listuser.css';
-
-import { MDBDataTable } from 'mdbreact';
 import constant from '../../../constant/constant';
-import TableComponent from '../../../component/tables/table';
-import apiUrl from '../../../apicontroller/apicontrollers';
-import {customerListRequest} from '../../../modelController/customerModel/userListRequest';
 const $ = require('jquery');
 $.DataTable = require('datatables.net')
 
@@ -135,10 +126,7 @@ class ListUser extends React.Component<{ history: any }> {
     }
 
     handleClick(event:any) {
-        const obj = {
-            page_no: '' + event.target.id,
-            items_per_page: this.state.items_per_page
-        }
+      
         // var getUserDataPagination = await API.getUserDataPagination();
         // console.log("getUserDataPagination",getUserDataPagination);
     }

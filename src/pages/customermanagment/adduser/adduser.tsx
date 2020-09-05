@@ -13,9 +13,6 @@ import {
     Row,
 } from 'reactstrap';
 import './adduser.css';
-
-import API from '../../../service/customer.service';
-import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { customerCreateRequest, customerUpdateRequest } from '../../../modelController/customerModel';
 

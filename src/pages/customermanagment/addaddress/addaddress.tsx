@@ -15,12 +15,8 @@ import {
     Row,
 } from 'reactstrap';
 import './addaddress.css';
-
-import API from '../../../service/customer.service';
-import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { addressCreateRequest,addressUpdateRequest } from '../../../modelController';
-import { number } from 'prop-types';
 
 class AddAddress extends React.Component<{ history: any }> {
 

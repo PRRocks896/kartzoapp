@@ -15,9 +15,6 @@ import {
     Row,
 } from 'reactstrap';
 import './addcard.css';
-
-import API from '../../../service/customer.service';
-import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import {cardCreateRequest,cardUpdateRequest} from '../../../modelController/cardModel';
 

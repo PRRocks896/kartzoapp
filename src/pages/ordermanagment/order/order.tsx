@@ -15,9 +15,6 @@ import {
     Row,
 } from 'reactstrap';
 import './order.css';
-
-import API from '../../../service/order.service';
-import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { orderCreateRequest, orderUpdateRequest } from '../../../modelController/orderModel';
 

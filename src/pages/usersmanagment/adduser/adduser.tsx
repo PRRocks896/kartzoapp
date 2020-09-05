@@ -117,8 +117,8 @@ class AddUser extends React.Component<{ history: any; location: any }> {
   onChangeHandler(event: any) {
     if (this.state.filetrue === true) {
       this.setState({
-        filetrue: this.state.filetrue = false,
-        selectedFile: this.state.selectedFile = event.target.files,
+        filetrue:false,
+        selectedFile:  event.target.files,
       });
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
@@ -129,7 +129,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
       };
     } else {
       this.setState({
-        selectedFile: this.state.selectedFile = event.target.files,
+        selectedFile: event.target.files,
       });
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
@@ -146,7 +146,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
 
     if (getUserRole) {
       this.setState({
-        userrole: this.state.userrole = getUserRole.resultObject,
+        userrole:getUserRole.resultObject,
       });
     } else {
       const msg1 = "Internal server error";

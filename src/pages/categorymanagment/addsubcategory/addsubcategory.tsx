@@ -6,10 +6,8 @@ import {
     Card,
     CardBody,
     CardHeader,
-    CardTitle,
     Form,
     CustomInput,
-    Table,
     Input,
     Col,
     FormGroup,
@@ -18,9 +16,9 @@ import {
 } from 'reactstrap';
 // import './adduser.css';
 import API from '../../../service/category.service';
-import Switch from "react-switch";
+// import Switch from "react-switch";
 import constant from '../../../constant/constant';
-import { subCategoryCreateRequest, subCategoryUpdateRequest } from '../../../modelController/subCategoryModel';
+// import { subCategoryCreateRequest, subCategoryUpdateRequest } from '../../../modelController/subCategoryModel';
 
 class AddSubCategory extends React.Component<{ history: any }> {
 

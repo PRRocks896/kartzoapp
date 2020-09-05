@@ -6,19 +6,13 @@ import {
     Card,
     CardBody,
     CardHeader,
-    CardTitle,
     Form,
-    CustomInput,
-    Table,
-    Input,
     Col,
     FormGroup,
     Label,
     Row,
 } from 'reactstrap';
 // import './adduser.css';
-import API from '../../../service/user.service';
-import Switch from "react-switch";
 import constant from '../../../constant/constant';
 
 class ViewSubCategory extends React.Component<{ history: any }> {

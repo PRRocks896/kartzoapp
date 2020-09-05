@@ -131,6 +131,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
                               {this.state.file ? (
                                 <div>
                                   <img
+                                  alt=""
                                     className="picture"
                                     src={constant.filepath + this.state.file}
                                   />

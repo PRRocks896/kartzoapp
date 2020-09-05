@@ -136,7 +136,7 @@ class CountryManagment extends React.Component<{ history: any }> {
 
   onItemSelect(event: any) {
     this.setState({
-      items_per_page: this.state.items_per_page =
+      items_per_page: 
         event.target.options[event.target.selectedIndex].value,
     });
     this.getCountryData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));

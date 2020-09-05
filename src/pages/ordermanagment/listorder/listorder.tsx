@@ -2,27 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import utils from '../../../utils';
-import { MDBDataTable } from 'mdbreact';
 import {
     Button,
     Card,
     CardBody,
     CardHeader,
     CardTitle,
-    Table,
-    Input,
     Col,
-    FormGroup,
     CustomInput,
-    Label,
     Row,
 } from 'reactstrap';
 // import './adduser.css';
 
-import API from '../../../service/product.service';
-import Switch from "react-switch";
 import constant from '../../../constant/constant';
-import { orderListRequest } from '../../../modelController/orderModel';
 const $ = require('jquery');
 $.DataTable = require('datatables.net')
 

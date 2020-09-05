@@ -112,13 +112,13 @@ class Profile extends React.Component {
   onItemSelect(event: any) {
     if (event.target.value === "User") {
       this.setState({
-        role: this.state.role = event.target.value,
-        roleid: this.state.roleid = 1,
+        role:  event.target.value,
+        roleid:  1,
       });
     } else {
       this.setState({
-        role: this.state.role = event.target.value,
-        roleid: this.state.roleid = 2,
+        role: event.target.value,
+        roleid: 2,
       });
     }
   }
