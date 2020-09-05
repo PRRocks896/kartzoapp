@@ -6,8 +6,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
   Form,
   CustomInput,
   Input,
@@ -20,12 +18,12 @@ import {
 
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
-import Merchant from "../merchant/merchant";
+
 import {
   bussinessCreateRequest,
-  bussinessUpdateRequest,
+
 } from "../../../modelController";
-import { MerchantAPI } from "../../../service/index.service";
+
 
 class MerchantBusiness extends React.Component<{ history: any }> {
   businessState = constant.merchantBussinessPage.state;

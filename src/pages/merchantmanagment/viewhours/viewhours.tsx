@@ -13,7 +13,6 @@ import {
   Row,
 } from "reactstrap";
 
-import { LocationAPI, MerchantAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class ViewBusinessHours extends React.Component<{

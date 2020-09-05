@@ -6,7 +6,6 @@ import {
     Card,
     CardBody,
     CardHeader,
-    Input,
     Col,
     FormGroup,
     Label,
@@ -14,8 +13,6 @@ import {
 } from 'reactstrap';
 // import './adduser.css';
 
-import API from '../../../service/user.service';
-import Switch from "react-switch";
 import constant from '../../../constant/constant';
 
 class ViewMerchantReview extends React.Component<{ history: any }> {

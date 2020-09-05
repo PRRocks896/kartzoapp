@@ -1,13 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import utils from '../../../utils';
 import {
     Button,
     Card,
     CardBody,
     CardHeader,
-    CardTitle,
-    Table,
     Form,
     CustomInput,
     Input,
@@ -17,11 +14,7 @@ import {
     Row,
 } from 'reactstrap';
 // import './adduser.css';
-
-import API from '../../../service/merchant.service';
-import Switch from "react-switch";
 import constant from '../../../constant/constant';
-import Merchant from '../merchant/merchant';
 import { reviewCreateRequest, reviewUpdateRequest } from '../../../modelController/merchantReviewModel';
 
 class MerchantReview extends React.Component<{ history: any }> {
