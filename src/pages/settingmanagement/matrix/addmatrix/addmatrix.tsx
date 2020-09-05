@@ -14,29 +14,21 @@ import {
   Form,
   Row,
 } from "reactstrap";
-import NavBar from "../../../navbar/navbar";
 import {
   FeeAPI,
-  PayoutAPI,
-  MerchantAPI,
   MatrixAPI,
 } from "../../../../service/index.service";
 import constant from "../../../../constant/constant";
 import {
-  feeCreateRequest,
-  feeUpdateRequest,
   getDataByIdRequest,
   matrixCreateRequest,
   matrixUpdateRequest,
+  addMatrixStateRequest,
 } from "../../../../modelController";
-import {
-  payoutCreateRequest,
-  payoutUpdateRequest,
-} from "../../../../modelController/payoutModel";
 import "./addmatrix.css";
 
 class AddMatrix extends React.Component<{ history: any; location: any }> {
-  matrixState = constant.matrixPage.state;
+  matrixState : addMatrixStateRequest = constant.matrixPage.state;
   state = {
     isActive: this.matrixState.isActive,
     updateTrue: this.matrixState.updateTrue,
@@ -115,22 +107,17 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     console.log("getMatrixById", getMatrixById);
 
     if (getMatrixById) {
-      if (getMatrixById.status === 200) {
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        feetype: this.state.feetype = getMatrixById.resultObject.feeType,
+        matrix: this.state.matrix = getMatrixById.resultObject.fees,
+        feetypeid: this.state.feetypeid =
+          getMatrixById.resultObject.feeTypeId,
+      });
+      if (this.state.matrix.length > 1) {
         this.setState({
-          updateTrue: this.state.updateTrue = true,
-          feetype: this.state.feetype = getMatrixById.resultObject.feeType,
-          matrix: this.state.matrix = getMatrixById.resultObject.fees,
-          feetypeid: this.state.feetypeid =
-            getMatrixById.resultObject.feeTypeId,
+          addflag: this.state.addflag = true,
         });
-        if (this.state.matrix.length > 1) {
-          this.setState({
-            addflag: this.state.addflag = true,
-          });
-        }
-      } else {
-        const msg1 = getMatrixById.message;
-        utils.showError(msg1);
       }
     } else {
       const msg1 = "Internal server error";
@@ -148,14 +135,9 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     const getFee: any = await FeeAPI.getFee();
     console.log("getFee", getFee);
     if (getFee) {
-      if (getFee.status === 200) {
-        this.setState({
-          feedata: this.state.feedata = getFee.resultObject,
-        });
-      } else {
-        const msg1 = getFee.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        feedata: this.state.feedata = getFee.resultObject,
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -205,7 +187,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
   
 
   matrixUI() {
-    return this.state.matrix.map((el, i) => (
+    return this.state.matrix.map((el:any, i:number) => (
       <Row key={i}>
         <Col xs="12" sm="12" md="3" lg="3" xl="3">
           <FormGroup>
@@ -370,7 +352,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
 
   render() {
     return (
-      <NavBar>
+      <>
         <div className="ms-content-wrapper">
           <div className="row">
             <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -586,7 +568,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
             </Col>
           </div>
         </div>
-      </NavBar>
+      </>
     );
   }
 }

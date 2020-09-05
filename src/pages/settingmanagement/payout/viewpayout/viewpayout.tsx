@@ -11,13 +11,13 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../../navbar/navbar";
+
 import constant from "../../../../constant/constant";
 import {PayoutAPI, MerchantAPI } from "../../../../service/index.service";
-import { getDataByIdRequest } from "../../../../modelController";
+import { getDataByIdRequest,addPayoutStateRequest } from "../../../../modelController";
 
 class ViewPayout extends React.Component<{ history: any; location: any }> {
-    payoutState = constant.payoutPage.state;
+    payoutState : addPayoutStateRequest = constant.payoutPage.state;
     state = {
       merchant: this.payoutState.merchant,
       merchantOrderAmount: this.payoutState.merchantOrderAmount,
@@ -103,7 +103,7 @@ class ViewPayout extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -188,7 +188,7 @@ class ViewPayout extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

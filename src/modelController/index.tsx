@@ -31,3 +31,7 @@ export * from './forgotModel';
 export * from './resetPasswordModel';
 export * from './changepasswordModel';
 export * from './deleteDataByIdModel';
+export * from './navBarModel';
+export * from './merchantModel';
+export * from './sliderModel';
+export * from './payoutModel';

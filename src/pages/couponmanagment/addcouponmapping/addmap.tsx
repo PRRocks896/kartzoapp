@@ -6,27 +6,16 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Input,
   Col,
-  FormGroup,
   Label,
   Row,
 } from "reactstrap";
 import "./addmap.css";
-import NavBar from "../../navbar/navbar";
 import { CouponAPI, MerchantAPI } from "../../../service/index.service";
-import Switch from "react-switch";
 import constant from "../../../constant/constant";
-import { format } from "date-fns";
-import { any } from "prop-types";
-import moment from "moment";
-import {
-  couponCreateRequest,
-  couponUpdateRequest,
-} from "../../../modelController";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
 import * as _ from 'lodash';
+import { addCouponStateRequest } from "../../../modelController";
 
 // a little function to help us with reordering the result
 const reorder = (list: any, startIndex: any, endIndex: any) => {
@@ -84,13 +73,13 @@ class AddCouponMapping extends React.Component<{
   history: any;
   location: any;
 }> {
-  couponState = constant.couponPage.state;
-  state: any = {
-    items: [],
-    selected: [],
-    couponlistdata: [],
-    merchantdata:[],
-    selectedmerchantdata:[]
+  couponState :addCouponStateRequest = constant.couponPage.state;
+  state:any = {
+    items: this.couponState.items,
+    selected: this.couponState.selected,
+    couponlistdata: this.couponState.couponlistdata,
+    merchantdata:this.couponState.merchantdata,
+    selectedmerchantdata:this.couponState.selectedmerchantdata
   };
 
   id2List: any = {
@@ -109,9 +98,6 @@ class AddCouponMapping extends React.Component<{
     this.onDragMerchantEnd = this.onDragMerchantEnd.bind(this);
     this.getCouponList = this.getCouponList.bind(this);
     this.getMerchantList = this.getMerchantList.bind(this);
-    // this.Profile = this.Profile.bind(this);
-
-    // this.handleStart = this.handleStart.bind(this);
   }
 
   async componentDidMount() {
@@ -126,14 +112,9 @@ class AddCouponMapping extends React.Component<{
     console.log("getCouponList", getCouponList);
 
     if (getCouponList) {
-      if (getCouponList.status === 200) {
-        this.setState({
-          items: this.state.items = getCouponList.resultObject,
-        });
-      } else {
-        const msg1 = getCouponList.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        items: this.state.items = getCouponList.resultObject,
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -145,14 +126,9 @@ class AddCouponMapping extends React.Component<{
     console.log("getMerchantList", getMerchantList);
 
     if (getMerchantList) {
-      if (getMerchantList.status === 200) {
-        this.setState({
-          merchantdata: this.state.merchantdata = getMerchantList.resultObject
-        });
-      } else {
-        const msg1 = getMerchantList.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        merchantdata: this.state.merchantdata = getMerchantList.resultObject
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -164,10 +140,9 @@ class AddCouponMapping extends React.Component<{
   getMerchantListdata = (id: any) => this.state[this.id4List[id]];
 
   onDragEnd = (result: any) => {
-    console.log("result", result);
+   
     const { source, destination } = result;
-    console.log("source", source);
-    console.log("destination", destination);
+   
 
     // dropped outside the list
     if (!destination) {
@@ -205,10 +180,9 @@ class AddCouponMapping extends React.Component<{
   };
 
   onDragMerchantEnd = (result: any) => {
-    console.log("result", result);
+
     const { source, destination } = result;
-    console.log("source", source);
-    console.log("destination", destination);
+   
 
     // dropped outside the list
     if (!destination) {
@@ -246,13 +220,12 @@ class AddCouponMapping extends React.Component<{
   };
 
   render() {
-    let {items,
+    let {
         selected,
-        selectedmerchantdata,
-        couponlistdata} = this.state;
+        selectedmerchantdata} = this.state;
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -507,7 +480,7 @@ class AddCouponMapping extends React.Component<{
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

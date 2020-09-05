@@ -17,12 +17,13 @@ import {
   Row,
 } from "reactstrap";
 import Switch from "react-switch";
-import NavBar from "../../../navbar/navbar";
-import { CategoryAPI, ProductAPI, SliderAPI } from "../../../../service/index.service";
+
+import { ProductAPI, SliderAPI } from "../../../../service/index.service";
 import constant from "../../../../constant/constant";
+import { addSliderStateRequest } from "../../../../modelController/sliderModel";
 
 class AddSlider extends React.Component<{ history: any; location: any }> {
-  sliderState = constant.homesliderPage.state;
+  sliderState : addSliderStateRequest = constant.homesliderPage.state;
   state = {
     selectedFile: this.sliderState.selectedFile,
     selectedFileerror: this.sliderState.selectedFile,
@@ -79,14 +80,9 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
   async getAllProduct() {
     const getAllProduct = await ProductAPI.getAllProduct();
     console.log("getAllProduct", getAllProduct);
-    if (getAllProduct.status === 200) {
-      this.setState({
-        productdata: this.state.productdata = getAllProduct.resultObject,
-      });
-    } else {
-      const msg1 = getAllProduct.message;
-      utils.showError(msg1);
-    }
+    this.setState({
+      productdata: this.state.productdata = getAllProduct.resultObject,
+    });
   }
 
     async getSliderById(categoryId: any) {
@@ -96,25 +92,20 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
       const getSliderDataById: any = await SliderAPI.getSliderDataById(obj);
       console.log("getSliderDataById", getSliderDataById);
 
-      if (getSliderDataById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          filetrue: this.state.filetrue = true,
-          productid: this.state.productid =
-            getSliderDataById.resultObject.productId,
-          altertag: this.state.altertag =
-            getSliderDataById.resultObject.alterTag,
-          file: this.state.file = getSliderDataById.resultObject.photoPath,
-          sortorder: this.state.sortorder =
-            getSliderDataById.resultObject.sortOrder,
-          selectedFile: this.state.selectedFile =
-            getSliderDataById.resultObject.photoPath,
-            isActive: this.state.isActive = getSliderDataById.resultObject.isActive
-        });
-      } else {
-        const msg1 = getSliderDataById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        filetrue: this.state.filetrue = true,
+        productid: this.state.productid =
+          getSliderDataById.resultObject.productId,
+        altertag: this.state.altertag =
+          getSliderDataById.resultObject.alterTag,
+        file: this.state.file = getSliderDataById.resultObject.photoPath,
+        sortorder: this.state.sortorder =
+          getSliderDataById.resultObject.sortOrder,
+        selectedFile: this.state.selectedFile =
+          getSliderDataById.resultObject.photoPath,
+          isActive: this.state.isActive = getSliderDataById.resultObject.isActive
+      });
     }
 
   onItemSelect(event: any) {
@@ -198,14 +189,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
           const addSlider = await SliderAPI.addSlider(formData);
           console.log("addSlider", addSlider);
           if (addSlider) {
-            if (addSlider.status === 200) {
-              const msg = addSlider.message;
-              utils.showSuccess(msg);
-              this.props.history.push("/list-slider");
-            } else {
-              const msg1 = addSlider.message;
-              utils.showError(msg1);
-            }
+            this.props.history.push("/list-slider");
           } else {
             const msg1 = "Internal server error";
             utils.showError(msg1);
@@ -236,14 +220,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
             const editSlider = await SliderAPI.editSlider(formData,this.state.sliderid);
             console.log("editSlider", editSlider);
             if (editSlider) {
-              if (editSlider.status === 200) {
-                const msg = editSlider.message;
-                utils.showSuccess(msg);
-                this.props.history.push("/list-slider");
-              } else {
-                const msg1 = editSlider.message;
-                utils.showError(msg1);
-              }
+              this.props.history.push("/list-slider");
             } else {
               const msg1 = "Internal server error";
               utils.showError(msg1);
@@ -261,7 +238,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -494,7 +471,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

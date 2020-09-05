@@ -6,8 +6,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
   Input,
   Form,
   CustomInput,
@@ -16,17 +14,17 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../../navbar/navbar";
 import { CategoryAPI, TaxAPI } from "../../../../service/index.service";
 import constant from "../../../../constant/constant";
 import {
   taxCreateRequest,
   taxUpdateRequest,
   getDataByIdRequest,
+  addTaxRequest,
 } from "../../../../modelController";
 
 class AddTax extends React.Component<{ history: any; location: any }> {
-  taxState = constant.taxPage.state;
+  taxState : addTaxRequest= constant.taxPage.state;
   state = {
     mainCategoryId: this.taxState.mainCategoryId,
     mainCategoryIderror: this.taxState.mainCategoryIderror,
@@ -71,14 +69,9 @@ class AddTax extends React.Component<{ history: any; location: any }> {
   async getAllCategory() {
     const getAllCategory = await CategoryAPI.getAllCategory();
     console.log("getAllCategory", getAllCategory);
-    if (getAllCategory.status === 200) {
-      this.setState({
-        categorydata: this.state.categorydata = getAllCategory.resultObject,
-      });
-    } else {
-      const msg1 = getAllCategory.message;
-      utils.showError(msg1);
-    }
+    this.setState({
+      categorydata: this.state.categorydata = getAllCategory.resultObject,
+    });
   }
 
   async getTaxById(taxId: any) {
@@ -88,20 +81,15 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     const getTaxById: any = await TaxAPI.getTaxById(obj);
     console.log("getTaxById", getTaxById);
 
-    if (getTaxById.status === 200) {
-      this.setState({
-        updateTrue: this.state.updateTrue = true,
-        categoryname: this.state.categoryname =
-          getTaxById.resultObject.categoryName,
-        taxId: this.state.taxId = getTaxById.resultObject.taxId,
-        taxName: this.state.taxName = getTaxById.resultObject.taxName,
-        percentage: this.state.percentage = getTaxById.resultObject.percentage,
-        isActive: this.state.isActive = getTaxById.resultObject.isActive,
-      });
-    } else {
-      const msg1 = getTaxById.message;
-      utils.showError(msg1);
-    }
+    this.setState({
+      updateTrue: this.state.updateTrue = true,
+      categoryname: this.state.categoryname =
+        getTaxById.resultObject.categoryName,
+      taxId: this.state.taxId = getTaxById.resultObject.taxId,
+      taxName: this.state.taxName = getTaxById.resultObject.taxName,
+      percentage: this.state.percentage = getTaxById.resultObject.percentage,
+      isActive: this.state.isActive = getTaxById.resultObject.isActive,
+    });
   }
 
   onItemSelect(event: any) {
@@ -164,14 +152,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
         const addTax = await TaxAPI.addTax(obj);
         console.log("addTax", addTax);
         if (addTax) {
-          if (addTax.status === 200) {
-            const msg = addTax.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-tax");
-          } else {
-            const msg1 = addTax.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-tax");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -203,14 +184,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
         const updateTax = await TaxAPI.updateTax(obj);
         console.log("updateTax", updateTax);
         if (updateTax) {
-          if (updateTax.status === 200) {
-            const msg = updateTax.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-tax");
-          } else {
-            const msg1 = updateTax.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-tax");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -222,7 +196,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -402,7 +376,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

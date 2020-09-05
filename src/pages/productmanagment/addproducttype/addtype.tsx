@@ -12,16 +12,16 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
+
 import {RoleAPI, ProductAPI} from "../../../service/index.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import {
-  productCustomiseTypeCreateRequest, productCustomiseTypeUpdateRequest, getDataByIdRequest,
+  productCustomiseTypeCreateRequest, productCustomiseTypeUpdateRequest, getDataByIdRequest, addProdcutTypeStateRequest,
 } from "../../../modelController";
 
 class AddProductType extends React.Component<{ history: any; location: any }> {
-    productCustomiseState = constant.productCustomisePage.state;
+    productCustomiseState : addProdcutTypeStateRequest = constant.productCustomisePage.state;
   state = {
    typeName:this.productCustomiseState.typeName,
    typeNameerror: this.productCustomiseState.typeNameerror,
@@ -64,17 +64,12 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
     console.log("getCustomiseTypeById", getCustomiseTypeById);
 
     if (getCustomiseTypeById) {
-      if (getCustomiseTypeById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          typeName: this.state.typeName = getCustomiseTypeById.resultObject.typeName,
-          typeid: this.state.typeid = getCustomiseTypeById.resultObject.productCustomizeTypeId,
-          isActive: this.state.isActive = getCustomiseTypeById.resultObject.isActive
-        });
-      } else {
-        const msg1 = getCustomiseTypeById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        typeName: this.state.typeName = getCustomiseTypeById.resultObject.typeName,
+        typeid: this.state.typeid = getCustomiseTypeById.resultObject.productCustomizeTypeId,
+        isActive: this.state.isActive = getCustomiseTypeById.resultObject.isActive
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -121,14 +116,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
         console.log("addCustomiseType", addCustomiseType);
 
         if (addCustomiseType) {
-          if (addCustomiseType.status === 200) {
-            const msg = addCustomiseType.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-type");
-          } else {
-            const msg1 = addCustomiseType.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-type");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -153,14 +141,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
         console.log("editCustomiseProduct", editCustomiseProduct);
 
         if (editCustomiseProduct) {
-          if (editCustomiseProduct.status === 200) {
-            const msg = editCustomiseProduct.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-type");
-          } else {
-            const msg1 = editCustomiseProduct.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-type");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -172,7 +153,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -272,7 +253,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

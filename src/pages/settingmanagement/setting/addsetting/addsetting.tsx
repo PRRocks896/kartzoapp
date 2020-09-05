@@ -12,20 +12,17 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../../navbar/navbar";
-import {RoleAPI, SettingAPI} from "../../../../service/index.service";
-import Switch from "react-switch";
+import {SettingAPI} from "../../../../service/index.service";
 import constant from "../../../../constant/constant";
 import {
-  userRoleCreateRequest,
-  userRoleUpdateRequest,
   settingCreateRequest,
   settingUpdateRequest,
   getDataByIdRequest,
+  addSettingStateRequest,
 } from "../../../../modelController";
 
 class AddSetting extends React.Component<{ history: any; location: any }> {
-    settingState = constant.settingPage.state;
+    settingState: addSettingStateRequest = constant.settingPage.state;
   state = {
     identifier: this.settingState.identifier,
     identifiererror: this.settingState.identifiererror,
@@ -70,19 +67,14 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
     console.log("getSettingById", getSettingById);
 
     if (getSettingById) {
-      if (getSettingById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          identifier: this.state.identifier = getSettingById.resultObject.identifier,
-          settingid: this.state.settingid = getSettingById.resultObject.settingId,
-          value: this.state.value =
-            getSettingById.resultObject.value,
-          isActive: this.state.isActive = getSettingById.resultObject.isActive
-        });
-      } else {
-        const msg1 = getSettingById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        identifier: this.state.identifier = getSettingById.resultObject.identifier,
+        settingid: this.state.settingid = getSettingById.resultObject.settingId,
+        value: this.state.value =
+          getSettingById.resultObject.value,
+        isActive: this.state.isActive = getSettingById.resultObject.isActive
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -137,14 +129,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
         console.log("addSetting", addSetting);
 
         if (addSetting) {
-          if (addSetting.status === 200) {
-            const msg = addSetting.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-setting");
-          } else {
-            const msg1 = addSetting.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-setting");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -172,14 +157,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
         console.log("updateSetting", updateSetting);
 
         if (updateSetting) {
-          if (updateSetting.status === 200) {
-            const msg = updateSetting.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-setting");
-          } else {
-            const msg1 = updateSetting.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-setting");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -191,7 +169,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -298,7 +276,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

@@ -11,13 +11,13 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../../navbar/navbar";
+
 import constant from "../../../../constant/constant";
 import { SettingAPI } from "../../../../service/index.service";
-import { getDataByIdRequest } from "../../../../modelController";
+import { getDataByIdRequest, addSettingStateRequest } from "../../../../modelController";
 
 class ViewSetting extends React.Component<{ history: any; location: any }> {
-    settingState = constant.settingPage.state;
+    settingState : addSettingStateRequest = constant.settingPage.state;
     state = {
       identifier: this.settingState.identifier,
       identifiererror: this.settingState.identifiererror,
@@ -53,19 +53,14 @@ class ViewSetting extends React.Component<{ history: any; location: any }> {
     console.log("getSettingById", getSettingById);
 
     if (getSettingById) {
-      if (getSettingById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          identifier: this.state.identifier = getSettingById.resultObject.identifier,
-          settingid: this.state.settingid = getSettingById.resultObject.settingId,
-          value: this.state.value =
-            getSettingById.resultObject.value,
-          isActive: this.state.isActive = getSettingById.resultObject.isActive
-        });
-      } else {
-        const msg1 = getSettingById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        identifier: this.state.identifier = getSettingById.resultObject.identifier,
+        settingid: this.state.settingid = getSettingById.resultObject.settingId,
+        value: this.state.value =
+          getSettingById.resultObject.value,
+        isActive: this.state.isActive = getSettingById.resultObject.isActive
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -75,7 +70,7 @@ class ViewSetting extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -134,7 +129,7 @@ class ViewSetting extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

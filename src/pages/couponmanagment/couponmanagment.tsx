@@ -13,7 +13,7 @@ import {
   Row,
 } from "reactstrap";
 import "./couponmanagment.css";
-import NavBar from "../navbar/navbar";
+
 import { CouponAPI } from "../../service/index.service";
 import Switch from "react-switch";
 import constant from "../../constant/constant";
@@ -353,7 +353,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -602,7 +602,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

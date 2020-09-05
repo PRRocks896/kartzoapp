@@ -15,7 +15,7 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
+
 import {StatusAPI, CouponAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
@@ -398,7 +398,7 @@ class ListCouponMap extends React.Component<{ history: any }> {
 
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -452,7 +452,7 @@ class ListCouponMap extends React.Component<{ history: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

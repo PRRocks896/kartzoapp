@@ -1,35 +1,23 @@
 import React from "react";
 import "./login.css";
-import { API, RoleAPI } from "../../service/index.service";
+import { API } from "../../service/index.service";
 import utils from "../../utils";
 import constant from "../../constant/constant";
 import axios from "axios";
 import apiUrl from "../../apicontroller/apicontrollers";
-import { loginCreateRequest, forgotPasswordRequest } from "../../modelController";
+import { loginCreateRequest, forgotPasswordRequest,addLoginStateRequest } from "../../modelController";
 import {
   Button,
-  // Modal,
-  ModalFooter,
-  ModalHeader,
-  ModalBody,
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Table,
   Input,
-  Col,
   FormGroup,
-  CustomInput,
   Label,
-  Row,
 } from "reactstrap";
 import { Modal } from "react-bootstrap";
 const interceptor = require("../../intercepter");
 const publicIp = require("public-ip");
 
 class Login extends React.Component<{ history: any }> {
-  loginState = constant.loginPage.state;
+  loginState:addLoginStateRequest = constant.loginPage.state;
   state = {
     email: this.loginState.email,
     emailerror: this.loginState.emailerror,
@@ -142,16 +130,9 @@ class Login extends React.Component<{ history: any }> {
         console.log("forgotPassword", forgotPassword);
 
         if (forgotPassword) {
-          if (forgotPassword.status === 200) {
-            this.setState({
-              forgot: this.state.forgot = false,
-            });
-            const msg = forgotPassword.data.message;
-            utils.showSuccess(msg);
-          } else {
-            const msg = forgotPassword.data.message;
-            utils.showError(msg);
-          }
+          this.setState({
+            forgot: this.state.forgot = false,
+          });
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -192,7 +173,6 @@ class Login extends React.Component<{ history: any }> {
                 var userData = res.data.resultObject;
                 localStorage.setItem("user", JSON.stringify(userData));
                 localStorage.setItem("token", userData.token);
-                const msg = res.data.message;
                 const ipaddress = publicIp.v4();
                 const users: any = localStorage.getItem("user");
                 let user = JSON.parse(users);
@@ -208,14 +188,11 @@ class Login extends React.Component<{ history: any }> {
                 if (getToken) {
                   localStorage.setItem("merchantToken", getToken.token);
                 }
-                utils.showSuccess(msg);
                 this.props.history.push("/dashboard");
               } else {
                 this.setState({
                   isButton: this.state.isButton = false,
                 });
-                const msg = res.data.message;
-                utils.showError(msg);
               }
             } else {
               this.setState({
@@ -264,7 +241,7 @@ class Login extends React.Component<{ history: any }> {
                   var userData = res.data.resultObject;
                   localStorage.setItem("user", JSON.stringify(userData));
                   localStorage.setItem("token", userData.token);
-                  const msg = res.data.message;
+               
                   const ipaddress = publicIp.v4();
                   const users: any = localStorage.getItem("user");
                   let user = JSON.parse(users);
@@ -280,19 +257,19 @@ class Login extends React.Component<{ history: any }> {
                   if (getToken) {
                     localStorage.setItem("merchantToken", getToken.token);
                   }
-                const roleid = {
-                  id:user.roleId
-                }
-                  var getRights = await RoleAPI.getRolePreveliges(roleid);
-                  console.log("getRights", getRights);
-                  utils.showSuccess(msg);
+                // const roleid = {
+                //   id:user.roleId
+                // }
+                //   var getRights = await RoleAPI.getRolePreveliges(roleid);
+                //   console.log("getRights", getRights);
+                 
                   this.props.history.push("/dashboard");
                 } else {
                   this.setState({
                     isButton: this.state.isButton = false,
                   });
-                  const msg = res.data.message;
-                  utils.showError(msg);
+                 
+                
                 }
               } else {
                 this.setState({

@@ -6,16 +6,13 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
-  Input,
   Col,
   FormGroup,
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
-import { CategoryAPI, CouponAPI } from "../../../service/index.service";
+
+import {CouponAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 
 class ViewCoupon extends React.Component<{ history: any; location: any }> {
@@ -71,37 +68,32 @@ class ViewCoupon extends React.Component<{ history: any; location: any }> {
     console.log("getCouponById", getCouponById);
 
     if (getCouponById) {
-      if (getCouponById.status === 200) {
-        this.setState({
-          couponcode: this.state.couponcode =
-            getCouponById.resultObject.couponCode,
-          percentage: this.state.percentage =
-            getCouponById.resultObject.percentage,
-          discountprice: this.state.discountprice =
-            getCouponById.resultObject.discountPrice,
-          startdate: this.state.startdate =
-            getCouponById.resultObject.startDate,
-          enddate: this.state.enddate = getCouponById.resultObject.endDate,
-          discription: this.state.discription =
-            getCouponById.resultObject.description,
-          minamountorder: this.state.minamountorder =
-            getCouponById.resultObject.minAmountOrder,
-          title: this.state.title = getCouponById.resultObject.title,
-          isByPrice: this.state.isByPrice =
-            getCouponById.resultObject.isByPrice
-        });
-        this.setState({
-          startdate: this.state.startdate = this.IOSDateToYYYYMMDD(
-            this.state.startdate
-          ),
-          enddate: this.state.enddate = this.IOSDateToYYYYMMDD(
-            this.state.enddate
-          ),
-        });
-      } else {
-        const msg1 = getCouponById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        couponcode: this.state.couponcode =
+          getCouponById.resultObject.couponCode,
+        percentage: this.state.percentage =
+          getCouponById.resultObject.percentage,
+        discountprice: this.state.discountprice =
+          getCouponById.resultObject.discountPrice,
+        startdate: this.state.startdate =
+          getCouponById.resultObject.startDate,
+        enddate: this.state.enddate = getCouponById.resultObject.endDate,
+        discription: this.state.discription =
+          getCouponById.resultObject.description,
+        minamountorder: this.state.minamountorder =
+          getCouponById.resultObject.minAmountOrder,
+        title: this.state.title = getCouponById.resultObject.title,
+        isByPrice: this.state.isByPrice =
+          getCouponById.resultObject.isByPrice
+      });
+      this.setState({
+        startdate: this.state.startdate = this.IOSDateToYYYYMMDD(
+          this.state.startdate
+        ),
+        enddate: this.state.enddate = this.IOSDateToYYYYMMDD(
+          this.state.enddate
+        ),
+      });
     } else {
       const msg1 = "Internal Server";
       utils.showError(msg1);
@@ -111,7 +103,7 @@ class ViewCoupon extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -245,7 +237,7 @@ class ViewCoupon extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

@@ -16,7 +16,7 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
+
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import {
@@ -220,7 +220,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -362,7 +362,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

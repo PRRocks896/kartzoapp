@@ -11,18 +11,14 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../../navbar/navbar";
 import constant from "../../../../constant/constant";
 import {
-  PayoutAPI,
-  MerchantAPI,
-  MatrixAPI,
   SliderAPI,
 } from "../../../../service/index.service";
-import { getDataByIdRequest } from "../../../../modelController";
+import { getDataByIdRequest,addSliderStateRequest } from "../../../../modelController";
 
 class ViewSlider extends React.Component<{ history: any; location: any }> {
-  sliderState = constant.homesliderPage.state;
+  sliderState : addSliderStateRequest = constant.homesliderPage.state;
   state = {
     selectedFile: this.sliderState.selectedFile,
     file: this.sliderState.file,
@@ -56,30 +52,25 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
     const getSliderDataById: any = await SliderAPI.getSliderDataById(obj);
     console.log("getSliderDataById", getSliderDataById);
 
-    if (getSliderDataById.status === 200) {
-      this.setState({
-        productid: this.state.productid =
-          getSliderDataById.resultObject.productId,
-        altertag: this.state.altertag = getSliderDataById.resultObject.alterTag,
-        file: this.state.file = getSliderDataById.resultObject.photoPath,
-        sortorder: this.state.sortorder =
-          getSliderDataById.resultObject.sortOrder,
-        selectedFile: this.state.selectedFile =
-          getSliderDataById.resultObject.photoPath,
-        isActive: this.state.isActive = getSliderDataById.resultObject.isActive,
-        productLink: this.state.productLink =
-          getSliderDataById.resultObject.productLink,
-      });
-    } else {
-      const msg1 = getSliderDataById.message;
-      utils.showError(msg1);
-    }
+    this.setState({
+      productid: this.state.productid =
+        getSliderDataById.resultObject.productId,
+      altertag: this.state.altertag = getSliderDataById.resultObject.alterTag,
+      file: this.state.file = getSliderDataById.resultObject.photoPath,
+      sortorder: this.state.sortorder =
+        getSliderDataById.resultObject.sortOrder,
+      selectedFile: this.state.selectedFile =
+        getSliderDataById.resultObject.photoPath,
+      isActive: this.state.isActive = getSliderDataById.resultObject.isActive,
+      productLink: this.state.productLink =
+        getSliderDataById.resultObject.productLink,
+    });
   }
 
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -195,7 +186,7 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

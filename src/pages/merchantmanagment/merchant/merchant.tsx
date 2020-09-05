@@ -15,15 +15,14 @@ import {
   Row,
 } from "reactstrap";
 import "./merchant.css";
-import NavBar from "../../navbar/navbar";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import { Editor } from "@tinymce/tinymce-react";
 import { LocationAPI, MerchantAPI } from "../../../service/index.service";
-import { getDataByIdRequest } from "../../../modelController";
+import { getDataByIdRequest, addMerchantStateRequest } from "../../../modelController";
 
 class Merchant extends React.Component<{ history: any; location: any }> {
-  merchantState = constant.merchantPage.state;
+  merchantState:addMerchantStateRequest = constant.merchantPage.state;
   state = {
     selectedFile: this.merchantState.selectedFile,
     selectedProofFile: this.merchantState.selectedProofFile,
@@ -127,51 +126,46 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     console.log("getMerchantById", getMerchantById);
 
     if (getMerchantById) {
-      if (getMerchantById.status === 200) {
-        this.setState({
-          merchantId: this.state.merchantId =
-            getMerchantById.resultObject.merchantID,
-          filetrue: this.state.filetrue = true,
-          selectedFile: this.state.selectedFile =
-            getMerchantById.resultObject.photoPath,
-          selectedProofFile: this.state.selectedProofFile =
-            getMerchantById.resultObject.merchantIDPoof,
-          selectedDocumentFile: this.state.selectedDocumentFile =
-            getMerchantById.resultObject.merchantDocument,
-          firstname: this.state.firstname =
-            getMerchantById.resultObject.firstName,
-          lastname: this.state.lastname = getMerchantById.resultObject.lastName,
-          email: this.state.email = getMerchantById.resultObject.email,
-          mobilenumber: this.state.mobilenumber =
-            getMerchantById.resultObject.phone,
-          shopname: this.state.shopname = getMerchantById.resultObject.shopName,
-          address: this.state.address = getMerchantById.resultObject.address,
-          city: this.state.city = getMerchantById.resultObject.cityID,
-          zipcode: this.state.zipcode = getMerchantById.resultObject.zipCode,
-          latitude: this.state.latitude = getMerchantById.resultObject.latitude,
-          longitude: this.state.longitude =
-            getMerchantById.resultObject.longitude,
-          website: this.state.website = getMerchantById.resultObject.website,
-          shoppingpolicy: this.state.shoppingpolicy =
-            getMerchantById.resultObject.shippingPolicy,
-          refundpolicy: this.state.refundpolicy =
-            getMerchantById.resultObject.refundPolicy,
-          cancellationpolicy: this.state.cancellationpolicy =
-            getMerchantById.resultObject.cancellationPolicy,
-          password: this.state.password = getMerchantById.resultObject.password,
-          file: this.state.file = getMerchantById.resultObject.photoPath,
-          isOpen: this.state.isOpen = getMerchantById.resultObject.isActive,
-          // filetrue: this.state.filetrue = getMerchantById.resultObject.
-          // file1: this.state.file1 = getMerchantById.resultObject.
-          // file1true: this.state.file1true = getMerchantById.resultObject.
-          // file2: this.state.file2 = getMerchantById.resultObject.
-          // file2true: this.state.file2true = getMerchantById.resultObject.
-        });
-        this.getCityById(this.state.city);
-      } else {
-        const msg1 = getMerchantById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        merchantId: this.state.merchantId =
+          getMerchantById.resultObject.merchantID,
+        filetrue: this.state.filetrue = true,
+        selectedFile: this.state.selectedFile =
+          getMerchantById.resultObject.photoPath,
+        selectedProofFile: this.state.selectedProofFile =
+          getMerchantById.resultObject.merchantIDPoof,
+        selectedDocumentFile: this.state.selectedDocumentFile =
+          getMerchantById.resultObject.merchantDocument,
+        firstname: this.state.firstname =
+          getMerchantById.resultObject.firstName,
+        lastname: this.state.lastname = getMerchantById.resultObject.lastName,
+        email: this.state.email = getMerchantById.resultObject.email,
+        mobilenumber: this.state.mobilenumber =
+          getMerchantById.resultObject.phone,
+        shopname: this.state.shopname = getMerchantById.resultObject.shopName,
+        address: this.state.address = getMerchantById.resultObject.address,
+        city: this.state.city = getMerchantById.resultObject.cityID,
+        zipcode: this.state.zipcode = getMerchantById.resultObject.zipCode,
+        latitude: this.state.latitude = getMerchantById.resultObject.latitude,
+        longitude: this.state.longitude =
+          getMerchantById.resultObject.longitude,
+        website: this.state.website = getMerchantById.resultObject.website,
+        shoppingpolicy: this.state.shoppingpolicy =
+          getMerchantById.resultObject.shippingPolicy,
+        refundpolicy: this.state.refundpolicy =
+          getMerchantById.resultObject.refundPolicy,
+        cancellationpolicy: this.state.cancellationpolicy =
+          getMerchantById.resultObject.cancellationPolicy,
+        password: this.state.password = getMerchantById.resultObject.password,
+        file: this.state.file = getMerchantById.resultObject.photoPath,
+        isOpen: this.state.isOpen = getMerchantById.resultObject.isActive,
+        // filetrue: this.state.filetrue = getMerchantById.resultObject.
+        // file1: this.state.file1 = getMerchantById.resultObject.
+        // file1true: this.state.file1true = getMerchantById.resultObject.
+        // file2: this.state.file2 = getMerchantById.resultObject.
+        // file2true: this.state.file2true = getMerchantById.resultObject.
+      });
+      this.getCityById(this.state.city);
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -186,14 +180,9 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     console.log("getCity", getCity);
 
     if (getCity) {
-      if (getCity.status === 200) {
-        this.setState({
-          cityname: this.state.cityname = getCity.resultObject.cityName,
-        });
-      } else {
-        const msg1 = getCity.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        cityname: this.state.cityname = getCity.resultObject.cityName,
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -205,14 +194,9 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     console.log("getCity", getCity);
 
     if (getCity) {
-      if (getCity.status === 200) {
-        this.setState({
-          citydata: this.state.citydata = getCity.resultObject,
-        });
-      } else {
-        const msg1 = getCity.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        citydata: this.state.citydata = getCity.resultObject,
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -342,16 +326,9 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     let lastnameerror = "";
     let emailerror = "";
     let mobilenumbererror = "";
-    let selectedFileerror = "";
-    let selectedDocumentFileerror = "";
-    let selectedProofFileerror = "";
     let latitudeerror = "";
     let longitudeerror = "";
     let shopnamerror = "";
-    let shoppingpolicyerror = "";
-    let refundpolicyerror = "";
-    let cancellationpolicyerror = "";
-    let usererror = "";
     let cityerror = "";
     let addresserror = "";
     let zipcodeerror = "";
@@ -387,18 +364,6 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     if (!this.state.password) {
       passworderror = "please enter password";
     }
-
-    // if (!this.state.selectedDocumentFile) {
-    //   selectedDocumentFileerror = "please select document image";
-    // }
-
-    // if (!this.state.selectedFile) {
-    //   selectedFileerror = "please select shop image";
-    // }
-
-    // if (!this.state.selectedProofFile) {
-    //   selectedProofFileerror = "please select proof image";
-    // }
 
     if (!this.state.latitude) {
       latitudeerror = "please enter latitude";
@@ -509,14 +474,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         const addMerchant = await MerchantAPI.addMerchant(formData);
         console.log("addMerchant", addMerchant);
         if (addMerchant) {
-          if (addMerchant.status === 200) {
-            const msg = addMerchant.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-merchant");
-          } else {
-            const msg1 = addMerchant.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-merchant");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -594,14 +552,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         );
         console.log("editMerchant", editMerchant);
         if (editMerchant) {
-          if (editMerchant.status === 200) {
-            const msg = editMerchant.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-merchant");
-          } else {
-            const msg1 = editMerchant.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-merchant");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -630,7 +581,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
 
   render() {
     return (
-      <NavBar>
+      <>
         <div className="ms-content-wrapper">
           <div className="row">
             <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -1391,7 +1342,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
             </Col>
           </div>
         </div>
-      </NavBar>
+      </>
     );
   }
 }

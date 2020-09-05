@@ -12,65 +12,67 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
-import { LocationAPI, MerchantAPI } from "../../../service/index.service";
+import { MerchantAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getDataByIdRequest } from "../../../modelController";
+import {
+  getDataByIdRequest,
+  addMerchantStateRequest,
+} from "../../../modelController";
 
 class ViewMerchant extends React.Component<{
   history: any;
   location: any;
 }> {
-    merchantState = constant.merchantPage.state;
-    state = {
-      selectedFile: this.merchantState.selectedFile,
-      selectedProofFile: this.merchantState.selectedProofFile,
-      selectedDocumentFile: this.merchantState.selectedDocumentFile,
-      firstname: this.merchantState.firstname,
-      firstnameerror: this.merchantState.firstnameerror,
-      lastname: this.merchantState.lastname,
-      lastnameerror: this.merchantState.lastnameerror,
-      email: this.merchantState.email,
-      emailerror: this.merchantState.emailerror,
-      mobilenumber: this.merchantState.mobilenumber,
-      mobilenumbererror: this.merchantState.mobilenumbererror,
-      shopname: this.merchantState.shopname,
-      shopnamerror: this.merchantState.shopnamerror,
-      address: this.merchantState.address,
-      addresserror: this.merchantState.addresserror,
-      city: this.merchantState.city,
-      cityerror: this.merchantState.cityerror,
-      user: this.merchantState.user,
-      usererror: this.merchantState.usererror,
-      zipcode: this.merchantState.zipcode,
-      zipcodeerror: this.merchantState.zipcodeerror,
-      latitude: this.merchantState.latitude,
-      latitudeerror: this.merchantState.latitudeerror,
-      longitude: this.merchantState.longitude,
-      longitudeerror: this.merchantState.longitudeerror,
-      website: this.merchantState.website,
-      shoppingpolicy: this.merchantState.shoppingpolicy,
-      shoppingpolicyerror: this.merchantState.shoppingpolicyerror,
-      refundpolicy: this.merchantState.refundpolicy,
-      refundpolicyerror: this.merchantState.refundpolicyerror,
-      cancellationpolicy: this.merchantState.cancellationpolicy,
-      cancellationpolicyerror: this.merchantState.cancellationpolicyerror,
-      isOpen: this.merchantState.isOpen,
-      checked: this.merchantState.checked,
-      selectedFileerror: this.merchantState.selectedFileerror,
-      selectedProofFileerror: this.merchantState.selectedProofFileerror,
-      selectedDocumentFileerror: this.merchantState.selectedDocumentFileerror,
-      password: this.merchantState.password,
-      passworderror: this.merchantState.passworderror,
-      citydata: this.merchantState.citydata,
-      type: this.merchantState.type,
-      file: this.merchantState.file,
-      filetrue: this.merchantState.filetrue,
-      file1: this.merchantState.file1,
-      file1true: this.merchantState.file1true,
-      file2: this.merchantState.file2,
-      file2true: this.merchantState.file2true,
-    };
+  merchantState: addMerchantStateRequest = constant.merchantPage.state;
+  state = {
+    selectedFile: this.merchantState.selectedFile,
+    selectedProofFile: this.merchantState.selectedProofFile,
+    selectedDocumentFile: this.merchantState.selectedDocumentFile,
+    firstname: this.merchantState.firstname,
+    firstnameerror: this.merchantState.firstnameerror,
+    lastname: this.merchantState.lastname,
+    lastnameerror: this.merchantState.lastnameerror,
+    email: this.merchantState.email,
+    emailerror: this.merchantState.emailerror,
+    mobilenumber: this.merchantState.mobilenumber,
+    mobilenumbererror: this.merchantState.mobilenumbererror,
+    shopname: this.merchantState.shopname,
+    shopnamerror: this.merchantState.shopnamerror,
+    address: this.merchantState.address,
+    addresserror: this.merchantState.addresserror,
+    city: this.merchantState.city,
+    cityerror: this.merchantState.cityerror,
+    user: this.merchantState.user,
+    usererror: this.merchantState.usererror,
+    zipcode: this.merchantState.zipcode,
+    zipcodeerror: this.merchantState.zipcodeerror,
+    latitude: this.merchantState.latitude,
+    latitudeerror: this.merchantState.latitudeerror,
+    longitude: this.merchantState.longitude,
+    longitudeerror: this.merchantState.longitudeerror,
+    website: this.merchantState.website,
+    shoppingpolicy: this.merchantState.shoppingpolicy,
+    shoppingpolicyerror: this.merchantState.shoppingpolicyerror,
+    refundpolicy: this.merchantState.refundpolicy,
+    refundpolicyerror: this.merchantState.refundpolicyerror,
+    cancellationpolicy: this.merchantState.cancellationpolicy,
+    cancellationpolicyerror: this.merchantState.cancellationpolicyerror,
+    isOpen: this.merchantState.isOpen,
+    checked: this.merchantState.checked,
+    selectedFileerror: this.merchantState.selectedFileerror,
+    selectedProofFileerror: this.merchantState.selectedProofFileerror,
+    selectedDocumentFileerror: this.merchantState.selectedDocumentFileerror,
+    password: this.merchantState.password,
+    passworderror: this.merchantState.passworderror,
+    citydata: this.merchantState.citydata,
+    type: this.merchantState.type,
+    file: this.merchantState.file,
+    filetrue: this.merchantState.filetrue,
+    file1: this.merchantState.file1,
+    file1true: this.merchantState.file1true,
+    file2: this.merchantState.file2,
+    file2true: this.merchantState.file2true,
+  };
 
   constructor(props: any) {
     super(props);
@@ -79,7 +81,8 @@ class ViewMerchant extends React.Component<{
 
   async componentDidMount() {
     document.title =
-      constant.merchantPage.viewmerchanrpagedetails.viewmerchant + utils.getAppName();
+      constant.merchantPage.viewmerchanrpagedetails.viewmerchant +
+      utils.getAppName();
     const merchantId = this.props.location.pathname.split("/")[2];
     if (merchantId !== undefined) {
       this.getMerchantById(merchantId);
@@ -91,37 +94,41 @@ class ViewMerchant extends React.Component<{
     console.log("getMerchantById", getMerchantById);
 
     if (getMerchantById) {
-      if (getMerchantById.status === 200) {
-        this.setState({
-            selectedFile: this.state.selectedFile = getMerchantById.resultObject.photoPath,
-            selectedProofFile: this.state.selectedProofFile = getMerchantById.resultObject.merchantIDPoof,
-            selectedDocumentFile: this.state.selectedDocumentFile = getMerchantById.resultObject.merchantDocument,
-            firstname: this.state.firstname = getMerchantById.resultObject.firstName,
-            lastname: this.state.lastname = getMerchantById.resultObject.lastName,
-            email: this.state.email = getMerchantById.resultObject.email,
-            mobilenumber: this.state.mobilenumber = getMerchantById.resultObject.phone,
-            shopname: this.state.shopname = getMerchantById.resultObject.shopName,
-            address: this.state.address = getMerchantById.resultObject.address,
-            city: this.state.city = getMerchantById.resultObject.cityID,
-            zipcode: this.state.zipcode = getMerchantById.resultObject.zipCode,
-            latitude: this.state.latitude = getMerchantById.resultObject.latitude,
-            longitude: this.state.longitude = getMerchantById.resultObject.longitude,
-            website: this.state.website = getMerchantById.resultObject.website,
-            shoppingpolicy: this.state.shoppingpolicy = getMerchantById.resultObject.shippingPolicy,
-            refundpolicy: this.state.refundpolicy = getMerchantById.resultObject.refundPolicy,
-            cancellationpolicy: this.state.cancellationpolicy = getMerchantById.resultObject.cancellationPolicy,
-            password: this.state.password = getMerchantById.resultObject.password,
-            file: this.state.file =  getMerchantById.resultObject.logoPath
-            // filetrue: this.state.filetrue = getMerchantById.resultObject.
-            // file1: this.state.file1 = getMerchantById.resultObject.
-            // file1true: this.state.file1true = getMerchantById.resultObject.
-            // file2: this.state.file2 = getMerchantById.resultObject.
-            // file2true: this.state.file2true = getMerchantById.resultObject.
-        });
-      } else {
-        const msg1 = getMerchantById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        selectedFile: this.state.selectedFile =
+          getMerchantById.resultObject.photoPath,
+        selectedProofFile: this.state.selectedProofFile =
+          getMerchantById.resultObject.merchantIDPoof,
+        selectedDocumentFile: this.state.selectedDocumentFile =
+          getMerchantById.resultObject.merchantDocument,
+        firstname: this.state.firstname =
+          getMerchantById.resultObject.firstName,
+        lastname: this.state.lastname = getMerchantById.resultObject.lastName,
+        email: this.state.email = getMerchantById.resultObject.email,
+        mobilenumber: this.state.mobilenumber =
+          getMerchantById.resultObject.phone,
+        shopname: this.state.shopname = getMerchantById.resultObject.shopName,
+        address: this.state.address = getMerchantById.resultObject.address,
+        city: this.state.city = getMerchantById.resultObject.cityID,
+        zipcode: this.state.zipcode = getMerchantById.resultObject.zipCode,
+        latitude: this.state.latitude = getMerchantById.resultObject.latitude,
+        longitude: this.state.longitude =
+          getMerchantById.resultObject.longitude,
+        website: this.state.website = getMerchantById.resultObject.website,
+        shoppingpolicy: this.state.shoppingpolicy =
+          getMerchantById.resultObject.shippingPolicy,
+        refundpolicy: this.state.refundpolicy =
+          getMerchantById.resultObject.refundPolicy,
+        cancellationpolicy: this.state.cancellationpolicy =
+          getMerchantById.resultObject.cancellationPolicy,
+        password: this.state.password = getMerchantById.resultObject.password,
+        file: this.state.file = getMerchantById.resultObject.logoPath,
+        // filetrue: this.state.filetrue = getMerchantById.resultObject.
+        // file1: this.state.file1 = getMerchantById.resultObject.
+        // file1true: this.state.file1true = getMerchantById.resultObject.
+        // file2: this.state.file2 = getMerchantById.resultObject.
+        // file2true: this.state.file2true = getMerchantById.resultObject.
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -131,7 +138,7 @@ class ViewMerchant extends React.Component<{
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -139,11 +146,7 @@ class ViewMerchant extends React.Component<{
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>
-                          {
-                            constant.merchantPage.title.viewMerchantTitle
-                          }
-                        </h1>
+                        <h1>{constant.merchantPage.title.viewMerchantTitle}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -173,7 +176,8 @@ class ViewMerchant extends React.Component<{
                           <Label htmlFor="state_name">
                             <b>
                               {
-                                constant.merchantPage.merchantTableColumn.Firstname
+                                constant.merchantPage.merchantTableColumn
+                                  .Firstname
                               }
                             </b>
                           </Label>
@@ -187,7 +191,8 @@ class ViewMerchant extends React.Component<{
                             <Label for="exampleCustomSelect">
                               <b>
                                 {
-                                 constant.merchantPage.merchantTableColumn.lastname
+                                  constant.merchantPage.merchantTableColumn
+                                    .lastname
                                 }
                               </b>
                             </Label>
@@ -201,9 +206,7 @@ class ViewMerchant extends React.Component<{
                         <FormGroup>
                           <Label htmlFor="state_name">
                             <b>
-                              {
-                                constant.merchantPage.merchantTableColumn.email
-                              }
+                              {constant.merchantPage.merchantTableColumn.email}
                             </b>
                           </Label>
                           <p>{this.state.email}</p>
@@ -216,7 +219,8 @@ class ViewMerchant extends React.Component<{
                             <Label for="exampleCustomSelect">
                               <b>
                                 {
-                                 constant.merchantPage.merchantTableColumn.phone
+                                  constant.merchantPage.merchantTableColumn
+                                    .phone
                                 }
                               </b>
                             </Label>
@@ -231,7 +235,8 @@ class ViewMerchant extends React.Component<{
                           <Label htmlFor="state_name">
                             <b>
                               {
-                                constant.merchantPage.merchantTableColumn.password
+                                constant.merchantPage.merchantTableColumn
+                                  .password
                               }
                             </b>
                           </Label>
@@ -245,7 +250,8 @@ class ViewMerchant extends React.Component<{
                             <Label for="exampleCustomSelect">
                               <b>
                                 {
-                                 constant.merchantPage.merchantTableColumn.shopname
+                                  constant.merchantPage.merchantTableColumn
+                                    .shopname
                                 }
                               </b>
                             </Label>
@@ -260,7 +266,8 @@ class ViewMerchant extends React.Component<{
                           <Label htmlFor="state_name">
                             <b>
                               {
-                                constant.merchantPage.merchantTableColumn.latitude
+                                constant.merchantPage.merchantTableColumn
+                                  .latitude
                               }
                             </b>
                           </Label>
@@ -274,7 +281,8 @@ class ViewMerchant extends React.Component<{
                             <Label for="exampleCustomSelect">
                               <b>
                                 {
-                                 constant.merchantPage.merchantTableColumn.longitude
+                                  constant.merchantPage.merchantTableColumn
+                                    .longitude
                                 }
                               </b>
                             </Label>
@@ -289,7 +297,8 @@ class ViewMerchant extends React.Component<{
                           <Label htmlFor="state_name">
                             <b>
                               {
-                                constant.merchantPage.merchantTableColumn.Address
+                                constant.merchantPage.merchantTableColumn
+                                  .Address
                               }
                             </b>
                           </Label>
@@ -303,7 +312,8 @@ class ViewMerchant extends React.Component<{
                             <Label for="exampleCustomSelect">
                               <b>
                                 {
-                                 constant.merchantPage.merchantTableColumn.website
+                                  constant.merchantPage.merchantTableColumn
+                                    .website
                                 }
                               </b>
                             </Label>
@@ -316,7 +326,12 @@ class ViewMerchant extends React.Component<{
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
                           <p style={{ fontSize: "16px" }}>
-                            <b>{constant.merchantPage.merchantTableColumn.selectedFile}</b>
+                            <b>
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .selectedFile
+                              }
+                            </b>
                           </p>
                           <div>
                             {this.state.file != null ? (
@@ -357,7 +372,7 @@ class ViewMerchant extends React.Component<{
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

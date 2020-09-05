@@ -11,13 +11,12 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
-import { RoleAPI, ProductAPI } from "../../../service/index.service";
+import {ProductAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getDataByIdRequest } from "../../../modelController";
+import { getDataByIdRequest, addProdcutTypeStateRequest } from "../../../modelController";
 
 class ViewProductType extends React.Component<{ history: any; location: any }> {
-  productCustomiseState = constant.productCustomisePage.state;
+  productCustomiseState : addProdcutTypeStateRequest= constant.productCustomisePage.state;
   state = {
     typeName: this.productCustomiseState.typeName,
     isActive: this.productCustomiseState.isActive
@@ -47,17 +46,12 @@ class ViewProductType extends React.Component<{ history: any; location: any }> {
     console.log("getCustomiseTypeById", getCustomiseTypeById);
 
     if (getCustomiseTypeById) {
-      if (getCustomiseTypeById.status === 200) {
-        this.setState({
-          typeName: this.state.typeName =
-            getCustomiseTypeById.resultObject.typeName,
-          isActive: this.state.isActive =
-            getCustomiseTypeById.resultObject.isActive
-        });
-      } else {
-        const msg1 = getCustomiseTypeById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        typeName: this.state.typeName =
+          getCustomiseTypeById.resultObject.typeName,
+        isActive: this.state.isActive =
+          getCustomiseTypeById.resultObject.isActive
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -67,7 +61,7 @@ class ViewProductType extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -138,7 +132,7 @@ class ViewProductType extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

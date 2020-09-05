@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import API from '../../service/service';
+import API from '../../service/user.service';
 import utils from '../../utils';
 import history from '../../history';
 import Constant from '../../constant/constant';

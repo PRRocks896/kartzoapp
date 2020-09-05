@@ -15,8 +15,6 @@ import {
   Row,
 } from "reactstrap";
 import "./addproduct.css";
-import NavBar from "../../navbar/navbar";
-import API from "../../../service/merchant.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import { Editor } from "@tinymce/tinymce-react";
@@ -25,15 +23,10 @@ import {
   MerchantAPI,
   ProductAPI,
 } from "../../../service/index.service";
-import ImageUploading from "react-images-uploading";
-import { any } from "prop-types";
-import { getDataByIdRequest } from "../../../modelController";
-
-const maxNumber = 10;
-const maxMbFileSize = 5 * 1024 * 1024;
+import { getDataByIdRequest, addProductStateRequest } from "../../../modelController";
 
 class AddProduct extends React.Component<{ history: any; location: any }> {
-  productState = constant.productPage.state;
+  productState:addProductStateRequest = constant.productPage.state;
   state = {
     merchantid: this.productState.merchantid,
     merchantiderror: this.productState.merchantiderror,
@@ -131,37 +124,31 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     console.log("getProductById", getProductById);
 
     if (getProductById) {
-      if (getProductById.status === 200) {
-        this.setState({
-          merchantid: this.state.merchantid =
-            getProductById.resultObject.merchantId,
-          maincategoryid: this.state.maincategoryid =
-            getProductById.resultObject.categoryId,
-          prodctname: this.state.productname =
-            getProductById.resultObject.productName,
-          price: this.state.price = getProductById.resultObject.price,
-          discountprice: this.state.discountprice =
-            getProductById.resultObject.discountPrice,
-          metatitle: this.state.metatitle =
-            getProductById.resultObject.metaTitle,
-          metadescritption: this.state.metadiscription =
-            getProductById.resultObject.metaDescription,
-          metakeyword: this.state.metakeyword =
-            getProductById.resultObject.metaKeyword,
-          productdescription: this.state.productdescription =
-            getProductById.resultObject.productDesc,
-          sortorder: this.state.sortorder =
-            getProductById.resultObject.sortOrder,
-          isFeatured: this.state.isFeatured =
-            getProductById.resultObject.isFeatured,
-          productpreview: this.state.productpreview =
-            getProductById.resultObject.productImages,
-        });
-        console.log("images", this.state.images);
-      } else {
-        const msg1 = getProductById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        merchantid: this.state.merchantid =
+          getProductById.resultObject.merchantId,
+        maincategoryid: this.state.maincategoryid =
+          getProductById.resultObject.categoryId,
+        prodctname: this.state.productname =
+          getProductById.resultObject.productName,
+        price: this.state.price = getProductById.resultObject.price,
+        discountprice: this.state.discountprice =
+          getProductById.resultObject.discountPrice,
+        metatitle: this.state.metatitle =
+          getProductById.resultObject.metaTitle,
+        metadescritption: this.state.metadiscription =
+          getProductById.resultObject.metaDescription,
+        metakeyword: this.state.metakeyword =
+          getProductById.resultObject.metaKeyword,
+        productdescription: this.state.productdescription =
+          getProductById.resultObject.productDesc,
+        sortorder: this.state.sortorder =
+          getProductById.resultObject.sortOrder,
+        isFeatured: this.state.isFeatured =
+          getProductById.resultObject.isFeatured,
+        productpreview: this.state.productpreview =
+          getProductById.resultObject.productImages,
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -171,27 +158,17 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
   async getAllCategory() {
     const getAllCategory = await CategoryAPI.getAllCategory();
     console.log("getAllCategory", getAllCategory);
-    if (getAllCategory.status === 200) {
-      this.setState({
-        categorylist: this.state.categorylist = getAllCategory.resultObject,
-      });
-    } else {
-      const msg1 = getAllCategory.message;
-      utils.showError(msg1);
-    }
+    this.setState({
+      categorylist: this.state.categorylist = getAllCategory.resultObject,
+    });
   }
 
   async getAllMerchant() {
     const getAllMerchant = await MerchantAPI.getMerchantList();
     console.log("getAllMerchant", getAllMerchant);
-    if (getAllMerchant.status === 200) {
-      this.setState({
-        merchantlist: this.state.merchantlist = getAllMerchant.resultObject,
-      });
-    } else {
-      const msg1 = getAllMerchant.message;
-      utils.showError(msg1);
-    }
+    this.setState({
+      merchantlist: this.state.merchantlist = getAllMerchant.resultObject,
+    });
   }
 
   onMerchantSelect(event: any) {
@@ -335,14 +312,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         console.log("addProduct", addProduct);
 
         if (addProduct) {
-          if (addProduct.status === 200) {
-            const msg = addProduct.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-product");
-          } else {
-            const msg1 = addProduct.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-product");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -408,14 +378,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         console.log("editProduct", editProduct);
 
         if (editProduct) {
-          if (editProduct.status === 200) {
-            const msg = editProduct.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-product");
-          } else {
-            const msg1 = editProduct.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-product");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -427,7 +390,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -855,7 +818,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
                         ) : (
                           <div className="image_margin">
                             {this.state.imagesPreviewUrls.map(
-                              (imagePreviewUrl) => {
+                              (imagePreviewUrl:any) => {
                                 return (
                                   <img
                                     key={imagePreviewUrl}
@@ -922,7 +885,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

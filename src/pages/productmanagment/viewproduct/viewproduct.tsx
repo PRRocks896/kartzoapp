@@ -13,12 +13,13 @@ import {
   Row,
 } from "reactstrap";
 // import './adduser.css';
-import NavBar from "../../navbar/navbar";
+
 import constant from "../../../constant/constant";
 import { ProductAPI } from "../../../service/index.service";
+import { addProductStateRequest } from "../../../modelController";
 
 class ViewProduct extends React.Component<{ history: any; location: any }> {
-  productState = constant.productPage.state;
+  productState:addProductStateRequest = constant.productPage.state;
   state = {
     merchantid: this.productState.merchantid,
     maincategoryid: this.productState.maincategoryid,
@@ -62,35 +63,30 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
     console.log("getProductById", getProductById);
 
     if (getProductById) {
-      if (getProductById.status === 200) {
-        this.setState({
-          merchantid: this.state.merchantid =
-            getProductById.resultObject.merchantId,
-          maincategoryid: this.state.maincategoryid =
-            getProductById.resultObject.categoryId,
-          prodctname: this.state.productname =
-            getProductById.resultObject.productName,
-          price: this.state.price = getProductById.resultObject.price,
-          discountprice: this.state.discountprice =
-            getProductById.resultObject.discountPrice,
-          metatitle: this.state.metatitle =
-            getProductById.resultObject.metaTitle,
-          metadescritption: this.state.metadiscription =
-            getProductById.resultObject.metaDescription,
-          metakeyword: this.state.metakeyword =
-            getProductById.resultObject.metaKeyword,
-          productdescription: this.state.productdescription =
-            getProductById.resultObject.productDesc,
-          sortorder: this.state.sortorder =
-            getProductById.resultObject.sortOrder,
-          isFeatured: this.state.isFeatured =
-            getProductById.resultObject.isFeatured,
-          images: this.state.images = getProductById.resultObject.productImages,
-        });
-      } else {
-        const msg1 = getProductById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        merchantid: this.state.merchantid =
+          getProductById.resultObject.merchantId,
+        maincategoryid: this.state.maincategoryid =
+          getProductById.resultObject.categoryId,
+        prodctname: this.state.productname =
+          getProductById.resultObject.productName,
+        price: this.state.price = getProductById.resultObject.price,
+        discountprice: this.state.discountprice =
+          getProductById.resultObject.discountPrice,
+        metatitle: this.state.metatitle =
+          getProductById.resultObject.metaTitle,
+        metadescritption: this.state.metadiscription =
+          getProductById.resultObject.metaDescription,
+        metakeyword: this.state.metakeyword =
+          getProductById.resultObject.metaKeyword,
+        productdescription: this.state.productdescription =
+          getProductById.resultObject.productDesc,
+        sortorder: this.state.sortorder =
+          getProductById.resultObject.sortOrder,
+        isFeatured: this.state.isFeatured =
+          getProductById.resultObject.isFeatured,
+        images: this.state.images = getProductById.resultObject.productImages,
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -100,7 +96,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -320,7 +316,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

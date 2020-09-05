@@ -11,16 +11,15 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
-import { RoleAPI, ProductAPI } from "../../../service/index.service";
+import {ProductAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getDataByIdRequest } from "../../../modelController";
+import { getDataByIdRequest, addProdcutCustomiseStateRequest } from "../../../modelController";
 
 class ViewProductCustomise extends React.Component<{
   history: any;
   location: any;
 }> {
-  productCustomiseState = constant.productCustomPage.state;
+  productCustomiseState : addProdcutCustomiseStateRequest= constant.productCustomPage.state;
   state = {
     amount: this.productCustomiseState.amount,
     addondetails: this.productCustomiseState.addondetails,
@@ -51,22 +50,17 @@ class ViewProductCustomise extends React.Component<{
     console.log("getCustomiseTypeById", getCustomiseTypeById);
 
     if (getCustomiseTypeById) {
-      if (getCustomiseTypeById.status === 200) {
-        this.setState({
-          productdata: this.state.productdata =
-            getCustomiseTypeById.resultObject.product,
-          productdatatype: this.state.productdatatype =
-            getCustomiseTypeById.resultObject.productCustomizeType,
-          isActive: this.state.isActive =
-            getCustomiseTypeById.resultObject.isActive,
-          amount: this.state.amount = getCustomiseTypeById.resultObject.amount,
-          addondetails: this.state.addondetails =
-            getCustomiseTypeById.resultObject.addOnDetail,
-        });
-      } else {
-        const msg1 = getCustomiseTypeById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        productdata: this.state.productdata =
+          getCustomiseTypeById.resultObject.product,
+        productdatatype: this.state.productdatatype =
+          getCustomiseTypeById.resultObject.productCustomizeType,
+        isActive: this.state.isActive =
+          getCustomiseTypeById.resultObject.isActive,
+        amount: this.state.amount = getCustomiseTypeById.resultObject.amount,
+        addondetails: this.state.addondetails =
+          getCustomiseTypeById.resultObject.addOnDetail,
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -80,7 +74,7 @@ class ViewProductCustomise extends React.Component<{
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -179,7 +173,7 @@ class ViewProductCustomise extends React.Component<{
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

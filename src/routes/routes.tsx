@@ -5,10 +5,8 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom';
-import history from '../history';
 import Users from '../pages/usersmanagment/users/users';
 import UserRole from '../pages/usersmanagment/userrole/userrole';
-import Login from '../pages/login/login';
 import Signup from '../pages/signup/signup';
 import Dashboard from '../pages/dashboard/dashboard';
 import UserRoleToRights from '../pages/usersmanagment/userroletorights/userroletorights';
@@ -103,17 +101,13 @@ import AddProductType from '../pages/productmanagment/addproducttype/addtype';
 import ViewProductType from '../pages/productmanagment/viewcustomisetype/viewtype';
 import ListProductAddOn from '../pages/productmanagment/listaddon/listaddon';
 import ViewProductCustomise from '../pages/productmanagment/viewcustomise/viewcustomise';
-
-const loading = (
-  <div className="pt-3 text-center">
-    <div className="sk-spinner sk-spinner-pulse"></div>
-  </div>
-)
+import NavBar from '../component/navbar/navbar';
 
 class Main extends React.Component<{history:any}> {
   render() {
     return (
       <Router>
+        <NavBar {...this.props}>
         <Switch>
             <Route path='/dashboard' name='Dashboard' render={(props: any) => <Dashboard {...props} />} />
             <Route path='/signup' render={(props: any) => <Signup {...props} />} />
@@ -241,7 +235,7 @@ class Main extends React.Component<{history:any}> {
             <Route path='/edit-customise/:id' render={(props: any) => <AddOnProduct {...props} />} />
             <Route path='/view-customise/:id' render={(props: any) => <ViewProductCustomise {...props} />} />
             {
-                    this.props.history.location.pathname != '/' ? (
+                    this.props.history.location.pathname !== '/' ? (
                       <Route path="*" component={Page404}/>
                     ) : (
                       ""
@@ -249,6 +243,7 @@ class Main extends React.Component<{history:any}> {
                   }
             <Redirect from="/" to="/dashboard" />
         </Switch>
+        </NavBar>
       </Router>
     )
   }

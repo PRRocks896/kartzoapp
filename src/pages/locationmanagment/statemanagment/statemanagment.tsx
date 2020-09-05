@@ -7,23 +7,17 @@ import {
   CardBody,
   CardHeader,
   CardTitle,
-  Table,
-  Input,
   CustomInput,
   Col,
-  FormGroup,
-  Label,
   Row,
 } from "reactstrap";
-// import './adduser.css';
-import NavBar from "../../navbar/navbar";
 import {LocationAPI, StatusAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { stateUpdateRequest, getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest } from "../../../modelController/index";
+import {getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, stateStateRequest, allStateRequest } from "../../../modelController/index";
 
 class StateManagment extends React.Component<{ history: any }> {
-  stateState = constant.statePage.state;
-  userState = constant.userPage.state;
+  stateState:stateStateRequest = constant.statePage.state;
+  userState:allStateRequest = constant.userPage.state;
   state = {
     count: this.stateState.count,
     currentPage: this.stateState.currentPage,
@@ -52,7 +46,6 @@ class StateManagment extends React.Component<{ history: any }> {
       this
     );
     this.handleSort = this.handleSort.bind(this);
-    this.compareByDesc = this.compareByDesc.bind(this);
     this.statusChange = this.statusChange.bind(this);
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
@@ -83,15 +76,10 @@ class StateManagment extends React.Component<{ history: any }> {
     console.log("getStateData", getStateData);
 
     if (getStateData) {
-      if (getStateData.status === 200) {
-        this.setState({
-          statedata: this.state.statedata = getStateData.resultObject.data,
-          count: this.state.count = getStateData.resultObject.totalcount,
-        });
-      } else {
-        const msg1 = getStateData.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        statedata: this.state.statedata = getStateData.resultObject.data,
+        count: this.state.count = getStateData.resultObject.totalcount,
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -135,13 +123,11 @@ class StateManagment extends React.Component<{ history: any }> {
       };
       var deleteState = await LocationAPI.deleteState(obj);
       console.log("deleteState", deleteState);
-      if (deleteState.status === 200) {
-        const msg = deleteState.message;
-        utils.showSuccess(msg);
+      if (deleteState) {
         this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
-        const msg1 = deleteState.message;
-        utils.showError(msg1);
+        const msg1 = "Internal server error";
+      utils.showError(msg1);
       }
     }
   }
@@ -183,26 +169,10 @@ class StateManagment extends React.Component<{ history: any }> {
       switchSort: !this.state.switchSort,
     });
     let copyTableData = [...this.state.statedata];
-    copyTableData.sort(this.compareByDesc(key));
+    copyTableData.sort(utils.compareByDesc(key,this.state.switchSort));
     this.setState({
       statedata: this.state.statedata = copyTableData,
     });
-  }
-
-  compareByDesc(key: any) {
-    if (this.state.switchSort) {
-      return function (a: any, b: any) {
-        if (a[key] < b[key]) return -1; // check for value if the second value is bigger then first return -1
-        if (a[key] > b[key]) return 1; //check for value if the second value is bigger then first return 1
-        return 0;
-      };
-    } else {
-      return function (a: any, b: any) {
-        if (a[key] > b[key]) return -1;
-        if (a[key] < b[key]) return 1;
-        return 0;
-      };
-    }
   }
 
   async statusChange(data: any, text: string, btext: string) {
@@ -214,13 +184,11 @@ class StateManagment extends React.Component<{ history: any }> {
        }
        var getStatusChange = await StatusAPI.getStatusChange(obj);
        console.log("getStatusChange", getStatusChange);
-       if (getStatusChange.status === 200) {
-        const msg = getStatusChange.message;
-        utils.showSuccess(msg);
+       if (getStatusChange) {
         this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
-        const msg1 = getStatusChange.message;
-        utils.showError(msg1);
+        const msg1 = "Internal server error";
+      utils.showError(msg1);
       }
     }
   }
@@ -238,16 +206,10 @@ class StateManagment extends React.Component<{ history: any }> {
         statedata: this.state.statedata = data,
       });
     }
-    let count = 0;
-    data.forEach((element: any) => {
-      if (element._rowChecked === true) {
-        element._rowChecked = true;
-        count++;
-      } else {
-        element._rowChecked = false;
-      }
-    });
-    if (count === data.length) {
+    if (
+      data.filter((res: any, index: number) => res._rowChecked === true)
+        .length === data.length
+    ) {
       this.setState({
         _maincheck: true,
       });
@@ -257,11 +219,11 @@ class StateManagment extends React.Component<{ history: any }> {
       });
     }
     let newarray: any = [];
-    for (var i = 0; i < this.state.statedata.length; i++) {
-      if (this.state.statedata[i]["_rowChecked"] === true) {
-        newarray.push(this.state.statedata[i]["stateId"]);
+    data.map((res: any, index: number) => {
+      if (res._rowChecked === true) {
+        newarray.push(res.stateId);
       }
-    }
+    });
     this.setState({
       deleteuserdata: this.state.deleteuserdata = newarray,
     });
@@ -289,11 +251,11 @@ class StateManagment extends React.Component<{ history: any }> {
       _maincheck: _val,
     });
     let newmainarray: any = [];
-    for (var i = 0; i < this.state.statedata.length; i++) {
-      if (this.state.statedata[i]["_rowChecked"] === true) {
-        newmainarray.push(this.state.statedata[i]["stateId"]);
+    this.state.statedata.map((res: any, index: number) => {
+      if (res._rowChecked === true) {
+        newmainarray.push(res.stateId);
       }
-    }
+    });
     this.setState({
       deleteuserdata: this.state.deleteuserdata = newmainarray,
     });
@@ -499,17 +461,10 @@ class StateManagment extends React.Component<{ history: any }> {
   }
 
   render() {
-    var pageNumbers = [];
-    for (
-      let i = 1;
-      i <=
-      Math.ceil(
-        parseInt(this.state.count) / parseInt(this.state.items_per_page)
-      );
-      i++
-    ) {
-      pageNumbers.push(i);
-    }
+    var pageNumbers = utils.pageNumber(
+      this.state.count,
+      this.state.items_per_page
+    );
     var renderPageNumbers = this.pagination(pageNumbers);
 
     let pageIncrementBtn = null;
@@ -536,7 +491,7 @@ class StateManagment extends React.Component<{ history: any }> {
 
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -574,7 +529,7 @@ class StateManagment extends React.Component<{ history: any }> {
                     {this.state.statedata.length > 0 ? (
                       <>{this.getTable(this.state.statedata)}</>
                     ) : (
-                      <h1 className="text-center mt-5">No Data Found</h1>
+                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
                     )}
                       {this.state.deleteFlag === true ? (
                       <Button
@@ -598,7 +553,7 @@ class StateManagment extends React.Component<{ history: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

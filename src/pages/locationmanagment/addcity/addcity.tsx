@@ -16,17 +16,18 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
+
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import {
   cityCreateRequest,
   cityUpdateRequest,
   getDataByIdRequest,
+  addCityStateRequest,
 } from "../../../modelController";
 
 class AddCity extends React.Component<{ history: any; location: any }> {
-  cityState = constant.cityPage.state;
+  cityState:addCityStateRequest = constant.cityPage.state;
   state = {
     stateid: this.cityState.stateid,
     stateiderror: this.cityState.stateiderror,
@@ -74,14 +75,9 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     console.log("getState", getState);
 
     if (getState) {
-      if (getState.status === 200) {
-        this.setState({
-          statelist: this.state.statelist = getState.resultObject,
-        });
-      } else {
-        const msg = getState.message;
-        utils.showError(msg);
-      }
+      this.setState({
+        statelist: this.state.statelist = getState.resultObject,
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -96,19 +92,14 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     console.log("getCityById", getCityById);
 
     if (getCityById) {
-      if (getCityById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          statename: this.state.statename = getCityById.resultObject.stateName,
-          stateid: this.state.stateid = getCityById.resultObject.stateId,
-          cityid: this.state.cityid = getCityById.resultObject.cityId,
-          cityname: this.state.cityname = getCityById.resultObject.cityName,
-          isActive: this.state.isActive = getCityById.resultObject.isActive
-        });
-      } else {
-        const msg1 = getCityById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        statename: this.state.statename = getCityById.resultObject.stateName,
+        stateid: this.state.stateid = getCityById.resultObject.stateId,
+        cityid: this.state.cityid = getCityById.resultObject.cityId,
+        cityname: this.state.cityname = getCityById.resultObject.cityName,
+        isActive: this.state.isActive = getCityById.resultObject.isActive
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -165,14 +156,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         console.log("addCity", addCity);
 
         if (addCity) {
-          if (addCity.status === 200) {
-            const msg = addCity.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/city");
-          } else {
-            const msg = addCity.message;
-            utils.showError(msg);
-          }
+          this.props.history.push("/city");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -200,14 +184,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         console.log("editCity", editCity);
 
         if (editCity) {
-          if (editCity.status === 200) {
-            const msg = editCity.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/city");
-          } else {
-            const msg = editCity.message;
-            utils.showError(msg);
-          }
+          this.props.history.push("/city");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -219,7 +196,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -362,7 +339,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

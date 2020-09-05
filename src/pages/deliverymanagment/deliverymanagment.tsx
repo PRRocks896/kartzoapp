@@ -18,7 +18,6 @@ import {
     Row,
 } from 'reactstrap';
 import './deliverymanagment.css';
-import NavBar from '../navbar/navbar';
 import { MDBDataTable } from 'mdbreact';
 import constant from '../../constant/constant';
 const $ = require('jquery');
@@ -202,7 +201,7 @@ class DeliveryManagement extends React.Component<{ history: any }> {
 
         return (
             <>
-                <NavBar>
+                <>
                     <div className="ms-content-wrapper">
                         <div className="row">
                             <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -390,7 +389,7 @@ class DeliveryManagement extends React.Component<{ history: any }> {
                             </Col>
                         </div>
                     </div>
-                </NavBar>
+                </>
             </>
         );
     }

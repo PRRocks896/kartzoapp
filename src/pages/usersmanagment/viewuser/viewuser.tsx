@@ -6,13 +6,11 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Input,
   Col,
   FormGroup,
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
 import { API } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getDataByIdRequest } from "../../../modelController";
@@ -37,36 +35,35 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
     document.title = constant.userPage.title.viewUserTitle + utils.getAppName();
     const usderId = this.props.location.pathname.split("/")[2];
     if (usderId !== undefined) {
-      const obj: getDataByIdRequest = {
-        id: usderId,
-      };
-      const getUserById: any = await API.getUserById(obj);
-      if (getUserById) {
-        if (getUserById.status === 200) {
-          this.setState({
-            userdata: {
-              firstName: getUserById.resultObject.firstName,
-              lastName: getUserById.resultObject.lastName,
-              email: getUserById.resultObject.email,
-              phone: getUserById.resultObject.phone,
-              file: getUserById.resultObject.photoPath,
-            },
-          });
-        } else {
-          const msg1 = getUserById.message;
-          utils.showError(msg1);
-        }
-      } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
-      }
+     this.getUser(usderId);
+    }
+  }
+
+  async getUser(usderId:any) {
+    const obj: getDataByIdRequest = {
+      id: usderId,
+    };
+    const getUserById: any = await API.getUserById(obj);
+    if (getUserById) {
+      this.setState({
+        userdata: {
+          firstName: getUserById.resultObject.firstName,
+          lastName: getUserById.resultObject.lastName,
+          email: getUserById.resultObject.email,
+          phone: getUserById.resultObject.phone,
+          file: getUserById.resultObject.photoPath,
+        },
+      });
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
     }
   }
 
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -154,7 +151,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

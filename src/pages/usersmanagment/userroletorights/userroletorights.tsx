@@ -14,15 +14,15 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
+
 import constant from "../../../constant/constant";
 import utils from "../../../utils";
 import "./userroletorights.css";
-import { getDataByIdRequest, updateRightsRequest } from "../../../modelController";
+import { getDataByIdRequest, updateRightsRequest, rightStateRequest } from "../../../modelController";
 
 class UserRoleToRights extends React.Component {
   roleState = constant.rolePrivileges.state
-  state = {
+  state:rightStateRequest = {
     userrole: this.roleState.userrole,
     roleid: this.roleState.roleid,
     onItemSelect: this.roleState.onItemSelect,
@@ -96,7 +96,7 @@ class UserRoleToRights extends React.Component {
 
         let data = this.state.role;
 
-        let count = 0;
+   
         data.forEach((element: any) => {
           if (
             element.view == true &&
@@ -106,7 +106,7 @@ class UserRoleToRights extends React.Component {
             element.detail == true
           ) {
             element._rowChecked = true;
-            count++;
+           
           } else {
             element._rowChecked = false;
           }
@@ -140,7 +140,7 @@ class UserRoleToRights extends React.Component {
         element._rowChecked = false;
       }
     });
-    if (count == data.length) {
+    if (count === data.length) {
       this.setState({
         _maincheck: true,
       });
@@ -158,16 +158,16 @@ class UserRoleToRights extends React.Component {
     let _id = item.menuItemID;
     let _type = type;
     let index: any = this.state.roleprivileges.findIndex(
-      (x: any) => x.menuItemID == _id
+      (x: any) => x.menuItemID === _id
     );
     let data: any = this.state.roleprivileges;
     if (index > -1) {
       if (
-        _type != "view" &&
-        _type != "add" &&
-        _type != "edit" &&
-        _type != "delete" &&
-        _type != "detail"
+        _type !== "view" &&
+        _type !== "add" &&
+        _type !== "edit" &&
+        _type !== "delete" &&
+        _type !== "detail"
       ) {
         let newState: any = !item._rowChecked;
         data[index]._rowChecked = newState;
@@ -317,7 +317,7 @@ class UserRoleToRights extends React.Component {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -345,7 +345,7 @@ class UserRoleToRights extends React.Component {
                                 <option value="">{constant.userPage.userTableColumn.roleselect}</option>
                                 {this.state.userrole.length > 0
                                   ? this.state.userrole.map(
-                                      (data: any, index) => (
+                                      (data: any, index:number) => (
                                         <option
                                           key={data.value}
                                           value={data.value}
@@ -477,7 +477,7 @@ class UserRoleToRights extends React.Component {
                                                     defaultValue={
                                                       this.state.roleprivileges[
                                                         index
-                                                      ]["_rowChecked"] == true
+                                                      ]["_rowChecked"] === true
                                                         ? 1
                                                         : 0
                                                     }
@@ -493,7 +493,7 @@ class UserRoleToRights extends React.Component {
                                                     checked={
                                                       this.state.roleprivileges[
                                                         index
-                                                      ]["_rowChecked"] == true
+                                                      ]["_rowChecked"] === true
                                                     }
                                                   />
                                                 </td>
@@ -508,7 +508,7 @@ class UserRoleToRights extends React.Component {
                                                     value={
                                                       this.state.roleprivileges[
                                                         index
-                                                      ]["view"] == true
+                                                      ]["view"] === true
                                                         ? 1
                                                         : 0
                                                     }
@@ -527,7 +527,7 @@ class UserRoleToRights extends React.Component {
                                                     checked={
                                                       this.state.roleprivileges[
                                                         index
-                                                      ]["view"] == true
+                                                      ]["view"] === true
                                                     }
                                                   />
                                                 </td>
@@ -537,7 +537,7 @@ class UserRoleToRights extends React.Component {
                                                     value={
                                                       this.state.roleprivileges[
                                                         index
-                                                      ]["add"] == true
+                                                      ]["add"] === true
                                                         ? 1
                                                         : 0
                                                     }
@@ -554,7 +554,7 @@ class UserRoleToRights extends React.Component {
                                                     checked={
                                                       this.state.roleprivileges[
                                                         index
-                                                      ]["add"] == true
+                                                      ]["add"] === true
                                                     }
                                                   />
                                                 </td>
@@ -564,7 +564,7 @@ class UserRoleToRights extends React.Component {
                                                     value={
                                                       this.state.roleprivileges[
                                                         index
-                                                      ]["edit"] == true
+                                                      ]["edit"] === true
                                                         ? 1
                                                         : 0
                                                     }
@@ -583,7 +583,7 @@ class UserRoleToRights extends React.Component {
                                                     checked={
                                                       this.state.roleprivileges[
                                                         index
-                                                      ]["edit"] == true
+                                                      ]["edit"] === true
                                                     }
                                                   />
                                                 </td>
@@ -593,7 +593,7 @@ class UserRoleToRights extends React.Component {
                                                     value={
                                                       this.state.roleprivileges[
                                                         index
-                                                      ]["delete"] == true
+                                                      ]["delete"] === true
                                                         ? 1
                                                         : 0
                                                     }
@@ -612,7 +612,7 @@ class UserRoleToRights extends React.Component {
                                                     checked={
                                                       this.state.roleprivileges[
                                                         index
-                                                      ]["delete"] == true
+                                                      ]["delete"] === true
                                                     }
                                                   />
                                                 </td>
@@ -622,7 +622,7 @@ class UserRoleToRights extends React.Component {
                                                     value={
                                                       this.state.roleprivileges[
                                                         index
-                                                      ]["detail"] == true
+                                                      ]["detail"] === true
                                                         ? 1
                                                         : 0
                                                     }
@@ -641,7 +641,7 @@ class UserRoleToRights extends React.Component {
                                                     checked={
                                                       this.state.roleprivileges[
                                                         index
-                                                      ]["detail"] == true
+                                                      ]["detail"] === true
                                                     }
                                                   />
                                                 </td>
@@ -679,7 +679,7 @@ class UserRoleToRights extends React.Component {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

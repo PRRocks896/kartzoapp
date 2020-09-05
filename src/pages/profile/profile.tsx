@@ -12,12 +12,10 @@ import {
   Row,
 } from "reactstrap";
 import "./profile.css";
-import NavBar from "../navbar/navbar";
 import { API, RoleAPI } from "../../service/index.service";
 import constant from "../../constant/constant";
-// import EventEmitter from '../../event';
 import {
-  profileGetRequest,
+  profileGetRequest, addProfileStateRequest,
 } from "../../modelController/index";
 
 interface User {
@@ -25,7 +23,7 @@ interface User {
 }
 
 class Profile extends React.Component {
-  profileState = constant.profilePage.state;
+  profileState : addProfileStateRequest = constant.profilePage.state;
   state = {
     selectedFile: this.profileState.selectedFile,
     firstname: this.profileState.firstname,
@@ -74,21 +72,16 @@ class Profile extends React.Component {
       console.log("getprofile", getProfile);
 
       if (getProfile) {
-        if (getProfile.status === 200) {
-          this.setState({
-            updateTrue: this.state.updateTrue = true,
-            filetrue: this.state.filetrue = true,
-            userid: this.state.userid = getProfile.resultObject.userId,
-            firstname: this.state.firstname = getProfile.resultObject.firstName,
-            lastname: this.state.lastname = getProfile.resultObject.lastName,
-            mobilenumber: this.state.mobilenumber = getProfile.resultObject.phone,
-            selectedFile: this.state.selectedFile = getProfile.resultObject.photo,
-            file: this.state.file = getProfile.resultObject.photoPath
-          });
-        } else {
-          const msg1 = getProfile.message;
-          utils.showError(msg1);
-        }
+        this.setState({
+          updateTrue: this.state.updateTrue = true,
+          filetrue: this.state.filetrue = true,
+          userid: this.state.userid = getProfile.resultObject.userId,
+          firstname: this.state.firstname = getProfile.resultObject.firstName,
+          lastname: this.state.lastname = getProfile.resultObject.lastName,
+          mobilenumber: this.state.mobilenumber = getProfile.resultObject.phone,
+          selectedFile: this.state.selectedFile = getProfile.resultObject.photo,
+          file: this.state.file = getProfile.resultObject.photoPath
+        });
       } else {
         const msg1 = "Internal server error";
         utils.showError(msg1);
@@ -206,15 +199,8 @@ class Profile extends React.Component {
         console.log("updateProfile", updateProfile);
 
         if (updateProfile) {
-          if (updateProfile.status === 200) {
-            const msg = updateProfile.message;
-            this.getUserById();
-            utils.showSuccess(msg);
-            // EventEmitter.dispatch('imageUpload', this.state.file);
-          } else {
-            const msg1 = updateProfile.message;
-            utils.showError(msg1);
-          }
+          this.getUserById();
+          // EventEmitter.dispatch('imageUpload', this.state.file);
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -259,7 +245,7 @@ class Profile extends React.Component {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -392,7 +378,7 @@ class Profile extends React.Component {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

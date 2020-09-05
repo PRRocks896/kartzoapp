@@ -11,7 +11,7 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
+
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getDataByIdRequest } from "../../../modelController";
@@ -28,36 +28,35 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
       constant.countryPage.title.viewCountryTitle + utils.getAppName();
     const countryId = this.props.location.pathname.split("/")[2];
     if (countryId !== undefined) {
-      const obj:getDataByIdRequest = {
-        id: countryId,
-      };
-      const getCountryById: any = await LocationAPI.getCountryById(obj);
-      console.log("getCountryById", getCountryById);
+      this.getCountry(countryId);
+    }
+  }
 
-      if (getCountryById) {
-        if (getCountryById.status === 200) {
-          this.setState({
-            countryname: this.state.countryname =
-              getCountryById.resultObject.countryName,
-            countrycode: this.state.countrycode =
-              getCountryById.resultObject.countryCode,
-            file: this.state.file = getCountryById.resultObject.imagePath,
-          });
-        } else {
-          const msg1 = getCountryById.message;
-          utils.showError(msg1);
-        }
-      } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
-      }
+ async getCountry(countryId:any) {
+    const obj:getDataByIdRequest = {
+      id: countryId,
+    };
+    const getCountryById: any = await LocationAPI.getCountryById(obj);
+    console.log("getCountryById", getCountryById);
+
+    if (getCountryById) {
+      this.setState({
+        countryname: this.state.countryname =
+          getCountryById.resultObject.countryName,
+        countrycode: this.state.countrycode =
+          getCountryById.resultObject.countryCode,
+        file: this.state.file = getCountryById.resultObject.imagePath,
+      });
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
     }
   }
 
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -151,7 +150,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

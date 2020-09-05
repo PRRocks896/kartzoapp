@@ -13,8 +13,8 @@ import {
     Row,
 } from 'reactstrap';
 import './adddelivery.css';
-import NavBar from '../../navbar/navbar';
-import API from '../../../service/service';
+
+import API from '../../../service/user.service';
 import Switch from "react-switch";
 import constant from '../../../constant/constant';
 import { deliveryCreateRequest, deliveryUpdateRequest } from '../../../modelController/deliveryModel';
@@ -240,7 +240,7 @@ class AddDelivery extends React.Component<{ history: any }> {
 
         return (
             <>
-                <NavBar>
+                <>
                     <div className="ms-content-wrapper">
                         <div className="row">
                             <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -477,7 +477,7 @@ class AddDelivery extends React.Component<{ history: any }> {
                             </Col>
                         </div>
                     </div>
-                </NavBar>
+                </>
             </>
         );
     }

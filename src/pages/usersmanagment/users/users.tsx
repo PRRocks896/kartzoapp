@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
 import utils from "../../../utils";
 import { API, RoleAPI, StatusAPI } from "../../../service/index.service";
 import {
@@ -14,19 +13,19 @@ import {
   Row,
 } from "reactstrap";
 import "./users.css";
-import NavBar from "../../navbar/navbar";
 import constant from "../../../constant/constant";
 import {
   getAllTableDataListRequest,
   statusChangeRequest,
   deleteByIdRequest,
+  allStateRequest,
 } from "../../../modelController";
 const $ = require("jquery");
 var _ = require("lodash");
 
 class Users extends React.Component<{ history: any }> {
   userState = constant.userPage.state;
-  state = {
+  state: allStateRequest = {
     count: this.userState.count,
     currentPage: this.userState.currentPage,
     items_per_page: this.userState.items_per_page,
@@ -59,7 +58,6 @@ class Users extends React.Component<{ history: any }> {
       this
     );
     this.handleSort = this.handleSort.bind(this);
-    this.compareByDesc = this.compareByDesc.bind(this);
     this.statusChange = this.statusChange.bind(this);
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
@@ -162,26 +160,10 @@ class Users extends React.Component<{ history: any }> {
       switchSort: !this.state.switchSort,
     });
     let copyTableData = [...this.state.userdata];
-    copyTableData.sort(this.compareByDesc(key));
+    copyTableData.sort(utils.compareByDesc(key, this.state.switchSort));
     this.setState({
       userdata: this.state.userdata = copyTableData,
     });
-  }
-
-  compareByDesc(key: any) {
-    if (this.state.switchSort) {
-      return function (a: any, b: any) {
-        if (a[key] < b[key]) return -1; // check for value if the second value is bigger then first return -1
-        if (a[key] > b[key]) return 1; //check for value if the second value is bigger then first return 1
-        return 0;
-      };
-    } else {
-      return function (a: any, b: any) {
-        if (a[key] > b[key]) return -1;
-        if (a[key] < b[key]) return 1;
-        return 0;
-      };
-    }
   }
 
   async deleteuser(data: any, text: string, btext: string) {
@@ -208,20 +190,14 @@ class Users extends React.Component<{ history: any }> {
 
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
-    this.setState({
-      userrole: this.state.userrole = getUserRole.resultObject,
-    });
-    // if (getUserRole) {
-    //   if (getUserRole.status === 200) {
-        
-    //   } else {
-    //     const msg1 = getUserRole.message;
-    //     utils.showError(msg1);
-    //   }
-    // } else {
-    //   const msg1 = "Internal server error";
-    //   utils.showError(msg1);
-    // }
+    if (getUserRole) {
+      this.setState({
+        userrole: this.state.userrole = getUserRole.resultObject,
+      });
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
+    }
   }
 
   async getUsers(
@@ -241,18 +217,10 @@ class Users extends React.Component<{ history: any }> {
     console.log("getUserDataPagination", getUserDataPagination);
 
     if (getUserDataPagination) {
-      if (getUserDataPagination.status === 200) {
-        this.setState({
-          // rows: { 'firstName','lastName' },
-          userdata: this.state.userdata =
-            getUserDataPagination.resultObject.data,
-          count: this.state.count =
-            getUserDataPagination.resultObject.totalcount,
-        });
-      } else {
-        const msg1 = getUserDataPagination.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        userdata: this.state.userdata = getUserDataPagination.resultObject.data,
+        count: this.state.count = getUserDataPagination.resultObject.totalcount,
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -293,9 +261,7 @@ class Users extends React.Component<{ history: any }> {
       };
       var getStatusChange = await StatusAPI.getStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
-      if (getStatusChange.status === 200) {
-        const msg = getStatusChange.message;
-        utils.showSuccess(msg);
+      if (getStatusChange) {
         this.getUsers(
           parseInt(this.state.roleid),
           "",
@@ -303,7 +269,7 @@ class Users extends React.Component<{ history: any }> {
           parseInt(this.state.items_per_page)
         );
       } else {
-        const msg1 = getStatusChange.message;
+        const msg1 = "Internal server error";
         utils.showError(msg1);
       }
     }
@@ -311,27 +277,25 @@ class Users extends React.Component<{ history: any }> {
 
   handleChange(item: any, e: any) {
     let _id = item.userId;
-    let index: any = this.state.userdata.findIndex((x: any) => x.userId === _id);
+    let index: any = this.state.userdata.findIndex(
+      (x: any) => x.userId === _id
+    );
     let data: any = this.state.userdata;
     if (index > -1) {
       let newState: any = !item._rowChecked;
       data[index]._rowChecked = newState;
       this.setState({
-        userdata: this.state.userdata = data
+        userdata: this.state.userdata = data,
       });
     }
-    let count = 0;
-    console.log('after check the box data: ', data.filter((res: any, index: number) => res._rowChecked == true));
-    // if(data.map)
-    // data.forEach((element: any) => {
-    //   if (element._rowChecked === true) {
-    //     element._rowChecked = true;
-    //     count++;
-    //   } else {
-    //     element._rowChecked = false;
-    //   }
-    // });
-    if (data.filter((res: any, index: number) => res._rowChecked == true).length === data.length) {
+    console.log(
+      "after check the box data: ",
+      data.filter((res: any, index: number) => res._rowChecked == true)
+    );
+    if (
+      data.filter((res: any, index: number) => res._rowChecked === true)
+        .length === data.length
+    ) {
       this.setState({
         _maincheck: true,
       });
@@ -340,27 +304,22 @@ class Users extends React.Component<{ history: any }> {
         _maincheck: false,
       });
     }
-    let newarray: any = []
+    let newarray: any = [];
     data.map((res: any, index: number) => {
-      if(res._rowChecked == true) {
+      if (res._rowChecked === true) {
         newarray.push(res.userId);
       }
     });
-    // for (var i = 0; i < this.state.userdata.length; i++) {
-    //   if (this.state.userdata[i]["_rowChecked"] === true) {
-    //     newarray.push(this.state.userdata[i]["userId"]);
-    //   }
-    // }
     this.setState({
       deleteuserdata: this.state.deleteuserdata = newarray,
     });
-    if(this.state.deleteuserdata.length > 0) {
+    if (this.state.deleteuserdata.length > 0) {
       this.setState({
         deleteFlag: this.state.deleteFlag = true,
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false
+        deleteFlag: this.state.deleteFlag = false,
       });
     }
     console.log("deleteuserdata array", this.state.deleteuserdata);
@@ -378,21 +337,21 @@ class Users extends React.Component<{ history: any }> {
       _maincheck: _val,
     });
     let newmainarray: any = [];
-    for (var i = 0; i < this.state.userdata.length; i++) {
-      if (this.state.userdata[i]["_rowChecked"] === true) {
-        newmainarray.push(this.state.userdata[i]["userId"]);
+    this.state.userdata.map((res: any, index: number) => {
+      if (res._rowChecked === true) {
+        newmainarray.push(res.userId);
       }
-    }
+    });
     this.setState({
       deleteuserdata: this.state.deleteuserdata = newmainarray,
     });
-    if(this.state.deleteuserdata.length > 0) {
+    if (this.state.deleteuserdata.length > 0) {
       this.setState({
         deleteFlag: this.state.deleteFlag = true,
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false
+        deleteFlag: this.state.deleteFlag = false,
       });
     }
     console.log("deleteuserdata array", this.state.deleteuserdata);
@@ -473,7 +432,7 @@ class Users extends React.Component<{ history: any }> {
           {userdata != null ? (
             <>
               {userdata.map((data: any, index: number) => (
-                <tr key={'user-'+index}>
+                <tr key={"user-" + index}>
                   <td className="centers">
                     <CustomInput
                       // name="name"
@@ -589,20 +548,11 @@ class Users extends React.Component<{ history: any }> {
   }
 
   render() {
-    // this below code is used vi global function 
-    var pageNumbers = [];
-    for (
-      let i = 1;
-      i <=
-      Math.ceil(
-        parseInt(this.state.count) / parseInt(this.state.items_per_page)
-      );
-      i++
-    ) {
-      pageNumbers.push(i);
-    }
+    var pageNumbers = utils.pageNumber(
+      this.state.count,
+      this.state.items_per_page
+    );
     var renderPageNumbers = this.pagination(pageNumbers);
-
     let pageIncrementBtn = null;
     if (pageNumbers.length > this.state.upperPageBound) {
       pageIncrementBtn = (
@@ -613,7 +563,6 @@ class Users extends React.Component<{ history: any }> {
         </li>
       );
     }
-
     let pageDecrementBtn = null;
     if (this.state.lowerPageBound >= 1) {
       pageDecrementBtn = (
@@ -627,85 +576,87 @@ class Users extends React.Component<{ history: any }> {
 
     return (
       <>
-        <NavBar>
-          <div className="ms-content-wrapper">
-            <div className="row">
-              <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                <Card className="main-card mb-12">
-                  <CardHeader>
-                    <Row>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <CardTitle className="font">User Management</CardTitle>
-                      </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/adduser">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              Add
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
-                    </Row>
-                  </CardHeader>
-                  <CardBody>
-                    <div className="filter">
-                      <CustomInput
-                        type="select"
-                        id="onselect"
-                        name="role"
-                        className="custom_text_width bottom_text"
-                        onChange={this.onRoleSelect}
-                      >
-                        <option value="">Select UserRole:</option>
-                        {this.state.userrole.length > 0
-                          ? this.state.userrole.map((data: any, index) => (
+        <div className="ms-content-wrapper">
+          <div className="row">
+            <Col xs="12" sm="12" md="12" lg="12" xl="12">
+              <Card className="main-card mb-12">
+                <CardHeader>
+                  <Row>
+                    <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                      <CardTitle className="font">
+                        {constant.userPage.title.userTitle}
+                      </CardTitle>
+                    </Col>
+                    <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                      <div className="right">
+                        <Link to="/adduser">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                  </Row>
+                </CardHeader>
+                <CardBody>
+                  <div className="filter">
+                    <CustomInput
+                      type="select"
+                      id="onselect"
+                      name="role"
+                      className="custom_text_width bottom_text"
+                      onChange={this.onRoleSelect}
+                    >
+                      <option value="">
+                        {constant.userPage.userTableColumn.roleselect}
+                      </option>
+                      {this.state.userrole.length > 0
+                        ? this.state.userrole.map(
+                            (data: any, index: number) => (
                               <option key={data.value} value={data.value}>
                                 {data.name}
                               </option>
-                            ))
-                          : ""}
-                      </CustomInput>
-                      <input
-                        className="form-control custom_text_width"
-                        type="text"
-                        placeholder="Search"
-                        aria-label="Search"
-                        onKeyUp={this.searchApplicationDataKeyUp}
-                      />
-                    </div>
-                    {this.state.userdata.length > 0 ? (
-                      <>{this.getTable(this.state.userdata)}</>
-                    ) : (
-                      <h1 className="text-center mt-5">No Data Found</h1>
-                    )}
-                    {this.state.deleteFlag === true ? (
-                      <Button
-                        className="mb-2 mr-2 custom-button"
-                        color="primary"
-                      >
-                        {constant.button.remove}
-                      </Button>
-                    ) : (
-                      ""
-                    )}
-
-                    {this.state.userdata.length > 0
-                      ? this.getPageData(
-                          pageIncrementBtn,
-                          renderPageNumbers,
-                          pageDecrementBtn
-                        )
-                      : ""}
-                  </CardBody>
-                </Card>
-              </Col>
-            </div>
+                            )
+                          )
+                        : ""}
+                    </CustomInput>
+                    <input
+                      className="form-control custom_text_width"
+                      type="text"
+                      placeholder="Search"
+                      aria-label="Search"
+                      onKeyUp={this.searchApplicationDataKeyUp}
+                    />
+                  </div>
+                  {this.state.userdata.length > 0 ? (
+                    <>{this.getTable(this.state.userdata)}</>
+                  ) : (
+                    <h1 className="text-center mt-5">
+                      {constant.noDataFound.nodatafound}
+                    </h1>
+                  )}
+                  {this.state.deleteFlag === true ? (
+                    <Button className="mb-2 mr-2 custom-button" color="primary">
+                      {constant.button.remove}
+                    </Button>
+                  ) : (
+                    ""
+                  )}
+                  {this.state.userdata.length > 0
+                    ? this.getPageData(
+                        pageIncrementBtn,
+                        renderPageNumbers,
+                        pageDecrementBtn
+                      )
+                    : ""}
+                </CardBody>
+              </Card>
+            </Col>
           </div>
-        </NavBar>
+        </div>
       </>
     );
   }

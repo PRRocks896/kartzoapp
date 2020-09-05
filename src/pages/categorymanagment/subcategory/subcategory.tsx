@@ -17,7 +17,6 @@ import {
     Row,
 } from 'reactstrap';
 // import './adduser.css';
-import NavBar from '../../navbar/navbar';
 import API from '../../../service/category.service';
 import Switch from "react-switch";
 import { MDBDataTable } from 'mdbreact';
@@ -326,7 +325,7 @@ class SubCategory extends React.Component<{ history: any }> {
 
         return (
             <>
-                <NavBar>
+                <>
                     <div className="ms-content-wrapper">
                         <div className="row">
                             <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -470,7 +469,7 @@ this.state.userrole.length > 0 ? this.state.userrole.map((data, index) =>
                             </Col>
                         </div>
                     </div>
-                </NavBar>
+                </>
             </>
         );
     }

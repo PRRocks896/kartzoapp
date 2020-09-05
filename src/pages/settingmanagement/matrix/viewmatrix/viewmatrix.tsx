@@ -11,17 +11,14 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../../navbar/navbar";
 import constant from "../../../../constant/constant";
 import {
-  PayoutAPI,
-  MerchantAPI,
   MatrixAPI,
 } from "../../../../service/index.service";
-import { getDataByIdRequest } from "../../../../modelController";
+import { getDataByIdRequest, addMatrixStateRequest } from "../../../../modelController";
 
 class ViewMatrix extends React.Component<{ history: any; location: any }> {
-  matrixState = constant.matrixPage.state;
+  matrixState: addMatrixStateRequest= constant.matrixPage.state;
   state = {
     isActive: this.matrixState.isActive,
     updateTrue: this.matrixState.updateTrue,
@@ -57,16 +54,11 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
     console.log("getMatrixById", getMatrixById);
 
     if (getMatrixById) {
-      if (getMatrixById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          feetype: this.state.feetype = getMatrixById.resultObject.feeType,
-          matrix: this.state.matrix = getMatrixById.resultObject.fees,
-        });
-      } else {
-        const msg1 = getMatrixById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        feetype: this.state.feetype = getMatrixById.resultObject.feeType,
+        matrix: this.state.matrix = getMatrixById.resultObject.fees,
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -76,7 +68,7 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -166,7 +158,7 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

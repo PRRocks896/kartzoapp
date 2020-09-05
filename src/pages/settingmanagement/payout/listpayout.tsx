@@ -7,30 +7,20 @@ import {
   CardBody,
   CardHeader,
   CardTitle,
-  Table,
-  Input,
   Col,
-  FormGroup,
   CustomInput,
-  Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
 import {
   StatusAPI,
-  ProductAPI,
-  CouponAPI,
-  MerchantAPI,
-  SettingAPI,
-  FeeAPI,
   PayoutAPI,
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest, allStateRequest,payoutStateRequest } from "../../../modelController";
 
 class ListPayout extends React.Component<{ history: any }> {
-  payoutState = constant.payoutPage.state;
-  userState = constant.userPage.state;
+  payoutState:payoutStateRequest = constant.payoutPage.state;
+  userState:allStateRequest = constant.userPage.state;
   state = {
     count: this.payoutState.count,
     currentPage: this.payoutState.currentPage,
@@ -59,7 +49,6 @@ class ListPayout extends React.Component<{ history: any }> {
       this
     );
     this.handleSort = this.handleSort.bind(this);
-    this.compareByDesc = this.compareByDesc.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.statusChange = this.statusChange.bind(this);
     this.pagination = this.pagination.bind(this);
@@ -91,16 +80,11 @@ class ListPayout extends React.Component<{ history: any }> {
     console.log("getPayoutData", getPayoutData);
 
     if (getPayoutData) {
-      if (getPayoutData.status === 200) {
-        this.setState({
-          payoutdata: this.state.payoutdata =
-            getPayoutData.resultObject.data,
-          count: this.state.count = getPayoutData.resultObject.totalcount,
-        });
-      } else {
-        const msg1 = getPayoutData.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        payoutdata: this.state.payoutdata =
+          getPayoutData.resultObject.data,
+        count: this.state.count = getPayoutData.resultObject.totalcount,
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -144,17 +128,15 @@ class ListPayout extends React.Component<{ history: any }> {
       };
       var deletePayout = await PayoutAPI.deletePayout(obj);
       console.log("deletePayout", deletePayout);
-      if (deletePayout.status === 200) {
-        const msg = deletePayout.message;
-        utils.showSuccess(msg);
+      if (deletePayout) {
         this.getPayoutData(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
       } else {
-        const msg1 = deletePayout.message;
-        utils.showError(msg1);
+        const msg1 = "Internal server error";
+      utils.showError(msg1);
       }
     }
   }
@@ -200,26 +182,10 @@ class ListPayout extends React.Component<{ history: any }> {
       switchSort: !this.state.switchSort,
     });
     let copyTableData = [...this.state.payoutdata];
-    copyTableData.sort(this.compareByDesc(key));
+    copyTableData.sort(utils.compareByDesc(key,this.state.switchSort));
     this.setState({
       payoutdata: this.state.payoutdata = copyTableData,
     });
-  }
-
-  compareByDesc(key: any) {
-    if (this.state.switchSort) {
-      return function (a: any, b: any) {
-        if (a[key] < b[key]) return -1; // check for value if the second value is bigger then first return -1
-        if (a[key] > b[key]) return 1; //check for value if the second value is bigger then first return 1
-        return 0;
-      };
-    } else {
-      return function (a: any, b: any) {
-        if (a[key] > b[key]) return -1;
-        if (a[key] < b[key]) return 1;
-        return 0;
-      };
-    }
   }
 
   async statusChange(data: any, text: string, btext: string) {
@@ -231,17 +197,15 @@ class ListPayout extends React.Component<{ history: any }> {
       };
       var getStatusChange = await StatusAPI.getStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
-      if (getStatusChange.status === 200) {
-        const msg = getStatusChange.message;
-        utils.showSuccess(msg);
+      if (getStatusChange) {
         this.getPayoutData(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
       } else {
-        const msg1 = getStatusChange.message;
-        utils.showError(msg1);
+        const msg1 = "Internal server error";
+      utils.showError(msg1);
       }
     }
   }
@@ -259,16 +223,10 @@ class ListPayout extends React.Component<{ history: any }> {
         payoutdata: this.state.payoutdata = data,
       });
     }
-    let count = 0;
-    data.forEach((element: any) => {
-      if (element._rowChecked === true) {
-        element._rowChecked = true;
-        count++;
-      } else {
-        element._rowChecked = false;
-      }
-    });
-    if (count === data.length) {
+    if (
+      data.filter((res: any, index: number) => res._rowChecked === true)
+        .length === data.length
+    ) {
       this.setState({
         _maincheck: true,
       });
@@ -278,11 +236,11 @@ class ListPayout extends React.Component<{ history: any }> {
       });
     }
     let newarray: any = [];
-    for (var i = 0; i < this.state.payoutdata.length; i++) {
-      if (this.state.payoutdata[i]["_rowChecked"] === true) {
-        newarray.push(this.state.payoutdata[i]["payoutId"]);
+    data.map((res: any, index: number) => {
+      if (res._rowChecked === true) {
+        newarray.push(res.payoutId);
       }
-    }
+    });
     this.setState({
       deleteuserdata: this.state.deleteuserdata = newarray,
     });
@@ -310,11 +268,11 @@ class ListPayout extends React.Component<{ history: any }> {
       _maincheck: _val,
     });
     let newmainarray: any = [];
-    for (var i = 0; i < this.state.payoutdata.length; i++) {
-      if (this.state.payoutdata[i]["_rowChecked"] === true) {
-        newmainarray.push(this.state.payoutdata[i]["payoutId"]);
+    this.state.payoutdata.map((res: any, index: number) => {
+      if (res._rowChecked === true) {
+        newmainarray.push(res.payoutId);
       }
-    }
+    });
     this.setState({
       deleteuserdata: this.state.deleteuserdata = newmainarray,
     });
@@ -487,17 +445,10 @@ class ListPayout extends React.Component<{ history: any }> {
   }
 
   render() {
-    var pageNumbers = [];
-    for (
-      let i = 1;
-      i <=
-      Math.ceil(
-        parseInt(this.state.count) / parseInt(this.state.items_per_page)
-      );
-      i++
-    ) {
-      pageNumbers.push(i);
-    }
+    var pageNumbers = utils.pageNumber(
+      this.state.count,
+      this.state.items_per_page
+    );
     var renderPageNumbers = this.pagination(pageNumbers);
 
     let pageIncrementBtn = null;
@@ -524,7 +475,7 @@ class ListPayout extends React.Component<{ history: any }> {
 
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -564,7 +515,7 @@ class ListPayout extends React.Component<{ history: any }> {
                     {this.state.payoutdata.length > 0 ? (
                       <>{this.getTable(this.state.payoutdata)}</>
                     ) : (
-                      <h1 className="text-center mt-5">No Data Found</h1>
+                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
                     )}
                       {this.state.deleteFlag === true ? (
                       <Button
@@ -588,7 +539,7 @@ class ListPayout extends React.Component<{ history: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

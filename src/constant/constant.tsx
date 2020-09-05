@@ -88,6 +88,10 @@ export default {
     action: "Action",
   },
 
+  noDataFound:{
+    nodatafound:'No Data Found'
+  },
+
   button: {
     update: "Update",
     Save: "Save",
@@ -104,6 +108,15 @@ export default {
     profile: "Profile",
     changepassword: "Change Password",
     logout: "Log Out",
+
+    state:{
+      isOpen: true,
+      side: true,
+      file:'',
+      firstName:'',
+      lastName:'',
+      classshow:'collapsed sidebar-manage'
+    }
   },
 
   alertMsg: {
@@ -509,6 +522,13 @@ export default {
       couponmapdata: [],
       switchSort: false,
       isStatus: false,
+
+      items: [],
+      selected:[],
+      couponlistdata:[],
+      merchantdata:[],
+      selectedmerchantdata:[],
+
 
       checked: false,
       couponcode: "",

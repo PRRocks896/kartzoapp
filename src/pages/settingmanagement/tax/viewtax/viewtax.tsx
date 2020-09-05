@@ -6,21 +6,17 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
-  Input,
   Col,
   FormGroup,
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../../navbar/navbar";
-import {CategoryAPI, TaxAPI} from "../../../../service/index.service";
+import {TaxAPI} from "../../../../service/index.service";
 import constant from "../../../../constant/constant";
-import { getDataByIdRequest } from "../../../../modelController";
+import { getDataByIdRequest, addTaxRequest } from "../../../../modelController";
 
 class ViewTax extends React.Component<{ history: any; location: any }> {
-  taxState = constant.taxPage.state;
+  taxState : addTaxRequest = constant.taxPage.state;
   state = {
     mainCategoryId: this.taxState.mainCategoryId,
     mainCategoryIderror: this.taxState.mainCategoryIderror,
@@ -57,7 +53,7 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
     const getTaxById: any = await TaxAPI.getTaxById(obj);
     console.log("getTaxById", getTaxById);
 
-    if (getTaxById.status === 200) {
+    if (getTaxById) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         categoryname: this.state.categoryname =
@@ -68,7 +64,7 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
         isActive: this.state.isActive = getTaxById.resultObject.isActive,
       });
     } else {
-      const msg1 = getTaxById.message;
+      const msg1 = "Internal Server Error";
       utils.showError(msg1);
     }
   }
@@ -76,7 +72,7 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -152,7 +148,7 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

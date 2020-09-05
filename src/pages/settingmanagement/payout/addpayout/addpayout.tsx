@@ -14,14 +14,12 @@ import {
   Form,
   Row,
 } from "reactstrap";
-import NavBar from "../../../navbar/navbar";
-import {FeeAPI, PayoutAPI, MerchantAPI} from "../../../../service/index.service";
+import {PayoutAPI, MerchantAPI} from "../../../../service/index.service";
 import constant from "../../../../constant/constant";
-import { feeCreateRequest, feeUpdateRequest, getDataByIdRequest } from "../../../../modelController";
-import { payoutCreateRequest, payoutUpdateRequest } from "../../../../modelController/payoutModel";
+import {getDataByIdRequest ,payoutCreateRequest, payoutUpdateRequest, addPayoutStateRequest } from "../../../../modelController";
 
 class AddPayout extends React.Component<{ history: any; location: any }> {
-  payoutState = constant.payoutPage.state;
+  payoutState : addPayoutStateRequest = constant.payoutPage.state;
   state = {
     merchant: this.payoutState.merchant,
     merchanterror: this.payoutState.merchanterror,
@@ -43,7 +41,6 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
-    // this.handleChange = this.handleChange.bind(this);
     this.addPayout = this.addPayout.bind(this);
     this.updatePayout = this.updatePayout.bind(this);
     this.getMerchant = this.getMerchant.bind(this);
@@ -80,14 +77,9 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     const getMerchantList: any = await MerchantAPI.getMerchantList();
     console.log("getMerchantList", getMerchantList);
     if (getMerchantList) {
-        if (getMerchantList.status === 200) {
-        this.setState({
-            merchantdata:this.state.merchantdata = getMerchantList.resultObject 
-        });
-        } else {
-        const msg1 = getMerchantList.message;
-        utils.showError(msg1);
-        }
+      this.setState({
+        merchantdata:this.state.merchantdata = getMerchantList.resultObject 
+    });
     } else {
         const msg1 = "Internal server error";
         utils.showError(msg1);
@@ -103,22 +95,17 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     console.log("getPayoutById", getPayoutById);
 
     if (getPayoutById) {
-      if (getPayoutById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          merchant: this.state.merchant = getPayoutById.resultObject.merchantId,
-          commission: this.state.commission = getPayoutById.resultObject.commission,
-          merchantOrderAmount: this.state.merchantOrderAmount =
-            getPayoutById.resultObject.merchantOrderAmount,
-          merchantPayAmount: this.state.merchantPayAmount = getPayoutById.resultObject.merchantPayAmount,
-          payoutId:this.state.payoutId = getPayoutById.resultObject.payoutId
-        });
-        if(this.state.merchant) {
-            this.getMerchantById(this.state.merchant);
-        }
-      } else {
-        const msg1 = getPayoutById.message;
-        utils.showError(msg1);
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        merchant: this.state.merchant = getPayoutById.resultObject.merchantId,
+        commission: this.state.commission = getPayoutById.resultObject.commission,
+        merchantOrderAmount: this.state.merchantOrderAmount =
+          getPayoutById.resultObject.merchantOrderAmount,
+        merchantPayAmount: this.state.merchantPayAmount = getPayoutById.resultObject.merchantPayAmount,
+        payoutId:this.state.payoutId = getPayoutById.resultObject.payoutId
+      });
+      if(this.state.merchant) {
+          this.getMerchantById(this.state.merchant);
       }
     } else {
       const msg1 = "Internal server error";
@@ -131,16 +118,11 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     console.log("getMerchantById", getMerchantById);
 
     if (getMerchantById) {
-      if (getMerchantById.status === 200) {
-        this.setState({
-            firstname:this.state.firstname = getMerchantById.resultObject.firstName,
-            lastname:this.state.lastname = getMerchantById.resultObject.lastName,
-            shopname: this.state.shopname = getMerchantById.resultObject.shopName
-        });
-      } else {
-        const msg1 = getMerchantById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        firstname:this.state.firstname = getMerchantById.resultObject.firstName,
+        lastname:this.state.lastname = getMerchantById.resultObject.lastName,
+        shopname: this.state.shopname = getMerchantById.resultObject.shopName
+    });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -199,14 +181,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
         console.log("addPayout", addPayout);
 
         if (addPayout) {
-          if (addPayout.status === 200) {
-            const msg = addPayout.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-payout");
-          } else {
-            const msg1 = addPayout.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-payout");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -236,14 +211,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
         console.log("editPayout", editPayout);
 
         if (editPayout) {
-          if (editPayout.status === 200) {
-            const msg = editPayout.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-payout");
-          } else {
-            const msg1 = editPayout.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-payout");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -255,7 +223,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -433,7 +401,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

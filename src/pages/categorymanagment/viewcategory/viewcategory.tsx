@@ -14,20 +14,23 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
+
 import {CategoryAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
+import { addCategoryStateRequest, getDataByIdRequest } from "../../../modelController";
 
 class ViewCategory extends React.Component<{ history: any; location: any }> {
+  categoryState:addCategoryStateRequest = constant.categoryPage.state;
   state = {
-    category: "",
-    file: null,
-    sortorder: "",
-    parentCategory: "",
+    categoryname: this.categoryState.categoryname,
+    file: this.categoryState.file,
+    sortorder: this.categoryState.sortorder,
+    parentCategory: this.categoryState.parentCategory,
   };
 
   constructor(props: any) {
     super(props);
+    this.getCategory = this.getCategory.bind(this);
   }
 
   async componentDidMount() {
@@ -36,39 +39,38 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
 
     const categoryId = this.props.location.pathname.split("/")[2];
     if (categoryId !== undefined) {
-      const obj = {
-        id: categoryId,
-      };
-      const getCategoryById: any = await CategoryAPI.getCategoryById(obj);
-      console.log("getCategoryById", getCategoryById);
-      if (getCategoryById) {
-        if (getCategoryById.status === 200) {
-          this.setState({
-            category: this.state.category =
-              getCategoryById.resultObject.category,
-            sortorder: this.state.sortorder =
-              getCategoryById.resultObject.sortOrder,
-            file: this.state.file = getCategoryById.resultObject.imagePath,
-            parentCategory: this.state.parentCategory = getCategoryById
-              .resultObject.parentCategory
-              ? getCategoryById.resultObject.parentCategory
-              : "",
-          });
-        } else {
-          const msg1 = getCategoryById.message;
-          utils.showError(msg1);
-        }
-      } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
-      }
+     this.getCategory(categoryId)
+    }
+  }
+
+  async getCategory(categoryId:any){
+    const obj:getDataByIdRequest = {
+      id: categoryId,
+    };
+    const getCategoryById: any = await CategoryAPI.getCategoryById(obj);
+    console.log("getCategoryById", getCategoryById);
+    if (getCategoryById) {
+      this.setState({
+        categoryname: this.state.categoryname =
+          getCategoryById.resultObject.category,
+        sortorder: this.state.sortorder =
+          getCategoryById.resultObject.sortOrder,
+        file: this.state.file = getCategoryById.resultObject.imagePath,
+        parentCategory: this.state.parentCategory = getCategoryById
+          .resultObject.parentCategory
+          ? getCategoryById.resultObject.parentCategory
+          : "",
+      });
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
     }
   }
 
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -112,7 +114,7 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
                               } :
                             </b>
                           </Label>
-                          <span>{this.state.category}</span>
+                          <span>{this.state.categoryname}</span>
                           </div>
                           <div>
                           <Label htmlFor="category_name">
@@ -167,7 +169,7 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

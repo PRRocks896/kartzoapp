@@ -6,8 +6,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
   Input,
   Form,
   CustomInput,
@@ -16,13 +14,12 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
 import {CategoryAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getDataByIdRequest } from "../../../modelController";
+import { getDataByIdRequest, addCategoryStateRequest } from "../../../modelController";
 
 class AddCategory extends React.Component<{ history: any; location: any }> {
-  categoryState = constant.categoryPage.state;
+  categoryState:addCategoryStateRequest = constant.categoryPage.state;
   state = {
     selectedFile: this.categoryState.selectedFile,
     file: this.categoryState.file,
@@ -73,14 +70,9 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
   async getAllCategory() {
     const getAllCategory = await CategoryAPI.getAllCategory();
     console.log("getAllCategory", getAllCategory);
-    if (getAllCategory.status === 200) {
-      this.setState({
-        categorylist: this.state.categorylist = getAllCategory.resultObject,
-      });
-    } else {
-      const msg1 = getAllCategory.message;
-      utils.showError(msg1);
-    }
+    this.setState({
+      categorylist: this.state.categorylist = getAllCategory.resultObject,
+    });
   }
 
   async getCategoryById(categoryId: any) {
@@ -181,11 +173,6 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         selectedFileerror: "",
       });
       if (this.state.categoryname && this.state.selectedFile) {
-        const obj = {
-          categoryname: this.state.categoryname,
-          selectedFile: this.state.selectedFile,
-        };
-
         let formData = new FormData();
 
         formData.append("category", this.state.categoryname);
@@ -197,14 +184,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         const addCategory = await CategoryAPI.addCategory(formData);
         console.log("addCategory", addCategory);
         if (addCategory) {
-          if (addCategory.status === 200) {
-            const msg = addCategory.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/category");
-          } else {
-            const msg1 = addCategory.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/category");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -234,14 +214,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         );
         console.log("editCategory", editCategory);
         if (editCategory) {
-          if (editCategory.status === 200) {
-            const msg = editCategory.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/category");
-          } else {
-            const msg1 = editCategory.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/category");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -259,7 +232,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -473,7 +446,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

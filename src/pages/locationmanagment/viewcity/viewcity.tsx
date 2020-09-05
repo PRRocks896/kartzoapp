@@ -12,7 +12,7 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
+
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getDataByIdRequest } from "../../../modelController";
@@ -27,34 +27,33 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
     document.title = constant.cityPage.title.viewCityTitle + utils.getAppName();
     const cityId = this.props.location.pathname.split("/")[2];
     if (cityId !== undefined) {
-      const obj:getDataByIdRequest = {
-        id: cityId,
-      };
-      const getCityById: any = await LocationAPI.getCityById(obj);
-      console.log("getCityById", getCityById);
+    this.getCity(cityId);
+    }
+  }
 
-      if (getCityById) {
-        if (getCityById.status === 200) {
-          this.setState({
-            statename: this.state.statename =
-              getCityById.resultObject.stateName,
-            cityname: this.state.cityname = getCityById.resultObject.cityName,
-          });
-        } else {
-          const msg1 = getCityById.message;
-          utils.showError(msg1);
-        }
-      } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
-      }
+  async getCity(cityId:any){
+    const obj:getDataByIdRequest = {
+      id: cityId,
+    };
+    const getCityById: any = await LocationAPI.getCityById(obj);
+    console.log("getCityById", getCityById);
+
+    if (getCityById) {
+      this.setState({
+        statename: this.state.statename =
+          getCityById.resultObject.stateName,
+        cityname: this.state.cityname = getCityById.resultObject.cityName,
+      });
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
     }
   }
 
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -113,7 +112,7 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

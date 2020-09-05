@@ -12,7 +12,6 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getDataByIdRequest } from "../../../modelController";
@@ -28,35 +27,34 @@ class ViewState extends React.Component<{ history: any; location: any }> {
       constant.statePage.title.viewStateTitle + utils.getAppName();
     const stateId = this.props.location.pathname.split("/")[2];
     if (stateId !== undefined) {
-      const obj:getDataByIdRequest = {
-        id: stateId,
-      };
-      const getStateById: any = await LocationAPI.getStateById(obj);
-      console.log("getStateById", getStateById);
+     this.getState(stateId);
+    }
+  }
 
-      if (getStateById) {
-        if (getStateById.status === 200) {
-          this.setState({
-            countryname: this.state.countryname =
-              getStateById.resultObject.countryName,
-            statename: this.state.statename =
-              getStateById.resultObject.stateName,
-          });
-        } else {
-          const msg1 = getStateById.message;
-          utils.showError(msg1);
-        }
-      } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
-      }
+  async getState(stateId:any) {
+    const obj:getDataByIdRequest = {
+      id: stateId,
+    };
+    const getStateById: any = await LocationAPI.getStateById(obj);
+    console.log("getStateById", getStateById);
+
+    if (getStateById) {
+      this.setState({
+        countryname: this.state.countryname =
+          getStateById.resultObject.countryName,
+        statename: this.state.statename =
+          getStateById.resultObject.stateName,
+      });
+    } else {
+      const msg1 = "Internal server error";
+      utils.showError(msg1);
     }
   }
 
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -121,7 +119,7 @@ class ViewState extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

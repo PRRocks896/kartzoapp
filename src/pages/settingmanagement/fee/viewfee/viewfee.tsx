@@ -11,13 +11,12 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../../navbar/navbar";
 import constant from "../../../../constant/constant";
-import { SettingAPI, FeeAPI } from "../../../../service/index.service";
-import { getDataByIdRequest } from "../../../../modelController";
+import {FeeAPI } from "../../../../service/index.service";
+import { getDataByIdRequest, addFeeStateRequest } from "../../../../modelController";
 
 class ViewFee extends React.Component<{ history: any; location: any }> {
-    feeState = constant.feePage.state;
+    feeState : addFeeStateRequest= constant.feePage.state;
     state = {
       name: this.feeState.name,
       nameerror: this.feeState.nameerror,
@@ -53,19 +52,14 @@ class ViewFee extends React.Component<{ history: any; location: any }> {
     console.log("getFeeById", getFeeById);
 
     if (getFeeById) {
-      if (getFeeById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          name: this.state.name = getFeeById.resultObject.name,
-          feeId: this.state.feeId = getFeeById.resultObject.feeId,
-          description: this.state.description =
-            getFeeById.resultObject.description,
-          isActive: this.state.isActive = getFeeById.resultObject.isActive
-        });
-      } else {
-        const msg1 = getFeeById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        name: this.state.name = getFeeById.resultObject.name,
+        feeId: this.state.feeId = getFeeById.resultObject.feeId,
+        description: this.state.description =
+          getFeeById.resultObject.description,
+        isActive: this.state.isActive = getFeeById.resultObject.isActive
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -75,7 +69,7 @@ class ViewFee extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -134,7 +128,7 @@ class ViewFee extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

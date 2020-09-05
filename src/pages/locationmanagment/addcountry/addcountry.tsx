@@ -14,13 +14,13 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import NavBar from "../../navbar/navbar";
+
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getDataByIdRequest } from "../../../modelController";
+import { getDataByIdRequest, addCountryStateRequest } from "../../../modelController";
 
 class AddCountry extends React.Component<{ history: any; location: any }> {
-  countryState = constant.countryPage.state;
+  countryState:addCountryStateRequest = constant.countryPage.state;
   state = {
     selectedFile: this.countryState.selectedFile,
     countryname: this.countryState.countryname,
@@ -71,25 +71,20 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     console.log("getCountryById", getCountryById);
 
     if (getCountryById) {
-      if (getCountryById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          filetrue: this.state.filetrue = true,
-          countryname: this.state.countryname =
-            getCountryById.resultObject.countryName,
-          countrycode: this.state.countrycode =
-            getCountryById.resultObject.countryCode,
-          countryid: this.state.countryid =
-            getCountryById.resultObject.countryId,
-          file: this.state.file = getCountryById.resultObject.imagePath,
-          selectedFile: this.state.selectedFile =
-            getCountryById.resultObject.imagePath,
-            isActive: this.state.isActive = getCountryById.resultObject.isActive
-        });
-      } else {
-        const msg1 = getCountryById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        filetrue: this.state.filetrue = true,
+        countryname: this.state.countryname =
+          getCountryById.resultObject.countryName,
+        countrycode: this.state.countrycode =
+          getCountryById.resultObject.countryCode,
+        countryid: this.state.countryid =
+          getCountryById.resultObject.countryId,
+        file: this.state.file = getCountryById.resultObject.imagePath,
+        selectedFile: this.state.selectedFile =
+          getCountryById.resultObject.imagePath,
+          isActive: this.state.isActive = getCountryById.resultObject.isActive
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -178,14 +173,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         console.log("addCountry", addCountry);
 
         if (addCountry) {
-          if (addCountry.status === 200) {
-            const msg = addCountry.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/country");
-          } else {
-            const msg = addCountry.message;
-            utils.showError(msg);
-          }
+          this.props.history.push("/country");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -221,14 +209,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         console.log("editCountry", editCountry);
 
         if (editCountry) {
-          if (editCountry.status === 200) {
-            const msg = editCountry.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/country");
-          } else {
-            const msg = editCountry.message;
-            utils.showError(msg);
-          }
+          this.props.history.push("/country");
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
@@ -246,7 +227,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -399,7 +380,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

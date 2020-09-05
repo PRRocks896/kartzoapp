@@ -15,17 +15,15 @@ import {
   Row,
 } from "reactstrap";
 import "./addonmanagment.css";
-import NavBar from "../../navbar/navbar";
-import API from "../../../service/product.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import { Editor } from "@tinymce/tinymce-react";
-import { addOnCreateRequest, addOnUpdateRequest } from "../../../modelController/productAddOnModel";
+import { addOnCreateRequest, addOnUpdateRequest, addProdcutCustomiseStateRequest } from "../../../modelController/productAddOnModel";
 import { ProductAPI } from "../../../service/index.service";
 import { getDataByIdRequest } from "../../../modelController";
 
 class AddOnProduct extends React.Component<{ history: any,location:any }> {
-  productCustomiseState = constant.productCustomPage.state;
+  productCustomiseState : addProdcutCustomiseStateRequest = constant.productCustomPage.state;
   state = {
     productid: this.productCustomiseState.productid,
     productiderror: this.productCustomiseState.productiderror,
@@ -83,19 +81,14 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
     console.log("getCustomiseTypeById", getCustomiseTypeById);
 
     if (getCustomiseTypeById) {
-      if (getCustomiseTypeById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          productid: this.state.productid = getCustomiseTypeById.resultObject.productId,
-          producttypeid: this.state.producttypeid = getCustomiseTypeById.resultObject.productCustomizeTypeId,
-          isActive: this.state.isActive = getCustomiseTypeById.resultObject.isActive,
-          amount:this.state.amount = getCustomiseTypeById.resultObject.amount,
-          addondetails: this.state.addondetails = getCustomiseTypeById.resultObject.addOnDetail
-        });
-      } else {
-        const msg1 = getCustomiseTypeById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        productid: this.state.productid = getCustomiseTypeById.resultObject.productId,
+        producttypeid: this.state.producttypeid = getCustomiseTypeById.resultObject.productCustomizeTypeId,
+        isActive: this.state.isActive = getCustomiseTypeById.resultObject.isActive,
+        amount:this.state.amount = getCustomiseTypeById.resultObject.amount,
+        addondetails: this.state.addondetails = getCustomiseTypeById.resultObject.addOnDetail
+      });
     } else {
       const msg1 = "Internal server error";
       utils.showError(msg1);
@@ -109,28 +102,18 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
   async getAllProduct() {
     const getAllProduct = await ProductAPI.getAllProduct();
     console.log("getAllProduct", getAllProduct);
-    if (getAllProduct.status === 200) {
-      this.setState({
-        productdata: this.state.productdata = getAllProduct.resultObject,
-      });
-    } else {
-      const msg1 = getAllProduct.message;
-      utils.showError(msg1);
-    }
+    this.setState({
+      productdata: this.state.productdata = getAllProduct.resultObject,
+    });
   }
 
   async getAllProductType() {
     const getAllProductType = await ProductAPI.getAllProductTypeType();
     console.log("getAllProductType", getAllProductType);
-    if (getAllProductType.status === 200) {
-      this.setState({
-        productdatatype: this.state.productdatatype =
-          getAllProductType.resultObject,
-      });
-    } else {
-      const msg1 = getAllProductType.message;
-      utils.showError(msg1);
-    }
+    this.setState({
+      productdatatype: this.state.productdatatype =
+        getAllProductType.resultObject,
+    });
   }
 
   onProductSelect(event: any) {
@@ -219,14 +202,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
           console.log("addOnProduct",addOnProduct);
 
           if (addOnProduct) {
-            if (addOnProduct.status === 200) {
-              const msg = addOnProduct.message;
-              utils.showSuccess(msg);
-              this.props.history.push("/list-product-customise");
-            } else {
-              const msg1 = addOnProduct.message;
-              utils.showError(msg1);
-            }
+            this.props.history.push("/list-product-customise");
           } else {
             const msg1 = "Internal server error";
             utils.showError(msg1);
@@ -258,14 +234,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
             console.log("editaddOnProduct",editaddOnProduct);
   
             if (editaddOnProduct) {
-              if (editaddOnProduct.status === 200) {
-                const msg = editaddOnProduct.message;
-                utils.showSuccess(msg);
-                this.props.history.push("/list-product-customise");
-              } else {
-                const msg1 = editaddOnProduct.message;
-                utils.showError(msg1);
-              }
+              this.props.history.push("/list-product-customise");
             } else {
               const msg1 = "Internal server error";
               utils.showError(msg1);
@@ -277,7 +246,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
   render() {
     return (
       <>
-        <NavBar>
+        <>
           <div className="ms-content-wrapper">
             <div className="row">
               <Col xs="12" sm="12" md="12" lg="12" xl="12">
@@ -547,7 +516,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
               </Col>
             </div>
           </div>
-        </NavBar>
+        </>
       </>
     );
   }

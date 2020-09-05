@@ -1,5 +1,5 @@
 import RoleAPI from './role.service';
-import API from './service';
+import API from './user.service';
 import LocationAPI from './location.service';
 import ProductAPI from './product.service';
 import CategoryAPI from './category.service';
@@ -13,7 +13,7 @@ import PayoutAPI from './payout.service';
 import MatrixAPI from './matrix.service';
 import SliderAPI from './slider.service';
 
-export * from './service';
+export * from './user.service';
 export * from './role.service';
 export * from './location.service';
 export * from './category.service';
