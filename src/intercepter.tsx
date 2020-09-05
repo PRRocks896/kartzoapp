@@ -35,9 +35,15 @@ axios.interceptors.request.use(
 );
 
 axios.interceptors.response.use(
-  (response) => {
+  (response: any) => {
     console.log("res", response);
-    return response;
+    if(response.status == 200) {
+      return response;
+    } else {
+        const msg1 = response.data.message;
+        utils.showError(msg1);
+    }
+      
   },
   (err: any) => {
     console.log("err", err.response);

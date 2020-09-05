@@ -137,6 +137,7 @@ class Users extends React.Component<{ history: any }> {
 
     var getUserDataPagination = await API.getUserDataPagination(obj);
     console.log("getUserDataPagination", getUserDataPagination);
+    // This status sould becheck in intercepter only
     if (getUserDataPagination) {
       if (getUserDataPagination.status === 200) {
         this.setState({
@@ -154,13 +155,6 @@ class Users extends React.Component<{ history: any }> {
       const msg1 = "Internal server error";
       utils.showError(msg1);
     }
-  }
-
-  onSort() {
-    const sorted = _.sortBy(this.state.userdata, "firstName");
-    this.setState({
-      userdata: this.state.userdata = sorted,
-    });
   }
 
   handleSort(key: any) {
@@ -214,20 +208,20 @@ class Users extends React.Component<{ history: any }> {
 
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
-
-    if (getUserRole) {
-      if (getUserRole.status === 200) {
-        this.setState({
-          userrole: this.state.userrole = getUserRole.resultObject,
-        });
-      } else {
-        const msg1 = getUserRole.message;
-        utils.showError(msg1);
-      }
-    } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
-    }
+    this.setState({
+      userrole: this.state.userrole = getUserRole.resultObject,
+    });
+    // if (getUserRole) {
+    //   if (getUserRole.status === 200) {
+        
+    //   } else {
+    //     const msg1 = getUserRole.message;
+    //     utils.showError(msg1);
+    //   }
+    // } else {
+    //   const msg1 = "Internal server error";
+    //   utils.showError(msg1);
+    // }
   }
 
   async getUsers(
@@ -317,25 +311,27 @@ class Users extends React.Component<{ history: any }> {
 
   handleChange(item: any, e: any) {
     let _id = item.userId;
-    let ind: any = this.state.userdata.findIndex((x: any) => x.userId === _id);
+    let index: any = this.state.userdata.findIndex((x: any) => x.userId === _id);
     let data: any = this.state.userdata;
-    if (ind > -1) {
+    if (index > -1) {
       let newState: any = !item._rowChecked;
-      data[ind]._rowChecked = newState;
+      data[index]._rowChecked = newState;
       this.setState({
         userdata: this.state.userdata = data
       });
     }
     let count = 0;
-    data.forEach((element: any) => {
-      if (element._rowChecked === true) {
-        element._rowChecked = true;
-        count++;
-      } else {
-        element._rowChecked = false;
-      }
-    });
-    if (count === data.length) {
+    console.log('after check the box data: ', data.filter((res: any, index: number) => res._rowChecked == true));
+    // if(data.map)
+    // data.forEach((element: any) => {
+    //   if (element._rowChecked === true) {
+    //     element._rowChecked = true;
+    //     count++;
+    //   } else {
+    //     element._rowChecked = false;
+    //   }
+    // });
+    if (data.filter((res: any, index: number) => res._rowChecked == true).length === data.length) {
       this.setState({
         _maincheck: true,
       });
@@ -344,12 +340,17 @@ class Users extends React.Component<{ history: any }> {
         _maincheck: false,
       });
     }
-    let newarray: any = [];
-    for (var i = 0; i < this.state.userdata.length; i++) {
-      if (this.state.userdata[i]["_rowChecked"] === true) {
-        newarray.push(this.state.userdata[i]["userId"]);
+    let newarray: any = []
+    data.map((res: any, index: number) => {
+      if(res._rowChecked == true) {
+        newarray.push(res.userId);
       }
-    }
+    });
+    // for (var i = 0; i < this.state.userdata.length; i++) {
+    //   if (this.state.userdata[i]["_rowChecked"] === true) {
+    //     newarray.push(this.state.userdata[i]["userId"]);
+    //   }
+    // }
     this.setState({
       deleteuserdata: this.state.deleteuserdata = newarray,
     });
@@ -397,7 +398,7 @@ class Users extends React.Component<{ history: any }> {
     console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
-  pagination(pageNumbers: any) {
+  pagination(pageNumbers: number[]) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
         return (
@@ -471,8 +472,8 @@ class Users extends React.Component<{ history: any }> {
         <tbody>
           {userdata != null ? (
             <>
-              {userdata.map((data: any, index: any) => (
-                <tr key={index}>
+              {userdata.map((data: any, index: number) => (
+                <tr key={'user-'+index}>
                   <td className="centers">
                     <CustomInput
                       // name="name"
@@ -588,6 +589,7 @@ class Users extends React.Component<{ history: any }> {
   }
 
   render() {
+    // this below code is used vi global function 
     var pageNumbers = [];
     for (
       let i = 1;

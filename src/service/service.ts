@@ -41,7 +41,7 @@ export default {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
                 'Access-Control-Allow-Origin': true,
                 'content-type': 'multipart/form-data'
-         }
+            }
         }
         return await axios.post(Constant.apiUrl + apiUrl.userController.createUser, data,config);
     },

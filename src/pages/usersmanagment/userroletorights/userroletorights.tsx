@@ -157,11 +157,11 @@ class UserRoleToRights extends React.Component {
   handleChange(item: any, type: any, e: any) {
     let _id = item.menuItemID;
     let _type = type;
-    let ind: any = this.state.roleprivileges.findIndex(
+    let index: any = this.state.roleprivileges.findIndex(
       (x: any) => x.menuItemID == _id
     );
     let data: any = this.state.roleprivileges;
-    if (ind > -1) {
+    if (index > -1) {
       if (
         _type != "view" &&
         _type != "add" &&
@@ -170,23 +170,23 @@ class UserRoleToRights extends React.Component {
         _type != "detail"
       ) {
         let newState: any = !item._rowChecked;
-        data[ind]._rowChecked = newState;
+        data[index]._rowChecked = newState;
         if (!newState) {
-          data[ind].view = false;
-          data[ind].add = false;
-          data[ind].edit = false;
-          data[ind].delete = false;
-          data[ind].detail = false;
+          data[index].view = false;
+          data[index].add = false;
+          data[index].edit = false;
+          data[index].delete = false;
+          data[index].detail = false;
         } else {
-          data[ind].view = true;
-          data[ind].add = true;
-          data[ind].edit = true;
-          data[ind].delete = true;
-          data[ind].detail = true;
+          data[index].view = true;
+          data[index].add = true;
+          data[index].edit = true;
+          data[index].delete = true;
+          data[index].detail = true;
         }
       } else {
         let newState = !item[_type];
-        data[ind][_type] = newState;
+        data[index][_type] = newState;
       }
       this.setState({
         roleprivileges: data,
