@@ -551,11 +551,12 @@ export default {
       isActive: true,
       updateTrue: false,
       couponId: "",
+      volume:0
     },
     couponTableColumn: {
       couponCode: "Coupon Code",
       description: "Description",
-      discountPrice: "Discount Price",
+      discountPrice: "Offering Price",
       endDate: "End Date",
       startDate: "Start Date",
       minAmountOrder: "Min Amount Order",

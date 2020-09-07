@@ -17,7 +17,6 @@ import {
   getAllTableDataListRequest,
   statusChangeRequest,
   deleteByIdRequest,
-  categoryCreateRequest,
   allStateRequest,
   categoryStateRequest,
 } from "../../../modelController";

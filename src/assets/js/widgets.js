@@ -1,8 +1,9 @@
 (function($) {
   'use strict';
+  var Chart = require('Chart');
 
   //Line Chart
-  var ctx = document.getElementById('line-chart').getContext("2d");
+  var ctx= document.getElementById('line-chart').getContext("2d");
   var gradientStroke = ctx.createLinearGradient(0, 0, 0, 450);
   gradientStroke.addColorStop(0, '#000000');
 

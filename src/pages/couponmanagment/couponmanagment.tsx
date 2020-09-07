@@ -13,18 +13,16 @@ import {
   Row,
 } from "reactstrap";
 import "./couponmanagment.css";
-
 import { CouponAPI } from "../../service/index.service";
 import Switch from "react-switch";
 import constant from "../../constant/constant";
-import { format } from "date-fns";
-import { any } from "prop-types";
-import moment from "moment";
 import {
   couponCreateRequest,
   couponUpdateRequest,
   getDataByIdRequest,
 } from "../../modelController";
+import Slider from "react-rangeslider";
+import "react-rangeslider/lib/index.css";
 
 class Coupon extends React.Component<{ history: any; location: any }> {
   couponState = constant.couponPage.state;
@@ -50,6 +48,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     isActive: this.couponState.isActive,
     updateTrue: this.couponState.updateTrue,
     couponId: this.couponState.couponId,
+    volume: this.couponState.volume
   };
 
   constructor(props: any) {
@@ -60,10 +59,21 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     this.addCoupon = this.addCoupon.bind(this);
     this.IOSDateToYYYYMMDD = this.IOSDateToYYYYMMDD.bind(this);
     this.editCoupon = this.editCoupon.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
   }
 
   handleChange(checked: boolean) {
     this.setState({ isByPrice: this.state.isByPrice = checked });
+  }
+
+  handleOnChange = (value:any) => {
+    console.log("value",value);
+    this.setState({
+      volume: value
+    })
+    if(this.state.minamountorder && this.state.percentage) {
+      // const newData = this.state.percentage/100
+    }
   }
 
   async componentDidMount() {
@@ -83,60 +93,66 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     }
   }
 
-   IOSDateToYYYYMMDD(d:any) {
+  IOSDateToYYYYMMDD(d: any) {
     const date = new Date(d);
     const year = date.getFullYear();
     let month: any = date.getMonth() + 1;
     let dt: any = date.getDate();
 
     if (dt < 10) {
-      dt = '0' + dt;
+      dt = "0" + dt;
     }
     if (month < 10) {
-      month = '0' + month;
+      month = "0" + month;
     }
 
-    return year + '-' + month + '-' + dt;
+    return year + "-" + month + "-" + dt;
   }
 
   async getCouponById(id: any) {
-    const obj:getDataByIdRequest = {
+    const obj: getDataByIdRequest = {
       id: id,
     };
     const getCouponById: any = await CouponAPI.getCouponById(obj);
     console.log("getCouponById", getCouponById);
 
-    if(getCouponById) {
-        if (getCouponById.status === 200) {
-          this.setState({
-            updateTrue: this.state.updateTrue = true,
-            couponId: this.state.couponId = getCouponById.resultObject.couponId,
-            couponcode: this.state.couponcode =
-              getCouponById.resultObject.couponCode,
-            percentage: this.state.percentage =
-              getCouponById.resultObject.percentage,
-            discountprice: this.state.discountprice =
-              getCouponById.resultObject.discountPrice,
-            startdate: this.state.startdate = getCouponById.resultObject.startDate,
-            enddate: this.state.enddate = getCouponById.resultObject.endDate,
-            discription: this.state.discription =
-              getCouponById.resultObject.description,
-            minamountorder: this.state.minamountorder =
-              getCouponById.resultObject.minAmountOrder,
-            title: this.state.title = getCouponById.resultObject.title,
-            isByPrice: this.state.isByPrice = getCouponById.resultObject.isByPrice,
-          });
-         this.setState({
-            startdate:this.state.startdate = this.IOSDateToYYYYMMDD(this.state.startdate),
-            enddate:this.state.enddate = this.IOSDateToYYYYMMDD(this.state.enddate)
-         })
-        } else {
-          const msg1 = getCouponById.message;
-          utils.showError(msg1);
-        }
+    if (getCouponById) {
+      if (getCouponById.status === 200) {
+        this.setState({
+          updateTrue: this.state.updateTrue = true,
+          couponId: this.state.couponId = getCouponById.resultObject.couponId,
+          couponcode: this.state.couponcode =
+            getCouponById.resultObject.couponCode,
+          percentage: this.state.percentage =
+            getCouponById.resultObject.percentage,
+          discountprice: this.state.discountprice =
+            getCouponById.resultObject.discountPrice,
+          startdate: this.state.startdate =
+            getCouponById.resultObject.startDate,
+          enddate: this.state.enddate = getCouponById.resultObject.endDate,
+          discription: this.state.discription =
+            getCouponById.resultObject.description,
+          minamountorder: this.state.minamountorder =
+            getCouponById.resultObject.minAmountOrder,
+          title: this.state.title = getCouponById.resultObject.title,
+          isByPrice: this.state.isByPrice =
+            getCouponById.resultObject.isByPrice,
+        });
+        this.setState({
+          startdate: this.state.startdate = this.IOSDateToYYYYMMDD(
+            this.state.startdate
+          ),
+          enddate: this.state.enddate = this.IOSDateToYYYYMMDD(
+            this.state.enddate
+          ),
+        });
+      } else {
+        const msg1 = getCouponById.message;
+        utils.showError(msg1);
+      }
     } else {
-        const msg1 = "Internal Server";
-          utils.showError(msg1);
+      const msg1 = "Internal Server";
+      utils.showError(msg1);
     }
   }
 
@@ -317,7 +333,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
         this.state.discription
       ) {
         const obj: couponUpdateRequest = {
-          couponId:this.state.couponId,
+          couponId: this.state.couponId,
           couponCode: this.state.couponcode,
           percentage: parseInt(this.state.percentage),
           discountPrice: parseInt(this.state.discountprice),
@@ -414,21 +430,21 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                          <Label htmlFor="percentage">
-                            {constant.couponPage.couponTableColumn.percentage}
+                          <Label htmlFor="title">
+                            {constant.couponPage.couponTableColumn.title}
                           </Label>
                           <Input
-                            type="number"
-                            id="percentage"
-                            name="percentage"
+                            type="text"
+                            id="title"
+                            name="title"
                             className="form-control"
-                            value={this.state.percentage}
+                            value={this.state.title}
                             onChange={this.handleChangeEvent}
-                            placeholder="Enter your percentage"
+                            placeholder="Enter your title"
                             required
                           />
                           <div className="mb-4 text-danger">
-                            {this.state.percentageerror}
+                            {this.state.titleerror}
                           </div>
                         </FormGroup>
                       </Col>
@@ -458,24 +474,37 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                         </FormGroup>
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
-                          <Label htmlFor="title">
-                            {constant.couponPage.couponTableColumn.title}
+                      <FormGroup>
+                      <Label htmlFor="minamount">
+                      <span>{constant.couponPage.couponTableColumn.percentage}</span>
+                          <span className="percentage">{this.state.volume} %</span>
+                          </Label>
+                      <Slider
+                             min={0}
+                             max={100}
+                             step={1}
+                             tooltip={false}
+                              value={this.state.volume}
+                              orientation="horizontal"
+                              onChange={this.handleOnChange}
+                            />
+                          {/* <Label htmlFor="percentage">
+                            {constant.couponPage.couponTableColumn.percentage}
                           </Label>
                           <Input
-                            type="text"
-                            id="title"
-                            name="title"
+                            type="number"
+                            id="percentage"
+                            name="percentage"
                             className="form-control"
-                            value={this.state.title}
+                            value={this.state.percentage}
                             onChange={this.handleChangeEvent}
-                            placeholder="Enter your title"
+                            placeholder="Enter your percentage"
                             required
-                          />
+                          /> */}
                           <div className="mb-4 text-danger">
-                            {this.state.titleerror}
+                            {this.state.percentageerror}
                           </div>
-                        </FormGroup>
+                       </FormGroup>
                       </Col>
                     </Row>
                     <Row>
