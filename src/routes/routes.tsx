@@ -102,6 +102,7 @@ import ViewProductType from '../pages/productmanagment/viewcustomisetype/viewtyp
 import ListProductAddOn from '../pages/productmanagment/listaddon/listaddon';
 import ViewProductCustomise from '../pages/productmanagment/viewcustomise/viewcustomise';
 import NavBar from '../component/navbar/navbar';
+import ViewCouponMapping from '../pages/couponmanagment/viewmapping/viewmapping';
 
 class Main extends React.Component<{history:any}> {
   render() {
@@ -194,6 +195,8 @@ class Main extends React.Component<{history:any}> {
             <Route path='/view-coupon/:id' render={(props: any) => <ViewCoupon {...props} />} />
             <Route path='/list-coupon-map' render={(props: any) => <ListCouponMap {...props} />} />
             <Route path='/add-coupon-map' render={(props: any) => <AddCouponMapping {...props} />} />
+            <Route path='/edit-coupon-map/:id' render={(props: any) => <AddCouponMapping {...props} />} />
+            <Route path='/view-coupon-map/:id' render={(props: any) => <ViewCouponMapping {...props} />} />
             <Route path='/list-merchant' render={(props: any) => <ListMerchant {...props} />} />
             <Route path='/merchant' render={(props: any) => <Merchant {...props} />} />
             <Route path='/edit-merchant/:id' render={(props: any) => <Merchant {...props} />} />

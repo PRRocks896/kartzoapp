@@ -528,12 +528,16 @@ export default {
       couponlistdata:[],
       merchantdata:[],
       selectedmerchantdata:[],
+      couponselectedarray:[],
+      merchantselectedarray : [],
+      offername:'',
+      offernameerror:'',
 
 
       checked: false,
       couponcode: "",
       couponcodeerror: "",
-      percentage: "",
+      percentage: 0,
       percentageerror: "",
       discountprice: "",
       discountpriceerror: "",
@@ -550,8 +554,7 @@ export default {
       isByPrice: false,
       isActive: true,
       updateTrue: false,
-      couponId: "",
-      volume:0
+      couponId: ""
     },
     couponTableColumn: {
       couponCode: "Coupon Code",
@@ -563,6 +566,9 @@ export default {
       title: "Title",
       percentage: "Percentage",
       IsByPrice: "By Price",
+      couponname:'Coupon Name',
+      merchantname: 'Merchant Name',
+      offername:'Offer Name'
     },
     viewcouponpagedetails: {
       viewcoupon: "View Coupon Details",

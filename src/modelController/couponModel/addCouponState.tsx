@@ -3,5 +3,9 @@ export interface addCouponStateRequest {
     selected: any,
     couponlistdata: any,
     merchantdata: any,
-    selectedmerchantdata: any
+    selectedmerchantdata: any,
+    offername:string,
+    offernameerror:string,
+    couponselectedarray:any
+    merchantselectedarray:any,
 }

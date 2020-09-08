@@ -8,14 +8,20 @@ import {
   CardHeader,
   Col,
   Label,
+  FormGroup,
+  Input,
   Row,
 } from "reactstrap";
 import "./addmap.css";
 import { CouponAPI, MerchantAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import * as _ from 'lodash';
-import { addCouponStateRequest } from "../../../modelController";
+import * as _ from "lodash";
+import {
+  addCouponStateRequest,
+  addCouponMappingState,
+  getDataByIdRequest,
+} from "../../../modelController";
 
 // a little function to help us with reordering the result
 const reorder = (list: any, startIndex: any, endIndex: any) => {
@@ -73,13 +79,18 @@ class AddCouponMapping extends React.Component<{
   history: any;
   location: any;
 }> {
-  couponState :addCouponStateRequest = constant.couponPage.state;
-  state:any = {
+  couponState: addCouponStateRequest = constant.couponPage.state;
+  state: any = {
     items: this.couponState.items,
     selected: this.couponState.selected,
     couponlistdata: this.couponState.couponlistdata,
-    merchantdata:this.couponState.merchantdata,
-    selectedmerchantdata:this.couponState.selectedmerchantdata
+    merchantdata: this.couponState.merchantdata,
+    selectedmerchantdata: this.couponState.selectedmerchantdata,
+    offername: this.couponState.offername,
+    offernameerror: this.couponState.offernameerror,
+    couponselectedarray: this.couponState.couponselectedarray,
+    merchantselectedarray: this.couponState.merchantselectedarray,
+    updateTrue: false,
   };
 
   id2List: any = {
@@ -98,13 +109,69 @@ class AddCouponMapping extends React.Component<{
     this.onDragMerchantEnd = this.onDragMerchantEnd.bind(this);
     this.getCouponList = this.getCouponList.bind(this);
     this.getMerchantList = this.getMerchantList.bind(this);
+    this.handleChangeEvent = this.handleChangeEvent.bind(this);
+    this.addCouponMapping = this.addCouponMapping.bind(this);
   }
 
   async componentDidMount() {
-    document.title =
-    constant.couponPage.title.addCouponMappingTitle + utils.getAppName();
     this.getCouponList();
     this.getMerchantList();
+    const couponId = this.props.location.pathname.split("/")[2];
+    if (couponId !== undefined) {
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+      });
+      this.getCouponMappingById(couponId);
+    }
+    if (this.state.updateTrue === true) {
+      document.title =
+        constant.couponPage.title.updateCouponMappingTitle + utils.getAppName();
+    } else {
+      document.title =
+        constant.couponPage.title.addCouponMappingTitle + utils.getAppName();
+    }
+  }
+
+  async getCouponMappingById(id: any) {
+    const obj: getDataByIdRequest = {
+      id: id,
+    };
+    const getCouponMappingById: any = await CouponAPI.getCouponMappingById(obj);
+    console.log("getCouponMappingById", getCouponMappingById);
+
+    if (getCouponMappingById) {
+      this.setState({
+        offername: this.state.offername =
+          getCouponMappingById.resultObject.offerName,
+        selected: this.state.selected =
+          getCouponMappingById.resultObject.couponId,
+        selectedmerchantdata: this.state.selectedmerchantdata =
+          getCouponMappingById.resultObject.merchantId,
+      });
+      var newList : any = this.state.items.filter(function(x:any){
+        return  getCouponMappingById.resultObject.couponId.indexOf(x) < 0;
+     })
+      // console.log('filter',this.state.items.filter(item => item.news_id == id ))
+      // let newUpdatdCouponArray:any = []
+      // for(var i=0;i<this.state.selected.length;i++) {
+      //   for(var j=0;j<this.state.items.length;j++) {
+      //     if(this.state.selected[i] !== this.state.items[j].value) 
+      //     newUpdatdCouponArray.push(this.state.items[j].value,this.state.items[j].name);
+      //     // newUpdatdCouponArray.name.push(this.state.items[j].name);
+      //   }
+      // }
+      // console.log("newUpdatdCouponArray",newUpdatdCouponArray);
+    } else {
+      const msg1 = "Internal Server";
+      utils.showError(msg1);
+    }
+  }
+
+  handleChangeEvent(event: any) {
+    event.preventDefault();
+    const state: any = this.state;
+    state[event.target.name] = event.target.value;
+    this.setState(state);
   }
 
   async getCouponList() {
@@ -127,7 +194,7 @@ class AddCouponMapping extends React.Component<{
 
     if (getMerchantList) {
       this.setState({
-        merchantdata: this.state.merchantdata = getMerchantList.resultObject
+        merchantdata: this.state.merchantdata = getMerchantList.resultObject,
       });
     } else {
       const msg1 = "Internal server error";
@@ -140,9 +207,7 @@ class AddCouponMapping extends React.Component<{
   getMerchantListdata = (id: any) => this.state[this.id4List[id]];
 
   onDragEnd = (result: any) => {
-   
     const { source, destination } = result;
-   
 
     // dropped outside the list
     if (!destination) {
@@ -170,19 +235,24 @@ class AddCouponMapping extends React.Component<{
         source,
         destination
       );
-      console.log("result", result);
 
       this.setState({
         items: result.droppable,
-        selected: result.droppable2,
+        selected: this.state.selected = result.droppable2,
       });
+      let newarray: any = [];
+      this.state.selected.map((res: any, index: number) => {
+        newarray.push(res.value);
+      });
+      this.setState({
+        couponselectedarray: this.state.couponselectedarray = newarray,
+      });
+      // console.log("result", this.state.couponselectedarray);
     }
   };
 
   onDragMerchantEnd = (result: any) => {
-
     const { source, destination } = result;
-   
 
     // dropped outside the list
     if (!destination) {
@@ -210,19 +280,76 @@ class AddCouponMapping extends React.Component<{
         source,
         destination
       );
-      console.log("result", result);
+      // console.log("result", result);
 
       this.setState({
         merchantdata: result.droppable,
-        selectedmerchantdata: result.droppable4,
+        selectedmerchantdata: this.state.selectedmerchantdata =
+          result.droppable4,
       });
+      let newmainarray: any = [];
+      this.state.selectedmerchantdata.map((res: any, index: number) => {
+        newmainarray.push(res.value);
+      });
+      this.setState({
+        merchantselectedarray: this.state.merchantselectedarray = newmainarray,
+      });
+      // console.log("result", this.state.merchantselectedarray);
     }
   };
 
+  validate() {
+    let offernameerror = "";
+
+    if (!this.state.offername) {
+      offernameerror = "please enter offer name";
+    }
+    if (offernameerror) {
+      this.setState({
+        offernameerror,
+      });
+      return false;
+    }
+    return true;
+  }
+
+  async addCouponMapping() {
+    const isValid = this.validate();
+    if (isValid) {
+      this.setState({
+        offernameerror: "",
+      });
+      if (this.state.offername) {
+        let mappingDetails = {
+          couponId: this.state.couponselectedarray,
+          merchantId: this.state.merchantselectedarray,
+        };
+        const obj: addCouponMappingState = {
+          offername: this.state.offername,
+          mappingDetail: mappingDetails,
+        };
+
+        const addCouponMapping = await CouponAPI.addCouponMappingMapping(obj);
+        console.log("addCouponMapping", addCouponMapping);
+        if (addCouponMapping) {
+          if (addCouponMapping.status === 200) {
+            const msg = addCouponMapping.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/list-coupon-map");
+          } else {
+            const msg1 = addCouponMapping.message;
+            utils.showError(msg1);
+          }
+        } else {
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
+        }
+      }
+    }
+  }
+
   render() {
-    let {
-        selected,
-        selectedmerchantdata} = this.state;
+    let { selected, selectedmerchantdata } = this.state;
     return (
       <>
         <>
@@ -234,11 +361,15 @@ class AddCouponMapping extends React.Component<{
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.couponPage.title.updateCouponTitle}</h1>
+                          <h1>
+                            {constant.couponPage.title.updateCouponMappingTitle}
+                          </h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.couponPage.title.addCouponTitle}</h1>
+                          <h1>
+                            {constant.couponPage.title.addCouponMappingTitle}
+                          </h1>
                         </Col>
                       )}
                       <Col
@@ -263,9 +394,31 @@ class AddCouponMapping extends React.Component<{
                     </Row>
                   </CardHeader>
                   <CardBody className="container">
+                    <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <FormGroup>
+                          <Label htmlFor="offer">
+                            {constant.couponPage.couponTableColumn.offername}
+                          </Label>
+                          <Input
+                            type="text"
+                            id="offer"
+                            name="offername"
+                            className="form-control"
+                            value={this.state.offername}
+                            onChange={this.handleChangeEvent}
+                            placeholder="Enter your offer name"
+                            required
+                          />
+                          <div className="mb-4 text-danger">
+                            {this.state.offernameerror}
+                          </div>
+                        </FormGroup>
+                      </Col>
+                    </Row>
                     <Row className="main_coupon merchnat">
                       <DragDropContext onDragEnd={this.onDragEnd}>
-                        <div  >
+                        <div>
                           <p className="drag_select">
                             Please drag left to right for add coupon
                           </p>
@@ -279,10 +432,46 @@ class AddCouponMapping extends React.Component<{
                                 ref={provided.innerRef}
                                 style={getListStyle(snapshot.isDraggingOver)}
                               >
-                                {this.state.items.map(
+                                {
+                                  this.state.updateTrue === true ? (
+                                    _.map(this.state.items,(itm:any,index1:number) => (
+                                       _.map(
+                                      selected,
+                                      (item: any, index: any) => (
+                                        console.log('items',item,itm.value)
+                                        // item !== itm.value ? (
+                                        // <Draggable
+                                        //   key={index1}
+                                        //   draggableId={itm.value.toString()}
+                                        //   index={index1}
+                                        // >
+                                        //   {(provided, snapshot) => (
+                                        //     <div
+                                        //       className="coupon_item_green"
+                                        //       ref={provided.innerRef}
+                                        //       {...provided.draggableProps}
+                                        //       {...provided.dragHandleProps}
+                                        //       style={getItemStyle(
+                                        //         snapshot.isDragging,
+                                        //         provided.draggableProps.style
+                                        //       )}
+                                        //     >
+                                        //       {itm.name}
+                                        //     </div>
+                                        //   )}
+                                        // </Draggable>
+                                        // ) : (
+                                        //   ''
+                                        // )
+                                      )
+                                    )
+                                    ))
+                                  ) : (
+                                    <>
+                                     {this.state.items.map(
                                   (item: any, index: any) => (
                                     <Draggable
-                                      key={item.value}
+                                      key={index}
                                       draggableId={item.value.toString()}
                                       index={index}
                                     >
@@ -303,6 +492,10 @@ class AddCouponMapping extends React.Component<{
                                     </Draggable>
                                   )
                                 )}
+                                    </>
+                                  )
+                                }
+                               
                                 {provided.placeholder}
                               </div>
                             )}
@@ -325,30 +518,74 @@ class AddCouponMapping extends React.Component<{
                                 ref={provided.innerRef}
                                 style={getListStyle(snapshot.isDraggingOver)}
                               >
-                                {_.map(selected, (
-                                  (item: any, index: any) => (
-                                    <Draggable
-                                      key={item.value}
-                                      draggableId={item.value.toString()}
-                                      index={index}
-                                    >
-                                      {(provided, snapshot) => (
-                                        <div
-                                          className="coupon_item_green"
-                                          ref={provided.innerRef}
-                                          {...provided.draggableProps}
-                                          {...provided.dragHandleProps}
-                                          style={getItemStyle(
-                                            snapshot.isDragging,
-                                            provided.draggableProps.style
-                                          )}
+                                {this.state.updateTrue === true ? (
+                                  <>
+                                  {
+                                    _.map(this.state.items,(itm:any,index1:number) => (
+                                      <>
+                                       {_.map(
+                                      selected,
+                                      (item: any, index: any) => (
+                                        item === itm.value ? (
+                                        <Draggable
+                                          key={index}
+                                          draggableId={item.toString()}
+                                          index={index}
                                         >
-                                          {item.name}
-                                        </div>
-                                      )}
-                                    </Draggable>
-                                  )
-                                ))}
+                                          {(provided, snapshot) => (
+                                            <div
+                                              className="coupon_item_green"
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                              style={getItemStyle(
+                                                snapshot.isDragging,
+                                                provided.draggableProps.style
+                                              )}
+                                            >
+                                              {itm.name}
+                                            </div>
+                                          )}
+                                        </Draggable>
+                                        ) : (
+                                          ''
+                                        )
+                                      )
+                                    )}
+                                      </>
+                                    ))
+                                  }
+                                  </>
+                                ) : (
+                                  <>
+                                    {_.map(
+                                      selected,
+                                      (item: any, index: any) => (
+                                        <Draggable
+                                          key={index}
+                                          draggableId={item.value.toString()}
+                                          index={index}
+                                        >
+                                          {(provided, snapshot) => (
+                                            <div
+                                              className="coupon_item_green"
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                              style={getItemStyle(
+                                                snapshot.isDragging,
+                                                provided.draggableProps.style
+                                              )}
+                                            >
+                                              {item.name}
+                                            </div>
+                                          )}
+                                        </Draggable>
+                                      )
+                                    )}
+                                  </>
+                                )}
+
                                 {provided.placeholder}
                               </div>
                             )}
@@ -385,7 +622,6 @@ class AddCouponMapping extends React.Component<{
                                           ref={provided.innerRef}
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
-                                        
                                           style={getItemStyle(
                                             snapshot.isDragging,
                                             provided.draggableProps.style
@@ -416,30 +652,64 @@ class AddCouponMapping extends React.Component<{
                                 ref={provided.innerRef}
                                 style={getListStyle(snapshot.isDraggingOver)}
                               >
-                                {_.map(selectedmerchantdata, (
-                                  (item: any, index: any) => (
-                                    <Draggable
-                                      key={item.value}
-                                      draggableId={item.value.toString()}
-                                      index={index}
-                                    >
-                                      {(provided, snapshot) => (
-                                        <div
-                                          className="coupon_item_green"
-                                          ref={provided.innerRef}
-                                          {...provided.draggableProps}
-                                          {...provided.dragHandleProps}
-                                          style={getItemStyle(
-                                            snapshot.isDragging,
-                                            provided.draggableProps.style
-                                          )}
+                                {this.state.updateTrue === true ? (
+                                  <>
+                                    {_.map(
+                                      selectedmerchantdata,
+                                      (item: any, index: any) => (
+                                        <Draggable
+                                          key={index}
+                                          draggableId={item}
+                                          index={index}
                                         >
-                                          {item.name}
-                                        </div>
-                                      )}
-                                    </Draggable>
-                                  )
-                                ))}
+                                          {(provided, snapshot) => (
+                                            <div
+                                              className="coupon_item_green"
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                              style={getItemStyle(
+                                                snapshot.isDragging,
+                                                provided.draggableProps.style
+                                              )}
+                                            >
+                                              {item.name}
+                                            </div>
+                                          )}
+                                        </Draggable>
+                                      )
+                                    )}
+                                  </>
+                                ) : (
+                                  <>
+                                    {_.map(
+                                      selectedmerchantdata,
+                                      (item: any, index: any) => (
+                                        <Draggable
+                                          key={index}
+                                          draggableId={item.value.toString()}
+                                          index={index}
+                                        >
+                                          {(provided, snapshot) => (
+                                            <div
+                                              className="coupon_item_green"
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                              style={getItemStyle(
+                                                snapshot.isDragging,
+                                                provided.draggableProps.style
+                                              )}
+                                            >
+                                              {item.name}
+                                            </div>
+                                          )}
+                                        </Draggable>
+                                      )
+                                    )}
+                                  </>
+                                )}
+
                                 {provided.placeholder}
                               </div>
                             )}
@@ -448,18 +718,12 @@ class AddCouponMapping extends React.Component<{
                       </DragDropContext>
                     </Row>
 
-                    {/* <Row>
-                      <Col xs="12" sm="12" md="12" lg="6" xl="6">
-                     
-                      </Col>
-                    </Row>
-
                     {this.state.updateTrue === true ? (
                       <Button
                         type="button"
                         size="sm"
                         color="primary"
-                        className="mb-2 mr-2 custom-button"
+                        className="mb-2 mr-2 mt-5 custom-button"
                         // onClick={this.editCoupon}
                       >
                         {constant.button.update}
@@ -469,12 +733,12 @@ class AddCouponMapping extends React.Component<{
                         type="button"
                         size="sm"
                         color="primary"
-                        className="mb-2 mr-2 custom-button"
-                        // onClick={this.addCoupon}
+                        className="mb-2 mr-2 mt-5 custom-button"
+                        onClick={this.addCouponMapping}
                       >
                         {constant.button.Save}
                       </Button>
-                    )} */}
+                    )}
                   </CardBody>
                 </Card>
               </Col>

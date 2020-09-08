@@ -47,8 +47,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     isByPrice: this.couponState.isByPrice,
     isActive: this.couponState.isActive,
     updateTrue: this.couponState.updateTrue,
-    couponId: this.couponState.couponId,
-    volume: this.couponState.volume
+    couponId: this.couponState.couponId
   };
 
   constructor(props: any) {
@@ -60,6 +59,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     this.IOSDateToYYYYMMDD = this.IOSDateToYYYYMMDD.bind(this);
     this.editCoupon = this.editCoupon.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleChangeEventDiscount = this.handleChangeEventDiscount.bind(this);
   }
 
   handleChange(checked: boolean) {
@@ -69,11 +69,33 @@ class Coupon extends React.Component<{ history: any; location: any }> {
   handleOnChange = (value:any) => {
     console.log("value",value);
     this.setState({
-      volume: value
+      percentage: value
     })
     if(this.state.minamountorder && this.state.percentage) {
+      const percentage = this.state.percentage/100;
+      const mainprice = parseInt(this.state.minamountorder) * percentage;
+      const discount  = parseInt(this.state.minamountorder) - mainprice;
+      console.log("mainprice",discount);
+      this.setState({
+        discountprice: this.state.discountprice =  discount.toString()
+      })
+
       // const newData = this.state.percentage/100
     }
+  }
+
+  handleChangeEventDiscount(event: any) {
+   this.setState({
+     discountprice: this.state.discountprice = event.target.value
+   })
+   if(this.state.minamountorder && this.state.discountprice) {
+     const d1 = parseInt(this.state.minamountorder) - parseInt(this.state.discountprice);
+     const d2 = d1 * 100;
+     const d3 = d2/parseInt(this.state.minamountorder)
+     this.setState({
+       percentage: this.state.percentage = d3
+     })
+   }
   }
 
   async componentDidMount() {
@@ -169,13 +191,8 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     if (!this.state.couponcode) {
       couponcodeerror = "please enter coupon code";
     }
-
-    var x = /^(100?|[1-9]?\d)$/;
     if (!this.state.percentage) {
       percentageerror = "please enter percentage";
-    } else if (!x.test(this.state.percentage)) {
-      percentageerror =
-        "please enter number below 100 or do not use decimal value";
     }
 
     if (!this.state.discountprice) {
@@ -259,7 +276,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
       ) {
         const obj: couponCreateRequest = {
           couponCode: this.state.couponcode,
-          percentage: parseInt(this.state.percentage),
+          percentage:this.state.percentage,
           discountPrice: parseInt(this.state.discountprice),
           startDate: this.state.startdate,
           endDate: this.state.enddate,
@@ -335,7 +352,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
         const obj: couponUpdateRequest = {
           couponId: this.state.couponId,
           couponCode: this.state.couponcode,
-          percentage: parseInt(this.state.percentage),
+          percentage: this.state.percentage,
           discountPrice: parseInt(this.state.discountprice),
           startDate: this.state.startdate,
           endDate: this.state.enddate,
@@ -477,14 +494,14 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                       <FormGroup>
                       <Label htmlFor="minamount">
                       <span>{constant.couponPage.couponTableColumn.percentage}</span>
-                          <span className="percentage">{this.state.volume} %</span>
+                          <span className="percentage">{this.state.percentage} %</span>
                           </Label>
                       <Slider
                              min={0}
                              max={100}
                              step={1}
                              tooltip={false}
-                              value={this.state.volume}
+                              value={this.state.percentage}
                               orientation="horizontal"
                               onChange={this.handleOnChange}
                             />
@@ -581,7 +598,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                             name="discountprice"
                             className="form-control"
                             value={this.state.discountprice}
-                            onChange={this.handleChangeEvent}
+                            onChange={this.handleChangeEventDiscount}
                             placeholder="Enter your discount price"
                             required
                           />

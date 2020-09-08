@@ -12,12 +12,18 @@ import {
   Row,
 } from "reactstrap";
 
-import {StatusAPI, CouponAPI} from "../../../service/index.service";
+import { StatusAPI, CouponAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest } from "../../../modelController";
+import {
+  getAllTableDataListRequest,
+  statusChangeRequest,
+  allStateRequest,
+  addCouponMappingStateRequest,
+} from "../../../modelController";
 
 class ListCouponMap extends React.Component<{ history: any }> {
-  couponState = constant.couponPage.state;
+  couponState : addCouponMappingStateRequest = constant.couponPage.state;
+  userState: allStateRequest = constant.userPage.state;
   state = {
     count: this.couponState.count,
     currentPage: this.couponState.currentPage,
@@ -29,31 +35,35 @@ class ListCouponMap extends React.Component<{ history: any }> {
     couponmapdata: this.couponState.couponmapdata,
     switchSort: this.couponState.switchSort,
     isStatus: this.couponState.isStatus,
+    deleteuserdata: this.userState.deleteuserdata,
+    _maincheck: this.userState._maincheck,
+    deleteFlag: this.userState.deleteFlag,
   };
 
   constructor(props: any) {
     super(props);
-    this.editCoupon = this.editCoupon.bind(this);
+    this.editCouponMapping = this.editCouponMapping.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
-    this.viewCoupon = this.viewCoupon.bind(this);
+    this.viewCouponMapping = this.viewCouponMapping.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(
       this
     );
     this.handleSort = this.handleSort.bind(this);
-    this.compareByDesc = this.compareByDesc.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.statusChange = this.statusChange.bind(this);
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
     document.title =
-      constant.categoryPage.title.categoryTitle + utils.getAppName();
-      utils.dataTable();
+      constant.couponPage.title.counponMappingTitle + utils.getAppName();
+    utils.dataTable();
     this.getCouponMapData();
   }
 
@@ -62,7 +72,7 @@ class ListCouponMap extends React.Component<{ history: any }> {
     page: number = 1,
     size: number = 10
   ) {
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: searchText,
       page: page,
       size: size,
@@ -74,7 +84,8 @@ class ListCouponMap extends React.Component<{ history: any }> {
     if (getCouponMapData) {
       if (getCouponMapData.status === 200) {
         this.setState({
-          couponmapdata: this.state.couponmapdata = getCouponMapData.resultObject.data,
+          couponmapdata: this.state.couponmapdata =
+            getCouponMapData.resultObject.data,
           count: this.state.count = getCouponMapData.resultObject.totalcount,
         });
       } else {
@@ -109,28 +120,31 @@ class ListCouponMap extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
-  editCoupon(id: any) {
-    this.props.history.push("/edit-coupon/" + id);
+  editCouponMapping(id: any) {
+    this.props.history.push("/edit-coupon-map/" + id);
   }
 
-  viewCoupon(id: any) {
-    this.props.history.push("/view-coupon/" + id);
+  viewCouponMapping(id: any) {
+    this.props.history.push("/view-coupon-map/" + id);
   }
 
   onItemSelect(event: any) {
     this.setState({
-      items_per_page: 
-        event.target.options[event.target.selectedIndex].value,
+      items_per_page: event.target.options[event.target.selectedIndex].value,
     });
 
-    this.getCouponMapData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+    this.getCouponMapData(
+      "",
+      parseInt(this.state.currentPage),
+      parseInt(this.state.items_per_page)
+    );
   }
 
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
     });
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: "",
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
@@ -140,7 +154,7 @@ class ListCouponMap extends React.Component<{ history: any }> {
   }
 
   async searchApplicationDataKeyUp(e: any) {
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: e.target.value,
       page: 1,
       size: parseInt(this.state.items_per_page),
@@ -154,46 +168,112 @@ class ListCouponMap extends React.Component<{ history: any }> {
       switchSort: !this.state.switchSort,
     });
     let copyTableData = [...this.state.couponmapdata];
-    copyTableData.sort(this.compareByDesc(key));
+    copyTableData.sort(utils.compareByDesc(key, this.state.switchSort));
     this.setState({
       couponmapdata: this.state.couponmapdata = copyTableData,
     });
   }
 
-  compareByDesc(key: any) {
-    if (this.state.switchSort) {
-      return function (a: any, b: any) {
-        if (a[key] < b[key]) return -1; // check for value if the second value is bigger then first return -1
-        if (a[key] > b[key]) return 1; //check for value if the second value is bigger then first return 1
-        return 0;
-      };
-    } else {
-      return function (a: any, b: any) {
-        if (a[key] > b[key]) return -1;
-        if (a[key] < b[key]) return 1;
-        return 0;
-      };
-    }
-  }
-
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj:statusChangeRequest = {
+      const obj: statusChangeRequest = {
         moduleName: "Coupon",
         id: data.couponId,
-        isActive: data.isActive === true ? false : true
-       }
-       var getStatusChange = await StatusAPI.getStatusChange(obj);
-       console.log("getStatusChange", getStatusChange);
-       if (getStatusChange.status === 200) {
+        isActive: data.isActive === true ? false : true,
+      };
+      var getStatusChange = await StatusAPI.getStatusChange(obj);
+      console.log("getStatusChange", getStatusChange);
+      if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);
-        this.getCouponMapData();
+        this.getCouponMapData(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
       } else {
         const msg1 = getStatusChange.message;
         utils.showError(msg1);
       }
     }
+  }
+
+  handleChange(item: any, e: any) {
+    let _id = item.couponMappingId;
+    let ind: any = this.state.couponmapdata.findIndex(
+      (x: any) => x.couponMappingId === _id
+    );
+    let data: any = this.state.couponmapdata;
+    if (ind > -1) {
+      let newState: any = !item._rowChecked;
+      data[ind]._rowChecked = newState;
+      this.setState({
+        couponmapdata: this.state.couponmapdata = data,
+      });
+    }
+    if (
+      data.filter((res: any, index: number) => res._rowChecked === true)
+        .length === data.length
+    ) {
+      this.setState({
+        _maincheck: true,
+      });
+    } else {
+      this.setState({
+        _maincheck: false,
+      });
+    }
+    let newarray: any = [];
+    data.map((res: any, index: number) => {
+      if (res._rowChecked === true) {
+        newarray.push(res.couponMappingId);
+      }
+    });
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
+  }
+
+  handleMainChange(e: any) {
+    let _val = e.target.checked;
+    this.state.couponmapdata.forEach((element: any) => {
+      element._rowChecked = _val;
+    });
+    this.setState({
+      couponmapdata: this.state.couponmapdata,
+    });
+    this.setState({
+      _maincheck: _val,
+    });
+    let newmainarray: any = [];
+    this.state.couponmapdata.map((res: any, index: number) => {
+      if (res._rowChecked === true) {
+        newmainarray.push(res.couponMappingId);
+      }
+    });
+    this.setState({
+      deleteuserdata: this.state.deleteuserdata = newmainarray,
+    });
+    if (this.state.deleteuserdata.length > 0) {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = true,
+      });
+    } else {
+      this.setState({
+        deleteFlag: this.state.deleteFlag = false,
+      });
+    }
+    console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   pagination(pageNumbers: any) {
@@ -246,11 +326,21 @@ class ListCouponMap extends React.Component<{ history: any }> {
         width="100%"
       >
         <thead>
-          <tr onClick={() => this.handleSort("couponCode")}>
-            <th>{constant.couponPage.couponTableColumn.couponCode}</th>
-            <th>{constant.couponPage.couponTableColumn.title}</th>
-            <th>{constant.couponPage.couponTableColumn.discountPrice}</th>
-            <th>{constant.couponPage.couponTableColumn.percentage}</th>
+          <tr onClick={() => this.handleSort("offerName")}>
+          <th className="centers">
+              <CustomInput
+                name="name"
+                defaultValue="value"
+                type="checkbox"
+                id="exampleCustomCheckbox"
+                onChange={this.handleMainChange}
+                checked={this.state._maincheck}
+              />
+            </th>
+            <th>{constant.couponPage.couponTableColumn.couponname}</th>
+            <th>{constant.couponPage.couponTableColumn.merchantname}</th>
+            <th>{constant.couponPage.couponTableColumn.offername}</th>
+            {/* <th>{constant.couponPage.couponTableColumn.title}</th> */}
             <th style={{ textAlign: "center" }}>
               {constant.tableAction.status}
             </th>
@@ -262,10 +352,20 @@ class ListCouponMap extends React.Component<{ history: any }> {
             <>
               {this.state.couponmapdata.map((data: any, index: any) => (
                 <tr key={index}>
-                  <td>{data.couponCode}</td>
-                  <td>{data.title}</td>
-                  <td>{data.discountPrice}</td>
-                  <td>{data.percentage}%</td>
+                   <td className="centers">
+                    <CustomInput
+                      // name="name"
+                      type="checkbox"
+                      id={data.couponMappingId}
+                      onChange={(e) => this.handleChange(data, e)}
+                      checked={
+                        this.state.couponmapdata[index]["_rowChecked"] === true
+                      }
+                    />
+                  </td>
+                  <td>{data.coupon ? data.coupon : "N/A"}</td>
+                  <td>{data.merchant ? data.merchant : "N/A"}</td>
+                  <td>{data.offerName ? data.offerName : "N/A"}</td>
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -299,11 +399,11 @@ class ListCouponMap extends React.Component<{ history: any }> {
                     <span className="padding">
                       <i
                         className="fa fa-eye"
-                        onClick={() => this.viewCoupon(data.couponId)}
+                        onClick={() => this.viewCouponMapping(data.couponMappingId)}
                       ></i>
                       <i
                         className="fas fa-edit"
-                        onClick={() => this.editCoupon(data.couponId)}
+                        onClick={() => this.editCouponMapping(data.couponMappingId)}
                       ></i>
                       {/* <i
                         className="far fa-trash-alt"
@@ -364,10 +464,10 @@ class ListCouponMap extends React.Component<{ history: any }> {
   }
 
   render() {
-    var pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(parseInt(this.state.count) / parseInt(this.state.items_per_page)); i++) {
-      pageNumbers.push(i);
-    }
+    var pageNumbers = utils.pageNumber(
+      this.state.count,
+      this.state.items_per_page
+    );
     var renderPageNumbers = this.pagination(pageNumbers);
 
     let pageIncrementBtn = null;
@@ -434,7 +534,19 @@ class ListCouponMap extends React.Component<{ history: any }> {
                     {this.state.couponmapdata.length > 0 ? (
                       <>{this.getTable(this.state.couponmapdata)}</>
                     ) : (
-                      <h1 className="text-center mt-5">No Data Found</h1>
+                      <h1 className="text-center mt-5">
+                        {constant.noDataFound.nodatafound}
+                      </h1>
+                    )}
+                    {this.state.deleteFlag === true ? (
+                      <Button
+                        className="mb-2 mr-2 custom-button"
+                        color="primary"
+                      >
+                        {constant.button.remove}
+                      </Button>
+                    ) : (
+                      ""
                     )}
                     {this.state.couponmapdata.length > 0
                       ? this.getPageData(
