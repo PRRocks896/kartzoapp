@@ -177,8 +177,8 @@ class ListCouponMap extends React.Component<{ history: any }> {
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: statusChangeRequest = {
-        moduleName: "Coupon",
-        id: data.couponId,
+        moduleName: "CouponMapping",
+        id: data.couponMappingId,
         isActive: data.isActive === true ? false : true,
       };
       var getStatusChange = await StatusAPI.getStatusChange(obj);

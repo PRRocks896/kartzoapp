@@ -522,16 +522,25 @@ export default {
       couponmapdata: [],
       switchSort: false,
       isStatus: false,
+      
 
       items: [],
       selected:[],
       couponlistdata:[],
+
+      mainCouponArray: [],
+      selectedCouponArray: [],
+      tempCouponArray: [],
+      tempMerchantArray:[],
+  
       merchantdata:[],
       selectedmerchantdata:[],
       couponselectedarray:[],
       merchantselectedarray : [],
       offername:'',
       offernameerror:'',
+      couponmappingid:'',
+      
 
 
       checked: false,
@@ -554,12 +563,15 @@ export default {
       isByPrice: false,
       isActive: true,
       updateTrue: false,
-      couponId: ""
+      couponId: "",
+      dpriceFlag:false,
+      finalprice:""
     },
     couponTableColumn: {
       couponCode: "Coupon Code",
       description: "Description",
-      discountPrice: "Offering Price",
+      discountPrice: "Discount Price",
+      finalPrice: "Final Price",
       endDate: "End Date",
       startDate: "Start Date",
       minAmountOrder: "Min Amount Order",

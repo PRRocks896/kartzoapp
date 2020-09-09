@@ -5,3 +5,4 @@ export * from './couponState';
 export * from './addCouponState';
 export * from './couponMappingState';
 export * from './addCouponMappingState';
+export * from './editCouponMap';

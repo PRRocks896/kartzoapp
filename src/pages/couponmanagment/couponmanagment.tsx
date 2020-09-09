@@ -47,7 +47,9 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     isByPrice: this.couponState.isByPrice,
     isActive: this.couponState.isActive,
     updateTrue: this.couponState.updateTrue,
-    couponId: this.couponState.couponId
+    couponId: this.couponState.couponId,
+    dpriceFlag: this.couponState.dpriceFlag,
+    finalprice: this.couponState.finalprice
   };
 
   constructor(props: any) {
@@ -63,39 +65,46 @@ class Coupon extends React.Component<{ history: any; location: any }> {
   }
 
   handleChange(checked: boolean) {
-    this.setState({ isByPrice: this.state.isByPrice = checked });
+    this.setState({
+      isByPrice: this.state.isByPrice = checked,
+      dpriceFlag: !this.state.dpriceFlag,
+    });
   }
 
-  handleOnChange = (value:any) => {
-    console.log("value",value);
+  handleOnChange = (value: any) => {
     this.setState({
-      percentage: value
-    })
-    if(this.state.minamountorder && this.state.percentage) {
-      const percentage = this.state.percentage/100;
+      percentage: value,
+    });
+    if (this.state.minamountorder && this.state.percentage) {
+      const percentage = this.state.percentage / 100;
       const mainprice = parseInt(this.state.minamountorder) * percentage;
-      const discount  = parseInt(this.state.minamountorder) - mainprice;
-      console.log("mainprice",discount);
+      const discount = parseInt(this.state.minamountorder) - mainprice;
       this.setState({
-        discountprice: this.state.discountprice =  discount.toString()
-      })
+        discountprice: this.state.discountprice = discount.toString(),
+      });
 
       // const newData = this.state.percentage/100
     }
-  }
+  };
 
   handleChangeEventDiscount(event: any) {
-   this.setState({
-     discountprice: this.state.discountprice = event.target.value
-   })
-   if(this.state.minamountorder && this.state.discountprice) {
-     const d1 = parseInt(this.state.minamountorder) - parseInt(this.state.discountprice);
-     const d2 = d1 * 100;
-     const d3 = d2/parseInt(this.state.minamountorder)
-     this.setState({
-       percentage: this.state.percentage = d3
-     })
-   }
+    this.setState({
+      discountprice: this.state.discountprice = event.target.value,
+    });
+    if (this.state.minamountorder && this.state.discountprice) {
+      const d1 =
+        parseInt(this.state.minamountorder) -
+        parseInt(this.state.discountprice);
+      const d2 = d1 * 100;
+      const d3 = d2 / parseInt(this.state.minamountorder);
+      this.setState({
+        percentage: this.state.percentage = d3,
+      });
+      const finalamount =   parseInt(this.state.minamountorder) - parseInt(this.state.discountprice);
+      this.setState({
+        finalprice: this.state.finalprice = finalamount.toString(),
+      });
+    }
   }
 
   async componentDidMount() {
@@ -276,7 +285,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
       ) {
         const obj: couponCreateRequest = {
           couponCode: this.state.couponcode,
-          percentage:this.state.percentage,
+          percentage: this.state.percentage,
           discountPrice: parseInt(this.state.discountprice),
           startDate: this.state.startdate,
           endDate: this.state.enddate,
@@ -384,6 +393,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
   }
 
   render() {
+    var disable: any = "disabled";
     return (
       <>
         <>
@@ -446,24 +456,18 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                         </FormGroup>
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
-                          <Label htmlFor="title">
-                            {constant.couponPage.couponTableColumn.title}
-                          </Label>
-                          <Input
-                            type="text"
-                            id="title"
-                            name="title"
-                            className="form-control"
-                            value={this.state.title}
-                            onChange={this.handleChangeEvent}
-                            placeholder="Enter your title"
-                            required
-                          />
-                          <div className="mb-4 text-danger">
-                            {this.state.titleerror}
+                        <label>
+                          <span>
+                            {constant.couponPage.couponTableColumn.IsByPrice}
+                          </span>
+                          <br />
+                          <div style={{ marginTop: "10px" }}>
+                            <Switch
+                              onChange={this.handleChange}
+                              checked={this.state.isByPrice}
+                            />
                           </div>
-                        </FormGroup>
+                        </label>
                       </Col>
                     </Row>
                     <Row>
@@ -491,20 +495,37 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                         </FormGroup>
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                      <FormGroup>
-                      <Label htmlFor="minamount">
-                      <span>{constant.couponPage.couponTableColumn.percentage}</span>
-                          <span className="percentage">{this.state.percentage} %</span>
+                        <FormGroup>
+                          <Label htmlFor="minamount">
+                            <span>
+                              {constant.couponPage.couponTableColumn.percentage}
+                            </span>
+                            <span className="percentage">
+                              {this.state.percentage} %
+                            </span>
                           </Label>
-                      <Slider
-                             min={0}
-                             max={100}
-                             step={1}
-                             tooltip={false}
+                          {this.state.dpriceFlag === true ? (
+                            <Slider
+                              min={0}
+                              max={100}
+                              step={1}
+                              tooltip={false}
+                              value={this.state.percentage}
+                              orientation="horizontal"
+                              // onChange={this.handleOnChange}
+                              disabled
+                            />
+                          ) : (
+                            <Slider
+                              min={0}
+                              max={100}
+                              step={1}
+                              tooltip={false}
                               value={this.state.percentage}
                               orientation="horizontal"
                               onChange={this.handleOnChange}
                             />
+                          )}
                           {/* <Label htmlFor="percentage">
                             {constant.couponPage.couponTableColumn.percentage}
                           </Label>
@@ -521,9 +542,128 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                           <div className="mb-4 text-danger">
                             {this.state.percentageerror}
                           </div>
-                       </FormGroup>
+                        </FormGroup>
                       </Col>
                     </Row>
+                    {
+                      this.state.dpriceFlag === true ? (
+                        <Row>
+                        <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                          <FormGroup>
+                            <Label htmlFor="discount_price">
+                              {
+                                constant.couponPage.couponTableColumn
+                                  .discountPrice
+                              }
+                            </Label>
+                            <Input
+                              type="number"
+                              id="discount_price"
+                              name="discountprice"
+                              className="form-control"
+                              value={this.state.discountprice}
+                              onChange={this.handleChangeEventDiscount}
+                              placeholder="Enter your discount price"
+                              required
+                            />
+                            <div className="mb-4 text-danger">
+                              {this.state.discountpriceerror}
+                            </div>
+                          </FormGroup>
+                        </Col>
+                        <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                          <FormGroup>
+                            <Label htmlFor="discount_price">
+                              {
+                                constant.couponPage.couponTableColumn
+                                  .finalPrice
+                              }
+                            </Label>
+                            <Input
+                              type="number"
+                              id="discount_price"
+                              name="discountprice"
+                              className="form-control"
+                              value={this.state.finalprice}
+                              // onChange={this.handleChangeEventDiscount}
+                              placeholder="Enter your final price"
+                              required
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                          <FormGroup>
+                            <Label htmlFor="title">
+                              {constant.couponPage.couponTableColumn.title}
+                            </Label>
+                            <Input
+                              type="text"
+                              id="title"
+                              name="title"
+                              className="form-control"
+                              value={this.state.title}
+                              onChange={this.handleChangeEvent}
+                              placeholder="Enter your title"
+                              required
+                            />
+                            <div className="mb-4 text-danger">
+                              {this.state.titleerror}
+                            </div>
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      ) : (
+                        <Row>
+                        <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                          <FormGroup>
+                            <Label htmlFor="discount_price">
+                              {
+                                constant.couponPage.couponTableColumn
+                                  .discountPrice
+                              }
+                            </Label>
+                            <Input
+                              type="number"
+                              id="discount_price"
+                              name="discountprice"
+                              className="form-control"
+                              value={this.state.discountprice}
+                              onChange={this.handleChangeEventDiscount}
+                              placeholder="Enter your discount price"
+                              disabled={
+                                this.state.dpriceFlag === false ? disable : ""
+                              }
+                              required
+                            />
+                            <div className="mb-4 text-danger">
+                              {this.state.discountpriceerror}
+                            </div>
+                          </FormGroup>
+                        </Col>
+                        <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                          <FormGroup>
+                            <Label htmlFor="title">
+                              {constant.couponPage.couponTableColumn.title}
+                            </Label>
+                            <Input
+                              type="text"
+                              id="title"
+                              name="title"
+                              className="form-control"
+                              value={this.state.title}
+                              onChange={this.handleChangeEvent}
+                              placeholder="Enter your title"
+                              required
+                            />
+                            <div className="mb-4 text-danger">
+                              {this.state.titleerror}
+                            </div>
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      )
+                    }
+                   
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <Label htmlFor="start_date">
@@ -583,45 +723,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                         </div>
                       </Col>
                     </Row>
-                    <Row>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <FormGroup>
-                          <Label htmlFor="discount_price">
-                            {
-                              constant.couponPage.couponTableColumn
-                                .discountPrice
-                            }
-                          </Label>
-                          <Input
-                            type="number"
-                            id="discount_price"
-                            name="discountprice"
-                            className="form-control"
-                            value={this.state.discountprice}
-                            onChange={this.handleChangeEventDiscount}
-                            placeholder="Enter your discount price"
-                            required
-                          />
-                          <div className="mb-4 text-danger">
-                            {this.state.discountpriceerror}
-                          </div>
-                        </FormGroup>
-                      </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <label>
-                          <span>
-                            {constant.couponPage.couponTableColumn.IsByPrice}
-                          </span>
-                          <br />
-                          <div style={{ marginTop: "10px" }}>
-                            <Switch
-                              onChange={this.handleChange}
-                              checked={this.state.isByPrice}
-                            />
-                          </div>
-                        </label>
-                      </Col>
-                    </Row>
+
                     {this.state.updateTrue === true ? (
                       <Button
                         type="button"

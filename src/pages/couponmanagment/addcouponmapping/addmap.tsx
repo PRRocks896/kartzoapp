@@ -21,6 +21,7 @@ import {
   addCouponStateRequest,
   addCouponMappingState,
   getDataByIdRequest,
+  editCouponMappingState,
 } from "../../../modelController";
 
 // a little function to help us with reordering the result
@@ -84,6 +85,13 @@ class AddCouponMapping extends React.Component<{
     items: this.couponState.items,
     selected: this.couponState.selected,
     couponlistdata: this.couponState.couponlistdata,
+
+    mainCouponArray: this.couponState.mainCouponArray,
+    selectedCouponArray: this.couponState.selectedCouponArray,
+    tempCouponArray: this.couponState.tempCouponArray,
+
+    tempMerchantArray: this.couponState.tempMerchantArray,
+
     merchantdata: this.couponState.merchantdata,
     selectedmerchantdata: this.couponState.selectedmerchantdata,
     offername: this.couponState.offername,
@@ -91,11 +99,12 @@ class AddCouponMapping extends React.Component<{
     couponselectedarray: this.couponState.couponselectedarray,
     merchantselectedarray: this.couponState.merchantselectedarray,
     updateTrue: false,
+    couponmappingid: this.couponState.couponmappingid,
   };
 
   id2List: any = {
-    droppable: "items",
-    droppable2: "selected",
+    droppable: "mainCouponArray",
+    droppable2: "selectedCouponArray",
   };
 
   id4List: any = {
@@ -111,6 +120,7 @@ class AddCouponMapping extends React.Component<{
     this.getMerchantList = this.getMerchantList.bind(this);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
     this.addCouponMapping = this.addCouponMapping.bind(this);
+    this.editCouponMapping = this.editCouponMapping.bind(this);
   }
 
   async componentDidMount() {
@@ -120,6 +130,7 @@ class AddCouponMapping extends React.Component<{
     if (couponId !== undefined) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
+        couponmappingid: this.state.couponmappingid = couponId,
       });
       this.getCouponMappingById(couponId);
     }
@@ -140,22 +151,67 @@ class AddCouponMapping extends React.Component<{
     console.log("getCouponMappingById", getCouponMappingById);
 
     if (getCouponMappingById) {
+      const tarray: any = [];
+      this.state.tempCouponArray.map((value: any, index: number) => {
+        if (getCouponMappingById.resultObject.couponId.includes(value.value)) {
+          tarray.push(value);
+          console.log("tarray", tarray);
+        }
+      });
+      this.setState({
+        selectedCouponArray: this.state.selectedCouponArray = tarray,
+      });
+
+      const t2array: any = [];
+      this.state.tempMerchantArray.map((value: any, index: number) => {
+        if (
+          getCouponMappingById.resultObject.merchantId.includes(value.value)
+        ) {
+          t2array.push(value);
+          console.log("t2array", t2array);
+        }
+      });
+      this.setState({
+        selectedmerchantdata: this.state.selectedmerchantdata = t2array,
+      });
+
+      const tarray1: any = [];
+      this.state.tempCouponArray.map((data: any, index: number) => {
+        if (!this.state.selectedCouponArray.includes(data)) {
+          tarray1.push(data);
+        }
+      });
+
+      console.log("tarray1", tarray1);
+      this.setState({ mainCouponArray: this.state.mainCouponArray = tarray1 });
+
+      const tarray2: any = [];
+      this.state.tempMerchantArray.map((data: any, index: number) => {
+        if (!this.state.selectedmerchantdata.includes(data)) {
+          tarray2.push(data);
+        }
+      });
+
+      console.log("tarray2", tarray2);
+      this.setState({ merchantdata: this.state.merchantdata = tarray2 });
+
+      console.log("Selected Coupon: ", this.state.selectedCouponArray);
       this.setState({
         offername: this.state.offername =
           getCouponMappingById.resultObject.offerName,
-        selected: this.state.selected =
+        couponselectedarray: this.state.couponselectedarray =
           getCouponMappingById.resultObject.couponId,
-        selectedmerchantdata: this.state.selectedmerchantdata =
+        merchantselectedarray: this.state.merchantselectedarray =
           getCouponMappingById.resultObject.merchantId,
       });
-      var newList : any = this.state.items.filter(function(x:any){
-        return  getCouponMappingById.resultObject.couponId.indexOf(x) < 0;
-     })
+      //   var newList : any = this.state.items.filter(function(x:any){
+      //     return  getCouponMappingById.resultObject.couponId.indexOf(x) < 0;
+      //  })
       // console.log('filter',this.state.items.filter(item => item.news_id == id ))
       // let newUpdatdCouponArray:any = []
       // for(var i=0;i<this.state.selected.length;i++) {
       //   for(var j=0;j<this.state.items.length;j++) {
-      //     if(this.state.selected[i] !== this.state.items[j].value) 
+      //     if(this.state.selected[i] !== this.state.items[j].value)
       //     newUpdatdCouponArray.push(this.state.items[j].value,this.state.items[j].name);
       //     // newUpdatdCouponArray.name.push(this.state.items[j].name);
       //   }
@@ -180,7 +236,10 @@ class AddCouponMapping extends React.Component<{
 
     if (getCouponList) {
       this.setState({
-        items: this.state.items = getCouponList.resultObject,
+        mainCouponArray: this.state.mainCouponArray =
+          getCouponList.resultObject,
+        tempCouponArray: this.state.tempCouponArray =
+          getCouponList.resultObject,
       });
     } else {
       const msg1 = "Internal server error";
@@ -195,6 +254,8 @@ class AddCouponMapping extends React.Component<{
     if (getMerchantList) {
       this.setState({
         merchantdata: this.state.merchantdata = getMerchantList.resultObject,
+        tempMerchantArray: this.state.tempMerchantArray =
+          getMerchantList.resultObject,
       });
     } else {
       const msg1 = "Internal server error";
@@ -235,19 +296,103 @@ class AddCouponMapping extends React.Component<{
         source,
         destination
       );
-
-      this.setState({
-        items: result.droppable,
-        selected: this.state.selected = result.droppable2,
-      });
-      let newarray: any = [];
-      this.state.selected.map((res: any, index: number) => {
-        newarray.push(res.value);
-      });
-      this.setState({
-        couponselectedarray: this.state.couponselectedarray = newarray,
-      });
-      // console.log("result", this.state.couponselectedarray);
+      console.log("result", result);
+      if (this.state.updateTrue === false) {
+        this.setState({
+          mainCouponArray: result.droppable,
+          selectedCouponArray: this.state.selectedCouponArray =
+            result.droppable2,
+        });
+        let newarray: any = [];
+        this.state.selectedCouponArray.map((res: any, index: number) => {
+          newarray.push(res.value);
+        });
+        this.setState({
+          couponselectedarray: this.state.couponselectedarray = newarray,
+        });
+        console.log("result", this.state.selectedCouponArray);
+      } else {
+        console.log("source", source);
+        console.log("destination", destination);
+        if (source.droppableId === "droppable") {
+          let newarray: any = this.state.selectedCouponArray;
+          console.log("New Array: ", newarray);
+          result.droppable2.map((data: any, index: number) => {
+            console.log("data: ", data);
+            if (!newarray.includes(data)) {
+              console.log("in if condition");
+              newarray.push(data);
+            }
+          });
+          console.log("newarray", newarray);
+          this.setState({
+            selectedCouponArray: this.state.selectedCouponArray = newarray,
+          });
+          result.droppable2.map((data: any, index: number) => {
+            if (this.state.mainCouponArray.includes(data)) {
+              console.log("Found");
+              const index = this.state.mainCouponArray.indexOf(data);
+              this.state.mainCouponArray.splice(index, 1);
+              console.log(this.state.mainCouponArray);
+            } else {
+              console.log("Not Found");
+            }
+          });
+          console.log("Main array: ", this.state.mainCouponArray);
+          console.log(
+            "selectedCouponArray after updated",
+            this.state.selectedCouponArray
+          );
+          let newarray3: any = [];
+          this.state.selectedCouponArray.map((res: any, index: number) => {
+            newarray3.push(res.value);
+          });
+          this.setState({
+            couponselectedarray: this.state.couponselectedarray = newarray3,
+          });
+          console.log("result", this.state.selectedCouponArray);
+        } else if (source.droppableId === "droppable2") {
+          let newarray: any = this.state.mainCouponArray;
+          console.log("New Array: ", newarray);
+          result.droppable.map((data: any, index: number) => {
+            console.log("data: ", data);
+            if (!newarray.includes(data)) {
+              console.log("in if condition");
+              newarray.push(data);
+            }
+          });
+          console.log("newarray", newarray);
+          this.setState({
+            mainCouponArray: this.state.mainCouponArray = newarray,
+          });
+          result.droppable.map((data: any, index: number) => {
+            if (this.state.selectedCouponArray.includes(data)) {
+              console.log("Found");
+              const index = this.state.selectedCouponArray.indexOf(data);
+              this.state.selectedCouponArray.splice(index, 1);
+              console.log(this.state.selectedCouponArray);
+            } else {
+              console.log("Not Found");
+            }
+          });
+          console.log("Main array: ", this.state.mainCouponArray);
+          console.log(
+            "mainCouponArray after updated",
+            this.state.mainCouponArray
+          );
+          console.log(
+            "selectedCouponArray after updated",
+            this.state.selectedCouponArray
+          );
+          let newarray3: any = [];
+          this.state.selectedCouponArray.map((res: any, index: number) => {
+            newarray3.push(res.value);
+          });
+          this.setState({
+            couponselectedarray: this.state.couponselectedarray = newarray3,
+          });
+        }
+      }
     }
   };
 
@@ -282,19 +427,95 @@ class AddCouponMapping extends React.Component<{
       );
       // console.log("result", result);
 
-      this.setState({
-        merchantdata: result.droppable,
-        selectedmerchantdata: this.state.selectedmerchantdata =
-          result.droppable4,
-      });
-      let newmainarray: any = [];
-      this.state.selectedmerchantdata.map((res: any, index: number) => {
-        newmainarray.push(res.value);
-      });
-      this.setState({
-        merchantselectedarray: this.state.merchantselectedarray = newmainarray,
-      });
-      // console.log("result", this.state.merchantselectedarray);
+      if (this.state.updateTrue === false) {
+        this.setState({
+          merchantdata: result.droppable,
+          selectedmerchantdata: this.state.selectedmerchantdata =
+            result.droppable4,
+        });
+        let newmainarray: any = [];
+        this.state.selectedmerchantdata.map((res: any, index: number) => {
+          newmainarray.push(res.value);
+        });
+        this.setState({
+          merchantselectedarray: this.state.merchantselectedarray = newmainarray,
+        });
+        console.log("result", this.state.merchantselectedarray);
+      } else {
+        console.log("source", source);
+        console.log("destination", destination);
+        if (source.droppableId === "droppable") {
+          let newarray: any = this.state.selectedmerchantdata;
+          console.log("New Array: ", newarray);
+          result.droppable4.map((data: any, index: number) => {
+            console.log("data: ", data);
+            if (!newarray.includes(data)) {
+              console.log("in if condition");
+              newarray.push(data);
+            }
+          });
+          console.log("newarray", newarray);
+          this.setState({
+            selectedmerchantdata: this.state.selectedmerchantdata = newarray,
+          });
+          result.droppable4.map((data: any, index: number) => {
+            if (this.state.merchantdata.includes(data)) {
+              console.log("Found");
+              const index = this.state.merchantdata.indexOf(data);
+              this.state.merchantdata.splice(index, 1);
+              console.log(this.state.merchantdata);
+            } else {
+              console.log("Not Found");
+            }
+          });
+          console.log("Main array: ", this.state.merchantdata);
+          let newmainarray: any = [];
+          this.state.selectedmerchantdata.map((res: any, index: number) => {
+            newmainarray.push(res.value);
+          });
+          this.setState({
+            merchantselectedarray: this.state.merchantselectedarray = newmainarray,
+          });
+          console.log(
+            "selectedmerchantdata after updated",
+            this.state.selectedmerchantdata
+          );
+        } else if (source.droppableId === "droppable4") {
+          let newarray: any = this.state.merchantdata;
+          console.log("New Array: ", newarray);
+          result.droppable.map((data: any, index: number) => {
+            console.log("data: ", data);
+            if (!newarray.includes(data)) {
+              console.log("in if condition");
+              newarray.push(data);
+            }
+          });
+          console.log("newarray", newarray);
+          this.setState({
+            merchantdata: this.state.merchantdata = newarray,
+          });
+          result.droppable.map((data: any, index: number) => {
+            if (this.state.selectedmerchantdata.includes(data)) {
+              console.log("Found");
+              const index = this.state.selectedmerchantdata.indexOf(data);
+              this.state.selectedmerchantdata.splice(index, 1);
+              console.log(this.state.selectedmerchantdata);
+            } else {
+              console.log("Not Found");
+            }
+          });
+          console.log("Main array: ", this.state.merchantdata);
+
+          console.log("merchantdata after updated", this.state.merchantdata);
+          let newmainarray: any = [];
+          this.state.selectedmerchantdata.map((res: any, index: number) => {
+            newmainarray.push(res.value);
+          });
+          this.setState({
+            merchantselectedarray: this.state.merchantselectedarray = newmainarray,
+          });
+        }
+      }
     }
   };
 
@@ -338,6 +559,44 @@ class AddCouponMapping extends React.Component<{
             this.props.history.push("/list-coupon-map");
           } else {
             const msg1 = addCouponMapping.message;
+            utils.showError(msg1);
+          }
+        } else {
+          const msg1 = "Internal server error";
+          utils.showError(msg1);
+        }
+      }
+    }
+  }
+
+  async editCouponMapping() {
+    const isValid = this.validate();
+    if (isValid) {
+      this.setState({
+        offernameerror: "",
+      });
+      if (this.state.offername) {
+        let mappingDetails = {
+          couponId: this.state.couponselectedarray,
+          merchantId: this.state.merchantselectedarray,
+        };
+        const obj: editCouponMappingState = {
+          couponMappingId: parseInt(this.state.couponmappingid),
+          offername: this.state.offername,
+          mappingDetail: mappingDetails,
+        };
+
+        console.log("obj", obj);
+
+        const editCouponMapping = await CouponAPI.editCouponMapping(obj);
+        console.log("editCouponMapping", editCouponMapping);
+        if (editCouponMapping) {
+          if (editCouponMapping.status === 200) {
+            const msg = editCouponMapping.message;
+            utils.showSuccess(msg);
+            this.props.history.push("/list-coupon-map");
+          } else {
+            const msg1 = editCouponMapping.message;
             utils.showError(msg1);
           }
         } else {
@@ -432,70 +691,69 @@ class AddCouponMapping extends React.Component<{
                                 ref={provided.innerRef}
                                 style={getListStyle(snapshot.isDraggingOver)}
                               >
-                                {
-                                  this.state.updateTrue === true ? (
-                                    _.map(this.state.items,(itm:any,index1:number) => (
-                                       _.map(
-                                      selected,
-                                      (item: any, index: any) => (
-                                        console.log('items',item,itm.value)
-                                        // item !== itm.value ? (
-                                        // <Draggable
-                                        //   key={index1}
-                                        //   draggableId={itm.value.toString()}
-                                        //   index={index1}
-                                        // >
-                                        //   {(provided, snapshot) => (
-                                        //     <div
-                                        //       className="coupon_item_green"
-                                        //       ref={provided.innerRef}
-                                        //       {...provided.draggableProps}
-                                        //       {...provided.dragHandleProps}
-                                        //       style={getItemStyle(
-                                        //         snapshot.isDragging,
-                                        //         provided.draggableProps.style
-                                        //       )}
-                                        //     >
-                                        //       {itm.name}
-                                        //     </div>
-                                        //   )}
-                                        // </Draggable>
-                                        // ) : (
-                                        //   ''
-                                        // )
-                                      )
+                                {this.state.updateTrue === true ? (
+                                  //* Update Coupon Mapping
+                                  _.map(
+                                    this.state.mainCouponArray,
+                                    (itm: any, index1: number) => (
+                                      <Draggable
+                                        key={"coupon_left_" + index1}
+                                        draggableId={itm.value.toString()}
+                                        index={index1}
+                                      >
+                                        {(provided, snapshot) => (
+                                          <div
+                                            className="coupon_item_green"
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            style={getItemStyle(
+                                              snapshot.isDragging,
+                                              provided.draggableProps.style
+                                            )}
+                                          >
+                                            {itm.name}
+                                          </div>
+                                        )}
+                                      </Draggable>
                                     )
-                                    ))
-                                  ) : (
-                                    <>
-                                     {this.state.items.map(
-                                  (item: any, index: any) => (
-                                    <Draggable
-                                      key={index}
-                                      draggableId={item.value.toString()}
-                                      index={index}
-                                    >
-                                      {(provided, snapshot) => (
-                                        <div
-                                          className="coupon_item"
-                                          ref={provided.innerRef}
-                                          {...provided.draggableProps}
-                                          {...provided.dragHandleProps}
-                                          style={getItemStyle(
-                                            snapshot.isDragging,
-                                            provided.draggableProps.style
-                                          )}
+                                    // _.map(this.state.selectedCouponArray, (item: any, index: any) =>
+                                    //   item.value !== itm.value ? (
+
+                                    //   ) : (
+                                    //     ""
+                                    //   )
+                                  )
+                                ) : (
+                                  //* Add Coupon Mapping Main Array
+                                  <>
+                                    {this.state.mainCouponArray.map(
+                                      (item: any, index: any) => (
+                                        <Draggable
+                                          key={index}
+                                          draggableId={item.value.toString()}
+                                          index={index}
                                         >
-                                          {item.name}
-                                        </div>
-                                      )}
-                                    </Draggable>
-                                  )
+                                          {(provided, snapshot) => (
+                                            <div
+                                              className="coupon_item"
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                              style={getItemStyle(
+                                                snapshot.isDragging,
+                                                provided.draggableProps.style
+                                              )}
+                                            >
+                                              {item.name}
+                                            </div>
+                                          )}
+                                        </Draggable>
+                                      )
+                                    )}
+                                  </>
                                 )}
-                                    </>
-                                  )
-                                }
-                               
+
                                 {provided.placeholder}
                               </div>
                             )}
@@ -504,6 +762,7 @@ class AddCouponMapping extends React.Component<{
                         {/* <div>
                           <img src={require('../../../assets/img/exchange.png')}/>
                         </div> */}
+
                         <div>
                           <p className="drag_select">
                             Please drag right to left for remove coupon
@@ -518,51 +777,12 @@ class AddCouponMapping extends React.Component<{
                                 ref={provided.innerRef}
                                 style={getListStyle(snapshot.isDraggingOver)}
                               >
-                                {this.state.updateTrue === true ? (
-                                  <>
-                                  {
-                                    _.map(this.state.items,(itm:any,index1:number) => (
-                                      <>
-                                       {_.map(
-                                      selected,
-                                      (item: any, index: any) => (
-                                        item === itm.value ? (
-                                        <Draggable
-                                          key={index}
-                                          draggableId={item.toString()}
-                                          index={index}
-                                        >
-                                          {(provided, snapshot) => (
-                                            <div
-                                              className="coupon_item_green"
-                                              ref={provided.innerRef}
-                                              {...provided.draggableProps}
-                                              {...provided.dragHandleProps}
-                                              style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style
-                                              )}
-                                            >
-                                              {itm.name}
-                                            </div>
-                                          )}
-                                        </Draggable>
-                                        ) : (
-                                          ''
-                                        )
-                                      )
-                                    )}
-                                      </>
-                                    ))
-                                  }
-                                  </>
-                                ) : (
-                                  <>
-                                    {_.map(
-                                      selected,
+                                {this.state.selectedCouponArray
+                                  ? _.map(
+                                      this.state.selectedCouponArray,
                                       (item: any, index: any) => (
                                         <Draggable
-                                          key={index}
+                                          key={"coupon_right_" + index}
                                           draggableId={item.value.toString()}
                                           index={index}
                                         >
@@ -582,10 +802,8 @@ class AddCouponMapping extends React.Component<{
                                           )}
                                         </Draggable>
                                       )
-                                    )}
-                                  </>
-                                )}
-
+                                    )
+                                  : ""}
                                 {provided.placeholder}
                               </div>
                             )}
@@ -609,30 +827,62 @@ class AddCouponMapping extends React.Component<{
                                 ref={provided.innerRef}
                                 style={getListStyle(snapshot.isDraggingOver)}
                               >
-                                {this.state.merchantdata.map(
-                                  (item: any, index: any) => (
-                                    <Draggable
-                                      key={item.value}
-                                      draggableId={item.value.toString()}
-                                      index={index}
-                                    >
-                                      {(provided, snapshot) => (
-                                        <div
-                                          className="coupon_item"
-                                          ref={provided.innerRef}
-                                          {...provided.draggableProps}
-                                          {...provided.dragHandleProps}
-                                          style={getItemStyle(
-                                            snapshot.isDragging,
-                                            provided.draggableProps.style
-                                          )}
+                                {this.state.updateTrue === true ? (
+                                  <>
+                                    {this.state.merchantdata.map(
+                                      (item: any, index: any) => (
+                                        <Draggable
+                                          key={index}
+                                          draggableId={item.value.toString()}
+                                          index={index}
                                         >
-                                          {item.name}
-                                        </div>
-                                      )}
-                                    </Draggable>
-                                  )
+                                          {(provided, snapshot) => (
+                                            <div
+                                              className="coupon_item"
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                              style={getItemStyle(
+                                                snapshot.isDragging,
+                                                provided.draggableProps.style
+                                              )}
+                                            >
+                                              {item.name}
+                                            </div>
+                                          )}
+                                        </Draggable>
+                                      )
+                                    )}
+                                  </>
+                                ) : (
+                                  <>
+                                    {this.state.merchantdata.map(
+                                      (item: any, index: any) => (
+                                        <Draggable
+                                          key={index}
+                                          draggableId={item.value.toString()}
+                                          index={index}
+                                        >
+                                          {(provided, snapshot) => (
+                                            <div
+                                              className="coupon_item"
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                              style={getItemStyle(
+                                                snapshot.isDragging,
+                                                provided.draggableProps.style
+                                              )}
+                                            >
+                                              {item.name}
+                                            </div>
+                                          )}
+                                        </Draggable>
+                                      )
+                                    )}
+                                  </>
                                 )}
+
                                 {provided.placeholder}
                               </div>
                             )}
@@ -652,41 +902,12 @@ class AddCouponMapping extends React.Component<{
                                 ref={provided.innerRef}
                                 style={getListStyle(snapshot.isDraggingOver)}
                               >
-                                {this.state.updateTrue === true ? (
-                                  <>
-                                    {_.map(
+                                {this.state.selectedmerchantdata
+                                  ? _.map(
                                       selectedmerchantdata,
                                       (item: any, index: any) => (
                                         <Draggable
-                                          key={index}
-                                          draggableId={item}
-                                          index={index}
-                                        >
-                                          {(provided, snapshot) => (
-                                            <div
-                                              className="coupon_item_green"
-                                              ref={provided.innerRef}
-                                              {...provided.draggableProps}
-                                              {...provided.dragHandleProps}
-                                              style={getItemStyle(
-                                                snapshot.isDragging,
-                                                provided.draggableProps.style
-                                              )}
-                                            >
-                                              {item.name}
-                                            </div>
-                                          )}
-                                        </Draggable>
-                                      )
-                                    )}
-                                  </>
-                                ) : (
-                                  <>
-                                    {_.map(
-                                      selectedmerchantdata,
-                                      (item: any, index: any) => (
-                                        <Draggable
-                                          key={index}
+                                          key={"merchant_map" + index}
                                           draggableId={item.value.toString()}
                                           index={index}
                                         >
@@ -706,9 +927,8 @@ class AddCouponMapping extends React.Component<{
                                           )}
                                         </Draggable>
                                       )
-                                    )}
-                                  </>
-                                )}
+                                    )
+                                  : ""}
 
                                 {provided.placeholder}
                               </div>
@@ -724,7 +944,7 @@ class AddCouponMapping extends React.Component<{
                         size="sm"
                         color="primary"
                         className="mb-2 mr-2 mt-5 custom-button"
-                        // onClick={this.editCoupon}
+                        onClick={this.editCouponMapping}
                       >
                         {constant.button.update}
                       </Button>

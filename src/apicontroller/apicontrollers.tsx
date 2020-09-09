@@ -77,7 +77,7 @@ const apiUrl = {
         getList:'coupon/get-coupon-list-dropdown',
         getCouponMapping:'couponmapping/get-couponmapping-list',
         getCouponMappingById:'couponmapping/',
-        editCouponMapping:''
+        editCouponMapping:'couponmapping/'
     },
     merchantController: {
         addMerchant:'merchant',
