@@ -14,5 +14,6 @@ export interface addCouponStateRequest {
     offernameerror:string,
     couponselectedarray:any
     merchantselectedarray:any,
-    couponmappingid:string
+    couponmappingid:string,
+    isActive:boolean
 }

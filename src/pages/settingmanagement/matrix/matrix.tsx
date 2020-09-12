@@ -41,7 +41,7 @@ class ListMatrix extends React.Component<{ history: any }> {
     super(props);
     this.editmatrix = this.editmatrix.bind(this);
     // this.deleteMatrix = this.deleteMatrix.bind(this);
-    this.delleteAllData = this.delleteAllData.bind(this);
+    // this.delleteAllData = this.delleteAllData.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewmatrix = this.viewmatrix.bind(this);
@@ -56,8 +56,8 @@ class ListMatrix extends React.Component<{ history: any }> {
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
     this.getMatrixData = this.getMatrixData.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleMainChange = this.handleMainChange.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   async componentDidMount() {
@@ -143,26 +143,26 @@ class ListMatrix extends React.Component<{ history: any }> {
   //   }
   // }
 
-  async delleteAllData(text: string, btext: string) {
-    if (await utils.alertMessage(text, btext)) {
-      const obj: deleteAllDataRequest = {
-        moduleName: "DistanceMatrix",
-        id: this.state.deleteuserdata
-      };
-      var deleteAllData = await DeleteAPI.deleteAllData(obj);
-      console.log("deleteAllData", deleteAllData);
-      if (deleteAllData) {
-        this.getMatrixData(
-          "",
-          parseInt(this.state.currentPage),
-          parseInt(this.state.items_per_page)
-        );
-      } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
-      }
-    }
-  }
+  // async delleteAllData(text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteAllDataRequest = {
+  //       moduleName: "DistanceMatrix",
+  //       id: this.state.deleteuserdata
+  //     };
+  //     var deleteAllData = await DeleteAPI.deleteAllData(obj);
+  //     console.log("deleteAllData", deleteAllData);
+  //     if (deleteAllData) {
+  //       this.getMatrixData(
+  //         "",
+  //         parseInt(this.state.currentPage),
+  //         parseInt(this.state.items_per_page)
+  //       );
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //       utils.showError(msg1);
+  //     }
+  //   }
+  // }
 
   onItemSelect(event: any) {
     this.setState({
@@ -233,83 +233,83 @@ class ListMatrix extends React.Component<{ history: any }> {
     }
   }
 
-  handleChange(item: any, e: any) {
-    let _id = item.distanceId;
-    let ind: any = this.state.matrixdata.findIndex(
-      (x: any) => x.distanceId === _id
-    );
-    let data: any = this.state.matrixdata;
-    if (ind > -1) {
-      let newState: any = !item._rowChecked;
-      data[ind]._rowChecked = newState;
-      this.setState({
-        matrixdata: this.state.matrixdata = data,
-      });
-    }
-    if (
-      data.filter((res: any, index: number) => res._rowChecked === true)
-        .length === data.length
-    ) {
-      this.setState({
-        _maincheck: true,
-      });
-    } else {
-      this.setState({
-        _maincheck: false,
-      });
-    }
-    let newarray: any = [];
-    data.map((res: any, index: number) => {
-      if (res._rowChecked === true) {
-        newarray.push(res.distanceId);
-      }
-    });
-    this.setState({
-      deleteuserdata: this.state.deleteuserdata = newarray,
-    });
-    if (this.state.deleteuserdata.length > 0) {
-      this.setState({
-        deleteFlag: this.state.deleteFlag = true,
-      });
-    } else {
-      this.setState({
-        deleteFlag: this.state.deleteFlag = false,
-      });
-    }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
-  }
+  // handleChange(item: any, e: any) {
+  //   let _id = item.distanceId;
+  //   let ind: any = this.state.matrixdata.findIndex(
+  //     (x: any) => x.distanceId === _id
+  //   );
+  //   let data: any = this.state.matrixdata;
+  //   if (ind > -1) {
+  //     let newState: any = !item._rowChecked;
+  //     data[ind]._rowChecked = newState;
+  //     this.setState({
+  //       matrixdata: this.state.matrixdata = data,
+  //     });
+  //   }
+  //   if (
+  //     data.filter((res: any, index: number) => res._rowChecked === true)
+  //       .length === data.length
+  //   ) {
+  //     this.setState({
+  //       _maincheck: true,
+  //     });
+  //   } else {
+  //     this.setState({
+  //       _maincheck: false,
+  //     });
+  //   }
+  //   let newarray: any = [];
+  //   data.map((res: any, index: number) => {
+  //     if (res._rowChecked === true) {
+  //       newarray.push(res.distanceId);
+  //     }
+  //   });
+  //   this.setState({
+  //     deleteuserdata: this.state.deleteuserdata = newarray,
+  //   });
+  //   if (this.state.deleteuserdata.length > 0) {
+  //     this.setState({
+  //       deleteFlag: this.state.deleteFlag = true,
+  //     });
+  //   } else {
+  //     this.setState({
+  //       deleteFlag: this.state.deleteFlag = false,
+  //     });
+  //   }
+  //   console.log("deleteuserdata array", this.state.deleteuserdata);
+  // }
 
-  handleMainChange(e: any) {
-    let _val = e.target.checked;
-    this.state.matrixdata.forEach((element: any) => {
-      element._rowChecked = _val;
-    });
-    this.setState({
-      matrixdata: this.state.matrixdata,
-    });
-    this.setState({
-      _maincheck: _val,
-    });
-    let newmainarray: any = [];
-    this.state.matrixdata.map((res: any, index: number) => {
-      if (res._rowChecked === true) {
-        newmainarray.push(res.distanceId);
-      }
-    });
-    this.setState({
-      deleteuserdata: this.state.deleteuserdata = newmainarray,
-    });
-    if (this.state.deleteuserdata.length > 0) {
-      this.setState({
-        deleteFlag: this.state.deleteFlag = true,
-      });
-    } else {
-      this.setState({
-        deleteFlag: this.state.deleteFlag = false,
-      });
-    }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
-  }
+  // handleMainChange(e: any) {
+  //   let _val = e.target.checked;
+  //   this.state.matrixdata.forEach((element: any) => {
+  //     element._rowChecked = _val;
+  //   });
+  //   this.setState({
+  //     matrixdata: this.state.matrixdata,
+  //   });
+  //   this.setState({
+  //     _maincheck: _val,
+  //   });
+  //   let newmainarray: any = [];
+  //   this.state.matrixdata.map((res: any, index: number) => {
+  //     if (res._rowChecked === true) {
+  //       newmainarray.push(res.distanceId);
+  //     }
+  //   });
+  //   this.setState({
+  //     deleteuserdata: this.state.deleteuserdata = newmainarray,
+  //   });
+  //   if (this.state.deleteuserdata.length > 0) {
+  //     this.setState({
+  //       deleteFlag: this.state.deleteFlag = true,
+  //     });
+  //   } else {
+  //     this.setState({
+  //       deleteFlag: this.state.deleteFlag = false,
+  //     });
+  //   }
+  //   console.log("deleteuserdata array", this.state.deleteuserdata);
+  // }
 
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
@@ -362,7 +362,7 @@ class ListMatrix extends React.Component<{ history: any }> {
       >
         <thead>
           <tr onClick={() => this.handleSort("feeType")}>
-          <th className="centers">
+          {/* <th className="centers">
               <CustomInput
                 name="name"
                 defaultValue="value"
@@ -371,7 +371,7 @@ class ListMatrix extends React.Component<{ history: any }> {
                 onChange={this.handleMainChange}
                 checked={this.state._maincheck}
               />
-            </th>
+            </th> */}
             <th>{constant.matrixPage.matrixTableColumn.feeType}</th>
             <th className="action">{constant.tableAction.action}</th>
           </tr>
@@ -381,7 +381,7 @@ class ListMatrix extends React.Component<{ history: any }> {
             <>
               {this.state.matrixdata.map((data: any, index: any) => (
                 <tr key={index}>
-                  <td className="centers">
+                  {/* <td className="centers">
                     <CustomInput
                       // name="name"
                       type="checkbox"
@@ -391,7 +391,7 @@ class ListMatrix extends React.Component<{ history: any }> {
                         this.state.matrixdata[index]["_rowChecked"] === true
                       }
                     />
-                  </td>
+                  </td> */}
                   <td>{data.feeType}</td>
                   <td className="action">
                     <span className="padding">
@@ -538,7 +538,7 @@ class ListMatrix extends React.Component<{ history: any }> {
                     ) : (
                     <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
                     )}
-                    {this.state.deleteFlag === true ? (
+                    {/* {this.state.deleteFlag === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
@@ -549,7 +549,7 @@ class ListMatrix extends React.Component<{ history: any }> {
                       </Button>
                     ) : (
                       ""
-                    )}
+                    )} */}
                     {this.state.matrixdata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,
