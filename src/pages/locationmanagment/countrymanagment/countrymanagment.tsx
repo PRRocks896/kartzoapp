@@ -11,9 +11,9 @@ import {
   CustomInput,
   Row,
 } from "reactstrap";
-import {LocationAPI, StatusAPI} from "../../../service/index.service";
+import {DeleteAPI, LocationAPI, StatusAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, countryStateRequest,allStateRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, countryStateRequest,allStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class CountryManagment extends React.Component<{ history: any }> {
   countryState:countryStateRequest = constant.countryPage.state;
@@ -37,7 +37,8 @@ class CountryManagment extends React.Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.editCountry = this.editCountry.bind(this);
-    this.deleteCountry = this.deleteCountry.bind(this);
+    // this.deleteCountry = this.deleteCountry.bind(this);
+    this.delleteAllData = this.delleteAllData.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewCountry = this.viewCountry.bind(this);
@@ -118,21 +119,39 @@ class CountryManagment extends React.Component<{ history: any }> {
     this.props.history.push("/viewcountry/" + id);
   }
 
-  async deleteCountry(data: any, text: string, btext: string) {
+  // async deleteCountry(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.categoryId,
+  //     };
+  //     var deleteCountry = await LocationAPI.deleteCountry(obj);
+  //     console.log("deleteCountry", deleteCountry);
+  //     if (deleteCountry) {
+  //       this.getCountryData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //     utils.showError(msg1);
+  //     }
+  //   }
+  // }
+
+  async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.categoryId,
+      const obj: deleteAllDataRequest = {
+        moduleName: "Country",
+        id: this.state.deleteuserdata
       };
-      var deleteCountry = await LocationAPI.deleteCountry(obj);
-      console.log("deleteCountry", deleteCountry);
-      if (deleteCountry) {
+      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getCountryData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
         const msg1 = "Internal server error";
-      utils.showError(msg1);
+        utils.showError(msg1);
       }
     }
   }
+
 
   onItemSelect(event: any) {
     this.setState({
@@ -420,7 +439,7 @@ class CountryManagment extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editCountry(data.countryId)}
                       ></i>
-                          <i
+                          {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deleteCountry(
@@ -429,7 +448,7 @@ class CountryManagment extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -558,6 +577,8 @@ class CountryManagment extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.delleteAllData( "You should be Delete Country",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>

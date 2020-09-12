@@ -13,10 +13,10 @@ import {
 } from "reactstrap";
 import {
   StatusAPI,
-  MerchantAPI,
+  MerchantAPI,DeleteAPI
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, allStateRequest,merchantStateRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, allStateRequest,merchantStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListMerchant extends React.Component<{ history: any }> {
   merchantState:merchantStateRequest = constant.merchantPage.state;
@@ -40,7 +40,8 @@ class ListMerchant extends React.Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.editMerchant = this.editMerchant.bind(this);
-    this.deleteMerchant = this.deleteMerchant.bind(this);
+    // this.deleteMerchant = this.deleteMerchant.bind(this);
+    this.deleteAllData = this.deleteAllData.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewMerchant = this.viewMerchant.bind(this);
@@ -122,14 +123,35 @@ class ListMerchant extends React.Component<{ history: any }> {
     this.props.history.push("/view-merchant/" + id);
   }
 
-  async deleteMerchant(data: any, text: string, btext: string) {
+  // async deleteMerchant(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.merchantID,
+  //     };
+  //     var deleteMerchant = await MerchantAPI.deleteMerchant(obj);
+  //     console.log("deleteMerchant", deleteMerchant);
+  //     if (deleteMerchant) {
+  //       this.getMerchantData(
+  //         "",
+  //         parseInt(this.state.currentPage),
+  //         parseInt(this.state.items_per_page)
+  //       );
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //     utils.showError(msg1);
+  //     }
+  //   }
+  // }
+
+  async deleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.merchantID,
+      const obj: deleteAllDataRequest = {
+        moduleName: "Merchant",
+        id: this.state.deleteuserdata
       };
-      var deleteMerchant = await MerchantAPI.deleteMerchant(obj);
-      console.log("deleteMerchant", deleteMerchant);
-      if (deleteMerchant) {
+      var deleteAllData = await DeleteAPI.deleteAllMerchantData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getMerchantData(
           "",
           parseInt(this.state.currentPage),
@@ -137,7 +159,7 @@ class ListMerchant extends React.Component<{ history: any }> {
         );
       } else {
         const msg1 = "Internal server error";
-      utils.showError(msg1);
+        utils.showError(msg1);
       }
     }
   }
@@ -419,7 +441,7 @@ class ListMerchant extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editMerchant(data.merchantID)}
                       ></i>
-                      <i
+                      {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deleteMerchant(
@@ -428,7 +450,7 @@ class ListMerchant extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -558,6 +580,8 @@ class ListMerchant extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.deleteAllData("You should be Delete Merchant",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>

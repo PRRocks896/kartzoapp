@@ -13,10 +13,10 @@ import {
 } from "reactstrap";
 import {
   StatusAPI,
-  ProductAPI
+  ProductAPI, DeleteAPI
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, productStateRequest, allStateRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, productStateRequest, allStateRequest , deleteAllDataRequest} from "../../../modelController";
 
 class ListProduct extends React.Component<{ history: any }> {
   productState:productStateRequest = constant.productPage.state;
@@ -40,7 +40,8 @@ class ListProduct extends React.Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.editProduct = this.editProduct.bind(this);
-    this.deleteProduct = this.deleteProduct.bind(this);
+    // this.deleteProduct = this.deleteProduct.bind(this);
+    this.deleteAllData = this.deleteAllData.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewProduct = this.viewProduct.bind(this);
@@ -121,14 +122,35 @@ class ListProduct extends React.Component<{ history: any }> {
     this.props.history.push("/view-product/" + id);
   }
 
-  async deleteProduct(data: any, text: string, btext: string) {
+  // async deleteProduct(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.productId,
+  //     };
+  //     var deleteProduct = await ProductAPI.deleteProduct(obj);
+  //     console.log("deleteProduct", deleteProduct);
+  //     if (deleteProduct) {
+  //       this.getProductData(
+  //         "",
+  //         parseInt(this.state.currentPage),
+  //         parseInt(this.state.items_per_page)
+  //       );
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //       utils.showError(msg1);
+  //     }
+  //   }
+  // }
+
+  async deleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.productId,
+      const obj: deleteAllDataRequest = {
+        moduleName: "Product",
+        id: this.state.deleteuserdata
       };
-      var deleteProduct = await ProductAPI.deleteProduct(obj);
-      console.log("deleteProduct", deleteProduct);
-      if (deleteProduct) {
+      var deleteAllData = await DeleteAPI.deleteAllMerchantData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getProductData(
           "",
           parseInt(this.state.currentPage),
@@ -416,7 +438,7 @@ class ListProduct extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editProduct(data.productId)}
                       ></i>
-                       <i
+                       {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deleteProduct(
@@ -425,7 +447,7 @@ class ListProduct extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -555,6 +577,8 @@ class ListProduct extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.deleteAllData("You should be Delete Product",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>

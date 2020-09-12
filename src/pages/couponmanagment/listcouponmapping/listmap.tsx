@@ -12,13 +12,13 @@ import {
   Row,
 } from "reactstrap";
 
-import { StatusAPI, CouponAPI } from "../../../service/index.service";
+import { StatusAPI, CouponAPI, DeleteAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import {
   getAllTableDataListRequest,
   statusChangeRequest,
   allStateRequest,
-  addCouponMappingStateRequest,
+  addCouponMappingStateRequest,deleteAllDataRequest
 } from "../../../modelController";
 
 class ListCouponMap extends React.Component<{ history: any }> {
@@ -47,6 +47,7 @@ class ListCouponMap extends React.Component<{ history: any }> {
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewCouponMapping = this.viewCouponMapping.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.delleteAllData = this.delleteAllData.bind(this);
     this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(
       this
     );
@@ -126,6 +127,27 @@ class ListCouponMap extends React.Component<{ history: any }> {
 
   viewCouponMapping(id: any) {
     this.props.history.push("/view-coupon-map/" + id);
+  }
+
+  async delleteAllData(text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteAllDataRequest = {
+        moduleName: "CouponMapping",
+        id: this.state.deleteuserdata
+      };
+      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
+        this.getCouponMapData(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
+      } else {
+        const msg1 = "Internal server error";
+        utils.showError(msg1);
+      }
+    }
   }
 
   onItemSelect(event: any) {
@@ -542,6 +564,8 @@ class ListCouponMap extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.delleteAllData( "You should be Delete coupon mapping",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>

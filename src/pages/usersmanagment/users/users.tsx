@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import utils from "../../../utils";
-import { API, RoleAPI, StatusAPI } from "../../../service/index.service";
+import { API, DeleteAPI, RoleAPI, StatusAPI } from "../../../service/index.service";
 import {
   Button,
   Card,
@@ -18,7 +18,7 @@ import {
   getAllTableDataListRequest,
   statusChangeRequest,
   deleteByIdRequest,
-  allStateRequest,
+  allStateRequest,deleteAllDataRequest
 } from "../../../modelController";
 const $ = require("jquery");
 var _ = require("lodash");
@@ -51,7 +51,6 @@ class Users extends React.Component<{ history: any }> {
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.edituser = this.edituser.bind(this);
     this.viewuser = this.viewuser.bind(this);
-    this.deleteuser = this.deleteuser.bind(this);
     this.onRoleSelect = this.onRoleSelect.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(
@@ -64,6 +63,7 @@ class Users extends React.Component<{ history: any }> {
     this.getPageData = this.getPageData.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleMainChange = this.handleMainChange.bind(this);
+    this.delleteAllData = this.delleteAllData.bind(this);
   }
 
   async componentDidMount() {
@@ -166,28 +166,6 @@ class Users extends React.Component<{ history: any }> {
     });
   }
 
-  async deleteuser(data: any, text: string, btext: string) {
-    if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.userId,
-      };
-      var deleteUser = await API.deleteUser(obj);
-      if (deleteUser.status === 200) {
-        const msg = deleteUser.message;
-        utils.showSuccess(msg);
-        this.getUsers(
-          parseInt(this.state.roleid),
-          "",
-          parseInt(this.state.currentPage),
-          parseInt(this.state.items_per_page)
-        );
-      } else {
-        const msg = deleteUser.message;
-        utils.showSuccess(msg);
-      }
-    }
-  }
-
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
     if (getUserRole) {
@@ -262,6 +240,28 @@ class Users extends React.Component<{ history: any }> {
       var getStatusChange = await StatusAPI.getStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
+        this.getUsers(
+          parseInt(this.state.roleid),
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
+      } else {
+        const msg1 = "Internal server error";
+        utils.showError(msg1);
+      }
+    }
+  }
+
+  async delleteAllData(text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteAllDataRequest = {
+        moduleName: "User",
+        id: this.state.deleteuserdata
+      };
+      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getUsers(
           parseInt(this.state.roleid),
           "",
@@ -485,7 +485,7 @@ class Users extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.edituser(data)}
                       ></i>
-                      <i
+                      {/* <i
                         className="fas fa-trash"
                         onClick={() =>
                           this.deleteuser(
@@ -494,7 +494,7 @@ class Users extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -639,7 +639,7 @@ class Users extends React.Component<{ history: any }> {
                     </h1>
                   )}
                   {this.state.deleteFlag === true ? (
-                    <Button className="mb-2 mr-2 custom-button" color="primary">
+                    <Button className="mb-2 mr-2 custom-button" color="primary" onClick={() => this.delleteAllData("You should be Delete user","Yes, Delete it")}>
                       {constant.button.remove}
                     </Button>
                   ) : (

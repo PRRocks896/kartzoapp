@@ -13,10 +13,10 @@ import {
 } from "reactstrap";
 import {
   StatusAPI,
-  PayoutAPI,
+  PayoutAPI,DeleteAPI
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest, allStateRequest,payoutStateRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest, allStateRequest,payoutStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListPayout extends React.Component<{ history: any }> {
   payoutState:payoutStateRequest = constant.payoutPage.state;
@@ -40,7 +40,8 @@ class ListPayout extends React.Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.editPayout = this.editPayout.bind(this);
-    this.deletePayout = this.deletePayout.bind(this);
+    // this.deletePayout = this.deletePayout.bind(this);
+    this.delleteAllData = this.delleteAllData.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewPayout = this.viewPayout.bind(this);
@@ -121,14 +122,35 @@ class ListPayout extends React.Component<{ history: any }> {
     this.props.history.push("/view-payout/" + id);
   }
 
-  async deletePayout(data: any, text: string, btext: string) {
+  // async deletePayout(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.payoutId,
+  //     };
+  //     var deletePayout = await PayoutAPI.deletePayout(obj);
+  //     console.log("deletePayout", deletePayout);
+  //     if (deletePayout) {
+  //       this.getPayoutData(
+  //         "",
+  //         parseInt(this.state.currentPage),
+  //         parseInt(this.state.items_per_page)
+  //       );
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //     utils.showError(msg1);
+  //     }
+  //   }
+  // }
+
+  async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.payoutId,
+      const obj: deleteAllDataRequest = {
+        moduleName: "Payout",
+        id: this.state.deleteuserdata
       };
-      var deletePayout = await PayoutAPI.deletePayout(obj);
-      console.log("deletePayout", deletePayout);
-      if (deletePayout) {
+      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getPayoutData(
           "",
           parseInt(this.state.currentPage),
@@ -136,7 +158,7 @@ class ListPayout extends React.Component<{ history: any }> {
         );
       } else {
         const msg1 = "Internal server error";
-      utils.showError(msg1);
+        utils.showError(msg1);
       }
     }
   }
@@ -382,7 +404,7 @@ class ListPayout extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editPayout(data.payoutId)}
                       ></i>
-                       <i
+                       {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deletePayout(
@@ -391,7 +413,7 @@ class ListPayout extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -521,6 +543,8 @@ class ListPayout extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.delleteAllData("You should be Delete Payout",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>

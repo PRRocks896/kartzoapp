@@ -13,10 +13,10 @@ import {
 } from "reactstrap";
 import {
   StatusAPI,
-  ProductAPI,
+  ProductAPI,DeleteAPI
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, productTypeStateRequest, allStateRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, productTypeStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListProductType extends React.Component<{ history: any }> {
   productCustomiseState:productTypeStateRequest = constant.productCustomisePage.state;
@@ -40,7 +40,8 @@ class ListProductType extends React.Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.editCustomiseType = this.editCustomiseType.bind(this);
-    this.deleteCustomiseType = this.deleteCustomiseType.bind(this);
+    // this.deleteCustomiseType = this.deleteCustomiseType.bind(this);
+    this.deleteAllData = this.deleteAllData.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewCustomiseType = this.viewCustomiseType.bind(this);
@@ -124,14 +125,35 @@ class ListProductType extends React.Component<{ history: any }> {
     this.props.history.push("/view-type/" + id);
   }
 
-  async deleteCustomiseType(data: any, text: string, btext: string) {
+  // async deleteCustomiseType(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.productCustomizeTypeId,
+  //     };
+  //     var deleteCustomiseType = await ProductAPI.deleteCustomiseType(obj);
+  //     console.log("deleteCustomiseType", deleteCustomiseType);
+  //     if (deleteCustomiseType) {
+  //       this.getProductCustomiseTypeData(
+  //         "",
+  //         parseInt(this.state.currentPage),
+  //         parseInt(this.state.items_per_page)
+  //       );
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //     utils.showError(msg1);
+  //     }
+  //   }
+  // }
+
+  async deleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.productCustomizeTypeId,
+      const obj: deleteAllDataRequest = {
+        moduleName: "ProductCustomizeType",
+        id: this.state.deleteuserdata
       };
-      var deleteCustomiseType = await ProductAPI.deleteCustomiseType(obj);
-      console.log("deleteCustomiseType", deleteCustomiseType);
-      if (deleteCustomiseType) {
+      var deleteAllData = await DeleteAPI.deleteAllMerchantData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getProductCustomiseTypeData(
           "",
           parseInt(this.state.currentPage),
@@ -139,7 +161,7 @@ class ListProductType extends React.Component<{ history: any }> {
         );
       } else {
         const msg1 = "Internal server error";
-      utils.showError(msg1);
+        utils.showError(msg1);
       }
     }
   }
@@ -424,7 +446,7 @@ class ListProductType extends React.Component<{ history: any }> {
                           this.editCustomiseType(data.productCustomizeTypeId)
                         }
                       ></i>
-                       <i
+                       {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deleteCustomiseType(
@@ -433,7 +455,7 @@ class ListProductType extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -563,6 +585,8 @@ class ListProductType extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.deleteAllData("You should be Delete Customise Type",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>

@@ -12,11 +12,12 @@ import {
   Row,
 } from "reactstrap";
 import {
+  DeleteAPI,
   StatusAPI,
   TaxAPI,
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, taxStateRequest,allStateRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, taxStateRequest,allStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListTax extends React.Component<{ history: any }> {
   taxState:taxStateRequest = constant.taxPage.state;
@@ -40,7 +41,8 @@ class ListTax extends React.Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.editTax = this.editTax.bind(this);
-    this.deleteTax = this.deleteTax.bind(this);
+    // this.deleteTax = this.deleteTax.bind(this);
+    this.delleteAllData = this.delleteAllData.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewTax = this.viewTax.bind(this);
@@ -121,14 +123,35 @@ class ListTax extends React.Component<{ history: any }> {
     this.props.history.push("/view-tax/" + id);
   }
 
-  async deleteTax(data: any, text: string, btext: string) {
+  // async deleteTax(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.taxId,
+  //     };
+  //     var deleteTax = await TaxAPI.deleteTax(obj);
+  //     console.log("deleteTax", deleteTax);
+  //     if (deleteTax) {
+  //       this.getTaxData(
+  //         "",
+  //         parseInt(this.state.currentPage),
+  //         parseInt(this.state.items_per_page)
+  //       );
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //     utils.showError(msg1);
+  //     }
+  //   }
+  // }
+
+  async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.taxId,
+      const obj: deleteAllDataRequest = {
+        moduleName: "Tax",
+        id: this.state.deleteuserdata
       };
-      var deleteTax = await TaxAPI.deleteTax(obj);
-      console.log("deleteTax", deleteTax);
-      if (deleteTax) {
+      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getTaxData(
           "",
           parseInt(this.state.currentPage),
@@ -136,7 +159,7 @@ class ListTax extends React.Component<{ history: any }> {
         );
       } else {
         const msg1 = "Internal server error";
-      utils.showError(msg1);
+        utils.showError(msg1);
       }
     }
   }
@@ -416,7 +439,7 @@ class ListTax extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editTax(data.taxId)}
                       ></i>
-                      <i
+                      {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deleteTax(
@@ -425,7 +448,7 @@ class ListTax extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -555,6 +578,8 @@ class ListTax extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.delleteAllData("You should be Delete Tax",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>

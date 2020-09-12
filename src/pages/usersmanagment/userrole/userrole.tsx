@@ -17,9 +17,9 @@ import {
   getAllTableDataListRequest,
   statusChangeRequest,
   deleteByIdRequest,
-  roleStateRequest,
+  roleStateRequest,deleteAllDataRequest
 } from "../../../modelController/index";
-import { RoleAPI, StatusAPI } from "../../../service/index.service";
+import { DeleteAPI, RoleAPI, StatusAPI } from "../../../service/index.service";
 
 class UserRole extends React.Component<{ history: any }> {
   userState = constant.userPage.state;
@@ -42,7 +42,7 @@ class UserRole extends React.Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.editRole = this.editRole.bind(this);
-    this.deleteRole = this.deleteRole.bind(this);
+    // this.deleteRole = this.deleteRole.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -59,6 +59,7 @@ class UserRole extends React.Component<{ history: any }> {
     this.getPageData = this.getPageData.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleMainChange = this.handleMainChange.bind(this);
+    this.delleteAllData = this.delleteAllData.bind(this);
   }
 
   componentDidMount() {
@@ -122,24 +123,24 @@ class UserRole extends React.Component<{ history: any }> {
     this.props.history.push("/viewuserrole/" + data.roleId);
   }
 
-  async deleteRole(data: any, text: string, btext: string) {
-    if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.roleId,
-      };
-      var deleteUser = await RoleAPI.deleteRole(obj);
-    if(deleteUser) {
-      this.getRole(
-        "",
-        parseInt(this.state.currentPage),
-        parseInt(this.state.items_per_page)
-      );
-    } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
-    }
-    }
-  }
+  // async deleteRole(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.roleId,
+  //     };
+  //     var deleteUser = await RoleAPI.deleteRole(obj);
+  //   if(deleteUser) {
+  //     this.getRole(
+  //       "",
+  //       parseInt(this.state.currentPage),
+  //       parseInt(this.state.items_per_page)
+  //     );
+  //   } else {
+  //     const msg1 = "Internal server error";
+  //     utils.showError(msg1);
+  //   }
+  //   }
+  // }
 
   onItemSelect(event: any) {
     this.setState({
@@ -201,6 +202,27 @@ class UserRole extends React.Component<{ history: any }> {
           parseInt(this.state.items_per_page)
         );
        
+      } else {
+        const msg1 = "Internal server error";
+        utils.showError(msg1);
+      }
+    }
+  }
+
+  async delleteAllData(text: string, btext: string) {
+    if (await utils.alertMessage(text, btext)) {
+      const obj: deleteAllDataRequest = {
+        moduleName: "Role",
+        id: this.state.deleteuserdata
+      };
+      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
+        this.getRole(
+          "",
+          parseInt(this.state.currentPage),
+          parseInt(this.state.items_per_page)
+        );
       } else {
         const msg1 = "Internal server error";
         utils.showError(msg1);
@@ -407,7 +429,7 @@ class UserRole extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editRole(data)}
                       ></i>
-                      <i
+                      {/* <i
                         className="fas fa-trash"
                         onClick={() =>
                           this.deleteRole(
@@ -416,7 +438,7 @@ class UserRole extends React.Component<{ history: any }> {
                             "Yes, Role it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -546,6 +568,8 @@ class UserRole extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.delleteAllData( "You should be Delete Role",
+                        "Yes, Role it")}
                       >
                         {constant.button.remove}
                       </Button>

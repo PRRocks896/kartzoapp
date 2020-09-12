@@ -13,7 +13,8 @@ const apiUrl = {
         updatepassword:'users/change-password',
         resetpassword:'users/reset-password',
         statusChange:'status',
-        merchantstatusChange:'status'
+        merchantstatusChange:'status',
+        deleteData:'delete'
 
     },
     customerController: {

@@ -14,10 +14,10 @@ import {
 
 import {
   StatusAPI,
-  FeeAPI,
+  FeeAPI,DeleteAPI
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, feeStateRequest, allStateRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, feeStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListFee extends React.Component<{ history: any }> {
   feeState:feeStateRequest = constant.feePage.state;
@@ -41,7 +41,8 @@ class ListFee extends React.Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.editFee = this.editFee.bind(this);
-    this.deleteFee = this.deleteFee.bind(this);
+    // this.deleteFee = this.deleteFee.bind(this);
+    this.delleteAllData = this.delleteAllData.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewFee = this.viewFee.bind(this);
@@ -122,14 +123,35 @@ class ListFee extends React.Component<{ history: any }> {
     this.props.history.push("/view-fee/" + id);
   }
 
-  async deleteFee(data: any, text: string, btext: string) {
+  // async deleteFee(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.feeId,
+  //     };
+  //     var deleteFee = await FeeAPI.deleteFee(obj);
+  //     console.log("deleteFee", deleteFee);
+  //     if (deleteFee) {
+  //       this.getFeeData(
+  //         "",
+  //         parseInt(this.state.currentPage),
+  //         parseInt(this.state.items_per_page)
+  //       );
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //       utils.showError(msg1);
+  //     }
+  //   }
+  // }
+
+  async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.feeId,
+      const obj: deleteAllDataRequest = {
+        moduleName: "Fee",
+        id: this.state.deleteuserdata
       };
-      var deleteFee = await FeeAPI.deleteFee(obj);
-      console.log("deleteFee", deleteFee);
-      if (deleteFee) {
+      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getFeeData(
           "",
           parseInt(this.state.currentPage),
@@ -417,7 +439,7 @@ class ListFee extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editFee(data.feeId)}
                       ></i>
-                       <i
+                       {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deleteFee(
@@ -426,7 +448,7 @@ class ListFee extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -556,6 +578,8 @@ class ListFee extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.delleteAllData("You should be Delete Fee",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>

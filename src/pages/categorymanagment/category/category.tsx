@@ -11,14 +11,14 @@ import {
   CustomInput,
   Row,
 } from "reactstrap";
-import { CategoryAPI, StatusAPI } from "../../../service/index.service";
+import { CategoryAPI, DeleteAPI, StatusAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import {
   getAllTableDataListRequest,
   statusChangeRequest,
   deleteByIdRequest,
   allStateRequest,
-  categoryStateRequest,
+  categoryStateRequest,deleteAllDataRequest
 } from "../../../modelController";
 
 class Category extends React.Component<{ history: any }> {
@@ -43,7 +43,7 @@ class Category extends React.Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.editCategory = this.editCategory.bind(this);
-    this.deleteCategory = this.deleteCategory.bind(this);
+    // this.deleteCategory = this.deleteCategory.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewCategory = this.viewCategory.bind(this);
@@ -59,6 +59,7 @@ class Category extends React.Component<{ history: any }> {
     this.getPageData = this.getPageData.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleMainChange = this.handleMainChange.bind(this);
+    this.delleteAllData = this.delleteAllData.bind(this);
   }
 
   async componentDidMount() {
@@ -123,14 +124,35 @@ class Category extends React.Component<{ history: any }> {
     this.props.history.push("/viewcategory/" + id);
   }
 
-  async deleteCategory(data: any, text: string, btext: string) {
+  // async deleteCategory(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.categoryId,
+  //     };
+  //     var deleteCategory = await CategoryAPI.deleteCategory(obj);
+  //     console.log("deleteCategory", deleteCategory);
+  //     if (deleteCategory) {
+  //       this.getCategory(
+  //         "",
+  //         parseInt(this.state.currentPage),
+  //         parseInt(this.state.items_per_page)
+  //       );
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //     utils.showError(msg1);
+  //     }
+  //   }
+  // }
+
+  async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.categoryId,
+      const obj: deleteAllDataRequest = {
+        moduleName: "Category",
+        id: this.state.deleteuserdata
       };
-      var deleteCategory = await CategoryAPI.deleteCategory(obj);
-      console.log("deleteCategory", deleteCategory);
-      if (deleteCategory) {
+      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getCategory(
           "",
           parseInt(this.state.currentPage),
@@ -138,7 +160,7 @@ class Category extends React.Component<{ history: any }> {
         );
       } else {
         const msg1 = "Internal server error";
-      utils.showError(msg1);
+        utils.showError(msg1);
       }
     }
   }
@@ -443,7 +465,7 @@ class Category extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editCategory(data.categoryId)}
                       ></i>
-                      <i
+                      {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deleteCategory(
@@ -452,7 +474,7 @@ class Category extends React.Component<{ history: any }> {
                             "Yes, Category it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -582,6 +604,8 @@ class Category extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.delleteAllData( "You should be Delete Category",
+                        "Yes, Category it")}
                       >
                         {constant.button.remove}
                       </Button>

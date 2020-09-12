@@ -13,10 +13,10 @@ import {
 } from "reactstrap";
 import {
   StatusAPI,
-  MatrixAPI,
+  MatrixAPI,DeleteAPI
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, matrixStateRequest, allStateRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, matrixStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListMatrix extends React.Component<{ history: any }> {
   matrixState:matrixStateRequest = constant.matrixPage.state;
@@ -40,7 +40,8 @@ class ListMatrix extends React.Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.editmatrix = this.editmatrix.bind(this);
-    this.deleteMatrix = this.deleteMatrix.bind(this);
+    // this.deleteMatrix = this.deleteMatrix.bind(this);
+    this.delleteAllData = this.delleteAllData.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewmatrix = this.viewmatrix.bind(this);
@@ -122,14 +123,35 @@ class ListMatrix extends React.Component<{ history: any }> {
     this.props.history.push("/view-matrix/" + id);
   }
 
-  async deleteMatrix(data: any, text: string, btext: string) {
+  // async deleteMatrix(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.distanceId,
+  //     };
+  //     var deleteMatrix = await MatrixAPI.deleteMatrix(obj);
+  //     console.log("deleteMatrix", deleteMatrix);
+  //     if (deleteMatrix) {
+  //       this.getMatrixData(
+  //         "",
+  //         parseInt(this.state.currentPage),
+  //         parseInt(this.state.items_per_page)
+  //       );
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //       utils.showError(msg1);
+  //     }
+  //   }
+  // }
+
+  async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.distanceId,
+      const obj: deleteAllDataRequest = {
+        moduleName: "DistanceMatrix",
+        id: this.state.deleteuserdata
       };
-      var deleteMatrix = await MatrixAPI.deleteMatrix(obj);
-      console.log("deleteMatrix", deleteMatrix);
-      if (deleteMatrix) {
+      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getMatrixData(
           "",
           parseInt(this.state.currentPage),
@@ -381,7 +403,7 @@ class ListMatrix extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editmatrix(data.distanceId)}
                       ></i>
-                       <i
+                       {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deleteMatrix(
@@ -390,7 +412,7 @@ class ListMatrix extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -520,6 +542,8 @@ class ListMatrix extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.delleteAllData("You should be Delete Matrix",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>

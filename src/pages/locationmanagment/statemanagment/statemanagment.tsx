@@ -11,9 +11,9 @@ import {
   Col,
   Row,
 } from "reactstrap";
-import {LocationAPI, StatusAPI} from "../../../service/index.service";
+import {DeleteAPI, LocationAPI, StatusAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import {getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, stateStateRequest, allStateRequest } from "../../../modelController/index";
+import {getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, stateStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController/index";
 
 class StateManagment extends React.Component<{ history: any }> {
   stateState:stateStateRequest = constant.statePage.state;
@@ -50,7 +50,8 @@ class StateManagment extends React.Component<{ history: any }> {
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
-    this.deleteState = this.deleteState.bind(this);
+    // this.deleteState = this.deleteState.bind(this);
+    this.delleteAllData = this.delleteAllData.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleMainChange = this.handleMainChange.bind(this);
   }
@@ -116,18 +117,35 @@ class StateManagment extends React.Component<{ history: any }> {
     this.props.history.push("/viewstate/" + id);
   }
 
-  async deleteState(data: any, text: string, btext: string) {
+  // async deleteState(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.stateId,
+  //     };
+  //     var deleteState = await LocationAPI.deleteState(obj);
+  //     console.log("deleteState", deleteState);
+  //     if (deleteState) {
+  //       this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //     utils.showError(msg1);
+  //     }
+  //   }
+  // }
+
+  async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.stateId,
+      const obj: deleteAllDataRequest = {
+        moduleName: "State",
+        id: this.state.deleteuserdata
       };
-      var deleteState = await LocationAPI.deleteState(obj);
-      console.log("deleteState", deleteState);
-      if (deleteState) {
+      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
         const msg1 = "Internal server error";
-      utils.showError(msg1);
+        utils.showError(msg1);
       }
     }
   }
@@ -398,7 +416,7 @@ class StateManagment extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editState(data.stateId)}
                       ></i>
-                         <i
+                         {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deleteState(
@@ -407,7 +425,7 @@ class StateManagment extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -535,6 +553,8 @@ class StateManagment extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.delleteAllData("You should be Delete State",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>

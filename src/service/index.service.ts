@@ -12,6 +12,7 @@ import TaxAPI from './tax.service';
 import PayoutAPI from './payout.service';
 import MatrixAPI from './matrix.service';
 import SliderAPI from './slider.service';
+import DeleteAPI from './delete.service';
 
 export * from './user.service';
 export * from './role.service';
@@ -27,6 +28,8 @@ export * from './tax.service';
 export * from './payout.service';
 export * from './matrix.service';
 export * from './slider.service';
+export * from './slider.service';
+export * from './delete.service';
 
 
 export {
@@ -43,5 +46,6 @@ export {
     TaxAPI,
     PayoutAPI,
     MatrixAPI,
-    SliderAPI
+    SliderAPI,
+    DeleteAPI
 }

@@ -11,9 +11,9 @@ import {
   CustomInput,
   Row,
 } from "reactstrap";
-import {StatusAPI, CouponAPI} from "../../../service/index.service";
+import {StatusAPI, CouponAPI, DeleteAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest, couponStateRequest, allStateRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest, couponStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListCoupon extends React.Component<{ history: any }> {
   couponState:couponStateRequest = constant.couponPage.state;
@@ -37,7 +37,8 @@ class ListCoupon extends React.Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.editCoupon = this.editCoupon.bind(this);
-    this.deleteCoupon = this.deleteCoupon.bind(this);
+    // this.deleteCoupon = this.deleteCoupon.bind(this);
+    this.delleteAllData = this.delleteAllData.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewCoupon = this.viewCoupon.bind(this);
@@ -117,14 +118,31 @@ class ListCoupon extends React.Component<{ history: any }> {
     this.props.history.push("/view-coupon/" + id);
   }
 
-  async deleteCoupon(data: any, text: string, btext: string) {
+  // async deleteCoupon(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.couponId,
+  //     };
+  //     var deleteCoupon = await CouponAPI.deleteCoupon(obj);
+  //     console.log("deleteCoupon", deleteCoupon);
+  //     if (deleteCoupon) {
+  //       this.getCoupon('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //       utils.showError(msg1);
+  //     }
+  //   }
+  // }
+
+  async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.couponId,
+      const obj: deleteAllDataRequest = {
+        moduleName: "Coupon",
+        id: this.state.deleteuserdata
       };
-      var deleteCoupon = await CouponAPI.deleteCoupon(obj);
-      console.log("deleteCoupon", deleteCoupon);
-      if (deleteCoupon) {
+      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getCoupon('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
         const msg1 = "Internal server error";
@@ -403,7 +421,7 @@ class ListCoupon extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editCoupon(data.couponId)}
                       ></i>
-                     <i
+                     {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deleteCoupon(
@@ -412,7 +430,7 @@ class ListCoupon extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -542,6 +560,8 @@ class ListCoupon extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.delleteAllData("You should be Delete Coupon",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>

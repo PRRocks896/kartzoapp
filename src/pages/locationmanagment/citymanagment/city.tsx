@@ -12,9 +12,9 @@ import {
   Row,
 } from "reactstrap";
 
-import {LocationAPI, StatusAPI} from "../../../service/index.service";
+import {DeleteAPI, LocationAPI, StatusAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import {getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, cityStateRequest, allStateRequest } from "../../../modelController/index";
+import {getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, cityStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController/index";
 
 class City extends React.Component<{ history: any }> {
   cityState:cityStateRequest = constant.cityPage.state;
@@ -38,7 +38,8 @@ class City extends React.Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.editCity = this.editCity.bind(this);
-    this.deleteState = this.deleteState.bind(this);
+    // this.deleteState = this.deleteState.bind(this);
+    this.delleteAllData = this.delleteAllData.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.viewCity = this.viewCity.bind(this);
@@ -112,14 +113,31 @@ class City extends React.Component<{ history: any }> {
     this.props.history.push("/viewcity/" + id);
   }
 
-  async deleteState(data: any, text: string, btext: string) {
+  // async deleteState(data: any, text: string, btext: string) {
+  //   if (await utils.alertMessage(text, btext)) {
+  //     const obj: deleteByIdRequest = {
+  //       id: data.cityId,
+  //     };
+  //     var deleteCity = await LocationAPI.deleteCity(obj);
+  //     console.log("deleteCity", deleteCity);
+  //     if (deleteCity) {
+  //       this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+  //     } else {
+  //       const msg1 = "Internal server error";
+  //       utils.showError(msg1);
+  //     }
+  //   }
+  // }
+
+  async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteByIdRequest = {
-        id: data.cityId,
+      const obj: deleteAllDataRequest = {
+        moduleName: "City",
+        id: this.state.deleteuserdata
       };
-      var deleteCity = await LocationAPI.deleteCity(obj);
-      console.log("deleteCity", deleteCity);
-      if (deleteCity) {
+      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      console.log("deleteAllData", deleteAllData);
+      if (deleteAllData) {
         this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
         const msg1 = "Internal server error";
@@ -127,6 +145,7 @@ class City extends React.Component<{ history: any }> {
       }
     }
   }
+
 
   onItemSelect(event: any) {
     this.setState({
@@ -394,7 +413,7 @@ class City extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editCity(data.cityId)}
                       ></i>
-                         <i
+                         {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deleteState(
@@ -403,7 +422,7 @@ class City extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>
@@ -531,6 +550,8 @@ class City extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
+                        onClick={() => this.delleteAllData("You should be Delete City",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>
