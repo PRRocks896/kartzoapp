@@ -17,6 +17,7 @@ import constant from "../../constant/constant";
 import {
   profileGetRequest, addProfileStateRequest,
 } from "../../modelController/index";
+import EventEmitter from "../../event";
 
 interface User {
   userId: number;
@@ -200,7 +201,10 @@ class Profile extends React.Component {
 
         if (updateProfile) {
           this.getUserById();
-          // EventEmitter.dispatch('imageUpload', this.state.file);
+          this.setState({
+            file:this.state.file = updateProfile.resultObject.photoPath ? updateProfile.resultObject.photoPath : ''
+          })
+          EventEmitter.dispatch('imageUpload', this.state.file);
         } else {
           const msg1 = "Internal server error";
           utils.showError(msg1);
