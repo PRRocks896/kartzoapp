@@ -418,7 +418,7 @@ class ListSetting extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editSetting(data.settingId)}
                       ></i>
-                      <i
+                      {/* <i
                         className="fa fa-trash"
                         onClick={() =>
                           this.deleteSetting(
@@ -427,7 +427,7 @@ class ListSetting extends React.Component<{ history: any }> {
                             "Yes, Delete it"
                           )
                         }
-                      ></i>
+                      ></i> */}
                     </span>
                   </td>
                 </tr>

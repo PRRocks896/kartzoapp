@@ -15,7 +15,7 @@ const utils = {
   },
   showError: (msg: string) => {
     Swal.fire({
-      title: "Cancelled",
+      // title: "Cancelled",
       text: msg,
       icon: "error",
     });

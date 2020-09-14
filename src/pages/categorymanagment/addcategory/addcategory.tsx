@@ -318,7 +318,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                                     ? this.state.categorylist.map(
                                         (data: any, index: any) => (
                                           <option
-                                            key={data.id}
+                                            key={index}
                                             value={data.value}
                                           >
                                             {data.name}
@@ -336,7 +336,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                                     ? this.state.categorylist.map(
                                         (data: any, index: any) => (
                                           <option
-                                            key={data.id}
+                                            key={index}
                                             value={data.value}
                                           >
                                             {data.name}

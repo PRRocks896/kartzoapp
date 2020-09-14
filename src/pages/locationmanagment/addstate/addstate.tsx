@@ -329,7 +329,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
                               )}
                             </CustomInput>
                             <div className="mb-4 text-danger">
-                              {this.state.selectedFileerror}
+                              {this.state.countryiderror}
                             </div>
                           </FormGroup>
                         </Form>

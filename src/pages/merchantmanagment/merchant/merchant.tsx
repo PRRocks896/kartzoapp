@@ -25,6 +25,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
   merchantState:addMerchantStateRequest = constant.merchantPage.state;
   state = {
     selectedFile: this.merchantState.selectedFile,
+    selectedProfileFile: this.merchantState.selectedProfileFile,
     selectedProofFile: this.merchantState.selectedProofFile,
     selectedDocumentFile: this.merchantState.selectedDocumentFile,
     firstname: this.merchantState.firstname,
@@ -58,6 +59,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     cancellationpolicyerror: this.merchantState.cancellationpolicyerror,
     isOpen: this.merchantState.isOpen,
     checked: this.merchantState.checked,
+    selectedProfileFileerror: this.merchantState.selectedProfileFileerror,
     selectedFileerror: this.merchantState.selectedFileerror,
     selectedProofFileerror: this.merchantState.selectedProofFileerror,
     selectedDocumentFileerror: this.merchantState.selectedDocumentFileerror,
@@ -71,6 +73,8 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     file1true: this.merchantState.file1true,
     file2: this.merchantState.file2,
     file2true: this.merchantState.file2true,
+    file4: this.merchantState.file4,
+    file4true: this.merchantState.file4true,
     updateTrue: this.merchantState.updateTrue,
     merchantId: this.merchantState.merchantId,
     cityname: "",
@@ -93,10 +97,12 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     this.handleEditorUpChange = this.handleEditorUpChange.bind(this);
     this.removeDocumentIcon = this.removeDocumentIcon.bind(this);
     this.removeProofIcon = this.removeProofIcon.bind(this);
+    this.removeProfilePhotoIcon = this.removeProfilePhotoIcon.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.getCity = this.getCity.bind(this);
     this.getMerchantById = this.getMerchantById.bind(this);
     this.getCityById = this.getCityById.bind(this);
+    this.onChangeProfilePicture = this.onChangeProfilePicture.bind(this);
   }
 
   handleChange(checked: boolean) {
@@ -131,11 +137,13 @@ class Merchant extends React.Component<{ history: any; location: any }> {
           getMerchantById.resultObject.merchantID,
         filetrue: this.state.filetrue = true,
         selectedFile: this.state.selectedFile =
-          getMerchantById.resultObject.photoPath,
+          getMerchantById.resultObject.logoPath ?  getMerchantById.resultObject.logoPath : '',
         selectedProofFile: this.state.selectedProofFile =
-          getMerchantById.resultObject.merchantIDPoof,
+          getMerchantById.resultObject.merchantIDPoof ? getMerchantById.resultObject.idProofPath : '',
         selectedDocumentFile: this.state.selectedDocumentFile =
-          getMerchantById.resultObject.merchantDocument,
+          getMerchantById.resultObject.merchantDocument ? getMerchantById.resultObject.documentPath : '',
+          selectedProfileFile: this.state.selectedProfileFile =
+          getMerchantById.resultObject.merchantDocument ? getMerchantById.resultObject.profilePhotoPath : '',
         firstname: this.state.firstname =
           getMerchantById.resultObject.firstName,
         lastname: this.state.lastname = getMerchantById.resultObject.lastName,
@@ -159,10 +167,13 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         password: this.state.password = getMerchantById.resultObject.password,
         file: this.state.file = getMerchantById.resultObject.logoPath,
         isOpen: this.state.isOpen = getMerchantById.resultObject.isActive,
-        // filetrue: this.state.filetrue = getMerchantById.resultObject.
-        // file1: this.state.file1 = getMerchantById.resultObject.
-        // file1true: this.state.file1true = getMerchantById.resultObject.
-        // file2: this.state.file2 = getMerchantById.resultObject.
+        file1true: this.state.file1true = true,
+        file1: this.state.file1 = getMerchantById.resultObject.idProofPath,
+        file2: this.state.file2 = getMerchantById.resultObject.documentPath,
+        file2true: this.state.file2true = true,
+        file4: this.state.file4 = getMerchantById.resultObject.profilePhotoPath,
+        file4true: this.state.file4true = true,
+
         // file2true: this.state.file2true = getMerchantById.resultObject.
       });
       this.getCityById(this.state.city);
@@ -181,7 +192,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
 
     if (getCity) {
       this.setState({
-        cityname: this.state.cityname = getCity.resultObject.cityName,
+        cityname: this.state.cityname =  getCity.resultObject ? getCity.resultObject.cityName : '',
       });
     } else {
       const msg1 = "Internal server error";
@@ -213,6 +224,33 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     this.setState({
       city: this.state.city = event.target.value,
     });
+  }
+
+  onChangeProfilePicture(event: any) {
+    if (this.state.file4true === true) {
+      this.setState({
+        file4true: this.state.file4true = false,
+        selectedProfileFile: this.state.selectedProfileFile = event.target.files,
+      });
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onloadend = (ev) => {
+        this.setState({
+          file4: reader.result,
+        });
+      };
+    } else {
+      this.setState({
+        selectedProfileFile: this.state.selectedProfileFile = event.target.files,
+      });
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onloadend = (ev) => {
+        this.setState({
+          file4: reader.result,
+        });
+      };
+    }
   }
 
   onChangeHandler(event: any) {
@@ -462,13 +500,14 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         formData.append("Latitude", this.state.latitude);
         formData.append("Longitude", this.state.longitude);
         formData.append("Website", this.state.website);
-        formData.append("MerchantIDPoof", this.state.selectedProofFile[0]);
-        formData.append("MerchantDocument", this.state.selectedDocumentFile[0]);
+        formData.append("IDProoffiles", this.state.selectedProofFile ? this.state.selectedProofFile[0] : '');
+        formData.append("Documentfiles", this.state.selectedDocumentFile ? this.state.selectedDocumentFile[0] : '');
         formData.append("ShippingPolicy", this.state.shoppingpolicy);
         formData.append("RefundPolicy", this.state.refundpolicy);
         formData.append("CancellationPolicy", this.state.cancellationpolicy);
         formData.append("isActive", new Boolean(this.state.isOpen).toString());
-        formData.append("files", this.state.selectedFile[0]);
+        formData.append("Logofiles", this.state.selectedFile ? this.state.selectedFile[0] : '');
+        formData.append("ProfilePhoto", this.state.selectedProfileFile ? this.state.selectedProfileFile[0] : '');
         formData.append("UserId", "0");
 
         const addMerchant = await MerchantAPI.addMerchant(formData);
@@ -526,24 +565,58 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         formData.append("Latitude", this.state.latitude);
         formData.append("Longitude", this.state.longitude);
         formData.append("Website", this.state.website);
-        formData.append(
-          "MerchantIDPoof",
-          this.state.selectedProofFile ? this.state.selectedProofFile[0] : ""
-        );
+        this.state.selectedProofFile !== '' ? (
+          formData.append(
+            "MerchantIDPoof",
+            this.state.selectedProofFile ? this.state.selectedProofFile[0] : ""
+          )
+        ) : (
+          formData.append(
+            "MerchantIDPoof",
+            this.state.selectedProofFile ? this.state.selectedProofFile : ""
+          )
+        )
+        this.state.selectedDocumentFile !== '' ? (
         formData.append(
           "MerchantDocument",
           this.state.selectedDocumentFile
             ? this.state.selectedDocumentFile[0]
             : ""
-        );
+        )
+        ) : (
+          formData.append(
+            "MerchantDocument",
+            this.state.selectedDocumentFile
+              ? this.state.selectedDocumentFile
+              : ""
+          )
+        )
         formData.append("ShippingPolicy", this.state.shoppingpolicy);
         formData.append("RefundPolicy", this.state.refundpolicy);
         formData.append("CancellationPolicy", this.state.cancellationpolicy);
         formData.append("isActive", new Boolean(this.state.isOpen).toString());
-        formData.append(
-          "files",
-          this.state.selectedFile ? this.state.selectedFile[0] : ""
-        );
+        this.state.selectedFile !== '' ? (
+          formData.append(
+            "files",
+            this.state.selectedFile ? this.state.selectedFile[0] : ""
+          )
+        ) : (
+          formData.append(
+            "files",
+            this.state.selectedFile ? this.state.selectedFile : ""
+          )
+        )
+        this.state.selectedProfileFile !== '' ? (
+          formData.append(
+            "ProfilePhoto",
+            this.state.selectedProfileFile ? this.state.selectedProfileFile[0] : ""
+          )
+        ) : (
+          formData.append(
+            "ProfilePhoto",
+            this.state.selectedProfileFile ? this.state.selectedProfileFile : ""
+          )
+        )
         formData.append("UserId", "0");
 
         const editMerchant = await MerchantAPI.editMerchant(
@@ -576,6 +649,12 @@ class Merchant extends React.Component<{ history: any; location: any }> {
   removeProofIcon() {
     this.setState({
       file1: this.state.file1 = "",
+    });
+  }
+
+  removeProfilePhotoIcon() {
+    this.setState({
+      file4: this.state.file4 = "",
     });
   }
 
@@ -784,6 +863,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                         </div>
                       </FormGroup>
                     </Col>
+             
                     {/* <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <Form>
                           <FormGroup>
@@ -1301,6 +1381,61 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                     </Col>
                   </Row>
                   <Row style={{ marginTop: "20px" }}>
+                    <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                      <FormGroup className="img-upload5">
+                        {this.state.file4 !== "" ? (
+                          <div className="img-size">
+                            {this.state.file4 !== "" ? (
+                              <div>
+                                {this.state.file4true === true ? (
+                                  <img
+                                    className="picture"
+                                    src={
+                                      constant.fileMerchantpath +
+                                      this.state.file4
+                                    }
+                                  />
+                                ) : (
+                                  <img
+                                    className="picture"
+                                    src={this.state.file4}
+                                  />
+                                )}
+                                <i
+                                  className="fa fa-times cursor"
+                                  onClick={() => this.removeProfilePhotoIcon()}
+                                ></i>
+                              </div>
+                            ) : null}
+                          </div>
+                        ) : (
+                          <div className="">
+                            <p style={{ fontSize: "16px" }}>
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .profilePhoto
+                              }
+                            </p>
+                            <Label className="imag" for="file-input4">
+                              <i
+                                className="fa fa-upload fa-lg"
+                                style={{ color: "#20a8d8" }}
+                              ></i>
+                            </Label>
+                            <Input
+                              id="file-input4"
+                              type="file"
+                              className="form-control"
+                              name="file4"
+                              onChange={this.onChangeProfilePicture.bind(this)}
+                            />
+                          </div>
+                        )}
+                        <div className="text-danger">
+                          {this.state.selectedProfileFileerror}
+                        </div>
+                      </FormGroup>
+                    </Col>
                     <Col xs="12" sm="12" md="4" lg="4" xl="4">
                       <label>
                         <span>

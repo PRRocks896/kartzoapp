@@ -112,9 +112,16 @@ class AddTax extends React.Component<{ history: any; location: any }> {
       taxNameerror = "please enter tax name";
     }
 
+    const pRegex: any = /^(?:\d{1,2}(?:\.\d{1,2})?|100(?:\.0?0)?)$/;
     if (!this.state.percentage) {
       percentageerror = "please enter percentage";
+    } else if (!pRegex.test(this.state.percentage)) {
+      percentageerror = "please enter valid percentage";
     }
+
+    // if (!this.state.percentage) {
+    //   percentageerror = "please enter percentage";
+    // }
 
     if (mainCategoryIderror || taxNameerror || percentageerror) {
       this.setState({ mainCategoryIderror, taxNameerror, percentageerror });

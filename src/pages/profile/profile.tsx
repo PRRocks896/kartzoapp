@@ -244,6 +244,7 @@ class Profile extends React.Component {
     this.setState({
       file: this.state.file = '',
     });
+    EventEmitter.dispatch('imageUpload', this.state.file);
   }
 
   render() {

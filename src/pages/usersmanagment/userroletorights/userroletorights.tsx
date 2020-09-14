@@ -470,7 +470,7 @@ class UserRoleToRights extends React.Component {
                                         <>
                                           {this.state.roleprivileges.map(
                                             (data: any, index: any) => (
-                                              <tr>
+                                              <tr key={index}>
                                                 <td className="centers">
                                                   <CustomInput
                                                     name={data.module}

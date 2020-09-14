@@ -1,108 +1,189 @@
-import React from 'react';
-import {Link } from 'react-router-dom';
-import nav from '../../navbar.service';
-import constant from '../../constant/constant';
-import EventEmitter from '../../event';
-import { navBarStateRequest } from '../../modelController';
+import React from "react";
+import { Link } from "react-router-dom";
+import nav from "../../navbar.service";
+import constant from "../../constant/constant";
+import EventEmitter from "../../event";
+import { navBarStateRequest } from "../../modelController";
 
 class NavBar extends React.Component {
-   navbarState = constant.navbarPage.state
-    state: navBarStateRequest = {
-        isOpen: this.navbarState.isOpen,
-        side: this.navbarState.side,
-        file:this.navbarState.file,
-        firstName:this.navbarState.firstName,
-        lastName:this.navbarState.lastName,
-        classshow:this.navbarState.classshow
-    };
+  navbarState = constant.navbarPage.state;
+  state: navBarStateRequest = {
+    isOpen: this.navbarState.isOpen,
+    side: this.navbarState.side,
+    file: this.navbarState.file,
+    firstName: this.navbarState.firstName,
+    lastName: this.navbarState.lastName,
+    classshow: this.navbarState.classshow,
+  };
 
-    constructor(props:any) {
-        super(props);
-        this.activeRoute = this.activeRoute.bind(this);
-        this.handleClick = this.handleClick.bind(this);
-        EventEmitter.subscribe('imageUpload', (data:any) => {
-            this.setState({
-                file: this.state.file = data,
-            })
-        });
+  constructor(props: any) {
+    super(props);
+    this.activeRoute = this.activeRoute.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    EventEmitter.subscribe("imageUpload", (data: any) => {
+      this.setState({
+        file: this.state.file = data,
+      });
+    });
+  }
+
+  componentDidMount() {
+    var user = localStorage.getItem("user");
+    if (user) {
+      var username = JSON.parse(user);
+      this.setState({
+        file: this.state.file = username.photoPath ? username.photoPath : "",
+        firstName: this.state.firstName = username.firstName,
+        lastName: this.state.lastName = username.lastName,
+      });
     }
+  }
 
-    componentDidMount() {
-        var user = localStorage.getItem("user");
-        if (user) {
-            var username = JSON.parse(user);
-            this.setState({
-                file: this.state.file = username.photoPath ? username.photoPath : '',
-                firstName: this.state.firstName = username.firstName,
-                lastName: this.state.lastName = username.lastName
-            })
+  activeRoute(routeName: any) {
+    const route = window.location.hash.split("#")[1];
+    return route === routeName
+      ? `active collapsed sidebar-manage`
+      : `collapsed sidebar-manage`;
+  }
+
+  handleClick(url: any) {
+    window.location.href = `/#${url}`;
+  }
+
+  toggleCollapse = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  toggleCollapseRight = () => {
+    this.setState({ side: !this.state.side });
+  };
+
+  closeNav = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+  };
+
+  logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("merchantToken");
+    localStorage.removeItem("rolePreveliges");
+    // this.props.history.push('/login');
+    window.location.href = "/#/login";
+  }
+
+  render() {
+    var rightdata: any = localStorage.getItem("rolePreveliges");
+    var user_right = JSON.parse(rightdata);
+
+    return (
+      <div
+        className={
+          this.state.isOpen === true
+            ? "ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar"
+            : "ms-body ms-primary-theme ms-has-quickbar"
         }
-    }
+      >
+        <div
+          className="ms-aside-overlay ms-overlay-left ms-toggler"
+          data-target="#ms-side-nav"
+          data-toggle="slideLeft"
+        ></div>
+        <div
+          className="ms-aside-overlay ms-overlay-right ms-toggler"
+          data-target="#ms-recent-activity"
+          data-toggle="slideRight"
+        ></div>
+        <aside
+          id="ms-side-nav"
+          className="side-nav fixed ms-aside-scrollable ms-aside-left"
+        >
+          <div className="logo-sn ms-d-block-lg">
+            <Link className="pl-0 ml-0 text-center" to="/dashboard">
+              <img src="./assets/images/logo1.svg" alt="logo" />
+            </Link>
+          </div>
 
-    activeRoute(routeName:any) {
-        const route = window.location.hash.split('#')[1];
-        return route === routeName ? `active collapsed sidebar-manage` : `collapsed sidebar-manage`;
-    
-      }
+          <ul className="accordion ms-main-aside fs-14" id="side-nav-accordion">
+            <span
+              className="arrow"
+              style={{
+                color: "#fb3",
+                fontSize: "25px",
+                margin: "15px",
+                fontWeight: 600,
+              }}
+              onClick={this.closeNav}
+            >
+              x
+            </span>
+            <li className="menu-item">
+              {/** User role rights Impelement */}
 
-      handleClick(url:any) {
-          window.location.href=`/#${url}`;
-      }
-
-    toggleCollapse = () => {
-        this.setState({ isOpen: !this.state.isOpen });
-    }
-
-    toggleCollapseRight = () => {
-        this.setState({ side: !this.state.side });
-    }
-
-    closeNav = () => {
-        this.setState({ isOpen: !this.state.isOpen });
-    }
-
-    logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.removeItem('merchantToken');
-        // this.props.history.push('/login');
-        window.location.href="/#/login";
-    }
-
-    render() {
-
-
-        return (
-            <div className={this.state.isOpen === true ? "ms-body ms-aside-left-open ms-primary-theme ms-has-quickbar" : "ms-body ms-primary-theme ms-has-quickbar"}>
-
-                <div className="ms-aside-overlay ms-overlay-left ms-toggler" data-target="#ms-side-nav" data-toggle="slideLeft"></div>
-                <div className="ms-aside-overlay ms-overlay-right ms-toggler" data-target="#ms-recent-activity" data-toggle="slideRight"></div>
-                <aside id="ms-side-nav" className="side-nav fixed ms-aside-scrollable ms-aside-left">
-
-                    <div className="logo-sn ms-d-block-lg">
-                        <Link className="pl-0 ml-0 text-center" to="/dashboard"><img src="./assets/images/logo1.svg" alt="logo" /></Link>
-                    </div>
-
-                    <ul className="accordion ms-main-aside fs-14" id="side-nav-accordion">
-                        <span className="arrow" style={{ color: '#fb3', fontSize: '25px', margin: '15px', fontWeight: 600 }} onClick={this.closeNav}>x</span>
-                           <li className="menu-item">
-                               {
+              {/* <div className="menu_name">
+                           <span className="header_side">General</span>
+                           <a href="#" id={`dropdown`} className={this.activeRoute('/dashboard')} data-toggle="collapse" aria-expanded="false"  onClick={() => this.handleClick('/dashboard')}>
+                           <span><i className='fa fa-desktop fs-16'></i>Dashboard</span>
+                            </a>
+                            </div> */}
+              {/* {
                                    nav.items.map((menu:any,index:any) => (
                                     menu.type === 'header' ? (
                                         <div key={index} className="menu_name">
-
-                                            <span  className="header_side">{menu.name}</span>
+                                  
+                                            {
+                                                user_right.map((data:any,index:number) => (
+                                                    data.menuItem === menu.name ? (
+                                                        <span key={index} className="header_side">{menu.name}</span>
+                                                    ) : ('')
+                                                ))
+                                            }
                                         </div>
                                     ): (
-                                        <a key={index} href="#" id={`dropdown-${menu.id}`} className={this.activeRoute(menu.url)} data-toggle="collapse" data-target={`#${menu.id}`} aria-expanded="false" aria-controls={`${menu.id}`}  onClick={() => this.handleClick(menu.url)}> <span><i className={menu.icon}></i>{menu.name} </span>
+
+                                        <a key={index} href="#" id={`dropdown-${menu.id}`} className={this.activeRoute(menu.url)} data-toggle="collapse" data-target={`#${menu.id}`} aria-expanded="false" aria-controls={`${menu.id}`}  onClick={() => this.handleClick(menu.url)}>
+                                             
+                                              {
+                                                user_right.map((data:any,index:number) => (
+                                                    data.menuItemController === menu.name  ? (
+                                                        <span key={index}><i className={menu.icon}></i>{menu.name} </span>
+                                                    ) : ('')
+                                                ))
+                                            }
                                         </a>
                                     )
                                    ))
-                               }
-                               </li>
+                                   
+                               } */}
 
+              {nav.items.map((menu: any, index: any) =>
+                menu.type === "header" ? (
+                  <div key={index} className="menu_name">
+                    <span key={index} className="header_side">
+                      {menu.name}
+                    </span>
+                  </div>
+                ) : (
+                  <a
+                    key={index}
+                    href="#"
+                    id={`dropdown-${menu.id}`}
+                    className={this.activeRoute(menu.url)}
+                    data-toggle="collapse"
+                    data-target={`#${menu.id}`}
+                    aria-expanded="false"
+                    aria-controls={`${menu.id}`}
+                    onClick={() => this.handleClick(menu.url)}
+                  >
+                    <span key={index}>
+                      <i className={menu.icon}></i>
+                      {menu.name}{" "}
+                    </span>
+                  </a>
+                )
+              )}
+            </li>
 
-                        {/* <li className="menu-item">
+            {/* <li className="menu-item">
                             <a href="#" className="has-chevron" data-toggle="collapse" data-target="#dashboard" aria-expanded="false" aria-controls="dashboard"> <span><i className="material-icons fs-16">dashboard</i>Dashboard </span>
                             </a>
                             <ul id="dashboard" className="collapse" aria-labelledby="dashboard" data-parent="#side-nav-accordion">
@@ -432,88 +513,183 @@ class NavBar extends React.Component {
                                 </li>
                             </ul>
                         </li> */}
+          </ul>
+        </aside>
 
-                    </ul>
-                </aside>
-
-                <aside id="ms-recent-activity" className="side-nav fixed ms-aside-right ms-scrollable">
-                    <div className="ms-aside-header">
-                        <ul className="nav nav-tabs tabs-bordered d-flex nav-justified mb-3" role="tablist">
-                            <li role="presentation" className="fs-12"><a href="#activityLog" aria-controls="activityLog" className="active" role="tab" data-toggle="tab"> Activity Log</a>
-                            </li>
-                            <li>
-                                <button type="button" className="close ms-toggler text-center" data-target="#ms-recent-activity" data-toggle="slideRight"><span aria-hidden="true">&times;</span>
-                                </button>
-                            </li>
-                        </ul>
+        <aside
+          id="ms-recent-activity"
+          className="side-nav fixed ms-aside-right ms-scrollable"
+        >
+          <div className="ms-aside-header">
+            <ul
+              className="nav nav-tabs tabs-bordered d-flex nav-justified mb-3"
+              role="tablist"
+            >
+              <li role="presentation" className="fs-12">
+                <a
+                  href="#activityLog"
+                  aria-controls="activityLog"
+                  className="active"
+                  role="tab"
+                  data-toggle="tab"
+                >
+                  {" "}
+                  Activity Log
+                </a>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className="close ms-toggler text-center"
+                  data-target="#ms-recent-activity"
+                  data-toggle="slideRight"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div className="ms-aside-body">
+            <div className="tab-content">
+              <div
+                role="tabpanel"
+                className="tab-pane active fade show"
+                id="activityLog"
+              >
+                <ul className="ms-activity-log">
+                  <li>
+                    <div className="ms-btn-icon btn-pill icon btn-light">
+                      {" "}
+                      <i className="flaticon-gear"></i>
                     </div>
-                    <div className="ms-aside-body">
-                        <div className="tab-content">
-                            <div role="tabpanel" className="tab-pane active fade show" id="activityLog">
-                                <ul className="ms-activity-log">
-                                    <li>
-                                        <div className="ms-btn-icon btn-pill icon btn-light"> <i className="flaticon-gear"></i>
-                                        </div>
-                                        <h6>Update 1.0.0 Pushed</h6>
-                                        <span> <i className="material-icons">event</i>1 January, 2019</span>
-                                        <p className="fs-14">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, ula in sodales vehicula....</p>
-                                    </li>
-                                    <li>
-                                        <div className="ms-btn-icon btn-pill icon btn-success"> <i className="flaticon-tick-inside-circle"></i>
-                                        </div>
-                                        <h6>Profile Updated</h6>
-                                        <span> <i className="material-icons">event</i>4 March, 2018</span>
-                                        <p className="fs-14">Curabitur purus sem, malesuada eu luctus eget, suscipit sed turpis. Nam pellentesque felis vitae justo accumsan, sed semper nisi sollicitudin...</p>
-                                    </li>
-                                    <li>
-                                        <div className="ms-btn-icon btn-pill icon btn-warning"> <i className="flaticon-alert-1"></i>
-                                        </div>
-                                        <h6>Your payment is due</h6>
-                                        <span> <i className="material-icons">event</i>1 January, 2019</span>
-                                        <p className="fs-14">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, ula in sodales vehicula....</p>
-                                    </li>
-                                    <li>
-                                        <div className="ms-btn-icon btn-pill icon btn-danger"> <i className="flaticon-alert"></i>
-                                        </div>
-                                        <h6>Database Error</h6>
-                                        <span> <i className="material-icons">event</i>4 March, 2018</span>
-                                        <p className="fs-14">Curabitur purus sem, malesuada eu luctus eget, suscipit sed turpis. Nam pellentesque felis vitae justo accumsan, sed semper nisi sollicitudin...</p>
-                                    </li>
-                                    <li>
-                                        <div className="ms-btn-icon btn-pill icon btn-info"> <i className="flaticon-information"></i>
-                                        </div>
-                                        <h6>Checkout what's Trending</h6>
-                                        <span> <i className="material-icons">event</i>1 January, 2019</span>
-                                        <p className="fs-14">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, ula in sodales vehicula....</p>
-                                    </li>
-                                    <li>
-                                        <div className="ms-btn-icon btn-pill icon btn-secondary"> <i className="flaticon-diamond"></i>
-                                        </div>
-                                        <h6>Your Dashboard is ready</h6>
-                                        <span> <i className="material-icons">event</i>4 March, 2018</span>
-                                        <p className="fs-14">Curabitur purus sem, malesuada eu luctus eget, suscipit sed turpis. Nam pellentesque felis vitae justo accumsan, sed semper nisi sollicitudin...</p>
-                                    </li>
-                                </ul> <a href="#" className="btn btn-primary d-block"> View All </a>
-                            </div>
-                        </div>
+                    <h6>Update 1.0.0 Pushed</h6>
+                    <span>
+                      {" "}
+                      <i className="material-icons">event</i>1 January, 2019
+                    </span>
+                    <p className="fs-14">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Quisque scelerisque diam non nisi semper, ula in sodales
+                      vehicula....
+                    </p>
+                  </li>
+                  <li>
+                    <div className="ms-btn-icon btn-pill icon btn-success">
+                      {" "}
+                      <i className="flaticon-tick-inside-circle"></i>
                     </div>
-                </aside>
+                    <h6>Profile Updated</h6>
+                    <span>
+                      {" "}
+                      <i className="material-icons">event</i>4 March, 2018
+                    </span>
+                    <p className="fs-14">
+                      Curabitur purus sem, malesuada eu luctus eget, suscipit
+                      sed turpis. Nam pellentesque felis vitae justo accumsan,
+                      sed semper nisi sollicitudin...
+                    </p>
+                  </li>
+                  <li>
+                    <div className="ms-btn-icon btn-pill icon btn-warning">
+                      {" "}
+                      <i className="flaticon-alert-1"></i>
+                    </div>
+                    <h6>Your payment is due</h6>
+                    <span>
+                      {" "}
+                      <i className="material-icons">event</i>1 January, 2019
+                    </span>
+                    <p className="fs-14">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Quisque scelerisque diam non nisi semper, ula in sodales
+                      vehicula....
+                    </p>
+                  </li>
+                  <li>
+                    <div className="ms-btn-icon btn-pill icon btn-danger">
+                      {" "}
+                      <i className="flaticon-alert"></i>
+                    </div>
+                    <h6>Database Error</h6>
+                    <span>
+                      {" "}
+                      <i className="material-icons">event</i>4 March, 2018
+                    </span>
+                    <p className="fs-14">
+                      Curabitur purus sem, malesuada eu luctus eget, suscipit
+                      sed turpis. Nam pellentesque felis vitae justo accumsan,
+                      sed semper nisi sollicitudin...
+                    </p>
+                  </li>
+                  <li>
+                    <div className="ms-btn-icon btn-pill icon btn-info">
+                      {" "}
+                      <i className="flaticon-information"></i>
+                    </div>
+                    <h6>Checkout what's Trending</h6>
+                    <span>
+                      {" "}
+                      <i className="material-icons">event</i>1 January, 2019
+                    </span>
+                    <p className="fs-14">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Quisque scelerisque diam non nisi semper, ula in sodales
+                      vehicula....
+                    </p>
+                  </li>
+                  <li>
+                    <div className="ms-btn-icon btn-pill icon btn-secondary">
+                      {" "}
+                      <i className="flaticon-diamond"></i>
+                    </div>
+                    <h6>Your Dashboard is ready</h6>
+                    <span>
+                      {" "}
+                      <i className="material-icons">event</i>4 March, 2018
+                    </span>
+                    <p className="fs-14">
+                      Curabitur purus sem, malesuada eu luctus eget, suscipit
+                      sed turpis. Nam pellentesque felis vitae justo accumsan,
+                      sed semper nisi sollicitudin...
+                    </p>
+                  </li>
+                </ul>{" "}
+                <a href="#" className="btn btn-primary d-block">
+                  {" "}
+                  View All{" "}
+                </a>
+              </div>
+            </div>
+          </div>
+        </aside>
 
-                <main className="body-content">
+        <main className="body-content">
+          <nav className="navbar ms-navbar">
+            <div
+              className="ms-aside-toggler ms-toggler pl-0"
+              data-target="#ms-side-nav"
+              data-toggle="slideLeft"
+              onClick={this.toggleCollapse}
+            >
+              <span className="ms-toggler-bar bg-primary l-color"></span>
+              <span className="ms-toggler-bar bg-primary l-color"></span>
+              <span className="ms-toggler-bar bg-primary l-color"></span>
+            </div>
+            <div className="logo-sn logo-sm ms-d-block-sm">
+              <a className="pl-0 ml-0 text-center navbar-brand mr-0" href="">
+                <img src="./assets/images/logo2.svg" alt="logo" />{" "}
+              </a>
+            </div>
 
-                    <nav className="navbar ms-navbar">
-                        <div className="ms-aside-toggler ms-toggler pl-0" data-target="#ms-side-nav" data-toggle="slideLeft" onClick={this.toggleCollapse}>
-                            <span className="ms-toggler-bar bg-primary l-color"></span>
-                            <span className="ms-toggler-bar bg-primary l-color"></span>
-                            <span className="ms-toggler-bar bg-primary l-color"></span>
-                        </div>
-                        <div className="logo-sn logo-sm ms-d-block-sm">
-                            <a className="pl-0 ml-0 text-center navbar-brand mr-0" href="">
-                                <img src="./assets/images/logo2.svg" alt="logo" /> </a>
-                        </div>
-
-                        <ul className={this.state.side === true ? "ms-nav-list ms-inline mb-0" : "ms-nav-list ms-inline mb-0 ms-slide-down"} id="ms-nav-options">
-                            {/* <li className="ms-nav-item ms-search-form pb-0 py-0">
+            <ul
+              className={
+                this.state.side === true
+                  ? "ms-nav-list ms-inline mb-0"
+                  : "ms-nav-list ms-inline mb-0 ms-slide-down"
+              }
+              id="ms-nav-options"
+            >
+              {/* <li className="ms-nav-item ms-search-form pb-0 py-0">
             <form className="ms-form" method="post">
                 <div className="ms-form-group my-0 mb-0 has-icon fs-14">
                     <input type="search" className="ms-form-input" name="search" placeholder="Search here..." value="" /> <i className="flaticon-search text-disabled"></i>
@@ -521,53 +697,95 @@ class NavBar extends React.Component {
             </form>
         </li> */}
 
-                            <li className="ms-nav-item ms-nav-user dropdown">
-                                <a href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {
-                                        this.state.file !== '' ? (
-                                            <img className="ms-user-img ms-img-round float-right" src={constant.filepath + this.state.file} alt="people" />
-                                        ) : (
-                                            <img className="ms-user-img ms-img-round float-right" src="../../assets/img/costic/customer-3.jpg" alt="people" />
-                                        )
-                                    }
-                                </a>
-                                <ul className="dropdown-menu dropdown-menu-right user-dropdown" aria-labelledby="userDropdown">
-                                    <li className="dropdown-menu-header">
-                                        {
-                                            this.state.firstName || this.state.lastName ? (
-                                            <h6 className="dropdown-header ms-inline m-0"><span className="text-disabled">Welcome, {this.state.firstName} {this.state.lastName}</span></h6>
-                                            ) : (
-                                                <h6 className="dropdown-header ms-inline m-0"><span className="text-disabled">Welcome, Anny Farisha</span></h6>
-                                            )
-                                        }
-                                    </li>
-                                    <li className="dropdown-divider"></li>
-                                    <li className="ms-dropdown-list">
-                                    <Link className="media fs-14 p-2" to="/profile"> <span><i className="fa fa-user mr-2"></i> {constant.navbarPage.profile}</span></Link>
-                                    </li>
-                                    <li className="dropdown-divider"></li>
-                                    <li className="ms-dropdown-list">
-                                    <Link className="media fs-14 p-2" to="/change-password"> <span><i className="fa fa-lock mr-2"></i>{constant.navbarPage.changepassword}</span></Link>
-                                    </li>
-                                    <li className="dropdown-divider"></li>
-                                    <li className="dropdown-menu-footer">
-                                    <a className="media fs-14 p-2" onClick={this.logout}><span><i className="fa fa-chevron-circle-right mr-2"></i>{constant.navbarPage.logout}</span></a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <div className="ms-toggler ms-d-block-sm pr-0 ms-nav-toggler" data-toggle="slideDown" data-target="#ms-nav-options" onClick={this.toggleCollapseRight}>
-                            <span className="ms-toggler-bar bg-primary l-color"></span>
-                            <span className="ms-toggler-bar bg-primary l-color"></span>
-                            <span className="ms-toggler-bar bg-primary l-color"></span>
-                        </div>
-
-                    </nav>
-                    {this.props.children}
-                </main>
+              <li className="ms-nav-item ms-nav-user dropdown">
+                <a
+                  href="#"
+                  id="userDropdown"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  {this.state.file !== "" ? (
+                    <img
+                      className="ms-user-img ms-img-round float-right"
+                      src={constant.filepath + this.state.file}
+                      alt="people"
+                    />
+                  ) : (
+                    <img
+                      className="ms-user-img ms-img-round float-right"
+                      src="../../assets/img/costic/customer-3.jpg"
+                      alt="people"
+                    />
+                  )}
+                </a>
+                <ul
+                  className="dropdown-menu dropdown-menu-right user-dropdown"
+                  aria-labelledby="userDropdown"
+                >
+                  <li className="dropdown-menu-header">
+                    {this.state.firstName || this.state.lastName ? (
+                      <h6 className="dropdown-header ms-inline m-0">
+                        <span className="text-disabled">
+                          Welcome, {this.state.firstName} {this.state.lastName}
+                        </span>
+                      </h6>
+                    ) : (
+                      <h6 className="dropdown-header ms-inline m-0">
+                        <span className="text-disabled">
+                          Welcome, Anny Farisha
+                        </span>
+                      </h6>
+                    )}
+                  </li>
+                  <li className="dropdown-divider"></li>
+                  <li className="ms-dropdown-list">
+                    <Link className="media fs-14 p-2" to="/profile">
+                      {" "}
+                      <span>
+                        <i className="fa fa-user mr-2"></i>{" "}
+                        {constant.navbarPage.profile}
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="dropdown-divider"></li>
+                  <li className="ms-dropdown-list">
+                    <Link className="media fs-14 p-2" to="/change-password">
+                      {" "}
+                      <span>
+                        <i className="fa fa-lock mr-2"></i>
+                        {constant.navbarPage.changepassword}
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="dropdown-divider"></li>
+                  <li className="dropdown-menu-footer">
+                    <a className="media fs-14 p-2" onClick={this.logout}>
+                      <span>
+                        <i className="fa fa-chevron-circle-right mr-2"></i>
+                        {constant.navbarPage.logout}
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <div
+              className="ms-toggler ms-d-block-sm pr-0 ms-nav-toggler"
+              data-toggle="slideDown"
+              data-target="#ms-nav-options"
+              onClick={this.toggleCollapseRight}
+            >
+              <span className="ms-toggler-bar bg-primary l-color"></span>
+              <span className="ms-toggler-bar bg-primary l-color"></span>
+              <span className="ms-toggler-bar bg-primary l-color"></span>
             </div>
-        );
-    }
+          </nav>
+          {this.props.children}
+        </main>
+      </div>
+    );
+  }
 }
 
 export default NavBar;

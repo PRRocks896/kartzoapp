@@ -307,7 +307,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                               )}
                             </CustomInput>
                             <div className="mb-4 text-danger">
-                              {this.state.selectedStateerror}
+                              {this.state.stateiderror}
                             </div>
                           </FormGroup>
                         </Form>

@@ -64,6 +64,9 @@ axios.interceptors.response.use(
         } else if(err.response.data.status === 415) {
           const msg1 = err.response.statusText;
           utils.showError(msg1);
+        } else if(err.response.data.status === 404) {
+          const msg1 = err.response.data.message;
+          utils.showError(msg1);
         }
          else if(err.response.data.status === 401) {
           const users: any = localStorage.getItem("user");

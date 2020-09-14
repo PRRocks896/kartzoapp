@@ -1,5 +1,6 @@
 export interface addMerchantStateRequest {
     selectedFile: string,
+    selectedProfileFile:string,
       selectedProofFile: string,
       selectedDocumentFile: string,
       firstname: string,
@@ -36,6 +37,7 @@ export interface addMerchantStateRequest {
       selectedFileerror: string,
       selectedProofFileerror: string,
       selectedDocumentFileerror: string,
+      selectedProfileFileerror:string,
       password: string,
       passworderror: string,
       citydata: any,
@@ -46,6 +48,8 @@ export interface addMerchantStateRequest {
       file1true: boolean,
       file2: string,
       file2true: boolean,
+      file4: string,
+      file4true: boolean,
       updateTrue: boolean,
       token: string,
       merchantId: string,

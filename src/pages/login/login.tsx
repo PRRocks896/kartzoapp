@@ -1,11 +1,11 @@
 import React from "react";
 import "./login.css";
-import { API } from "../../service/index.service";
+import { API, RoleAPI } from "../../service/index.service";
 import utils from "../../utils";
 import constant from "../../constant/constant";
 import axios from "axios";
 import apiUrl from "../../apicontroller/apicontrollers";
-import { loginCreateRequest, forgotPasswordRequest,addLoginStateRequest } from "../../modelController";
+import { loginCreateRequest, forgotPasswordRequest,addLoginStateRequest,getDataByIdRequest } from "../../modelController";
 import {
   Button,
   Input,
@@ -188,6 +188,18 @@ class Login extends React.Component<{ history: any }> {
                 if (getToken) {
                   localStorage.setItem("merchantToken", getToken.token);
                 }
+                const rightdata:getDataByIdRequest = {
+                  id: user.roleId
+                };
+                var getRightsData = await RoleAPI.getRolePreveliges(rightdata);
+                console.log("getRightsData", getRightsData);
+                if(getRightsData) {
+                  if(getRightsData.resultObject) {
+                    const rights = getRightsData.resultObject.roleprivileges;
+                    // console.log("rigths",JSON.stringify(rights));
+                    localStorage.setItem("rolePreveliges", JSON.stringify(rights));
+                  }
+                }
                 this.props.history.push("/dashboard");
               } else {
                 this.setState({
@@ -209,78 +221,7 @@ class Login extends React.Component<{ history: any }> {
   enterPressed(event: any) {
     var code = event.keyCode || event.which;
     if (code === 13) {
-      //13 is the enter keycode
-      this.setState({
-        isButton: true,
-      });
-      const isValid = this.validate();
-      if (isValid) {
-        this.setState({
-          emailerror: this.state.emailerror = "",
-          passworderror: this.state.passworderror = "",
-        });
-        if (this.state.email && this.state.password) {
-          const obj = {
-            email: this.state.email,
-            password: this.state.password,
-            deviceType: 1,
-            deviceId: "deviceId",
-            ipAddress: this.state.ipAddress,
-            userId: 0,
-          };
-
-          axios
-            .post(constant.apiUrl + apiUrl.userController.createData, obj)
-            .then(async (res: any) => {
-              console.log("login", res);
-              if (res) {
-                if (res.data.status === 200) {
-                  this.setState({
-                    isButton: false,
-                  });
-                  var userData = res.data.resultObject;
-                  localStorage.setItem("user", JSON.stringify(userData));
-                  localStorage.setItem("token", userData.token);
-               
-                  const ipaddress = publicIp.v4();
-                  const users: any = localStorage.getItem("user");
-                  let user = JSON.parse(users);
-                  const obj = {
-                    deviceType: 1,
-                    deviceId: "deviceId",
-                    ipAddress: await ipaddress,
-                    loginToken: user.token,
-                    refreshToken: user.refreshToken,
-                  };
-                  var getToken = await API.getToken(obj);
-                  console.log("getToken", getToken);
-                  if (getToken) {
-                    localStorage.setItem("merchantToken", getToken.token);
-                  }
-                // const roleid = {
-                //   id:user.roleId
-                // }
-                //   var getRights = await RoleAPI.getRolePreveliges(roleid);
-                //   console.log("getRights", getRights);
-                 
-                  this.props.history.push("/dashboard");
-                } else {
-                  this.setState({
-                    isButton: this.state.isButton = false,
-                  });
-                 
-                
-                }
-              } else {
-                this.setState({
-                  isButton: this.state.isButton = false,
-                });
-                const msg1 = "Internal server error";
-                utils.showError(msg1);
-              }
-            });
-        }
-      }
+  this.login();
     }
   }
 
