@@ -683,7 +683,10 @@ export default {
       selectedFile: "Shop Logo",
       selectMerchantIdProff: "Select Merchant ID Proof",
       selectMerchantDocument: "Select Merchant Document",
-      profilePhoto:'Select Profile Photo'
+      profilePhoto:'Select Profile Photo',
+      merchantidproof:'Merchant Id Proof',
+      document:'Merchant Document Proof',
+      profile:'Profile Photo'
     },
     viewmerchanrpagedetails: {
       viewmerchant: "View Merchant Details",

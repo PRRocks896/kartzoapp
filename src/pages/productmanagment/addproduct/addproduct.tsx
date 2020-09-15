@@ -230,6 +230,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     let maincategoryiderror = "";
     let productnameerror = "";
     let priceerror = "";
+    let discountpriceerror = "";
 
     if (!this.state.merchantid) {
       merchantiderror = "please select merchant";
@@ -243,21 +244,33 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
       productnameerror = "please enter product name";
     }
 
+    var regex = /^[0-9]+$/;
     if (!this.state.price) {
       priceerror = "please enter price";
+    } else if(!regex.test(this.state.price)) {
+      priceerror = "please enter valid price";
+    }
+
+    var regex1 = /^[0-9]+$/;
+    if (!this.state.discountprice) {
+      discountpriceerror = "please enter discount price";
+    } else if(!regex1.test(this.state.discountprice)) {
+      discountpriceerror = "please enter valid discount price";
     }
 
     if (
       merchantiderror ||
       maincategoryiderror ||
       productnameerror ||
-      priceerror
+      priceerror || 
+      discountpriceerror
     ) {
       this.setState({
         merchantiderror,
         maincategoryiderror,
         productnameerror,
-        priceerror
+        priceerror,
+        discountpriceerror
       });
       return false;
     }
@@ -279,7 +292,8 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         maincategoryiderror: "",
         subcategoryiderror: "",
         productnameerror: "",
-        priceerror: ""
+        priceerror: "",
+        discountpriceerror: ""
       });
       if (
         this.state.merchantid &&

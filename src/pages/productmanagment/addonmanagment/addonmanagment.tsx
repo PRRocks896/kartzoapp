@@ -142,8 +142,11 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
       producttypeiderror = "please select product type";
     }
 
+    var regex = /^[0-9]+$/;
     if (!this.state.amount) {
       amounterror = "please enter amount";
+    } else if(!regex.test(this.state.amount)) {
+      amounterror = "please enter valid amount";
     }
 
     if (!this.state.addondetails) {

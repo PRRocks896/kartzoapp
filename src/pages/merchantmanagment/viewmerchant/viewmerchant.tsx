@@ -26,6 +26,7 @@ class ViewMerchant extends React.Component<{
   merchantState: addMerchantStateRequest = constant.merchantPage.state;
   state = {
     selectedFile: this.merchantState.selectedFile,
+    selectedProfileFile: this.merchantState.selectedProfileFile,
     selectedProofFile: this.merchantState.selectedProofFile,
     selectedDocumentFile: this.merchantState.selectedDocumentFile,
     firstname: this.merchantState.firstname,
@@ -72,6 +73,8 @@ class ViewMerchant extends React.Component<{
     file1true: this.merchantState.file1true,
     file2: this.merchantState.file2,
     file2true: this.merchantState.file2true,
+    file4: this.merchantState.file4,
+    file4true: this.merchantState.file4true,
   };
 
   constructor(props: any) {
@@ -96,11 +99,12 @@ class ViewMerchant extends React.Component<{
     if (getMerchantById) {
       this.setState({
         selectedFile: this.state.selectedFile =
-          getMerchantById.resultObject.photoPath,
+          getMerchantById.resultObject.logoPath ? getMerchantById.resultObject.logoPath : '',
         selectedProofFile: this.state.selectedProofFile =
-          getMerchantById.resultObject.merchantIDPoof,
+          getMerchantById.resultObject.idProofPath ? getMerchantById.resultObject.idProofPath : '',
         selectedDocumentFile: this.state.selectedDocumentFile =
-          getMerchantById.resultObject.merchantDocument,
+          getMerchantById.resultObject.documentPath ? getMerchantById.resultObject.documentPath : '',
+        selectedProfileFile: this.state.selectedProfileFile = getMerchantById.resultObject.profilePhotoPath ? getMerchantById.resultObject.profilePhotoPath : '',
         firstname: this.state.firstname =
           getMerchantById.resultObject.firstName,
         lastname: this.state.lastname = getMerchantById.resultObject.lastName,
@@ -122,11 +126,10 @@ class ViewMerchant extends React.Component<{
         cancellationpolicy: this.state.cancellationpolicy =
           getMerchantById.resultObject.cancellationPolicy,
         password: this.state.password = getMerchantById.resultObject.password,
-        file: this.state.file = getMerchantById.resultObject.logoPath,
-        // filetrue: this.state.filetrue = getMerchantById.resultObject.
-        // file1: this.state.file1 = getMerchantById.resultObject.
-        // file1true: this.state.file1true = getMerchantById.resultObject.
-        // file2: this.state.file2 = getMerchantById.resultObject.
+        file: this.state.file = getMerchantById.resultObject.logoPath ? getMerchantById.resultObject.logoPath : '',
+        file1: this.state.file1 = getMerchantById.resultObject.idProofPath ? getMerchantById.resultObject.idProofPath : '',
+        file2: this.state.file2 = getMerchantById.resultObject.documentPath ? getMerchantById.resultObject.documentPath : '',
+        file4: this.state.file4 = getMerchantById.resultObject.profilePhotoPath ? getMerchantById.resultObject.profilePhotoPath : '',
         // file2true: this.state.file2true = getMerchantById.resultObject.
       });
     } else {
@@ -347,17 +350,22 @@ class ViewMerchant extends React.Component<{
                           </div>
                         </FormGroup>
                       </Col>
-                      {/* <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">
                           <p style={{ fontSize: "16px" }}>
-                            <b>{constant.userPage.userTableColumn.userimage}</b>
+                            <b>
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .merchantidproof
+                              }
+                            </b>
                           </p>
                           <div>
-                            {this.state.file != null ? (
+                            {this.state.file1 != null ? (
                               <img
                                 className="picture"
                                 src={
-                                  constant.filepath + this.state.userdata.file
+                                  constant.fileMerchantpath + this.state.file1
                                 }
                               />
                             ) : (
@@ -365,7 +373,57 @@ class ViewMerchant extends React.Component<{
                             )}
                           </div>
                         </FormGroup>
-                      </Col> */}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <FormGroup className="img-upload">
+                          <p style={{ fontSize: "16px" }}>
+                            <b>
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .document
+                              }
+                            </b>
+                          </p>
+                          <div>
+                            {this.state.file2 != null ? (
+                              <img
+                                className="picture"
+                                src={
+                                  constant.fileMerchantpath + this.state.file2
+                                }
+                              />
+                            ) : (
+                              <i className="fa fa-user"></i>
+                            )}
+                          </div>
+                        </FormGroup>
+                      </Col>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <FormGroup className="img-upload">
+                          <p style={{ fontSize: "16px" }}>
+                            <b>
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .profile
+                              }
+                            </b>
+                          </p>
+                          <div>
+                            {this.state.file4 != null ? (
+                              <img
+                                className="picture"
+                                src={
+                                  constant.fileMerchantpath + this.state.file4
+                                }
+                              />
+                            ) : (
+                              <i className="fa fa-user"></i>
+                            )}
+                          </div>
+                        </FormGroup>
+                      </Col>
                     </Row>
                   </CardBody>
                 </Card>
