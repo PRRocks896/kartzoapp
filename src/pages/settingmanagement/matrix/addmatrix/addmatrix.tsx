@@ -110,7 +110,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         feetype: this.state.feetype = getMatrixById.resultObject.feeType,
-        matrix: this.state.matrix = getMatrixById.resultObject.fees,
+        matrix: this.state.matrix = getMatrixById.resultObject.fees ? getMatrixById.resultObject.fees : '',
         feetypeid: this.state.feetypeid =
           getMatrixById.resultObject.feeTypeId,
       });
@@ -448,9 +448,9 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
                       </Form>
                     </Col>
                   </Row>
-                  {this.state.matrix[0].to !== 0 &&
-                  this.state.matrix[0].from !== 0 &&
-                  this.state.matrix[0].fee !== 0 ? (
+                  {(this.state.matrix && this.state.matrix.length > 0 ? this.state.matrix[0].to !== 0 : '') &&
+                  (this.state.matrix && this.state.matrix.length > 0 ? this.state.matrix[0].from !== 0 : '' )&&
+                (  this.state.matrix && this.state.matrix.length > 0 ? this.state.matrix[0].fee !== 0 : '') ? (
                     <div className="add_icon">
                       <i
                         className="fa fa-plus"

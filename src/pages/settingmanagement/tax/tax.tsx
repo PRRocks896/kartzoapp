@@ -62,7 +62,7 @@ class ListTax extends React.Component<{ history: any }> {
 
   async componentDidMount() {
     document.title =
-      constant.feePage.title.feeTitle + utils.getAppName();
+      constant.taxPage.title.taxTitle + utils.getAppName();
     utils.dataTable();
     this.getTaxData();
   }

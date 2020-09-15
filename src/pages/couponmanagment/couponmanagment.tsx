@@ -323,15 +323,6 @@ class Coupon extends React.Component<{ history: any; location: any }> {
           const msg1 = "Internal server error";
           utils.showError(msg1);
         }
-
-        // if (this.state.couponcode === obj.couponcode && this.state.percentage === obj.percentage && this.state.discountprice === obj.discountprice && this.state.startdate === obj.startdate && this.state.enddate === obj.enddate && this.state.discription === obj.discription && this.state.isByPrice === obj.isByPrice) {
-        //     const msg = "Coupon Added Successfully";
-        //     utils.showSuccess(msg);
-        //     // this.props.history.push('/users');
-        // } else {
-        //     const msg1 = "Error";
-        //     utils.showError(msg1);
-        // }
       }
     }
   }

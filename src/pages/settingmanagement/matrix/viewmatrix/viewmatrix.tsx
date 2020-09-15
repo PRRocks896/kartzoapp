@@ -118,38 +118,47 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
                           <Label htmlFor="role_name">
                             <b>{constant.matrixPage.matrixTableColumn.fee}:</b>
                           </Label>
-                          <span className="ml-5">
-                            <table
-                              id="dtBasicExample"
-                              className="table table-striped table-bordered table-sm text-center"
-                              width="100%"
-                            >
-                              <thead>
-                                <tr>
-                                  <th>To</th>
-                                  <th>From</th>
-                                  <th>Fee</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {this.state.matrix.length > 0 ? (
-                                  <>
-                                    {this.state.matrix.map(
-                                      (data: any, index: any) => (
-                                        <tr key={index}>
-                                          <td>{data.to} </td>
-                                          <td>{data.from} </td>
-                                          <td>{data.fee} </td>
-                                        </tr>
-                                      )
-                                    )}
-                                  </>
-                                ) : (
-                                  ""
-                                )}
-                              </tbody>
-                            </table>
-                          </span>
+                          {
+                            this.state.matrix && this.state.matrix.length > 0 ? (
+                              <div className="ml-5">
+                              <table
+                                id="dtBasicExample"
+                                className="table table-striped table-bordered table-sm text-center"
+                                width="100%"
+                              >
+                                <thead>
+                                  <tr>
+                                    <th>To</th>
+                                    <th>From</th>
+                                    <th>Fee</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {this.state.matrix.length > 0 ? (
+                                    <>
+                                      {this.state.matrix.map(
+                                        (data: any, index: any) => (
+                                          <tr key={index}>
+                                            <td>{data.to} </td>
+                                            <td>{data.from} </td>
+                                            <td>{data.fee} </td>
+                                          </tr>
+                                        )
+                                      )}
+                                    </>
+                                  ) : (
+                                    ""
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                            ) : (
+                              <div className="ml-5">
+                              <h3>{constant.noDataFound.nodatafound}</h3>
+                              </div>
+                            )
+                          }
+                     
                         </FormGroup>
                       </Col>
                     </Row>

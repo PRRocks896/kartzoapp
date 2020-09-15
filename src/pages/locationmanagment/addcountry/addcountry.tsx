@@ -59,7 +59,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         constant.countryPage.title.updateCountryTitle + utils.getAppName();
     } else {
       document.title =
-        constant.categoryPage.title.addCategoryTitle + utils.getAppName();
+        constant.countryPage.title.addCountryTitle + utils.getAppName();
     }
   }
 

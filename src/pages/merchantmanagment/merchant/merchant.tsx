@@ -110,13 +110,6 @@ class Merchant extends React.Component<{ history: any; location: any }> {
   }
 
   async componentDidMount() {
-    if (this.state.updateTrue === true) {
-      document.title =
-        constant.merchantPage.title.updateMerchantTitle + utils.getAppName();
-    } else {
-      document.title =
-        constant.merchantPage.title.addMerchantTitle + utils.getAppName();
-    }
     this.getCity();
     const merchantId = this.props.location.pathname.split("/")[2];
     if (merchantId !== undefined) {
@@ -125,8 +118,15 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         updateTrue: this.state.updateTrue = true,
       });
     }
+    if (this.state.updateTrue === true) {
+      document.title =
+        constant.merchantPage.title.updateMerchantTitle + utils.getAppName();
+    } else {
+      document.title =
+        constant.merchantPage.title.addMerchantTitle + utils.getAppName();
+    }
   }
-
+  
   async getMerchantById(id: getDataByIdRequest) {
     const getMerchantById: any = await MerchantAPI.getMerchantById(id);
     console.log("getMerchantById", getMerchantById);
@@ -134,21 +134,21 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     if (getMerchantById) {
       this.setState({
         merchantId: this.state.merchantId =
-          getMerchantById.resultObject.merchantID,
+        getMerchantById.resultObject.merchantID,
         filetrue: this.state.filetrue = true,
         selectedFile: this.state.selectedFile =
           getMerchantById.resultObject.logoPath ?  getMerchantById.resultObject.logoPath : '',
         selectedProofFile: this.state.selectedProofFile =
-          getMerchantById.resultObject.merchantIDPoof ? getMerchantById.resultObject.idProofPath : '',
+        getMerchantById.resultObject.merchantIDPoof ? getMerchantById.resultObject.idProofPath : '',
         selectedDocumentFile: this.state.selectedDocumentFile =
           getMerchantById.resultObject.merchantDocument ? getMerchantById.resultObject.documentPath : '',
           selectedProfileFile: this.state.selectedProfileFile =
           getMerchantById.resultObject.merchantDocument ? getMerchantById.resultObject.profilePhotoPath : '',
-        firstname: this.state.firstname =
+          firstname: this.state.firstname =
           getMerchantById.resultObject.firstName,
-        lastname: this.state.lastname = getMerchantById.resultObject.lastName,
-        email: this.state.email = getMerchantById.resultObject.email,
-        mobilenumber: this.state.mobilenumber =
+          lastname: this.state.lastname = getMerchantById.resultObject.lastName,
+          email: this.state.email = getMerchantById.resultObject.email,
+          mobilenumber: this.state.mobilenumber =
           getMerchantById.resultObject.phone,
         shopname: this.state.shopname = getMerchantById.resultObject.shopName,
         address: this.state.address = getMerchantById.resultObject.address,
@@ -156,14 +156,14 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         zipcode: this.state.zipcode = getMerchantById.resultObject.zipCode,
         latitude: this.state.latitude = getMerchantById.resultObject.latitude,
         longitude: this.state.longitude =
-          getMerchantById.resultObject.longitude,
+        getMerchantById.resultObject.longitude,
         website: this.state.website = getMerchantById.resultObject.website,
         shoppingpolicy: this.state.shoppingpolicy =
-          getMerchantById.resultObject.shippingPolicy,
+          getMerchantById.resultObject.shippingPolicy ? getMerchantById.resultObject.shippingPolicy : '',
         refundpolicy: this.state.refundpolicy =
-          getMerchantById.resultObject.refundPolicy,
+          getMerchantById.resultObject.refundPolicy ?  getMerchantById.resultObject.refundPolicy : '',
         cancellationpolicy: this.state.cancellationpolicy =
-          getMerchantById.resultObject.cancellationPolicy,
+          getMerchantById.resultObject.cancellationPolicy ? getMerchantById.resultObject.cancellationPolicy : '',
         password: this.state.password = getMerchantById.resultObject.password,
         file: this.state.file = getMerchantById.resultObject.logoPath,
         isOpen: this.state.isOpen = getMerchantById.resultObject.isActive,
@@ -173,8 +173,6 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         file2true: this.state.file2true = true,
         file4: this.state.file4 = getMerchantById.resultObject.profilePhotoPath,
         file4true: this.state.file4true = true,
-
-        // file2true: this.state.file2true = getMerchantById.resultObject.
       });
       this.getCityById(this.state.city);
     } else {
@@ -567,25 +565,25 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         formData.append("Website", this.state.website);
         this.state.selectedProofFile !== '' ? (
           formData.append(
-            "MerchantIDPoof",
+            "IDProoffiles",
             this.state.selectedProofFile ? this.state.selectedProofFile[0] : ""
           )
         ) : (
           formData.append(
-            "MerchantIDPoof",
+            "IDProoffiles",
             this.state.selectedProofFile ? this.state.selectedProofFile : ""
           )
         )
         this.state.selectedDocumentFile !== '' ? (
         formData.append(
-          "MerchantDocument",
+          "Documentfiles",
           this.state.selectedDocumentFile
             ? this.state.selectedDocumentFile[0]
             : ""
         )
         ) : (
           formData.append(
-            "MerchantDocument",
+            "Documentfiles",
             this.state.selectedDocumentFile
               ? this.state.selectedDocumentFile
               : ""
@@ -597,12 +595,12 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         formData.append("isActive", new Boolean(this.state.isOpen).toString());
         this.state.selectedFile !== '' ? (
           formData.append(
-            "files",
+            "Logofiles",
             this.state.selectedFile ? this.state.selectedFile[0] : ""
           )
         ) : (
           formData.append(
-            "files",
+            "Logofiles",
             this.state.selectedFile ? this.state.selectedFile : ""
           )
         )
@@ -1187,7 +1185,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                           style={{ display: "none" }}
                         />
                         <Editor
-                          initialValue={this.state.shoppingpolicy}
+                          initialValue={this.state.shoppingpolicy ? this.state.shoppingpolicy : ''}
                           init={{
                             height: 200,
                             menubar: false,
@@ -1256,7 +1254,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                           style={{ display: "none" }}
                         />
                         <Editor
-                          initialValue={this.state.refundpolicy}
+                          initialValue={this.state.refundpolicy ? this.state.refundpolicy : ''}
                           init={{
                             height: 200,
                             menubar: false,
@@ -1325,7 +1323,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                           style={{ display: "none" }}
                         />
                         <Editor
-                          initialValue={this.state.cancellationpolicy}
+                          initialValue={this.state.cancellationpolicy ? this.state.cancellationpolicy : ''}
                           init={{
                             height: 200,
                             menubar: false,

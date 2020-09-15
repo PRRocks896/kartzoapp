@@ -62,7 +62,7 @@ class ListMerchant extends React.Component<{ history: any }> {
 
   async componentDidMount() {
     document.title =
-      constant.categoryPage.title.categoryTitle + utils.getAppName();
+      constant.merchantPage.title.merchantTitle + utils.getAppName();
     utils.dataTable();
     this.getMerchantData();
   }

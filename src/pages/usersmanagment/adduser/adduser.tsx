@@ -553,7 +553,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                                 ? this.state.userrole.map(
                                     (data: any, index: any) => (
                                       <option
-                                        key={data.roleId}
+                                        key={index}
                                         value={data.roleId}
                                       >
                                         {data.name}
@@ -581,7 +581,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                                 ? this.state.userrole.map(
                                     (data: any, index:any) => (
                                       <option
-                                        key={data.value}
+                                        key={index}
                                         value={data.value}
                                       >
                                         {data.name}

@@ -50,8 +50,8 @@ const utils = {
     if(result.value) {
         response = true
     } else if (result.dismiss === Swal.DismissReason.cancel) {
-        const msg1 = "safe";
-        utils.showError(msg1);
+        // const msg1 = "safe";
+        // utils.showError(msg1);
         response = false;
     }
     return response;
