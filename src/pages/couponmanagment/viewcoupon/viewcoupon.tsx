@@ -200,7 +200,7 @@ class ViewCoupon extends React.Component<{ history: any; location: any }> {
                               {constant.couponPage.couponTableColumn.percentage}
                             </b>
                           </Label>
-                          <p>{this.state.percentage}%</p>
+                          <p>{(((parseInt(this.state.minamountorder)) - (parseInt(this.state.discountprice)))/parseInt(this.state.minamountorder) * 100).toFixed(2)}%</p>
                         </FormGroup>
                       </Col>
                     </Row>

@@ -2,7 +2,7 @@ export interface couponUpdateRequest {
     couponId?:string,
     couponCode?: string,
     percentage?: number,
-    discountPrice?: number,
+    sellingPrice?: number,
     startDate?: string,
     endDate?: string,
     description?: string,

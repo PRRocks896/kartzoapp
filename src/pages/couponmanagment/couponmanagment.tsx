@@ -158,7 +158,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
           percentage: this.state.percentage =
             getCouponById.resultObject.percentage,
           discountprice: this.state.discountprice =
-            getCouponById.resultObject.discountPrice,
+            getCouponById.resultObject.sellingPrice,
           startdate: this.state.startdate =
             getCouponById.resultObject.startDate,
           enddate: this.state.enddate = getCouponById.resultObject.endDate,
@@ -351,12 +351,10 @@ class Coupon extends React.Component<{ history: any; location: any }> {
         const obj: couponUpdateRequest = {
           couponId: this.state.couponId,
           couponCode: this.state.couponcode,
-          percentage: this.state.percentage,
-          discountPrice: parseInt(this.state.discountprice),
+          sellingPrice: parseInt(this.state.discountprice),
           startDate: this.state.startdate,
           endDate: this.state.enddate,
           description: this.state.discription,
-          isByPrice: this.state.isByPrice,
           title: this.state.title,
           isActive: this.state.isActive,
           minAmountOrder: parseInt(this.state.minamountorder),
