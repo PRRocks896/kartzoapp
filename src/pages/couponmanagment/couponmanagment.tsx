@@ -286,12 +286,10 @@ class Coupon extends React.Component<{ history: any; location: any }> {
       ) {
         const obj: couponCreateRequest = {
           couponCode: this.state.couponcode,
-          percentage: this.state.percentage,
-          discountPrice: parseInt(this.state.discountprice),
+          sellingPrice: parseInt(this.state.discountprice),
           startDate: this.state.startdate,
           endDate: this.state.enddate,
           description: this.state.discription,
-          isByPrice: this.state.isByPrice,
           title: this.state.title,
           isActive: this.state.isActive,
           minAmountOrder: parseInt(this.state.minamountorder),
@@ -506,7 +504,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                               className="form-control"
                               value={this.state.discountprice}
                               onChange={this.handleChangeEventDiscount}
-                              placeholder="Enter your discount price"
+                              placeholder="Enter your selling price"
                               required
                             />
                             <div className="mb-4 text-danger">

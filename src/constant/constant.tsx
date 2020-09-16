@@ -570,7 +570,7 @@ export default {
     couponTableColumn: {
       couponCode: "Coupon Code",
       description: "Description",
-      discountPrice: "Discount Price",
+      discountPrice: "Selling Price",
       finalPrice: "Final Price",
       endDate: "End Date",
       startDate: "Start Date",

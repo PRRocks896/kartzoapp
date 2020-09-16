@@ -355,7 +355,7 @@ class ListCoupon extends React.Component<{ history: any }> {
             <th>{constant.couponPage.couponTableColumn.couponCode}</th>
             <th>{constant.couponPage.couponTableColumn.title}</th>
             <th>{constant.couponPage.couponTableColumn.discountPrice}</th>
-            <th>{constant.couponPage.couponTableColumn.percentage}</th>
+            {/* <th>{constant.couponPage.couponTableColumn.percentage}</th> */}
             <th style={{ textAlign: "center" }}>
               {constant.tableAction.status}
             </th>
@@ -380,8 +380,8 @@ class ListCoupon extends React.Component<{ history: any }> {
                   </td>
                   <td>{data.couponCode}</td>
                   <td>{data.title}</td>
-                  <td>{data.discountPrice}</td>
-                  <td>{data.percentage}%</td>
+                  <td>{data.sellingPrice}</td>
+                  {/* <td>{data.percentage}%</td> */}
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button

@@ -74,7 +74,7 @@ class ViewCoupon extends React.Component<{ history: any; location: any }> {
         percentage: this.state.percentage =
           getCouponById.resultObject.percentage,
         discountprice: this.state.discountprice =
-          getCouponById.resultObject.discountPrice,
+          getCouponById.resultObject.sellingPrice,
         startdate: this.state.startdate =
           getCouponById.resultObject.startDate,
         enddate: this.state.enddate = getCouponById.resultObject.endDate,
