@@ -144,7 +144,6 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
 
   validate() {
     let productiderror = "";
-    let selectedFileerror = "";
 
     // if (!this.state.categoryname) {
     //   categorynameerror = "please enter category name";
