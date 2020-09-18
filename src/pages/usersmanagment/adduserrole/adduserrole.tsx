@@ -131,8 +131,8 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
         if (addUserRole) {
           this.props.history.push("/userrole");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -160,8 +160,8 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
         if (editUserRole) {
           this.props.history.push("/userrole");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

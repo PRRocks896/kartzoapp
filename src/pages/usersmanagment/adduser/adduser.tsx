@@ -331,8 +331,8 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         if (addUser) {
           this.props.history.push("/users");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -376,8 +376,8 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         if (editUser) {
           this.props.history.push("/users");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

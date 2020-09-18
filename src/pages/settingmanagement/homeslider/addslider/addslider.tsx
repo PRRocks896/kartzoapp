@@ -190,8 +190,8 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
           if (addSlider) {
             this.props.history.push("/list-slider");
           } else {
-            const msg1 = "Internal server error";
-            utils.showError(msg1);
+            // const msg1 = "Internal server error";
+            // utils.showError(msg1);
           }
         }
       }
@@ -221,8 +221,8 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
             if (editSlider) {
               this.props.history.push("/list-slider");
             } else {
-              const msg1 = "Internal server error";
-              utils.showError(msg1);
+              // const msg1 = "Internal server error";
+              // utils.showError(msg1);
             }
           }
         }

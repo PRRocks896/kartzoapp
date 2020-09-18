@@ -186,8 +186,8 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         if (addCategory) {
           this.props.history.push("/category");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -216,8 +216,8 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         if (editCategory) {
           this.props.history.push("/category");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

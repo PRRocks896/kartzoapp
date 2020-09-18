@@ -148,8 +148,8 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
         if (addMenu) {
           this.props.history.push("/listmenu");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -176,8 +176,8 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
         if (editMenu) {
           this.props.history.push("/listmenu");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

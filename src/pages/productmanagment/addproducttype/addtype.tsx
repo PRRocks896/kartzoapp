@@ -118,8 +118,8 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
         if (addCustomiseType) {
           this.props.history.push("/list-type");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -143,8 +143,8 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
         if (editCustomiseProduct) {
           this.props.history.push("/list-type");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

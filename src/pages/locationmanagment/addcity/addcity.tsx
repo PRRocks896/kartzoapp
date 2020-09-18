@@ -158,8 +158,8 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         if (addCity) {
           this.props.history.push("/city");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -186,8 +186,8 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         if (editCity) {
           this.props.history.push("/city");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

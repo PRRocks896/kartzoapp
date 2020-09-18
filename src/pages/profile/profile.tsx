@@ -206,8 +206,8 @@ class Profile extends React.Component {
           })
           EventEmitter.dispatch('imageUpload', this.state.file);
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

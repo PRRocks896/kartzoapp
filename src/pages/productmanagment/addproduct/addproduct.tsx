@@ -328,8 +328,8 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         if (addProduct) {
           this.props.history.push("/list-product");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -394,8 +394,8 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         if (editProduct) {
           this.props.history.push("/list-product");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

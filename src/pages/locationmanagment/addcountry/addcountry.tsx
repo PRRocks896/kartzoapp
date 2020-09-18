@@ -175,8 +175,8 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         if (addCountry) {
           this.props.history.push("/country");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -211,8 +211,8 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         if (editCountry) {
           this.props.history.push("/country");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

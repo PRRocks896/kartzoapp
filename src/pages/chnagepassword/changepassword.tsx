@@ -89,8 +89,8 @@ class ChangePassword extends Component<{ history: any }> {
         if (updatePassword) {
           this.props.history.push("/dashboard");
         } else {
-          const msg1 = "Internal Server";
-          utils.showError(msg1);
+          // const msg1 = "Internal Server";
+          // utils.showError(msg1);
         }
       } else if (this.state.newpassword !== this.state.confirmpassword) {
         const msg1 = constant.alertMsg.msg;

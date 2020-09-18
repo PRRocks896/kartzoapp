@@ -166,17 +166,10 @@ class AddState extends React.Component<{ history: any; location: any }> {
         console.log("addState", addState);
 
         if(addState) {
-          if (addState.status === 200) {
-            const msg = addState.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/state");
-          } else {
-            const msg = addState.message;
-            utils.showError(msg);
-          }
+          this.props.history.push("/state");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -201,17 +194,10 @@ class AddState extends React.Component<{ history: any; location: any }> {
         console.log("editState", editState);
 
         if(editState) {
-          if (editState.status === 200) {
-            const msg = editState.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/state");
-          } else {
-            const msg = editState.message;
-            utils.showError(msg);
-          }
+          this.props.history.push("/state");
         } else {
-          const msg1 = "Internal server error";
-      utils.showError(msg1);
+      //     const msg1 = "Internal server error";
+      // utils.showError(msg1);
         }
       }
     }

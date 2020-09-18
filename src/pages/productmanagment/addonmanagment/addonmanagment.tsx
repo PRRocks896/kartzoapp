@@ -207,8 +207,8 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
           if (addOnProduct) {
             this.props.history.push("/list-product-customise");
           } else {
-            const msg1 = "Internal server error";
-            utils.showError(msg1);
+            // const msg1 = "Internal server error";
+            // utils.showError(msg1);
           }
         }
       }
@@ -239,8 +239,8 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
             if (editaddOnProduct) {
               this.props.history.push("/list-product-customise");
             } else {
-              const msg1 = "Internal server error";
-              utils.showError(msg1);
+              // const msg1 = "Internal server error";
+              // utils.showError(msg1);
             }
           }
         }

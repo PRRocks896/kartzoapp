@@ -131,8 +131,8 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
         if (addSetting) {
           this.props.history.push("/list-setting");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -159,8 +159,8 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
         if (updateSetting) {
           this.props.history.push("/list-setting");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

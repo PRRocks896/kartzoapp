@@ -513,8 +513,8 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         if (addMerchant) {
           this.props.history.push("/list-merchant");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -625,8 +625,8 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         if (editMerchant) {
           this.props.history.push("/list-merchant");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

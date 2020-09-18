@@ -586,17 +586,10 @@ class AddCouponMapping extends React.Component<{
         const addCouponMapping = await CouponAPI.addCouponMappingMapping(obj);
         console.log("addCouponMapping", addCouponMapping);
         if (addCouponMapping) {
-          if (addCouponMapping.status === 200) {
-            const msg = addCouponMapping.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-coupon-map");
-          } else {
-            const msg1 = addCouponMapping.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-coupon-map");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -625,17 +618,10 @@ class AddCouponMapping extends React.Component<{
         const editCouponMapping = await CouponAPI.editCouponMapping(obj);
         console.log("editCouponMapping", editCouponMapping);
         if (editCouponMapping) {
-          if (editCouponMapping.status === 200) {
-            const msg = editCouponMapping.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-coupon-map");
-          } else {
-            const msg1 = editCouponMapping.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-coupon-map");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

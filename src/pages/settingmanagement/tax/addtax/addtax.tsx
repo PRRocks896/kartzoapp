@@ -161,8 +161,8 @@ class AddTax extends React.Component<{ history: any; location: any }> {
         if (addTax) {
           this.props.history.push("/list-tax");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -193,8 +193,8 @@ class AddTax extends React.Component<{ history: any; location: any }> {
         if (updateTax) {
           this.props.history.push("/list-tax");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

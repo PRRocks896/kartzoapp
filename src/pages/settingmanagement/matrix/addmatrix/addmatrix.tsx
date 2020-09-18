@@ -291,17 +291,10 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
         console.log("addMatrix", addMatrix);
 
         if (addMatrix) {
-          if (addMatrix.status === 200) {
-            const msg = addMatrix.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-matrix");
-          } else {
-            const msg1 = addMatrix.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-matrix");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -334,17 +327,10 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
         console.log("editMatrix", editMatrix);
 
         if (editMatrix) {
-          if (editMatrix.status === 200) {
-            const msg = editMatrix.message;
-            utils.showSuccess(msg);
-            this.props.history.push("/list-matrix");
-          } else {
-            const msg1 = editMatrix.message;
-            utils.showError(msg1);
-          }
+          this.props.history.push("/list-matrix");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
