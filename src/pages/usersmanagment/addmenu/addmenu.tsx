@@ -79,7 +79,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     if (getMenuItemById) {
       if (getMenuItemById.status === 200) {
         this.setState({
-          menuid:getMenuItemById.resultObject.menuItemId,
+          menuid:getMenuItemById.resultObject.menuItemID,
           parentid:getMenuItemById.resultObject.parentID,
           menuitemname: getMenuItemById.resultObject.menuItemName,
           menuitemcontoller: getMenuItemById.resultObject.menuItemController ? getMenuItemById.resultObject.menuItemController : 'N/A',

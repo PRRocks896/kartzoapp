@@ -67,12 +67,13 @@ class NavBar extends React.Component {
     localStorage.removeItem("user");
     localStorage.removeItem("merchantToken");
     localStorage.removeItem("rolePreveliges");
+    localStorage.removeItem("menuItems");
     // this.props.history.push('/login');
     window.location.href = "/#/login";
   }
 
   render() {
-    var rightdata: any = localStorage.getItem("rolePreveliges");
+    var rightdata: any = localStorage.getItem("menuItems");
     var user_right = JSON.parse(rightdata);
 
     return (
@@ -132,7 +133,7 @@ class NavBar extends React.Component {
                                   
                                             {
                                                 user_right.map((data:any,index:number) => (
-                                                    data.menuItem === menu.name ? (
+                                                    data.menuItemName === menu.name ? (
                                                         <span key={index} className="header_side">{menu.name}</span>
                                                     ) : ('')
                                                 ))

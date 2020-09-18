@@ -195,8 +195,10 @@ class Login extends React.Component<{ history: any }> {
                 console.log("getRightsData", getRightsData);
                 if(getRightsData) {
                   if(getRightsData.resultObject) {
+                    const menu = getRightsData.resultObject.menuItems;
                     const rights = getRightsData.resultObject.roleprivileges;
                     // console.log("rigths",JSON.stringify(rights));
+                    localStorage.setItem("menuItems", JSON.stringify(menu));
                     localStorage.setItem("rolePreveliges", JSON.stringify(rights));
                   }
                 }
