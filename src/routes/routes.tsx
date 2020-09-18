@@ -103,6 +103,9 @@ import ListProductAddOn from '../pages/productmanagment/listaddon/listaddon';
 import ViewProductCustomise from '../pages/productmanagment/viewcustomise/viewcustomise';
 import NavBar from '../component/navbar/navbar';
 import ViewCouponMapping from '../pages/couponmanagment/viewmapping/viewmapping';
+import ListMenu from '../pages/usersmanagment/menu/listmenu';
+import ViewMenuItem from '../pages/usersmanagment/viewmenu/viewmenu';
+import AddMenu from '../pages/usersmanagment/addmenu/addmenu';
 
 class Main extends React.Component<{history:any}> {
   render() {
@@ -237,6 +240,22 @@ class Main extends React.Component<{history:any}> {
             <Route path='/product-addondetail' render={(props: any) => <AddOnProduct {...props} />} />
             <Route path='/edit-customise/:id' render={(props: any) => <AddOnProduct {...props} />} />
             <Route path='/view-customise/:id' render={(props: any) => <ViewProductCustomise {...props} />} />
+            <Route
+              path="/listmenu"
+              render={(props: any) => <ListMenu {...props} />}
+            />
+            <Route
+              path="/add-menu"
+              render={(props: any) => <AddMenu {...props} />}
+            />
+            <Route
+              path="/edit-menu/:id"
+              render={(props: any) => <AddMenu {...props} />}
+            />
+            <Route
+              path="/view-menu/:id"
+              render={(props: any) => <ViewMenuItem {...props} />}
+            />
             {
                     this.props.history.location.pathname !== '/' ? (
                       <Route path="*" component={Page404}/>

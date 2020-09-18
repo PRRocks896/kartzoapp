@@ -13,6 +13,7 @@ import PayoutAPI from './payout.service';
 import MatrixAPI from './matrix.service';
 import SliderAPI from './slider.service';
 import DeleteAPI from './delete.service';
+import MenuAPI from './menu.service';
 
 export * from './user.service';
 export * from './role.service';
@@ -30,6 +31,7 @@ export * from './matrix.service';
 export * from './slider.service';
 export * from './slider.service';
 export * from './delete.service';
+export * from './menu.service';
 
 
 export {
@@ -47,5 +49,6 @@ export {
     PayoutAPI,
     MatrixAPI,
     SliderAPI,
-    DeleteAPI
+    DeleteAPI,
+    MenuAPI
 }

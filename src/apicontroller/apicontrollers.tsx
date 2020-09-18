@@ -201,6 +201,14 @@ const apiUrl = {
         getsliderlist:'homeslider/',
         deleteSlider:'homeslider/'
     },
+    menuController: {
+        addMenu:'menuitem',
+        getMenu:'menuitem/get-menuitem-list',
+        editMenu:'menuitem/',
+        deleteMenu:'menuitem/',
+        getallmenu:'menuitem/get-menuItem-list-dropdown',
+        getdatabyid:'menuitem/'
+    },
 }
 
 export default apiUrl;

@@ -36,3 +36,4 @@ export * from './merchantModel';
 export * from './sliderModel';
 export * from './payoutModel';
 export * from './deleteAllDataModel';
+export * from './menuModel';

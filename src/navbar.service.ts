@@ -32,6 +32,11 @@ export default {
         url: '/userroletorights',
         type:'simple'
       },
+      {
+        name: 'Menu',
+         icon: 'fa fa-user fs-16',
+        url: '/listmenu'
+      },
       // {
       //   name: 'User',
       //   id: 'usermanagement',

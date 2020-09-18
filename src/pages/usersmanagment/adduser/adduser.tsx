@@ -242,8 +242,11 @@ class AddUser extends React.Component<{ history: any; location: any }> {
       emailerror = "please enter valid email";
     }
 
+    const mobile:any = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
     if (!this.state.mobilenumber) {
       mobilenumbererror = "please enter mobile number";
+    } else if(!mobile.test(this.state.mobilenumber)) {
+      mobilenumbererror = "please enter valid mobile number";
     }
 
     if (!this.state.selectedFile) {
