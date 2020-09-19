@@ -37,38 +37,39 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response: any) => {
     console.log("res", response);
-    if(response.data.status) {
-      if(response.data.status === 200) {
-        if(response.data.message !== null) {
+    if (response.data.status) {
+      if (response.data.status === 200) {
+        if (response.data.message !== null) {
           const msg1 = response.data.message;
-            utils.showSuccess(msg1);
+          utils.showSuccess(msg1);
         }
       } else {
-          const msg1 = response.data.message;
-          utils.showError(msg1);
+        const msg1 = response.data.message;
+        utils.showError(msg1);
       }
     }
     return response;
-      
+
   },
   (err: any) => {
     console.log("err", err.response);
-    if(err.response !== undefined) {
-      if(err.response.data !== null) {
-        if(err.response.data.message && err.response.data.message.length>0 && err.response.data.status === 400) {
+    if (err.response !== undefined) {
+      if (err.response.data !== null) {
+        if (err.response.data.message && err.response.data.message.length > 0 && err.response.data.status === 400) {
           const msg1 = err.response.data.message[0].message;
           utils.showError(msg1);
-        } else if(err.response.data.message &&  err.response.data.message.length>0 && err.response.data.status === 500) {
+        } else if (err.response.data.message && err.response.data.message.length > 0 && err.response.data.status === 500) {
           const msg1 = err.response.data.message[0].message;
           utils.showError(msg1);
-        } else if(err.response.data.status === 415) {
+        } else if (err.response.data.status === 415) {
           const msg1 = err.response.statusText;
           utils.showError(msg1);
-        } else if(err.response.data.status === 404) {
+        } else if (err.response.data.status === 404) {
           const msg1 = err.response.data.message;
           utils.showError(msg1);
         }
-         else if(err.response.data.status === 401) {
+        else if (err.response.data.status === 401 || err.response.status === 401) {
+         
           const users: any = localStorage.getItem("user");
           let user = JSON.parse(users);
           return new Promise(async (resolve, reject) => {
@@ -76,7 +77,7 @@ axios.interceptors.response.use(
             const originalReq = err.config;
             originalReq._retry = true;
             let oldCount = 0;
-      
+
             // if(err.response)
             const data = {
               deviceType: 1,
@@ -85,7 +86,14 @@ axios.interceptors.response.use(
               loginToken: user.token,
               refreshToken: user.refreshToken,
             };
-      
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            localStorage.removeItem("merchantToken");
+            localStorage.removeItem("rolePreveliges");
+            localStorage.removeItem("menuItems");
+            window.location.href = "/#/login";
+
             // let res = axios
             //   .post(constant.apiUrl + "token", data)
             //   .then((res: any) => {
