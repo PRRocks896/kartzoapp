@@ -83,8 +83,8 @@ class ListCoupon extends React.Component<{ history: any }> {
         count: this.state.count = getCoupon.resultObject.totalcount,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -145,8 +145,8 @@ class ListCoupon extends React.Component<{ history: any }> {
       if (deleteAllData) {
         this.getCoupon('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
+        // const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }
@@ -206,8 +206,8 @@ class ListCoupon extends React.Component<{ history: any }> {
        if (getStatusChange) {
         this.getCoupon('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
-        const msg1 = "Internal server error";
-      utils.showError(msg1);
+      //   const msg1 = "Internal server error";
+      // utils.showError(msg1);
       }
     }
   }

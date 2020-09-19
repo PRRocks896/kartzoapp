@@ -176,8 +176,8 @@ class Merchant extends React.Component<{ history: any; location: any }> {
       });
       this.getCityById(this.state.city);
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -193,8 +193,8 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         cityname: this.state.cityname =  getCity.resultObject ? getCity.resultObject.cityName : '',
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -207,8 +207,8 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         citydata: this.state.citydata = getCity.resultObject,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

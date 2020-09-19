@@ -84,8 +84,8 @@ class Profile extends React.Component {
           file: this.state.file = getProfile.resultObject.photoPath
         });
       } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
+        // const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }
@@ -105,8 +105,8 @@ class Profile extends React.Component {
         utils.showError(msg1);
       }
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

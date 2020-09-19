@@ -109,8 +109,8 @@ class AddUser extends React.Component<{ history: any; location: any }> {
           isActive:this.state.isActive = getUserById.resultObject.isActive
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -149,8 +149,8 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         userrole:getUserRole.resultObject,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

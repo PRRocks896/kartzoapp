@@ -6,8 +6,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
   Input,
   Col,
   Form,
@@ -79,8 +77,8 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         statelist: this.state.statelist = getState.resultObject,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -101,8 +99,8 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         isActive: this.state.isActive = getCityById.resultObject.isActive
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

@@ -6,8 +6,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
   Input,
   Col,
   Form,
@@ -22,11 +20,11 @@ import constant from "../../../constant/constant";
 import {
   stateCreateRequest,
   stateUpdateRequest,
-  getDataByIdRequest,
+  getDataByIdRequest,stateStatesRequest
 } from "../../../modelController/index";
 
 class AddState extends React.Component<{ history: any; location: any }> {
-  stateState = constant.statePage.state;
+  stateState : stateStatesRequest = constant.statePage.state;
   state = {
     selectedFile: this.stateState.selectedFile,
     statename: this.stateState.statename,
@@ -111,8 +109,8 @@ class AddState extends React.Component<{ history: any; location: any }> {
         utils.showError(msg1);
       }
     } else {
-      const msg1 = "Internal server error";
-    utils.showError(msg1);
+    //   const msg1 = "Internal server error";
+    // utils.showError(msg1);
     }
   }
 

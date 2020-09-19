@@ -15,12 +15,13 @@ import {
 
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getDataByIdRequest } from "../../../modelController";
+import { addCityStateRequest, getDataByIdRequest } from "../../../modelController";
 
 class ViewCity extends React.Component<{ history: any; location: any }> {
-  state = {
-    statename: "",
-    cityname: "",
+  cityState:addCityStateRequest = constant.cityPage.state;
+  state  = {
+    statename: this.cityState.statename,
+    cityname: this.cityState.cityname,
   };
 
   async componentDidMount() {

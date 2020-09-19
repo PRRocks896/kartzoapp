@@ -11,12 +11,12 @@ import {
   Label,
   Row,
 } from "reactstrap";
-
 import {CouponAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
+import { createCouponStateRequest } from "../../../modelController";
 
 class ViewCoupon extends React.Component<{ history: any; location: any }> {
-  couponState = constant.couponPage.state;
+  couponState : createCouponStateRequest = constant.couponPage.state;
   state = {
     checked: this.couponState.checked,
     couponcode: this.couponState.couponcode,
@@ -95,8 +95,8 @@ class ViewCoupon extends React.Component<{ history: any; location: any }> {
         ),
       });
     } else {
-      const msg1 = "Internal Server";
-      utils.showError(msg1);
+      // const msg1 = "Internal Server";
+      // utils.showError(msg1);
     }
   }
 

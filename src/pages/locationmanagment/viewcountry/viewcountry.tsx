@@ -14,12 +14,13 @@ import {
 
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getDataByIdRequest } from "../../../modelController";
+import { addCountryStateRequest, getDataByIdRequest } from "../../../modelController";
 
 class ViewCountry extends React.Component<{ history: any; location: any }> {
+  countryState:addCountryStateRequest = constant.countryPage.state;
   state = {
-    countryname: "",
-    countrycode: "",
+    countryname: this.countryState.countryname,
+    countrycode: this.countryState.countrycode,
     file: null,
   };
 
@@ -48,8 +49,8 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
         file: this.state.file = getCountryById.resultObject.imagePath,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

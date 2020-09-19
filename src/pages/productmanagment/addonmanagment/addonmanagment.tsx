@@ -90,8 +90,8 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
         addondetails: this.state.addondetails = getCustomiseTypeById.resultObject.addOnDetail
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

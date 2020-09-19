@@ -81,8 +81,8 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
         merchantdata:this.state.merchantdata = getMerchantList.resultObject 
     });
     } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
+        // const msg1 = "Internal server error";
+        // utils.showError(msg1);
     }
     }
  
@@ -108,8 +108,8 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
           this.getMerchantById(this.state.merchant);
       }
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -124,8 +124,8 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
         shopname: this.state.shopname = getMerchantById.resultObject.shopName
     });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -183,8 +183,8 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
         if (addPayout) {
           this.props.history.push("/list-payout");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
@@ -213,8 +213,8 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
         if (editPayout) {
           this.props.history.push("/list-payout");
         } else {
-          const msg1 = "Internal server error";
-          utils.showError(msg1);
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }

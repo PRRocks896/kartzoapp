@@ -13,7 +13,7 @@ import {
   Row,
 } from "reactstrap";
 
-import {RoleAPI, ProductAPI} from "../../../service/index.service";
+import {ProductAPI} from "../../../service/index.service";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import {
@@ -71,8 +71,8 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
         isActive: this.state.isActive = getCustomiseTypeById.resultObject.isActive
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

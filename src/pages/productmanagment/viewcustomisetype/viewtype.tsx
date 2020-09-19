@@ -53,8 +53,8 @@ class ViewProductType extends React.Component<{ history: any; location: any }> {
           getCustomiseTypeById.resultObject.isActive
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

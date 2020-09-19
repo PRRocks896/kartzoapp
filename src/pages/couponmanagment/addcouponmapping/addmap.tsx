@@ -226,8 +226,8 @@ class AddCouponMapping extends React.Component<{
       // }
       // console.log("newUpdatdCouponArray",newUpdatdCouponArray);
     } else {
-      const msg1 = "Internal Server";
-      utils.showError(msg1);
+      // const msg1 = "Internal Server";
+      // utils.showError(msg1);
     }
   }
 
@@ -250,8 +250,8 @@ class AddCouponMapping extends React.Component<{
           getCouponList.resultObject,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -266,8 +266,8 @@ class AddCouponMapping extends React.Component<{
           getMerchantList.resultObject,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

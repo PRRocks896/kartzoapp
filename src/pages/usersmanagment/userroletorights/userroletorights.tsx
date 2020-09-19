@@ -71,8 +71,8 @@ class UserRoleToRights extends React.Component {
         utils.showError(msg1);
       }
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -119,8 +119,8 @@ class UserRoleToRights extends React.Component {
         utils.showError(msg1);
       }
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -309,8 +309,8 @@ class UserRoleToRights extends React.Component {
         utils.showError(msg1);
       }
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

@@ -55,26 +55,21 @@ class ViewPayout extends React.Component<{ history: any; location: any }> {
     console.log("getPayoutById", getPayoutById);
 
     if (getPayoutById) {
-      if (getPayoutById.status === 200) {
-        this.setState({
-          updateTrue: this.state.updateTrue = true,
-          merchant: this.state.merchant = getPayoutById.resultObject.merchantId,
-          commission: this.state.commission = getPayoutById.resultObject.commission,
-          merchantOrderAmount: this.state.merchantOrderAmount =
-            getPayoutById.resultObject.merchantOrderAmount,
-          merchantPayAmount: this.state.merchantPayAmount = getPayoutById.resultObject.merchantPayAmount,
-          payoutId:this.state.payoutId = getPayoutById.resultObject.payoutId
-        });
-        if(this.state.merchant) {
-            this.getMerchantById(this.state.merchant);
-        }
-      } else {
-        const msg1 = getPayoutById.message;
-        utils.showError(msg1);
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        merchant: this.state.merchant = getPayoutById.resultObject.merchantId,
+        commission: this.state.commission = getPayoutById.resultObject.commission,
+        merchantOrderAmount: this.state.merchantOrderAmount =
+          getPayoutById.resultObject.merchantOrderAmount,
+        merchantPayAmount: this.state.merchantPayAmount = getPayoutById.resultObject.merchantPayAmount,
+        payoutId:this.state.payoutId = getPayoutById.resultObject.payoutId
+      });
+      if(this.state.merchant) {
+          this.getMerchantById(this.state.merchant);
       }
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -83,19 +78,14 @@ class ViewPayout extends React.Component<{ history: any; location: any }> {
     console.log("getMerchantById", getMerchantById);
 
     if (getMerchantById) {
-      if (getMerchantById.status === 200) {
-        this.setState({
-            firstname:this.state.firstname = getMerchantById.resultObject.firstName,
-            lastname:this.state.lastname = getMerchantById.resultObject.lastName,
-            shopname: this.state.shopname = getMerchantById.resultObject.shopName
-        });
-      } else {
-        const msg1 = getMerchantById.message;
-        utils.showError(msg1);
-      }
+      this.setState({
+        firstname:this.state.firstname = getMerchantById.resultObject.firstName,
+        lastname:this.state.lastname = getMerchantById.resultObject.lastName,
+        shopname: this.state.shopname = getMerchantById.resultObject.shopName
+    });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

@@ -13,18 +13,18 @@ import {
 } from "reactstrap";
 import { API } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getDataByIdRequest } from "../../../modelController";
+import { addUserModelRequest, getDataByIdRequest } from "../../../modelController";
 import './viewuser.css';
 
 class ViewUser extends React.Component<{ history: any; location: any }> {
+  userState : addUserModelRequest = constant.userPage.state;
   state = {
-    userdata: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
+      firstname: this.userState.firstname,
+      lastname: this.userState.lastname,
+      email: this.userState.email,
+      mobilenumber: this.userState.mobilenumber,
       file: null,
-    },
+   
   };
 
   constructor(props: any) {
@@ -46,17 +46,15 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
     const getUserById: any = await API.getUserById(obj);
     if (getUserById) {
       this.setState({
-        userdata: {
-          firstName: getUserById.resultObject.firstName,
-          lastName: getUserById.resultObject.lastName,
-          email: getUserById.resultObject.email,
-          phone: getUserById.resultObject.phone,
+        firstname: getUserById.resultObject.firstName,
+        lastname: getUserById.resultObject.lastName,
+        email: getUserById.resultObject.email,
+        mobilenumber: getUserById.resultObject.phone,
           file: getUserById.resultObject.photoPath,
-        },
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -102,19 +100,19 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                           <Label htmlFor="first_name">
                             <b>{constant.userPage.userTableColumn.firstname} :</b>
                           </Label>
-                          <span>{this.state.userdata.firstName}</span>
+                          <span>{this.state.firstname}</span>
                           </div>
                           <div>
                           <Label htmlFor="last_name">
                             <b>{constant.userPage.userTableColumn.lastname} :</b>
                           </Label>
-                          <span>{this.state.userdata.lastName}</span>
+                          <span>{this.state.lastname}</span>
                           </div>
                           <div>
                           <Label htmlFor="email">
                             <b>{constant.userPage.userTableColumn.email} :</b>
                           </Label>
-                          <span>{this.state.userdata.email}</span>
+                          <span>{this.state.email}</span>
                           </div>
                           <div>
                           <Label htmlFor="mobile_no">
@@ -122,7 +120,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                               {constant.userPage.userTableColumn.mobilenumber} :
                             </b>
                           </Label>
-                          <span>{this.state.userdata.phone}</span>
+                          <span>{this.state.mobilenumber}</span>
                           </div>
                         </FormGroup>
                       </Col>
@@ -132,11 +130,11 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                             <b>{constant.userPage.userTableColumn.userimage} :</b>
                           </p>
                           <div>
-                            {this.state.userdata.file != null ? (
+                            {this.state.file != null ? (
                               <img
                                 className="user_pic"
                                 src={
-                                  constant.filepath + this.state.userdata.file
+                                  constant.filepath + this.state.file
                                 }
                               />
                             ) : (

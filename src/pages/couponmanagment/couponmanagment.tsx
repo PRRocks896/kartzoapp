@@ -14,18 +14,16 @@ import {
 } from "reactstrap";
 import "./couponmanagment.css";
 import { CouponAPI } from "../../service/index.service";
-import Switch from "react-switch";
 import constant from "../../constant/constant";
 import {
   couponCreateRequest,
   couponUpdateRequest,
+  createCouponStateRequest,
   getDataByIdRequest,
 } from "../../modelController";
-import Slider from "react-rangeslider";
-import "react-rangeslider/lib/index.css";
 
 class Coupon extends React.Component<{ history: any; location: any }> {
-  couponState = constant.couponPage.state;
+  couponState : createCouponStateRequest = constant.couponPage.state;
   state = {
     checked: this.couponState.checked,
     couponcode: this.couponState.couponcode,
@@ -295,16 +293,6 @@ class Coupon extends React.Component<{ history: any; location: any }> {
           minAmountOrder: parseInt(this.state.minamountorder),
         };
         console.log("obj", obj);
-
-        // const obj1 : couponUpdateRequest = {
-        //     couponcode: this.state.couponcode,
-        //     percentage: this.state.percentage,
-        //     discountprice: this.state.discountprice,
-        //     startdate: this.state.startdate,
-        //     enddate: this.state.enddate,
-        //     discription: this.state.discription,
-        //     isByPrice: this.state.isByPrice
-        // }
 
         const addCoupon = await CouponAPI.addCoupon(obj);
         console.log("addCoupon", addCoupon);

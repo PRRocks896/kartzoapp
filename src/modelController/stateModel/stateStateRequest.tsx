@@ -1,0 +1,15 @@
+export interface stateStatesRequest {
+    selectedFile: string,
+    statename: string,
+    statenameerror: string,
+    selectedFileerror: string,
+    file: string,
+    countryid: string,
+    countryiderror: string,
+    stateid: number,
+    countrylist: any,
+    updateTrue: boolean,
+    filetrue: boolean,
+    countryname: string,
+    isActive: boolean,
+}

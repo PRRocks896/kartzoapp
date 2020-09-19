@@ -133,8 +133,8 @@ class ViewMerchant extends React.Component<{
         // file2true: this.state.file2true = getMerchantById.resultObject.
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

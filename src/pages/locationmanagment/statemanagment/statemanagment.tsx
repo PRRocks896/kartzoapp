@@ -82,8 +82,8 @@ class StateManagment extends React.Component<{ history: any }> {
         count: this.state.count = getStateData.resultObject.totalcount,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -144,8 +144,8 @@ class StateManagment extends React.Component<{ history: any }> {
       if (deleteAllData) {
         this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
+        // const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }
@@ -205,8 +205,8 @@ class StateManagment extends React.Component<{ history: any }> {
        if (getStatusChange) {
         this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
-        const msg1 = "Internal server error";
-      utils.showError(msg1);
+      //   const msg1 = "Internal server error";
+      // utils.showError(msg1);
       }
     }
   }

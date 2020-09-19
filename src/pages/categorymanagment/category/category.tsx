@@ -16,7 +16,6 @@ import constant from "../../../constant/constant";
 import {
   getAllTableDataListRequest,
   statusChangeRequest,
-  deleteByIdRequest,
   allStateRequest,
   categoryStateRequest,deleteAllDataRequest
 } from "../../../modelController";
@@ -89,8 +88,8 @@ class Category extends React.Component<{ history: any }> {
         count: this.state.count = getCategory.resultObject.totalcount,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -159,8 +158,8 @@ class Category extends React.Component<{ history: any }> {
           parseInt(this.state.items_per_page)
         );
       } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
+        // const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }
@@ -228,8 +227,8 @@ class Category extends React.Component<{ history: any }> {
           parseInt(this.state.items_per_page)
         );
       } else {
-        const msg1 = "Internal server error";
-      utils.showError(msg1);
+      //   const msg1 = "Internal server error";
+      // utils.showError(msg1);
       }
     }
   }

@@ -60,8 +60,8 @@ class ViewCouponMapping extends React.Component<{ history: any; location: any }>
         merchantname: this.state.merchantname = getCouponMappingById.resultObject.merchant
       });
     } else {
-      const msg1 = "Internal Server";
-      utils.showError(msg1);
+      // const msg1 = "Internal Server";
+      // utils.showError(msg1);
     }
   }
 

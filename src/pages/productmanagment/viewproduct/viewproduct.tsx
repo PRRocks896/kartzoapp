@@ -88,8 +88,8 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
         images: this.state.images = getProductById.resultObject.productImages,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

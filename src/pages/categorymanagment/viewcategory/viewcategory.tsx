@@ -6,9 +6,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
-  Input,
   Col,
   FormGroup,
   Label,
@@ -62,8 +59,8 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
           : "",
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

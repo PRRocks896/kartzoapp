@@ -79,8 +79,8 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
         isActive: this.state.isActive = getRoleById.resultObject.isActive
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

@@ -71,8 +71,8 @@ class AddFee extends React.Component<{ history: any; location: any }> {
         isActive: this.state.isActive = getFeeById.resultObject.isActive
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

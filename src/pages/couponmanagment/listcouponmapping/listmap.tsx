@@ -94,8 +94,8 @@ class ListCouponMap extends React.Component<{ history: any }> {
         utils.showError(msg1);
       }
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -144,8 +144,8 @@ class ListCouponMap extends React.Component<{ history: any }> {
           parseInt(this.state.items_per_page)
         );
       } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
+        // const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }
@@ -205,17 +205,14 @@ class ListCouponMap extends React.Component<{ history: any }> {
       };
       var getStatusChange = await StatusAPI.getStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
-      if (getStatusChange.status === 200) {
-        const msg = getStatusChange.message;
-        utils.showSuccess(msg);
+      if(getStatusChange) {
         this.getCouponMapData(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
       } else {
-        const msg1 = getStatusChange.message;
-        utils.showError(msg1);
+        
       }
     }
   }

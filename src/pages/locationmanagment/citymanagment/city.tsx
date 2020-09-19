@@ -78,8 +78,8 @@ class City extends React.Component<{ history: any }> {
         count: this.state.count = getCityData.resultObject.totalcount,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -140,8 +140,8 @@ class City extends React.Component<{ history: any }> {
       if (deleteAllData) {
         this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
+        // const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }
@@ -202,8 +202,8 @@ class City extends React.Component<{ history: any }> {
        if (getStatusChange) {
         this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
       } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
+        // const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }

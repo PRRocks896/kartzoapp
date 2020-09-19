@@ -60,8 +60,8 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
         matrix: this.state.matrix = getMatrixById.resultObject.fees,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

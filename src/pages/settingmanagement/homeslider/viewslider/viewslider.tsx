@@ -52,19 +52,23 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
     const getSliderDataById: any = await SliderAPI.getSliderDataById(obj);
     console.log("getSliderDataById", getSliderDataById);
 
-    this.setState({
-      productid: this.state.productid =
-        getSliderDataById.resultObject.productId,
-      altertag: this.state.altertag = getSliderDataById.resultObject.alterTag,
-      file: this.state.file = getSliderDataById.resultObject.photoPath,
-      sortorder: this.state.sortorder =
-        getSliderDataById.resultObject.sortOrder,
-      selectedFile: this.state.selectedFile =
-        getSliderDataById.resultObject.photoPath,
-      isActive: this.state.isActive = getSliderDataById.resultObject.isActive,
-      productLink: this.state.productLink =
-        getSliderDataById.resultObject.productLink,
-    });
+    if(getSliderDataById) {
+      this.setState({
+        productid: this.state.productid =
+          getSliderDataById.resultObject.productId,
+        altertag: this.state.altertag = getSliderDataById.resultObject.alterTag,
+        file: this.state.file = getSliderDataById.resultObject.photoPath,
+        sortorder: this.state.sortorder =
+          getSliderDataById.resultObject.sortOrder,
+        selectedFile: this.state.selectedFile =
+          getSliderDataById.resultObject.photoPath,
+        isActive: this.state.isActive = getSliderDataById.resultObject.isActive,
+        productLink: this.state.productLink =
+          getSliderDataById.resultObject.productLink,
+      });
+    } else {
+      
+    }
   }
 
   render() {

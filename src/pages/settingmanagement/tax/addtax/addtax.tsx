@@ -69,9 +69,13 @@ class AddTax extends React.Component<{ history: any; location: any }> {
   async getAllCategory() {
     const getAllCategory = await CategoryAPI.getAllCategory();
     console.log("getAllCategory", getAllCategory);
-    this.setState({
-      categorydata: this.state.categorydata = getAllCategory.resultObject,
-    });
+    if(getAllCategory) {
+      this.setState({
+        categorydata: this.state.categorydata = getAllCategory.resultObject,
+      });
+    } else {
+      
+    }
   }
 
   async getTaxById(taxId: any) {
@@ -81,15 +85,19 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     const getTaxById: any = await TaxAPI.getTaxById(obj);
     console.log("getTaxById", getTaxById);
 
-    this.setState({
-      updateTrue: this.state.updateTrue = true,
-      categoryname: this.state.categoryname =
-        getTaxById.resultObject.categoryName,
-      taxId: this.state.taxId = getTaxById.resultObject.taxId,
-      taxName: this.state.taxName = getTaxById.resultObject.taxName,
-      percentage: this.state.percentage = getTaxById.resultObject.percentage,
-      isActive: this.state.isActive = getTaxById.resultObject.isActive,
-    });
+    if(getTaxById) {
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        categoryname: this.state.categoryname =
+          getTaxById.resultObject.categoryName,
+        taxId: this.state.taxId = getTaxById.resultObject.taxId,
+        taxName: this.state.taxName = getTaxById.resultObject.taxName,
+        percentage: this.state.percentage = getTaxById.resultObject.percentage,
+        isActive: this.state.isActive = getTaxById.resultObject.isActive,
+      });
+    } else {
+
+    }
   }
 
   onItemSelect(event: any) {

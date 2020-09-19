@@ -150,8 +150,8 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
           getProductById.resultObject.productImages,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

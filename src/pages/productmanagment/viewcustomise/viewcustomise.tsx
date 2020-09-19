@@ -62,8 +62,8 @@ class ViewProductCustomise extends React.Component<{
           getCustomiseTypeById.resultObject.addOnDetail,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

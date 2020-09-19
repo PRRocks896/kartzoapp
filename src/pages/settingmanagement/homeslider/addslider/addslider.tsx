@@ -6,8 +6,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
   Input,
   Form,
   CustomInput,
@@ -91,21 +89,24 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
       };
       const getSliderDataById: any = await SliderAPI.getSliderDataById(obj);
       console.log("getSliderDataById", getSliderDataById);
-
-      this.setState({
-        updateTrue: this.state.updateTrue = true,
-        filetrue: this.state.filetrue = true,
-        productid: this.state.productid =
-          getSliderDataById.resultObject.productId,
-        altertag: this.state.altertag =
-          getSliderDataById.resultObject.alterTag,
-        file: this.state.file = getSliderDataById.resultObject.photoPath,
-        sortorder: this.state.sortorder =
-          getSliderDataById.resultObject.sortOrder,
-        selectedFile: this.state.selectedFile =
-          getSliderDataById.resultObject.photoPath,
-          isActive: this.state.isActive = getSliderDataById.resultObject.isActive
-      });
+      if(getSliderDataById) {
+        this.setState({
+          updateTrue: this.state.updateTrue = true,
+          filetrue: this.state.filetrue = true,
+          productid: this.state.productid =
+            getSliderDataById.resultObject.productId,
+          altertag: this.state.altertag =
+            getSliderDataById.resultObject.alterTag,
+          file: this.state.file = getSliderDataById.resultObject.photoPath,
+          sortorder: this.state.sortorder =
+            getSliderDataById.resultObject.sortOrder,
+          selectedFile: this.state.selectedFile =
+            getSliderDataById.resultObject.photoPath,
+            isActive: this.state.isActive = getSliderDataById.resultObject.isActive
+        });
+      } else {
+        
+      }
     }
 
   onItemSelect(event: any) {

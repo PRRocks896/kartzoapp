@@ -14,12 +14,13 @@ import {
 } from "reactstrap";
 import {LocationAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getDataByIdRequest } from "../../../modelController";
+import { getDataByIdRequest, stateStatesRequest } from "../../../modelController";
 
 class ViewState extends React.Component<{ history: any; location: any }> {
+  stateState : stateStatesRequest = constant.statePage.state;
   state = {
-    statename: "",
-    countryname: "",
+    statename: this.stateState.statename,
+    countryname: this.stateState.countryname,
   };
 
   async componentDidMount() {
@@ -46,8 +47,8 @@ class ViewState extends React.Component<{ history: any; location: any }> {
           getStateById.resultObject.stateName,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

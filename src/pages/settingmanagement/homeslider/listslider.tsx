@@ -88,8 +88,8 @@ class ListSlider extends React.Component<{ history: any }> {
         count: this.state.count = getSliderData.resultObject.totalcount,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -158,8 +158,8 @@ class ListSlider extends React.Component<{ history: any }> {
           parseInt(this.state.items_per_page)
         );
       } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
+        // const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }
@@ -223,8 +223,8 @@ class ListSlider extends React.Component<{ history: any }> {
       if (getStatusChange) {
         this.getSliderData();
       } else {
-        const msg1 = "Internal server error";
-        utils.showError(msg1);
+        // const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }

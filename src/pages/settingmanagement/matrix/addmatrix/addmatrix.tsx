@@ -120,8 +120,8 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
         });
       }
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -139,8 +139,8 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
         feedata: this.state.feedata = getFee.resultObject,
       });
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 

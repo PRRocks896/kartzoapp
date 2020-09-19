@@ -10,15 +10,19 @@ import {
   Label,
   Input,
 } from "reactstrap";
-import utils from "../../utils";
 import "./resetpassword.css";
 import constant from '../../constant/constant';
 import {
   resetPasswordRequest,
 } from "../../modelController";
 
+interface resetPasswordState {
+  password:string,
+  passwordError:string
+}
+
 class ResetPassword extends React.Component<{ location: any; history: any }> {
-  state = {
+  state : resetPasswordState = {
     password: "",
     passwordError: "",
   };
