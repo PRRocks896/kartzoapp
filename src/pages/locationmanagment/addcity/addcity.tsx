@@ -267,12 +267,9 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                               id="exampleCustomSelect"
                               name="customSelect"
                               onChange={this.onItemSelect}
+                              value={this.state.stateid ? this.state.stateid : ''}
                             >
-                              {this.state.updateTrue === true ? (
-                                <>
-                                  <option value="">
-                                    {this.state.statename}
-                                  </option>
+                               <option value="">{constant.cityPage.cityTableColumn.selectstate}</option>
                                   {this.state.statelist.length > 0
                                     ? this.state.statelist.map(
                                         (data: any, index: any) => (
@@ -285,24 +282,6 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                                         )
                                       )
                                     : ""}
-                                </>
-                              ) : (
-                                <>
-                                  <option value="">{constant.cityPage.cityTableColumn.selectstate}</option>
-                                  {this.state.statelist.length > 0
-                                    ? this.state.statelist.map(
-                                        (data: any, index: any) => (
-                                          <option
-                                            key={index}
-                                            value={data.value}
-                                          >
-                                            {data.name}
-                                          </option>
-                                        )
-                                      )
-                                    : ""}
-                                </>
-                              )}
                             </CustomInput>
                             <div className="mb-4 text-danger">
                               {this.state.stateiderror}

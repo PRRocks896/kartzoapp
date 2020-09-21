@@ -33,12 +33,22 @@ class ChangePassword extends Component<{ history: any }> {
   constructor(props: any) {
     super(props);
     this.ChangePassword = this.ChangePassword.bind(this);
+    this.resetForm = this.resetForm.bind(this);
+    this.handleChangeEvent = this.handleChangeEvent.bind(this);
   }
 
   async componentDidMount() {
     let userid: any = localStorage.getItem("user");
     this.state.userid = JSON.parse(userid).userID;
     document.title = constant.changepassword + utils.getAppName();
+  }
+
+  resetForm(){
+    this.setState({
+      oldpassword: this.state.oldpassword = '',
+      newpassword: this.state.newpassword = '',
+      confirmpassword: this.state.confirmpassword = ''
+    })
   }
 
   validate() {
@@ -69,6 +79,13 @@ class ChangePassword extends Component<{ history: any }> {
     return true;
   }
 
+  handleChangeEvent(event: any) {
+    event.preventDefault();
+    const state: any = this.state;
+    state[event.target.name] = event.target.value;
+    this.setState(state);
+  }
+
   async ChangePassword() {
     const isValid = this.validate();
     if (isValid) {
@@ -93,9 +110,11 @@ class ChangePassword extends Component<{ history: any }> {
           // utils.showError(msg1);
         }
       } else if (this.state.newpassword !== this.state.confirmpassword) {
+        this.resetForm();
         const msg1 = constant.alertMsg.msg;
         utils.showError(msg1);
       } else if (this.state.oldpassword === this.state.newpassword) {
+        this.resetForm();
         const msg1 = constant.alertMsg.newmsg;
         utils.showError(msg1);
       } else {
@@ -129,11 +148,8 @@ class ChangePassword extends Component<{ history: any }> {
                           id="oldpassword"
                           name="oldpassword"
                           className="form-control"
-                          onChange={(e) => this.setState({
-                            oldpassword: e.target.value
-                          })
-                            // (this.state.oldpassword = e.target.value)
-                          }
+                          value={this.state.oldpassword}
+                          onChange={this.handleChangeEvent}
                           placeholder="Enter your Old Password"
                           required
                         />
@@ -154,9 +170,8 @@ class ChangePassword extends Component<{ history: any }> {
                           id="newpassword"
                           name="newpassword"
                           className="form-control"
-                          onChange={(e) =>
-                            (this.state.newpassword = e.target.value)
-                          }
+                          value={this.state.newpassword}
+                          onChange={this.handleChangeEvent}
                           placeholder="Enter your New Password"
                           required
                         />
@@ -177,9 +192,8 @@ class ChangePassword extends Component<{ history: any }> {
                           id="confirmpassword"
                           name="confirmpassword"
                           className="form-control"
-                          onChange={(e) =>
-                            (this.state.confirmpassword = e.target.value)
-                          }
+                          value={this.state.confirmpassword}
+                          onChange={this.handleChangeEvent}
                           placeholder="Enter your Confirm Password"
                           required
                         />

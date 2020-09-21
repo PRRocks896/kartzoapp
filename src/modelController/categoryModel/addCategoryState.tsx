@@ -12,5 +12,6 @@ export interface addCategoryStateRequest {
     selectcategory: string,
     selectcategoryerror: string,
     parentCategory: string,
+    parentCategoryId:string,
     isActive: boolean,
 }

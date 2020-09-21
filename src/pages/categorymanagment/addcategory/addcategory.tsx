@@ -14,12 +14,12 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import {CategoryAPI} from "../../../service/index.service";
+import { CategoryAPI } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getDataByIdRequest, addCategoryStateRequest } from "../../../modelController";
 
 class AddCategory extends React.Component<{ history: any; location: any }> {
-  categoryState:addCategoryStateRequest = constant.categoryPage.state;
+  categoryState: addCategoryStateRequest = constant.categoryPage.state;
   state = {
     selectedFile: this.categoryState.selectedFile,
     file: this.categoryState.file,
@@ -34,6 +34,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     selectcategory: this.categoryState.selectcategory,
     selectcategoryerror: this.categoryState.selectcategoryerror,
     parentCategory: this.categoryState.parentCategory,
+    parentCategoryId: this.categoryState.parentCategoryId,
     isActive: this.categoryState.isActive
   };
 
@@ -76,7 +77,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
   }
 
   async getCategoryById(categoryId: any) {
-    const obj:getDataByIdRequest = {
+    const obj: getDataByIdRequest = {
       id: categoryId
     };
     const getCategoryById: any = await CategoryAPI.getCategoryById(obj);
@@ -95,9 +96,10 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
           getCategoryById.resultObject.sortOrder,
         parentCategory: this.state.parentCategory =
           getCategoryById.resultObject.parentCategory,
+        selectcategory: this.state.selectcategory = getCategoryById.resultObject.parentCategoryId,
         selectedFile: this.state.selectedFile =
           getCategoryById.resultObject.imagePath,
-          isActive: this.state.isActive = getCategoryById.resultObject.isActive
+        isActive: this.state.isActive = getCategoryById.resultObject.isActive
       });
     } else {
       const msg1 = getCategoryById.message;
@@ -107,16 +109,16 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
 
   onItemSelect(event: any) {
     this.setState({
-      selectcategory: 
-        event.target.options[event.target.selectedIndex].value,
+      selectcategory:
+        event.target.value,
     });
   }
 
   onChangeHandler(event: any) {
     if (this.state.filetrue === true) {
       this.setState({
-        filetrue:  false,
-        selectedFile:  event.target.files,
+        filetrue: false,
+        selectedFile: event.target.files,
       });
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
@@ -127,7 +129,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
       };
     } else {
       this.setState({
-        selectedFile:event.target.files,
+        selectedFile: event.target.files,
       });
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
@@ -179,7 +181,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("parentCategoryId", this.state.selectcategory);
         formData.append("sortOrder", this.state.sortorder.toString());
-        formData.append("files",this.state.selectedFile?this.state.selectedFile[0]:'');
+        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
 
         const addCategory = await CategoryAPI.addCategory(formData);
         console.log("addCategory", addCategory);
@@ -207,7 +209,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("parentCategoryId", this.state.selectcategory);
         formData.append("sortOrder", this.state.sortorder.toString());
-        formData.append("files", this.state.selectedFile?this.state.selectedFile[0]:'');
+        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
         const editCategory = await CategoryAPI.editCategory(
           formData,
           this.state.categoryid.toString()
@@ -244,10 +246,10 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                           <h1>{constant.categoryPage.title.updateCategoryTitle}</h1>
                         </Col>
                       ) : (
-                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.categoryPage.title.addCategoryTitle}</h1>
-                        </Col>
-                      )}
+                          <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                            <h1>{constant.categoryPage.title.addCategoryTitle}</h1>
+                          </Col>
+                        )}
 
                       <Col
                         xs="12"
@@ -255,7 +257,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                       className="search_right"
+                        className="search_right"
                       >
                         <Link to="/category">
                           <Button
@@ -308,44 +310,23 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                               id="exampleCustomSelect"
                               name="customSelect"
                               onChange={this.onItemSelect}
+                              value={this.state.selectcategory ? this.state.selectcategory : ''}
                             >
-                              {this.state.parentCategory !== "" ? (
-                                <>
-                                  <option value="">
-                                    {this.state.parentCategory}
-                                  </option>
-                                  {this.state.categorylist.length > 0
-                                    ? this.state.categorylist.map(
-                                        (data: any, index: any) => (
-                                          <option
-                                            key={index}
-                                            value={data.value}
-                                          >
-                                            {data.name}
-                                          </option>
-                                        )
-                                      )
-                                    : ""}
-                                </>
-                              ) : (
-                                <>
-                                  <option value="">
-                                  {constant.categoryPage.caetgoryTableColumn.selectparentcategory}
-                                  </option>
-                                  {this.state.categorylist.length > 0
-                                    ? this.state.categorylist.map(
-                                        (data: any, index: any) => (
-                                          <option
-                                            key={index}
-                                            value={data.value}
-                                          >
-                                            {data.name}
-                                          </option>
-                                        )
-                                      )
-                                    : ""}
-                                </>
-                              )}
+                              <option value="">
+                                {constant.categoryPage.caetgoryTableColumn.selectparentcategory}
+                              </option>
+                              {this.state.categorylist.length > 0
+                                ? this.state.categorylist.map(
+                                  (data: any, index: any) => (
+                                    <option
+                                      key={index}
+                                      value={data.value}
+                                    >
+                                      {data.name}
+                                    </option>
+                                  )
+                                )
+                                : ""}
                             </CustomInput>
                             <div className="mb-4 text-danger">
                               {this.state.selectcategoryerror}
@@ -357,7 +338,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup>
-                                        <Label htmlFor="category_name">{constant.categoryPage.caetgoryTableColumn.sortorder}</Label>
+                          <Label htmlFor="category_name">{constant.categoryPage.caetgoryTableColumn.sortorder}</Label>
                           <Input
                             type="number"
                             id="sortnumber"
@@ -384,11 +365,11 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                                       src={constant.filepath + this.state.file}
                                     />
                                   ) : (
-                                    <img
-                                      className="picture"
-                                      src={this.state.file}
-                                    />
-                                  )}
+                                      <img
+                                        className="picture"
+                                        src={this.state.file}
+                                      />
+                                    )}
                                   <i
                                     className="fa fa-times cursor"
                                     onClick={() => this.removeIcon()}
@@ -397,23 +378,23 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                               ) : null}
                             </div>
                           ) : (
-                            <div className="">
-                              <p style={{ fontSize: "16px" }}>{constant.categoryPage.caetgoryTableColumn.image}</p>
-                              <Label className="imag" for="file-input">
-                                <i
-                                  className="fa fa-upload fa-lg"
-                                  style={{ color: "#20a8d8" }}
-                                ></i>
-                              </Label>
-                              <Input
-                                id="file-input"
-                                type="file"
-                                className="form-control"
-                                name="file"
-                                onChange={this.onChangeHandler.bind(this)}
-                              />
-                            </div>
-                          )}
+                              <div className="">
+                                <p style={{ fontSize: "16px" }}>{constant.categoryPage.caetgoryTableColumn.image}</p>
+                                <Label className="imag" for="file-input">
+                                  <i
+                                    className="fa fa-upload fa-lg"
+                                    style={{ color: "#20a8d8" }}
+                                  ></i>
+                                </Label>
+                                <Input
+                                  id="file-input"
+                                  type="file"
+                                  className="form-control"
+                                  name="file"
+                                  onChange={this.onChangeHandler.bind(this)}
+                                />
+                              </div>
+                            )}
                           <div className="text-danger">
                             {this.state.selectedFileerror}
                           </div>
@@ -431,16 +412,16 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                         {constant.button.update}
                       </Button>
                     ) : (
-                      <Button
-                        type="button"
-                        size="sm"
-                        color="primary"
-                        className="mb-2 mr-2 custom-button"
-                        onClick={this.addCategory}
-                      >
-                        {constant.button.Save}
-                      </Button>
-                    )}
+                        <Button
+                          type="button"
+                          size="sm"
+                          color="primary"
+                          className="mb-2 mr-2 custom-button"
+                          onClick={this.addCategory}
+                        >
+                          {constant.button.Save}
+                        </Button>
+                      )}
                   </CardBody>
                 </Card>
               </Col>

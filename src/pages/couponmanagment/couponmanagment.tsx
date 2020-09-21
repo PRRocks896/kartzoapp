@@ -188,7 +188,6 @@ class Coupon extends React.Component<{ history: any; location: any }> {
 
   validate() {
     let couponcodeerror = "";
-    let percentageerror = "";
     let discountpriceerror = "";
     let startdateerror = "";
     let enddateerror = "";
@@ -199,12 +198,9 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     if (!this.state.couponcode) {
       couponcodeerror = "please enter coupon code";
     }
-    if (!this.state.percentage) {
-      percentageerror = "please enter percentage";
-    }
 
     if (!this.state.discountprice) {
-      discountpriceerror = "please enter discount price";
+      discountpriceerror = "please enter selling price";
     }
 
     if (!this.state.startdate) {
@@ -229,7 +225,6 @@ class Coupon extends React.Component<{ history: any; location: any }> {
 
     if (
       couponcodeerror ||
-      percentageerror ||
       discountpriceerror ||
       startdateerror ||
       enddateerror ||
@@ -239,7 +234,6 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     ) {
       this.setState({
         couponcodeerror,
-        percentageerror,
         discountpriceerror,
         startdateerror,
         enddateerror,
@@ -264,7 +258,6 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     if (isValid) {
       this.setState({
         couponcodeerror: "",
-        percentageerror: "",
         discountpriceerror: "",
         startdateerror: "",
         enddateerror: "",
@@ -274,7 +267,6 @@ class Coupon extends React.Component<{ history: any; location: any }> {
       });
       if (
         this.state.couponcode &&
-        this.state.percentage &&
         this.state.minamountorder &&
         this.state.title &&
         this.state.discountprice &&
@@ -311,7 +303,6 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     if (isValid) {
       this.setState({
         couponcodeerror: "",
-        percentageerror: "",
         discountpriceerror: "",
         startdateerror: "",
         enddateerror: "",
@@ -321,7 +312,6 @@ class Coupon extends React.Component<{ history: any; location: any }> {
       });
       if (
         this.state.couponcode &&
-        this.state.percentage &&
         this.state.minamountorder &&
         this.state.title &&
         this.state.discountprice &&

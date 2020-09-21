@@ -123,7 +123,7 @@ class ViewProductType extends React.Component<{ history: any; location: any }> {
                               }
                             </b>
                           </Label>
-                          <p>{this.state.isActive}</p>
+                          <p>{this.state.isActive === true ? 'True' : 'False'}</p>
                         </FormGroup>
                       </Col>
                     </Row>

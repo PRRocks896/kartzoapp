@@ -247,14 +247,14 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     var regex = /^[0-9]+$/;
     if (!this.state.price) {
       priceerror = "please enter price";
-    } else if(!regex.test(this.state.price)) {
+    } else if(!regex.test(this.state.price.toString())) {
       priceerror = "please enter valid price";
     }
 
     var regex1 = /^[0-9]+$/;
     if (!this.state.discountprice) {
       discountpriceerror = "please enter discount price";
-    } else if(!regex1.test(this.state.discountprice)) {
+    } else if(!regex1.test(this.state.discountprice.toString())) {
       discountpriceerror = "please enter valid discount price";
     }
 
@@ -305,9 +305,9 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         formData.append("MerchantId", this.state.merchantid);
         formData.append("CategoryId", this.state.maincategoryid);
         formData.append("ProductName", this.state.productname);
-        formData.append("Price", this.state.price);
+        formData.append("Price", this.state.price.toString());
         formData.append("ProductDesc", this.state.productdescription);
-        formData.append("DiscountPrice", this.state.discountprice);
+        formData.append("DiscountPrice", this.state.discountprice.toString());
         formData.append(
           "IsFeatured",
           new Boolean(this.state.isFeatured).toString()
@@ -316,7 +316,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         formData.append("MetaDescription", this.state.metadiscription);
         formData.append("MetaKeyword", this.state.metakeyword);
         formData.append("IsActive", "true");
-        formData.append("SortOrder", this.state.sortorder);
+        formData.append("SortOrder", this.state.sortorder.toString());
         this.state.images.map((image: any, index: number) =>
           formData.append("Images", image)
         );
@@ -356,9 +356,9 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         formData.append("MerchantId", this.state.merchantid);
         formData.append("CategoryId", this.state.maincategoryid);
         formData.append("ProductName", this.state.productname);
-        formData.append("Price", this.state.price);
+        formData.append("Price", this.state.price.toString());
         formData.append("ProductDesc", this.state.productdescription);
-        formData.append("DiscountPrice", this.state.discountprice);
+        formData.append("DiscountPrice", this.state.discountprice.toString());
         formData.append(
           "IsFeatured",
           new Boolean(this.state.isFeatured).toString()
@@ -367,13 +367,14 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         formData.append("MetaDescription", this.state.metadiscription);
         formData.append("MetaKeyword", this.state.metakeyword);
         formData.append("IsActive", "true");
-        formData.append("SortOrder", this.state.sortorder);
+        formData.append("SortOrder", this.state.sortorder.toString());
         if (this.state.newImageUpdatedArray && this.state.newImageUpdatedArray.length > 0) {
           this.state.newImageUpdatedArray.map((image: any) =>
             formData.append("ProductImages", image)
           );
         } else {
-          formData.append("ProductImages", '')
+          // const blankArray2:any = []
+          // formData.append("ProductImages", JSON.stringify(blankArray2))
         }
         if (this.state.images && this.state.images.length > 0) {
           this.state.images.map((image: any, index: number) =>
@@ -633,7 +634,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
                             name="sortorder"
                             className="form-control"
                             value={
-                              this.state.sortorder ? this.state.sortorder : ""
+                              this.state.sortorder
                             }
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your sort order"

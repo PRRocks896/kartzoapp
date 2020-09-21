@@ -94,6 +94,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
         taxName: this.state.taxName = getTaxById.resultObject.taxName,
         percentage: this.state.percentage = getTaxById.resultObject.percentage,
         isActive: this.state.isActive = getTaxById.resultObject.isActive,
+        mainCategoryId: this.state.mainCategoryId = getTaxById.resultObject.mainCategoryId
       });
     } else {
 
@@ -103,7 +104,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
   onItemSelect(event: any) {
     this.setState({
       mainCategoryId: this.state.mainCategoryId =
-        event.target.options[event.target.selectedIndex].value,
+        event.target.value,
     });
   }
 
@@ -162,6 +163,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
           mainCategoryId: parseInt(this.state.mainCategoryId),
           taxName: this.state.taxName,
           percentage: parseInt(this.state.percentage),
+          isActive: this.state.isActive
         };
 
         const addTax = await TaxAPI.addTax(obj);
@@ -194,6 +196,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
           mainCategoryId: parseInt(this.state.mainCategoryId),
           taxName: this.state.taxName,
           percentage: parseInt(this.state.percentage),
+          isActive: this.state.isActive
         };
 
         const updateTax = await TaxAPI.updateTax(obj);
@@ -262,28 +265,9 @@ class AddTax extends React.Component<{ history: any; location: any }> {
                               id="exampleCustomSelect"
                               name="customSelect"
                               onChange={this.onItemSelect}
+                              value={this.state.mainCategoryId ? this.state.mainCategoryId : ''}
                             >
-                              {this.state.updateTrue === true ? (
-                                <>
-                                  <option value="">
-                                    {this.state.categoryname}
-                                  </option>
-                                  {this.state.categorydata.length > 0
-                                    ? this.state.categorydata.map(
-                                        (data: any, index: any) => (
-                                          <option
-                                            key={index}
-                                            value={data.value}
-                                          >
-                                            {data.name}
-                                          </option>
-                                        )
-                                      )
-                                    : ""}
-                                </>
-                              ) : (
-                                <>
-                                  <option value="">
+                              <option value="">
                                     {constant.taxPage.taxTableColumn.category}
                                   </option>
                                   {this.state.categorydata.length > 0
@@ -298,8 +282,6 @@ class AddTax extends React.Component<{ history: any; location: any }> {
                                         )
                                       )
                                     : ""}
-                                </>
-                              )}
                               <option value="">
                                 {constant.taxPage.taxTableColumn.category}
                               </option>
