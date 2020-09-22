@@ -637,7 +637,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
 
   removeIcon() {
     this.setState({
-      file: this.state.file = "",
+      file: this.state.file = '',
     });
   }
 
