@@ -68,6 +68,7 @@ class ViewCoupon extends React.Component<{ history: any; location: any }> {
     console.log("getCouponById", getCouponById);
 
     if (getCouponById) {
+      if (getCouponById.status === 200) {
       this.setState({
         couponcode: this.state.couponcode =
           getCouponById.resultObject.couponCode,
@@ -94,6 +95,10 @@ class ViewCoupon extends React.Component<{ history: any; location: any }> {
           this.state.enddate
         ),
       });
+    } else {
+      const msg1 = getCouponById.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal Server";
       // utils.showError(msg1);

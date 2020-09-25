@@ -81,6 +81,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
     console.log("getCustomiseTypeById", getCustomiseTypeById);
 
     if (getCustomiseTypeById) {
+      if(getCustomiseTypeById.status === 200) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         productid: this.state.productid = getCustomiseTypeById.resultObject.productId,
@@ -89,6 +90,10 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
         amount:this.state.amount = getCustomiseTypeById.resultObject.amount,
         addondetails: this.state.addondetails = getCustomiseTypeById.resultObject.addOnDetail
       });
+    } else {
+      const msg1 = getCustomiseTypeById.message;
+        utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -102,18 +107,32 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
   async getAllProduct() {
     const getAllProduct = await ProductAPI.getAllProduct();
     console.log("getAllProduct", getAllProduct);
-    this.setState({
-      productdata: this.state.productdata = getAllProduct.resultObject,
-    });
+    if(getAllProduct) {
+      if(getAllProduct.status === 200) {
+      this.setState({
+        productdata: this.state.productdata = getAllProduct.resultObject,
+      });
+    } else {
+      const msg1 = getAllProduct.message;
+        utils.showError(msg1);
+    }
+    }
   }
 
   async getAllProductType() {
     const getAllProductType = await ProductAPI.getAllProductTypeType();
     console.log("getAllProductType", getAllProductType);
-    this.setState({
-      productdatatype: this.state.productdatatype =
-        getAllProductType.resultObject,
-    });
+    if(getAllProductType){
+      if(getAllProductType.status === 200) {
+      this.setState({
+        productdatatype: this.state.productdatatype =
+          getAllProductType.resultObject,
+      });
+    } else {
+      const msg1 = getAllProductType.message;
+        utils.showError(msg1);
+    }
+    }
   }
 
   onProductSelect(event: any) {
@@ -205,7 +224,14 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
           console.log("addOnProduct",addOnProduct);
 
           if (addOnProduct) {
+            if(addOnProduct.status === 200) {
+              const msg1 = addOnProduct.message;
+              utils.showSuccess(msg1);
             this.props.history.push("/list-product-customise");
+          } else {
+            const msg1 = addOnProduct.message;
+            utils.showError(msg1);
+          }
           } else {
             // const msg1 = "Internal server error";
             // utils.showError(msg1);
@@ -237,7 +263,14 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
             console.log("editaddOnProduct",editaddOnProduct);
   
             if (editaddOnProduct) {
+              if(editaddOnProduct.status === 200) {
+                const msg1 = editaddOnProduct.message;
+                utils.showSuccess(msg1);
               this.props.history.push("/list-product-customise");
+            } else {
+              const msg1 = editaddOnProduct.message;
+              utils.showError(msg1);
+            }
             } else {
               // const msg1 = "Internal server error";
               // utils.showError(msg1);

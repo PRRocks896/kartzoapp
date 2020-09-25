@@ -54,11 +54,16 @@ class ViewCouponMapping extends React.Component<{ history: any; location: any }>
     console.log("getCouponMappingById", getCouponMappingById);
 
     if (getCouponMappingById) {
+      if (getCouponMappingById.status === 200) {
       this.setState({
         offername: this.state.offername = getCouponMappingById.resultObject.offerName,
         couponname: this.state.couponname = getCouponMappingById.resultObject.coupon,
         merchantname: this.state.merchantname = getCouponMappingById.resultObject.merchant
       });
+    } else {
+      const msg1 = getCouponMappingById.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal Server";
       // utils.showError(msg1);

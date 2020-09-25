@@ -77,9 +77,14 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     const getMerchantList: any = await MerchantAPI.getMerchantList();
     console.log("getMerchantList", getMerchantList);
     if (getMerchantList) {
+      if(getMerchantList.status === 200) {
       this.setState({
         merchantdata:this.state.merchantdata = getMerchantList.resultObject 
     });
+  } else {
+    const msg1 = getMerchantList.message;
+    utils.showError(msg1);
+  }
     } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -95,6 +100,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     console.log("getPayoutById", getPayoutById);
 
     if (getPayoutById) {
+      if(getPayoutById.status === 200) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         merchant: this.state.merchant = getPayoutById.resultObject.merchantId,
@@ -107,6 +113,10 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
       if(this.state.merchant) {
           this.getMerchantById(this.state.merchant);
       }
+    }  else {
+      const msg1 = getPayoutById.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -118,11 +128,16 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     console.log("getMerchantById", getMerchantById);
 
     if (getMerchantById) {
+      if(getMerchantById.status === 200) {
       this.setState({
         firstname:this.state.firstname = getMerchantById.resultObject.firstName,
         lastname:this.state.lastname = getMerchantById.resultObject.lastName,
         shopname: this.state.shopname = getMerchantById.resultObject.shopName
     });
+  }  else {
+    const msg1 = getMerchantById.message;
+    utils.showError(msg1);
+  }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -181,7 +196,14 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
         console.log("addPayout", addPayout);
 
         if (addPayout) {
+          if(addPayout.status === 200) {
+            const msg1 = addPayout.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-payout");
+        } else {
+          const msg1 = addPayout.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -211,7 +233,14 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
         console.log("editPayout", editPayout);
 
         if (editPayout) {
+          if(editPayout.status === 200) {
+            const msg1 = editPayout.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-payout");
+        } else {
+          const msg1 = editPayout.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

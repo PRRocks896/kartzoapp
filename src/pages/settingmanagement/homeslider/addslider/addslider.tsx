@@ -21,7 +21,7 @@ import constant from "../../../../constant/constant";
 import { addSliderStateRequest } from "../../../../modelController/sliderModel";
 
 class AddSlider extends React.Component<{ history: any; location: any }> {
-  sliderState : addSliderStateRequest = constant.homesliderPage.state;
+  sliderState: addSliderStateRequest = constant.homesliderPage.state;
   state = {
     selectedFile: this.sliderState.selectedFile,
     selectedFileerror: this.sliderState.selectedFile,
@@ -55,10 +55,10 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     this.getAllProduct();
     const sliderId = this.props.location.pathname.split("/")[2];
     if (sliderId !== undefined) {
-        this.getSliderById(sliderId);
+      this.getSliderById(sliderId);
       this.setState({
         updateTrue: this.state.updateTrue = true,
-        sliderid:this.state.sliderid = sliderId
+        sliderid: this.state.sliderid = sliderId
       });
     }
     if (this.state.updateTrue === true) {
@@ -78,36 +78,51 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
   async getAllProduct() {
     const getAllProduct = await ProductAPI.getAllProduct();
     console.log("getAllProduct", getAllProduct);
-    this.setState({
-      productdata: this.state.productdata = getAllProduct.resultObject,
-    });
-  }
-
-    async getSliderById(categoryId: any) {
-      const obj = {
-        id: categoryId
-      };
-      const getSliderDataById: any = await SliderAPI.getSliderDataById(obj);
-      console.log("getSliderDataById", getSliderDataById);
-      if(getSliderDataById) {
+    if (getAllProduct) {
+      if (getAllProduct.status === 200) {
         this.setState({
-          updateTrue: this.state.updateTrue = true,
-          filetrue: this.state.filetrue = true,
-          productid: this.state.productid =
-            getSliderDataById.resultObject.productId,
-          altertag: this.state.altertag =
-            getSliderDataById.resultObject.alterTag,
-          file: this.state.file = getSliderDataById.resultObject.photoPath,
-          sortorder: this.state.sortorder =
-            getSliderDataById.resultObject.sortOrder,
-          selectedFile: this.state.selectedFile =
-            getSliderDataById.resultObject.photoPath,
-            isActive: this.state.isActive = getSliderDataById.resultObject.isActive
+          productdata: this.state.productdata = getAllProduct.resultObject,
         });
       } else {
-        
+        const msg1 = getAllProduct.message;
+        utils.showSuccess(msg1);
       }
+
+    } else {
+
     }
+  }
+
+  async getSliderById(categoryId: any) {
+    const obj = {
+      id: categoryId
+    };
+    const getSliderDataById: any = await SliderAPI.getSliderDataById(obj);
+    console.log("getSliderDataById", getSliderDataById);
+    if (getSliderDataById) {
+      if (getSliderDataById.status === 200) {
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+        filetrue: this.state.filetrue = true,
+        productid: this.state.productid =
+          getSliderDataById.resultObject.productId,
+        altertag: this.state.altertag =
+          getSliderDataById.resultObject.alterTag,
+        file: this.state.file = getSliderDataById.resultObject.photoPath,
+        sortorder: this.state.sortorder =
+          getSliderDataById.resultObject.sortOrder,
+        selectedFile: this.state.selectedFile =
+          getSliderDataById.resultObject.photoPath,
+        isActive: this.state.isActive = getSliderDataById.resultObject.isActive
+      });
+    } else {
+      const msg1 = getSliderDataById.message;
+      utils.showSuccess(msg1);
+    }
+    } else {
+
+    }
+  }
 
   onItemSelect(event: any) {
     this.setState({
@@ -151,7 +166,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     // }
 
     if (!this.state.productid) {
-        productiderror = "please select product";
+      productiderror = "please select product";
     }
 
     if (productiderror) {
@@ -168,66 +183,80 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
-    async addSlider() {
-      const isValid = this.validate();
-      if (isValid) {
-        this.setState({
-            productiderror:""
-        });
-        if (this.state.productid) {
+  async addSlider() {
+    const isValid = this.validate();
+    if (isValid) {
+      this.setState({
+        productiderror: ""
+      });
+      if (this.state.productid) {
 
-          let formData = new FormData();
+        let formData = new FormData();
 
-          formData.append("productId", this.state.productid);
-          formData.append("alterTag", this.state.altertag);
-          formData.append("productLink", constant.productURL);
-          formData.append("sortOrder", this.state.sortorder.toString());
-          formData.append("isActive", new Boolean(this.state.isActive).toString());
-          formData.append("files",this.state.selectedFile?this.state.selectedFile[0]:'');
-          formData.append("userId", "0");
+        formData.append("productId", this.state.productid);
+        formData.append("alterTag", this.state.altertag);
+        formData.append("productLink", constant.productURL);
+        formData.append("sortOrder", this.state.sortorder.toString());
+        formData.append("isActive", new Boolean(this.state.isActive).toString());
+        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
+        formData.append("userId", "0");
 
-          const addSlider = await SliderAPI.addSlider(formData);
-          console.log("addSlider", addSlider);
-          if (addSlider) {
-            this.props.history.push("/list-slider");
+        const addSlider = await SliderAPI.addSlider(formData);
+        console.log("addSlider", addSlider);
+        if (addSlider) {
+          if(addSlider.status === 200) {
+            const msg1 = addSlider.message;
+            utils.showSuccess(msg1);
+          this.props.history.push("/list-slider");
           } else {
-            // const msg1 = "Internal server error";
-            // utils.showError(msg1);
+            const msg1 = addSlider.message;
+            utils.showError(msg1);
           }
+        } else {
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
       }
     }
+  }
 
-    async updateSlider() {
-        const isValid = this.validate();
-        if (isValid) {
-          this.setState({
-              productiderror:""
-          });
-          if (this.state.productid) {
-  
-            let formData = new FormData();
-  
-            formData.append("homeSliderId", this.state.sliderid.toString());
-            formData.append("productId", this.state.productid);
-            formData.append("alterTag", this.state.altertag);
-            formData.append("productLink", constant.productURL);
-            formData.append("sortOrder", this.state.sortorder.toString());
-            formData.append("isActive", new Boolean(this.state.isActive).toString());
-            formData.append("files",this.state.selectedFile?this.state.selectedFile[0]:'');
-            formData.append("userId", "0");
-  
-            const editSlider = await SliderAPI.editSlider(formData,this.state.sliderid);
-            console.log("editSlider", editSlider);
-            if (editSlider) {
-              this.props.history.push("/list-slider");
-            } else {
-              // const msg1 = "Internal server error";
-              // utils.showError(msg1);
-            }
+  async updateSlider() {
+    const isValid = this.validate();
+    if (isValid) {
+      this.setState({
+        productiderror: ""
+      });
+      if (this.state.productid) {
+
+        let formData = new FormData();
+
+        formData.append("homeSliderId", this.state.sliderid.toString());
+        formData.append("productId", this.state.productid);
+        formData.append("alterTag", this.state.altertag);
+        formData.append("productLink", constant.productURL);
+        formData.append("sortOrder", this.state.sortorder.toString());
+        formData.append("isActive", new Boolean(this.state.isActive).toString());
+        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
+        formData.append("userId", "0");
+
+        const editSlider = await SliderAPI.editSlider(formData, this.state.sliderid);
+        console.log("editSlider", editSlider);
+        if (editSlider) {
+          if(editSlider.status === 200) {
+            const msg1 = editSlider.message;
+            utils.showSuccess(msg1);
+          this.props.history.push("/list-slider");
+          } else {
+            const msg1 = editSlider.message;
+            utils.showError(msg1);
           }
+        } else {
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
         }
+      }
     }
+  }
 
   removeIcon() {
     this.setState({
@@ -255,12 +284,12 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
                           </h1>
                         </Col>
                       ) : (
-                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>
-                            {constant.homesliderPage.title.addHomesliderTitle}
-                          </h1>
-                        </Col>
-                      )}
+                          <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                            <h1>
+                              {constant.homesliderPage.title.addHomesliderTitle}
+                            </h1>
+                          </Col>
+                        )}
 
                       <Col
                         xs="12"
@@ -311,12 +340,12 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
                               </option>
                               {this.state.productdata.length > 0
                                 ? this.state.productdata.map(
-                                    (data: any, index: any) => (
-                                      <option key={index} value={data.value}>
-                                        {data.name}
-                                      </option>
-                                    )
+                                  (data: any, index: any) => (
+                                    <option key={index} value={data.value}>
+                                      {data.name}
+                                    </option>
                                   )
+                                )
                                 : ""}
                             </CustomInput>
                             <div className="mb-4 text-danger">
@@ -387,11 +416,11 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
                                       src={constant.filepath + this.state.file}
                                     />
                                   ) : (
-                                    <img
-                                      className="picture"
-                                      src={this.state.file}
-                                    />
-                                  )}
+                                      <img
+                                        className="picture"
+                                        src={this.state.file}
+                                      />
+                                    )}
                                   <i
                                     className="fa fa-times cursor"
                                     onClick={() => this.removeIcon()}
@@ -400,28 +429,28 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
                               ) : null}
                             </div>
                           ) : (
-                            <div className="">
-                              <p style={{ fontSize: "16px" }}>
-                                {
-                                  constant.homesliderPage.homeSliderTableColumn
-                                    .sliderimage
-                                }
-                              </p>
-                              <Label className="imag" for="file-input">
-                                <i
-                                  className="fa fa-upload fa-lg"
-                                  style={{ color: "#20a8d8" }}
-                                ></i>
-                              </Label>
-                              <Input
-                                id="file-input"
-                                type="file"
-                                className="form-control"
-                                name="file"
-                                onChange={this.onChangeHandler.bind(this)}
-                              />
-                            </div>
-                          )}
+                              <div className="">
+                                <p style={{ fontSize: "16px" }}>
+                                  {
+                                    constant.homesliderPage.homeSliderTableColumn
+                                      .sliderimage
+                                  }
+                                </p>
+                                <Label className="imag" for="file-input">
+                                  <i
+                                    className="fa fa-upload fa-lg"
+                                    style={{ color: "#20a8d8" }}
+                                  ></i>
+                                </Label>
+                                <Input
+                                  id="file-input"
+                                  type="file"
+                                  className="form-control"
+                                  name="file"
+                                  onChange={this.onChangeHandler.bind(this)}
+                                />
+                              </div>
+                            )}
                           <div className="text-danger">
                             {this.state.selectedFileerror}
                           </div>
@@ -456,16 +485,16 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
                         {constant.button.update}
                       </Button>
                     ) : (
-                      <Button
-                        type="button"
-                        size="sm"
-                        color="primary"
-                        className="mb-2 mr-2 custom-button"
-                        onClick={this.addSlider}
-                      >
-                        {constant.button.Save}
-                      </Button>
-                    )}
+                        <Button
+                          type="button"
+                          size="sm"
+                          color="primary"
+                          className="mb-2 mr-2 custom-button"
+                          onClick={this.addSlider}
+                        >
+                          {constant.button.Save}
+                        </Button>
+                      )}
                   </CardBody>
                 </Card>
               </Col>

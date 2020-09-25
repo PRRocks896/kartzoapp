@@ -26,7 +26,7 @@ import {
 import { getDataByIdRequest, addProductStateRequest } from "../../../modelController";
 
 class AddProduct extends React.Component<{ history: any; location: any }> {
-  productState:addProductStateRequest = constant.productPage.state;
+  productState: addProductStateRequest = constant.productPage.state;
   state = {
     merchantid: this.productState.merchantid,
     merchantiderror: this.productState.merchantiderror,
@@ -124,31 +124,36 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     console.log("getProductById", getProductById);
 
     if (getProductById) {
-      this.setState({
-        merchantid: this.state.merchantid =
-          getProductById.resultObject.merchantId,
-        maincategoryid: this.state.maincategoryid =
-          getProductById.resultObject.categoryId,
-        prodctname: this.state.productname =
-          getProductById.resultObject.productName,
-        price: this.state.price = getProductById.resultObject.price,
-        discountprice: this.state.discountprice =
-          getProductById.resultObject.discountPrice,
-        metatitle: this.state.metatitle =
-          getProductById.resultObject.metaTitle,
-        metadescritption: this.state.metadiscription =
-          getProductById.resultObject.metaDescription,
-        metakeyword: this.state.metakeyword =
-          getProductById.resultObject.metaKeyword,
-        productdescription: this.state.productdescription =
-          getProductById.resultObject.productDesc,
-        sortorder: this.state.sortorder =
-          getProductById.resultObject.sortOrder,
-        isFeatured: this.state.isFeatured =
-          getProductById.resultObject.isFeatured,
-        productpreview: this.state.productpreview =
-          getProductById.resultObject.productImages,
-      });
+      if (getProductById.status === 200) {
+        this.setState({
+          merchantid: this.state.merchantid =
+            getProductById.resultObject.merchantId,
+          maincategoryid: this.state.maincategoryid =
+            getProductById.resultObject.categoryId,
+          prodctname: this.state.productname =
+            getProductById.resultObject.productName,
+          price: this.state.price = getProductById.resultObject.price,
+          discountprice: this.state.discountprice =
+            getProductById.resultObject.discountPrice,
+          metatitle: this.state.metatitle =
+            getProductById.resultObject.metaTitle,
+          metadescritption: this.state.metadiscription =
+            getProductById.resultObject.metaDescription,
+          metakeyword: this.state.metakeyword =
+            getProductById.resultObject.metaKeyword,
+          productdescription: this.state.productdescription =
+            getProductById.resultObject.productDesc,
+          sortorder: this.state.sortorder =
+            getProductById.resultObject.sortOrder,
+          isFeatured: this.state.isFeatured =
+            getProductById.resultObject.isFeatured,
+          productpreview: this.state.productpreview =
+            getProductById.resultObject.productImages,
+        });
+      } else {
+        const msg1 = getProductById.message;
+        utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -158,17 +163,35 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
   async getAllCategory() {
     const getAllCategory = await CategoryAPI.getAllCategory();
     console.log("getAllCategory", getAllCategory);
-    this.setState({
-      categorylist: this.state.categorylist = getAllCategory.resultObject,
-    });
+    if (getAllCategory) {
+      if (getAllCategory.status === 200) {
+        this.setState({
+          categorylist: this.state.categorylist = getAllCategory.resultObject,
+        });
+      } else {
+        const msg1 = getAllCategory.message;
+        utils.showError(msg1);
+      }
+    } else {
+
+    }
   }
 
   async getAllMerchant() {
     const getAllMerchant = await MerchantAPI.getMerchantList();
     console.log("getAllMerchant", getAllMerchant);
-    this.setState({
-      merchantlist: this.state.merchantlist = getAllMerchant.resultObject,
-    });
+    if (getAllMerchant) {
+      if (getAllMerchant.status === 200) {
+        this.setState({
+          merchantlist: this.state.merchantlist = getAllMerchant.resultObject,
+        });
+      } else {
+        const msg1 = getAllMerchant.message;
+        utils.showError(msg1);
+      }
+    } else {
+
+    }
   }
 
   onMerchantSelect(event: any) {
@@ -190,14 +213,14 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
   };
 
   handleDescChange = (content: any, editor: any) => {
-  
+
     this.setState({
       metadiscription: this.state.metadiscription = content,
     });
   };
 
   handleKeywordChange = (content: any, editor: any) => {
-  
+
     this.setState({
       metakeyword: this.state.metakeyword = content,
     });
@@ -209,7 +232,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
       images: this.state.images = imageList,
     });
 
-  
+
   };
   onError = (errors: any, files: any) => {
     console.log(errors, files);
@@ -247,14 +270,14 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     var regex = /^[0-9]+$/;
     if (!this.state.price) {
       priceerror = "please enter price";
-    } else if(!regex.test(this.state.price.toString())) {
+    } else if (!regex.test(this.state.price.toString())) {
       priceerror = "please enter valid price";
     }
 
     var regex1 = /^[0-9]+$/;
     if (!this.state.discountprice) {
       discountpriceerror = "please enter discount price";
-    } else if(!regex1.test(this.state.discountprice.toString())) {
+    } else if (!regex1.test(this.state.discountprice.toString())) {
       discountpriceerror = "please enter valid discount price";
     }
 
@@ -262,7 +285,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
       merchantiderror ||
       maincategoryiderror ||
       productnameerror ||
-      priceerror || 
+      priceerror ||
       discountpriceerror
     ) {
       this.setState({
@@ -326,7 +349,14 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         console.log("addProduct", addProduct);
 
         if (addProduct) {
-          this.props.history.push("/list-product");
+          if (addProduct.status === 200) {
+            const msg1 = addProduct.message;
+            utils.showSuccess(msg1);
+            this.props.history.push("/list-product");
+          } else {
+            const msg1 = addProduct.message;
+            utils.showError(msg1);
+          }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -381,7 +411,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
             formData.append("Images", image)
           );
         } else {
-          const blankArray:any = []
+          const blankArray: any = []
           formData.append("Images", JSON.stringify(blankArray))
         }
         formData.append("UserId", "0");
@@ -393,7 +423,15 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         console.log("editProduct", editProduct);
 
         if (editProduct) {
-          this.props.history.push("/list-product");
+          if (editProduct.status === 200) {
+            const msg1 = editProduct.message;
+            utils.showSuccess(msg1);
+            this.props.history.push("/list-product");
+          } else {
+            const msg1 = editProduct.message;
+            utils.showError(msg1);
+          }
+
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -419,10 +457,10 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
                           </h1>
                         </Col>
                       ) : (
-                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.productPage.title.addProductTitle}</h1>
-                        </Col>
-                      )}
+                          <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                            <h1>{constant.productPage.title.addProductTitle}</h1>
+                          </Col>
+                        )}
 
                       <Col
                         xs="12"
@@ -476,12 +514,12 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
                               </option>
                               {this.state.merchantlist.length > 0
                                 ? this.state.merchantlist.map(
-                                    (data: any, index: any) => (
-                                      <option key={index} value={data.value}>
-                                        {data.name}
-                                      </option>
-                                    )
+                                  (data: any, index: any) => (
+                                    <option key={index} value={data.value}>
+                                      {data.name}
+                                    </option>
                                   )
+                                )
                                 : ""}
                             </CustomInput>
                             <div className="mb-4 text-danger">
@@ -520,12 +558,12 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
 
                               {this.state.categorylist.length > 0
                                 ? this.state.categorylist.map(
-                                    (data: any, index: any) => (
-                                      <option key={index} value={data.value}>
-                                        {data.name}
-                                      </option>
-                                    )
+                                  (data: any, index: any) => (
+                                    <option key={index} value={data.value}>
+                                      {data.name}
+                                    </option>
                                   )
+                                )
                                 : ""}
                             </CustomInput>
                             <div className="mb-4 text-danger">
@@ -827,25 +865,25 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
                                   </div>
                                 </div>
                               ) : (
-                                ""
-                              )
+                                  ""
+                                )
                           )
                         ) : (
-                          <div className="image_margin">
-                            {this.state.imagesPreviewUrls.map(
-                              (imagePreviewUrl:any) => {
-                                return (
-                                  <img
-                                    key={imagePreviewUrl}
-                                    className="picture"
-                                    alt="previewImg"
-                                    src={imagePreviewUrl}
-                                  />
-                                );
-                              }
-                            )}
-                          </div>
-                        )}
+                            <div className="image_margin">
+                              {this.state.imagesPreviewUrls.map(
+                                (imagePreviewUrl: any) => {
+                                  return (
+                                    <img
+                                      key={imagePreviewUrl}
+                                      className="picture"
+                                      alt="previewImg"
+                                      src={imagePreviewUrl}
+                                    />
+                                  );
+                                }
+                              )}
+                            </div>
+                          )}
                         <Row className="mt-5">
                           <Col xs="12" sm="12" md="12" lg="12" xl="12">
                             {this.state.updateTrue === true ? (
@@ -860,15 +898,15 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
                                           alt="previewImg"
                                           src={imagePreviewUrl}
                                         />
-                                        
+
                                       </div>
                                     );
                                   }
                                 )}
                               </div>
                             ) : (
-                              ""
-                            )}
+                                ""
+                              )}
                           </Col>
                         </Row>
                       </Col>
@@ -885,16 +923,16 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
                         {constant.button.update}
                       </Button>
                     ) : (
-                      <Button
-                        type="button"
-                        size="sm"
-                        color="primary"
-                        className="mb-2 mt-3 mr-2 custom-button"
-                        onClick={this.addProduct}
-                      >
-                        {constant.button.Save}
-                      </Button>
-                    )}
+                        <Button
+                          type="button"
+                          size="sm"
+                          color="primary"
+                          className="mb-2 mt-3 mr-2 custom-button"
+                          onClick={this.addProduct}
+                        >
+                          {constant.button.Save}
+                        </Button>
+                      )}
                   </CardBody>
                 </Card>
               </Col>

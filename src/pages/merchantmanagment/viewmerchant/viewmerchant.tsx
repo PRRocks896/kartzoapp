@@ -97,6 +97,8 @@ class ViewMerchant extends React.Component<{
     console.log("getMerchantById", getMerchantById);
 
     if (getMerchantById) {
+      if(getMerchantById.status === 200) {
+
       this.setState({
         selectedFile: this.state.selectedFile =
           getMerchantById.resultObject.logoPath ? getMerchantById.resultObject.logoPath : '',
@@ -132,6 +134,10 @@ class ViewMerchant extends React.Component<{
         file4: this.state.file4 = getMerchantById.resultObject.profilePhotoPath ? getMerchantById.resultObject.profilePhotoPath : '',
         // file2true: this.state.file2true = getMerchantById.resultObject.
       });
+    } else {
+      const msg1 = getMerchantById.message;
+        utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);

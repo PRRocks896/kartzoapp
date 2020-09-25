@@ -81,11 +81,16 @@ class ListPayout extends React.Component<{ history: any }> {
     console.log("getPayoutData", getPayoutData);
 
     if (getPayoutData) {
+      if(getPayoutData.status === 200) {
       this.setState({
         payoutdata: this.state.payoutdata =
           getPayoutData.resultObject.data,
         count: this.state.count = getPayoutData.resultObject.totalcount,
       });
+    } else {
+      const msg1 = getPayoutData.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -220,11 +225,16 @@ class ListPayout extends React.Component<{ history: any }> {
       var getStatusChange = await StatusAPI.getStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
+        if (getStatusChange.status === 200) {
         this.getPayoutData(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
+      } else {
+        const msg1 = getStatusChange.message;
+        utils.showError(msg1);
+      }
       } else {
       //   const msg1 = "Internal server error";
       // utils.showError(msg1);

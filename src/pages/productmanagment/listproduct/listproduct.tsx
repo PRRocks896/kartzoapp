@@ -81,11 +81,16 @@ class ListProduct extends React.Component<{ history: any }> {
     console.log("getProductData", getProductData);
 
     if (getProductData) {
+      if(getProductData.status === 200) {
       this.setState({
         productdata: this.state.productdata =
           getProductData.resultObject.data,
         count: this.state.count = getProductData.resultObject.totalcount,
       });
+    } else {
+      const msg1 = getProductData.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -151,11 +156,18 @@ class ListProduct extends React.Component<{ history: any }> {
       var deleteAllData = await DeleteAPI.deleteAllMerchantData(obj);
       console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
+        if (deleteAllData.data.status === 200) {
+          const msg1 = deleteAllData.data.message;
+          utils.showSuccess(msg1);
         this.getProductData(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
+      } else {
+        const msg1 = deleteAllData.data.message;
+        utils.showError(msg1);
+      }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -220,11 +232,18 @@ class ListProduct extends React.Component<{ history: any }> {
       var getStatusChange = await StatusAPI.getMerchantPanelStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
+        if (getStatusChange.status === 200) {
+          const msg1 = getStatusChange.message;
+          utils.showSuccess(msg1);
         this.getProductData(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
+      } else {
+        const msg1 = getStatusChange.message;
+        utils.showError(msg1);
+      }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);

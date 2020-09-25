@@ -107,6 +107,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     console.log("getMatrixById", getMatrixById);
 
     if (getMatrixById) {
+      if(getMatrixById.status === 200) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         feetype: this.state.feetype = getMatrixById.resultObject.feeType,
@@ -118,7 +119,11 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
         this.setState({
           addflag: this.state.addflag = true,
         });
-      }
+      } 
+    } else {
+      const msg1 = getMatrixById.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -135,9 +140,15 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     const getFee: any = await FeeAPI.getFee();
     console.log("getFee", getFee);
     if (getFee) {
-      this.setState({
-        feedata: this.state.feedata = getFee.resultObject,
-      });
+      if(getFee.status === 200) {
+        this.setState({
+          feedata: this.state.feedata = getFee.resultObject,
+        });
+      }
+     else {
+      const msg1 = getFee.message;
+          utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -291,7 +302,14 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
         console.log("addMatrix", addMatrix);
 
         if (addMatrix) {
+          if(addMatrix.status === 200) {
+            const msg1 = addMatrix.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-matrix");
+          } else {
+            const msg1 = addMatrix.message;
+            utils.showError(msg1);
+          }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -327,7 +345,14 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
         console.log("editMatrix", editMatrix);
 
         if (editMatrix) {
+          if(editMatrix.status === 200) {
+            const msg1 = editMatrix.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-matrix");
+          } else {
+            const msg1 = editMatrix.message;
+            utils.showError(msg1);
+          }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

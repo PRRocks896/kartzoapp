@@ -67,9 +67,14 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     const getAllMenu = await MenuAPI.getAllMenu();
     console.log("getAllMenu", getAllMenu);
     if(getAllMenu) {
-      this.setState({
-        menudata: this.state.menudata = getAllMenu.resultObject
-      });
+      if(getAllMenu.status === 200) {
+        this.setState({
+          menudata: this.state.menudata = getAllMenu.resultObject
+        });
+      } else {
+        const msg1 = getAllMenu.message;
+        utils.showError(msg1);
+      }
     }
   }
 
@@ -79,6 +84,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     };
     const getMenuItemById: any = await MenuAPI.getMenuItemById(obj);
     if (getMenuItemById) {
+      if(getMenuItemById.status === 200) {
       this.setState({
         menuid:getMenuItemById.resultObject.menuItemID,
         parentid:getMenuItemById.resultObject.parentID,
@@ -89,6 +95,10 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
         isActive: getMenuItemById.resultObject.isActive
 
     });
+  } else {
+    const msg1 = getMenuItemById.message;
+    utils.showError(msg1);
+  }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -144,7 +154,14 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
         const addMenu = await MenuAPI.addMenu(obj);
         console.log("addMenu", addMenu);
         if (addMenu) {
+          if(addMenu.status === 200) {
+            const msg1 = addMenu.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/listmenu");
+          } else {
+            const msg1 = addMenu.message;
+              utils.showError(msg1);
+          }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -172,7 +189,14 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
         const editMenu = await MenuAPI.editMenu(obj);
         console.log("editMenu", editMenu);
         if (editMenu) {
+          if(editMenu.status === 200) {
+            const msg1 = editMenu.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/listmenu");
+          } else {
+            const msg1 = editMenu.message;
+              utils.showError(msg1);
+          }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

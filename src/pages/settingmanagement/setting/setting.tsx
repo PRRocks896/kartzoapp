@@ -81,11 +81,16 @@ class ListSetting extends React.Component<{ history: any }> {
     console.log("getSettingData", getSettingData);
 
     if (getSettingData) {
+      if(getSettingData.status === 200) {
       this.setState({
         settingdata: this.state.settingdata =
           getSettingData.resultObject.data,
         count: this.state.count = getSettingData.resultObject.totalcount,
       });
+    } else {
+      const msg1 = getSettingData.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);

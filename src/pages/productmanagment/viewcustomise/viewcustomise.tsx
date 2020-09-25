@@ -50,6 +50,7 @@ class ViewProductCustomise extends React.Component<{
     console.log("getCustomiseTypeById", getCustomiseTypeById);
 
     if (getCustomiseTypeById) {
+      if(getCustomiseTypeById.status === 200) {
       this.setState({
         productdata: this.state.productdata =
           getCustomiseTypeById.resultObject.product,
@@ -61,6 +62,10 @@ class ViewProductCustomise extends React.Component<{
         addondetails: this.state.addondetails =
           getCustomiseTypeById.resultObject.addOnDetail,
       });
+    } else {
+      const msg1 = getCustomiseTypeById.message;
+        utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);

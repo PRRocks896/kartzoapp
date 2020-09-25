@@ -54,6 +54,7 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
     console.log("getTaxById", getTaxById);
 
     if (getTaxById) {
+      if(getTaxById.status === 200) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         categoryname: this.state.categoryname =
@@ -63,6 +64,10 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
         percentage: this.state.percentage = getTaxById.resultObject.percentage,
         isActive: this.state.isActive = getTaxById.resultObject.isActive,
       });
+    } else {
+      const msg1 = getTaxById.message;
+        utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal Server Error";
       // utils.showError(msg1);

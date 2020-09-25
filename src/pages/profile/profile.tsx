@@ -73,6 +73,7 @@ class Profile extends React.Component {
       console.log("getprofile", getProfile);
 
       if (getProfile) {
+        if(getProfile.status === 200) {
         this.setState({
           updateTrue: this.state.updateTrue = true,
           filetrue: this.state.filetrue = true,
@@ -83,6 +84,10 @@ class Profile extends React.Component {
           selectedFile: this.state.selectedFile = getProfile.resultObject.photo,
           file: this.state.file = getProfile.resultObject.photoPath
         });
+      } else {
+        const msg1 = getProfile.message;
+          utils.showError(msg1);
+      }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -200,11 +205,18 @@ class Profile extends React.Component {
         console.log("updateProfile", updateProfile);
 
         if (updateProfile) {
+          if(updateProfile.status === 200) {
+            const msg1 = updateProfile.message;
+            utils.showSuccess(msg1);
           this.getUserById();
           this.setState({
             file:this.state.file = updateProfile.resultObject.photoPath ? updateProfile.resultObject.photoPath : ''
           })
           EventEmitter.dispatch('imageUpload', this.state.file);
+        } else {
+          const msg1 = updateProfile.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

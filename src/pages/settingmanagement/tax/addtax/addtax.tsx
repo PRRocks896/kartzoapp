@@ -70,9 +70,14 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     const getAllCategory = await CategoryAPI.getAllCategory();
     console.log("getAllCategory", getAllCategory);
     if(getAllCategory) {
+      if(getAllCategory.status === 200) {
       this.setState({
         categorydata: this.state.categorydata = getAllCategory.resultObject,
       });
+    } else {
+      const msg1 = getAllCategory.message;
+        utils.showError(msg1);
+    }
     } else {
       
     }
@@ -86,6 +91,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     console.log("getTaxById", getTaxById);
 
     if(getTaxById) {
+      if(getTaxById.status === 200) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         categoryname: this.state.categoryname =
@@ -96,6 +102,10 @@ class AddTax extends React.Component<{ history: any; location: any }> {
         isActive: this.state.isActive = getTaxById.resultObject.isActive,
         mainCategoryId: this.state.mainCategoryId = getTaxById.resultObject.mainCategoryId
       });
+    } else {
+      const msg1 = getTaxById.message;
+        utils.showError(msg1);
+    }
     } else {
 
     }
@@ -169,7 +179,14 @@ class AddTax extends React.Component<{ history: any; location: any }> {
         const addTax = await TaxAPI.addTax(obj);
         console.log("addTax", addTax);
         if (addTax) {
+          if(addTax.status === 200) {
+            const msg1 = addTax.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-tax");
+        } else {
+          const msg1 = addTax.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -202,7 +219,14 @@ class AddTax extends React.Component<{ history: any; location: any }> {
         const updateTax = await TaxAPI.updateTax(obj);
         console.log("updateTax", updateTax);
         if (updateTax) {
+          if(updateTax.status === 200) {
+            const msg1 = updateTax.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-tax");
+        } else {
+          const msg1 = updateTax.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

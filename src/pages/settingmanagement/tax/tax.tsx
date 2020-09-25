@@ -82,11 +82,16 @@ class ListTax extends React.Component<{ history: any }> {
     console.log("getTaxData", getTaxData);
 
     if (getTaxData) {
+      if(getTaxData.status === 200) {
       this.setState({
         taxdata: this.state.taxdata =
           getTaxData.resultObject.data,
         count: this.state.count = getTaxData.resultObject.totalcount,
       });
+    } else {
+      const msg1 = getTaxData.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -152,11 +157,18 @@ class ListTax extends React.Component<{ history: any }> {
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
       console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
+        if (deleteAllData.data.status === 200) {
+          const msg1 = deleteAllData.data.message;
+          utils.showSuccess(msg1);
         this.getTaxData(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
+      } else {
+        const msg1 = deleteAllData.data.message;
+        utils.showError(msg1);
+      }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -221,11 +233,18 @@ class ListTax extends React.Component<{ history: any }> {
       var getStatusChange = await StatusAPI.getStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
+        if (getStatusChange.status === 200) {
+          const msg1 = getStatusChange.message;
+          utils.showSuccess(msg1);
         this.getTaxData(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
+      } else {
+        const msg1 = getStatusChange.message;
+        utils.showError(msg1);
+      }
       } else {
       //   const msg1 = "Internal server error";
       // utils.showError(msg1);

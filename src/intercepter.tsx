@@ -37,17 +37,17 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response: any) => {
     console.log("res", response);
-    if (response.data.status) {
-      if (response.data.status === 200) {
-        if (response.data.message !== null) {
-          const msg1 = response.data.message;
-          utils.showSuccess(msg1);
-        }
-      } else {
-        const msg1 = response.data.message;
-        utils.showError(msg1);
-      }
-    }
+    // if (response.data.status) {
+    //   if (response.data.status === 200) {
+    //     if (response.data.message !== null) {
+    //       const msg1 = response.data.message;
+    //       utils.showSuccess(msg1);
+    //     }
+    //   } else {
+    //     const msg1 = response.data.message;
+    //     utils.showError(msg1);
+    //   }
+    // }
     return response;
 
   },

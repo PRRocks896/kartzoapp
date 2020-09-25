@@ -15,10 +15,10 @@ import constant from "../../../../constant/constant";
 import {
   SliderAPI,
 } from "../../../../service/index.service";
-import { getDataByIdRequest,addSliderStateRequest } from "../../../../modelController";
+import { getDataByIdRequest, addSliderStateRequest } from "../../../../modelController";
 
 class ViewSlider extends React.Component<{ history: any; location: any }> {
-  sliderState : addSliderStateRequest = constant.homesliderPage.state;
+  sliderState: addSliderStateRequest = constant.homesliderPage.state;
   state = {
     selectedFile: this.sliderState.selectedFile,
     file: this.sliderState.file,
@@ -46,28 +46,33 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
   }
 
   async getSliderById(sliderId: any) {
-    const obj:getDataByIdRequest = {
+    const obj: getDataByIdRequest = {
       id: sliderId,
     };
     const getSliderDataById: any = await SliderAPI.getSliderDataById(obj);
     console.log("getSliderDataById", getSliderDataById);
 
-    if(getSliderDataById) {
-      this.setState({
-        productid: this.state.productid =
-          getSliderDataById.resultObject.productId,
-        altertag: this.state.altertag = getSliderDataById.resultObject.alterTag,
-        file: this.state.file = getSliderDataById.resultObject.photoPath,
-        sortorder: this.state.sortorder =
-          getSliderDataById.resultObject.sortOrder,
-        selectedFile: this.state.selectedFile =
-          getSliderDataById.resultObject.photoPath,
-        isActive: this.state.isActive = getSliderDataById.resultObject.isActive,
-        productLink: this.state.productLink =
-          getSliderDataById.resultObject.productLink,
-      });
+    if (getSliderDataById) {
+      if (getSliderDataById.status === 200) {
+        this.setState({
+          productid: this.state.productid =
+            getSliderDataById.resultObject.productId,
+          altertag: this.state.altertag = getSliderDataById.resultObject.alterTag,
+          file: this.state.file = getSliderDataById.resultObject.photoPath,
+          sortorder: this.state.sortorder =
+            getSliderDataById.resultObject.sortOrder,
+          selectedFile: this.state.selectedFile =
+            getSliderDataById.resultObject.photoPath,
+          isActive: this.state.isActive = getSliderDataById.resultObject.isActive,
+          productLink: this.state.productLink =
+            getSliderDataById.resultObject.productLink,
+        });
+      } else {
+        const msg1 = getSliderDataById.message;
+        utils.showSuccess(msg1);
+      }
     } else {
-      
+
     }
   }
 
@@ -178,10 +183,10 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
                               ) : null}
                             </div>
                           ) : (
-                            <div>
-                              <i className="fa fa-user picture"></i>
-                            </div>
-                          )}
+                              <div>
+                                <i className="fa fa-user picture"></i>
+                              </div>
+                            )}
                         </FormGroup>
                       </Col>
                     </Row>

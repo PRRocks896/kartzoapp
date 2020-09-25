@@ -45,12 +45,17 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
     console.log("getRoleById", getRoleById);
 
     if (getRoleById) {
+      if (getRoleById.status === 200) {
       this.setState({
        
           rolename: getRoleById.resultObject.role,
           description: getRoleById.resultObject.description,
        
       });
+    } else {
+      const msg1 = getRoleById.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);

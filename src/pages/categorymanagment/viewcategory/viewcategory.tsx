@@ -47,6 +47,7 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
     const getCategoryById: any = await CategoryAPI.getCategoryById(obj);
     console.log("getCategoryById", getCategoryById);
     if (getCategoryById) {
+      if (getCategoryById.status === 200) {
       this.setState({
         categoryname: this.state.categoryname =
           getCategoryById.resultObject.category,
@@ -58,6 +59,10 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
           ? getCategoryById.resultObject.parentCategory
           : "",
       });
+    } else {
+      const msg1 = getCategoryById.message;
+      utils.showError(msg1);
+  }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);

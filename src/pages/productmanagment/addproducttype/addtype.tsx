@@ -64,12 +64,17 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
     console.log("getCustomiseTypeById", getCustomiseTypeById);
 
     if (getCustomiseTypeById) {
+      if(getCustomiseTypeById.status === 200) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         typeName: this.state.typeName = getCustomiseTypeById.resultObject.typeName,
         typeid: this.state.typeid = getCustomiseTypeById.resultObject.productCustomizeTypeId,
         isActive: this.state.isActive = getCustomiseTypeById.resultObject.isActive
       });
+    } else {
+      const msg1 = getCustomiseTypeById.message;
+        utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -116,7 +121,14 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
         console.log("addCustomiseType", addCustomiseType);
 
         if (addCustomiseType) {
+          if(addCustomiseType.status === 200) {
+            const msg1 = addCustomiseType.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-type");
+        } else {
+          const msg1 = addCustomiseType.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -141,7 +153,14 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
         console.log("editCustomiseProduct", editCustomiseProduct);
 
         if (editCustomiseProduct) {
+          if(editCustomiseProduct.status === 200) {
+            const msg1 = editCustomiseProduct.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-type");
+        } else {
+          const msg1 = editCustomiseProduct.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

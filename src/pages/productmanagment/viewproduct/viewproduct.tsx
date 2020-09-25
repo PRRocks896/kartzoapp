@@ -63,6 +63,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
     console.log("getProductById", getProductById);
 
     if (getProductById) {
+      if (getProductById.status === 200) {
       this.setState({
         merchantid: this.state.merchantid =
           getProductById.resultObject.merchantId,
@@ -87,6 +88,10 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
           getProductById.resultObject.isFeatured,
         images: this.state.images = getProductById.resultObject.productImages,
       });
+    } else {
+      const msg1 = getProductById.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);

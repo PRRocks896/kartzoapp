@@ -181,8 +181,8 @@ class Coupon extends React.Component<{ history: any; location: any }> {
         utils.showError(msg1);
       }
     } else {
-      const msg1 = "Internal Server";
-      utils.showError(msg1);
+      // const msg1 = "Internal Server";
+      // utils.showError(msg1);
     }
   }
 
@@ -289,7 +289,14 @@ class Coupon extends React.Component<{ history: any; location: any }> {
         const addCoupon = await CouponAPI.addCoupon(obj);
         console.log("addCoupon", addCoupon);
         if (addCoupon) {
+          if(addCoupon.status === 200) {
+            const msg1 = addCoupon.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/listcoupon");
+        } else {
+          const msg1 = addCoupon.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -335,7 +342,14 @@ class Coupon extends React.Component<{ history: any; location: any }> {
         const editCoupon = await CouponAPI.editCoupon(obj);
         console.log("editCoupon", editCoupon);
         if (editCoupon) {
+          if(editCoupon.status === 200) {
+            const msg1 = editCoupon.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/listcoupon");
+        } else {
+          const msg1 = editCoupon.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

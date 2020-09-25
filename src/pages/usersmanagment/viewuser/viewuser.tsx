@@ -45,6 +45,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
     };
     const getUserById: any = await API.getUserById(obj);
     if (getUserById) {
+      if (getUserById.status === 200) {
       this.setState({
         firstname: getUserById.resultObject.firstName,
         lastname: getUserById.resultObject.lastName,
@@ -52,6 +53,10 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
         mobilenumber: getUserById.resultObject.phone,
           file: getUserById.resultObject.photoPath,
       });
+    } else {
+      const msg1 = getUserById.message;
+                utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);

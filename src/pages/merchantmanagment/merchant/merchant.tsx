@@ -132,6 +132,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     console.log("getMerchantById", getMerchantById);
 
     if (getMerchantById) {
+      if(getMerchantById.status === 200) {
       this.setState({
         merchantId: this.state.merchantId =
         getMerchantById.resultObject.merchantID,
@@ -176,6 +177,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
       });
       this.getCityById(this.state.city);
     } else {
+      const msg1 = getMerchantById.message;
+        utils.showError(msg1);
+    }
+    } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
     }
@@ -189,9 +194,14 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     console.log("getCity", getCity);
 
     if (getCity) {
+      if(getCity.status === 200) {
       this.setState({
         cityname: this.state.cityname =  getCity.resultObject ? getCity.resultObject.cityName : '',
       });
+    } else {
+      const msg1 = getCity.message;
+        utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -203,9 +213,14 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     console.log("getCity", getCity);
 
     if (getCity) {
+      if(getCity.status === 200) {
       this.setState({
         citydata: this.state.citydata = getCity.resultObject,
       });
+    } else {
+      const msg1 = getCity.message;
+        utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -514,7 +529,14 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         const addMerchant = await MerchantAPI.addMerchant(formData);
         console.log("addMerchant", addMerchant);
         if (addMerchant) {
+          if(addMerchant.status === 200) {
+            const msg1 = addMerchant.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-merchant");
+        } else {
+          const msg1 = addMerchant.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -626,7 +648,14 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         );
         console.log("editMerchant", editMerchant);
         if (editMerchant) {
+          if(editMerchant.status === 200) {
+            const msg1 = editMerchant.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-merchant");
+        } else {
+          const msg1 = editMerchant.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

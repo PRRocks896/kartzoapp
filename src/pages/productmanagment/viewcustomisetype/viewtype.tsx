@@ -46,12 +46,17 @@ class ViewProductType extends React.Component<{ history: any; location: any }> {
     console.log("getCustomiseTypeById", getCustomiseTypeById);
 
     if (getCustomiseTypeById) {
+      if(getCustomiseTypeById.status === 200) {
       this.setState({
         typeName: this.state.typeName =
           getCustomiseTypeById.resultObject.typeName,
         isActive: this.state.isActive =
           getCustomiseTypeById.resultObject.isActive
       });
+    } else {
+      const msg1 = getCustomiseTypeById.message;
+        utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);

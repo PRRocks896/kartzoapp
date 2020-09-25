@@ -53,6 +53,7 @@ class ViewSetting extends React.Component<{ history: any; location: any }> {
     console.log("getSettingById", getSettingById);
 
     if (getSettingById) {
+      if (getSettingById.status === 200) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         identifier: this.state.identifier = getSettingById.resultObject.identifier,
@@ -61,6 +62,10 @@ class ViewSetting extends React.Component<{ history: any; location: any }> {
           getSettingById.resultObject.value,
         isActive: this.state.isActive = getSettingById.resultObject.isActive
       });
+    } else {
+      const msg1 = getSettingById.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);

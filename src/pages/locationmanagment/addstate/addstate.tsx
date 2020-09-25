@@ -77,12 +77,12 @@ class AddState extends React.Component<{ history: any; location: any }> {
           countrylist: this.state.countrylist = getCountry.resultObject,
         });
       } else {
-        const msg1 = "Error";
-        utils.showError(msg1);
+        const msg1 = getCountry.message;
+          utils.showError(msg1);
       }
     } else {
-      const msg1 = "Internal server error";
-      utils.showError(msg1);
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
   }
 
@@ -164,7 +164,14 @@ class AddState extends React.Component<{ history: any; location: any }> {
         console.log("addState", addState);
 
         if(addState) {
+          if(addState.status === 200) {
+            const msg1 = addState.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/state");
+        } else {
+          const msg1 = addState.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -192,7 +199,14 @@ class AddState extends React.Component<{ history: any; location: any }> {
         console.log("editState", editState);
 
         if(editState) {
+          if(editState.status === 200) {
+            const msg1 = editState.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/state");
+        } else {
+          const msg1 = editState.message;
+          utils.showError(msg1);
+        }
         } else {
       //     const msg1 = "Internal server error";
       // utils.showError(msg1);

@@ -82,11 +82,16 @@ class ListSlider extends React.Component<{ history: any }> {
     console.log("getSliderData", getSliderData);
 
     if (getSliderData) {
+      if(getSliderData.status === 200) {
       this.setState({
         sliderdata: this.state.sliderdata =
           getSliderData.resultObject.data,
         count: this.state.count = getSliderData.resultObject.totalcount,
       });
+    } else {
+      const msg1 = getSliderData.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -152,11 +157,18 @@ class ListSlider extends React.Component<{ history: any }> {
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
       console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
+        if (deleteAllData.data.status === 200) {
+          const msg1 = deleteAllData.data.message;
+          utils.showSuccess(msg1);
         this.getSliderData(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
+        } else {
+          const msg1 = deleteAllData.data.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -221,7 +233,14 @@ class ListSlider extends React.Component<{ history: any }> {
       var getStatusChange = await StatusAPI.getStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
+        if (getStatusChange.status === 200) {
+          const msg1 = getStatusChange.message;
+          utils.showSuccess(msg1);
         this.getSliderData();
+        } else {
+          const msg1 = getStatusChange.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);

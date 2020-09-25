@@ -16,7 +16,6 @@ import constant from "../../../constant/constant";
 import {
   getAllTableDataListRequest,
   statusChangeRequest,
-  deleteByIdRequest,
   roleStateRequest,deleteAllDataRequest
 } from "../../../modelController/index";
 import { DeleteAPI, RoleAPI, StatusAPI } from "../../../service/index.service";
@@ -79,10 +78,15 @@ class UserRole extends React.Component<{ history: any }> {
     console.log("getRole", getRole);
 
     if (getRole) {
-      this.setState({
-        userrole: this.state.userrole = getRole.resultObject.data,
-        count: this.state.count = getRole.resultObject.totalcount,
-      });
+      if(getRole.status === 200) {
+        this.setState({
+          userrole: this.state.userrole = getRole.resultObject.data,
+          count: this.state.count = getRole.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getRole.message;
+        utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -196,11 +200,18 @@ class UserRole extends React.Component<{ history: any }> {
       var getStatusChange = await StatusAPI.getStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
+        if(getStatusChange.status === 200) {
+          const msg1 = getStatusChange.message;
+          utils.showSuccess(msg1);
         this.getRole(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
+        } else {
+          const msg1 = getStatusChange.message;
+          utils.showError(msg1);
+        }
        
       } else {
         // const msg1 = "Internal server error";
@@ -218,11 +229,18 @@ class UserRole extends React.Component<{ history: any }> {
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
       console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
+        if(deleteAllData.data.status === 200) {
+          const msg1 = deleteAllData.data.message;
+          utils.showSuccess(msg1);
         this.getRole(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
+        } else {
+          const msg1 = deleteAllData.data.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);

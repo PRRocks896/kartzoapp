@@ -73,9 +73,14 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     console.log("getState", getState);
 
     if (getState) {
+      if(getState.status === 200) {
       this.setState({
         statelist: this.state.statelist = getState.resultObject,
       });
+    } else {
+      const msg1 = getState.message;
+        utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -90,6 +95,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     console.log("getCityById", getCityById);
 
     if (getCityById) {
+      if(getCityById.status === 200) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         statename: this.state.statename = getCityById.resultObject.stateName,
@@ -98,6 +104,10 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         cityname: this.state.cityname = getCityById.resultObject.cityName,
         isActive: this.state.isActive = getCityById.resultObject.isActive
       });
+    } else {
+      const msg1 = getCityById.message;
+        utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -154,7 +164,14 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         console.log("addCity", addCity);
 
         if (addCity) {
+          if(addCity.status === 200) {
+            const msg1 = addCity.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/city");
+        } else {
+          const msg1 = addCity.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -182,7 +199,14 @@ class AddCity extends React.Component<{ history: any; location: any }> {
         console.log("editCity", editCity);
 
         if (editCity) {
+          if(editCity.status === 200) {
+            const msg1 = editCity.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/city");
+        } else {
+          const msg1 = editCity.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

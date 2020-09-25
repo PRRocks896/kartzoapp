@@ -71,9 +71,19 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
   async getAllCategory() {
     const getAllCategory = await CategoryAPI.getAllCategory();
     console.log("getAllCategory", getAllCategory);
+    if (getAllCategory) {
+      if(getAllCategory.status === 200) {
     this.setState({
       categorylist: this.state.categorylist = getAllCategory.resultObject,
     });
+  } else {
+    const msg1 = getAllCategory.message;
+    utils.showError(msg1);
+  }
+  } else {
+  //   const msg1 = "Internal server error";
+  // utils.showError(msg1);
+  }
   }
 
   async getCategoryById(categoryId: any) {
@@ -83,27 +93,29 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     const getCategoryById: any = await CategoryAPI.getCategoryById(obj);
     console.log("getCategoryById", getCategoryById);
 
-    if (getCategoryById.status === 200) {
-      this.setState({
-        updateTrue: this.state.updateTrue = true,
-        filetrue: this.state.filetrue = true,
-        categoryname: this.state.categoryname =
-          getCategoryById.resultObject.category,
-        categoryid: this.state.categoryid =
-          getCategoryById.resultObject.categoryId,
-        file: this.state.file = getCategoryById.resultObject.imagePath,
-        sortorder: this.state.sortorder =
-          getCategoryById.resultObject.sortOrder,
-        parentCategory: this.state.parentCategory =
-          getCategoryById.resultObject.parentCategory,
-        selectcategory: this.state.selectcategory = getCategoryById.resultObject.parentCategoryId,
-        selectedFile: this.state.selectedFile =
-          getCategoryById.resultObject.imagePath,
-        isActive: this.state.isActive = getCategoryById.resultObject.isActive
-      });
-    } else {
-      const msg1 = getCategoryById.message;
-      utils.showError(msg1);
+    if(getCategoryById) {
+      if (getCategoryById.status === 200) {
+        this.setState({
+          updateTrue: this.state.updateTrue = true,
+          filetrue: this.state.filetrue = true,
+          categoryname: this.state.categoryname =
+            getCategoryById.resultObject.category,
+          categoryid: this.state.categoryid =
+            getCategoryById.resultObject.categoryId,
+          file: this.state.file = getCategoryById.resultObject.imagePath,
+          sortorder: this.state.sortorder =
+            getCategoryById.resultObject.sortOrder,
+          parentCategory: this.state.parentCategory =
+            getCategoryById.resultObject.parentCategory,
+          selectcategory: this.state.selectcategory = getCategoryById.resultObject.parentCategoryId,
+          selectedFile: this.state.selectedFile =
+            getCategoryById.resultObject.imagePath,
+          isActive: this.state.isActive = getCategoryById.resultObject.isActive
+        });
+      } else {
+        const msg1 = getCategoryById.message;
+        utils.showError(msg1);
+    }
     }
   }
 
@@ -186,7 +198,14 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         const addCategory = await CategoryAPI.addCategory(formData);
         console.log("addCategory", addCategory);
         if (addCategory) {
+          if(addCategory.status === 200) {
+            const msg1 = addCategory.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/category");
+        } else {
+          const msg1 = addCategory.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -216,7 +235,14 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         );
         console.log("editCategory", editCategory);
         if (editCategory) {
+          if(editCategory.status === 200) {
+            const msg1 = editCategory.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/category");
+        } else {
+          const msg1 = editCategory.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

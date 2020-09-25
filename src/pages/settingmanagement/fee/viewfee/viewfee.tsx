@@ -52,6 +52,7 @@ class ViewFee extends React.Component<{ history: any; location: any }> {
     console.log("getFeeById", getFeeById);
 
     if (getFeeById) {
+      if(getFeeById.status === 200) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         name: this.state.name = getFeeById.resultObject.name,
@@ -60,6 +61,10 @@ class ViewFee extends React.Component<{ history: any; location: any }> {
           getFeeById.resultObject.description,
         isActive: this.state.isActive = getFeeById.resultObject.isActive
       });
+    } else {
+      const msg1 = getFeeById.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);

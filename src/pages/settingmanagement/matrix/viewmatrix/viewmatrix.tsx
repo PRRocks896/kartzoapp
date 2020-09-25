@@ -54,11 +54,16 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
     console.log("getMatrixById", getMatrixById);
 
     if (getMatrixById) {
+      if(getMatrixById.status === 200) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         feetype: this.state.feetype = getMatrixById.resultObject.feeType,
         matrix: this.state.matrix = getMatrixById.resultObject.fees,
       });
+    } else {
+      const msg1 = getMatrixById.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);

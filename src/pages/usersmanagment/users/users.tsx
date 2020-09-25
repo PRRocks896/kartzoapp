@@ -17,7 +17,6 @@ import constant from "../../../constant/constant";
 import {
   getAllTableDataListRequest,
   statusChangeRequest,
-  deleteByIdRequest,
   allStateRequest,deleteAllDataRequest
 } from "../../../modelController";
 import checkRights from '../../../rights';
@@ -139,6 +138,7 @@ class Users extends React.Component<{ history: any }> {
     // This status sould becheck in intercepter only
     if (getUserDataPagination) {
       if (getUserDataPagination.status === 200) {
+      
         this.setState({
           // rows: { 'firstName','lastName' },
           userdata: this.state.userdata =
@@ -170,9 +170,15 @@ class Users extends React.Component<{ history: any }> {
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
     if (getUserRole) {
+      if (getUserRole.status === 200) {
+       
       this.setState({
         userrole: this.state.userrole = getUserRole.resultObject,
       });
+    } else {
+      const msg1 = getUserRole.data.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -196,10 +202,16 @@ class Users extends React.Component<{ history: any }> {
     console.log("getUserDataPagination", getUserDataPagination);
 
     if (getUserDataPagination) {
+      if (getUserDataPagination.status === 200) {
+      
       this.setState({
         userdata: this.state.userdata = getUserDataPagination.resultObject.data,
         count: this.state.count = getUserDataPagination.resultObject.totalcount,
       });
+    } else {
+      const msg1 = getUserDataPagination.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -241,12 +253,19 @@ class Users extends React.Component<{ history: any }> {
       var getStatusChange = await StatusAPI.getStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
+        if (getStatusChange.status === 200) {
+          const msg1 = getStatusChange.message;
+          utils.showSuccess(msg1);
         this.getUsers(
           parseInt(this.state.roleid),
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
+        } else {
+          const msg1 = getStatusChange.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -260,15 +279,22 @@ class Users extends React.Component<{ history: any }> {
         moduleName: "User",
         id: this.state.deleteuserdata
       };
-      var deleteAllData = await DeleteAPI.deleteAllData(obj);
+      var deleteAllData : any = await DeleteAPI.deleteAllData(obj);
       console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
+        if (deleteAllData.data.status === 200) {
+          const msg1 = deleteAllData.data.message;
+          utils.showSuccess(msg1);
         this.getUsers(
           parseInt(this.state.roleid),
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
+        } else {
+          const msg1 = deleteAllData.data.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);

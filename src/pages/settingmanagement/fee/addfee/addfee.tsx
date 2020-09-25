@@ -62,14 +62,20 @@ class AddFee extends React.Component<{ history: any; location: any }> {
     console.log("getFeeById", getFeeById);
 
     if (getFeeById) {
-      this.setState({
-        updateTrue: this.state.updateTrue = true,
-        name: this.state.name = getFeeById.resultObject.name,
-        feeId: this.state.feeId = getFeeById.resultObject.feeId,
-        description: this.state.description =
-          getFeeById.resultObject.description,
-        isActive: this.state.isActive = getFeeById.resultObject.isActive
-      });
+      if(getFeeById.status === 200) {
+
+        this.setState({
+          updateTrue: this.state.updateTrue = true,
+          name: this.state.name = getFeeById.resultObject.name,
+          feeId: this.state.feeId = getFeeById.resultObject.feeId,
+          description: this.state.description =
+            getFeeById.resultObject.description,
+          isActive: this.state.isActive = getFeeById.resultObject.isActive
+        });
+      } else {
+        const msg1 = getFeeById.message;
+          utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -124,7 +130,14 @@ class AddFee extends React.Component<{ history: any; location: any }> {
         console.log("addFee", addFee);
 
         if (addFee) {
+          if(addFee.status === 200) {
+            const msg1 = addFee.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-fee");
+          } else {
+            const msg1 = addFee.message;
+            utils.showError(msg1);
+          }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -152,7 +165,14 @@ class AddFee extends React.Component<{ history: any; location: any }> {
         console.log("updateFee", updateFee);
 
         if (updateFee) {
+          if(updateFee.status === 200) {
+            const msg1 = updateFee.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-fee");
+          } else {
+            const msg1 = updateFee.message;
+            utils.showError(msg1);
+          }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

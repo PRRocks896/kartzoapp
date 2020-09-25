@@ -69,6 +69,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
     console.log("getRoleById", getRoleById);
 
     if (getRoleById) {
+      if(getRoleById.status === 200) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         rolename: this.state.rolename = getRoleById.resultObject.role,
@@ -78,6 +79,10 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
         isOpen: this.state.isOpen = getRoleById.resultObject.isAdminRole,
         isActive: this.state.isActive = getRoleById.resultObject.isActive
       });
+    } else {
+      const msg1 = getRoleById.message;
+        utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -129,7 +134,14 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
         console.log("addUserRole", addUserRole);
 
         if (addUserRole) {
+          if(addUserRole.status === 200) {
+            const msg1 = addUserRole.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/userrole");
+          }  else {
+            const msg1 = addUserRole.message;
+              utils.showError(msg1);
+          }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -158,7 +170,14 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
         console.log("editUserRole", editUserRole);
 
         if (editUserRole) {
+          if(editUserRole.status === 200) {
+            const msg1 = editUserRole.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/userrole");
+          } else {
+            const msg1 = editUserRole.message;
+            utils.showError(msg1);
+          }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

@@ -130,6 +130,7 @@ class Login extends React.Component<{ history: any }> {
         console.log("forgotPassword", forgotPassword);
 
         if (forgotPassword) {
+          
           this.setState({
             forgot: this.state.forgot = false,
           });

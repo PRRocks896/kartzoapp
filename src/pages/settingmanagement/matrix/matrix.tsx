@@ -13,10 +13,10 @@ import {
 } from "reactstrap";
 import {
   StatusAPI,
-  MatrixAPI,DeleteAPI
+  MatrixAPI
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, matrixStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, matrixStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListMatrix extends React.Component<{ history: any }> {
   matrixState:matrixStateRequest = constant.matrixPage.state;
@@ -82,11 +82,16 @@ class ListMatrix extends React.Component<{ history: any }> {
     console.log("getMatrixData", getMatrixData);
 
     if (getMatrixData) {
+      if(getMatrixData.status === 200) {
       this.setState({
         matrixdata: this.state.matrixdata =
           getMatrixData.resultObject.data,
         count: this.state.count = getMatrixData.resultObject.totalcount,
       });
+    } else {
+      const msg1 = getMatrixData.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -221,11 +226,16 @@ class ListMatrix extends React.Component<{ history: any }> {
       var getStatusChange = await StatusAPI.getStatusChange(obj);
       console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
+        if (getStatusChange.status === 200) {
         this.getMatrixData(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
+      } else {
+        const msg1 = getStatusChange.message;
+        utils.showError(msg1);
+      }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);

@@ -89,25 +89,30 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     console.log("getUserById", getUserById);
 
     if (getUserById) {
-      this.setState({
-        updateTrue: this.state.updateTrue = true,
-        filetrue: this.state.filetrue = true,
-        firstname: this.state.firstname = getUserById.resultObject.firstName,
-        lastname: this.state.lastname = getUserById.resultObject.lastName,
-        email: this.state.email = getUserById.resultObject.email,
-        mobilenumber: this.state.mobilenumber =
-          getUserById.resultObject.phone,
-        userid: this.state.userid = getUserById.resultObject.userId,
-        rolename: this.state.rolename = getUserById.resultObject.role,
-        roleid: this.state.roleid = getUserById.resultObject.roleId,
-        file: this.state.file = getUserById.resultObject.photoPath,
-        selectedFile: this.state.selectedFile =
-          constant.filepath + getUserById.resultObject.photoPath,
-        password: this.state.password = getUserById.resultObject.password
-          ? getUserById.resultObject.password
-          : "",
-          isActive:this.state.isActive = getUserById.resultObject.isActive
-      });
+      if(getUserById.status === 200) {
+        this.setState({
+          updateTrue: this.state.updateTrue = true,
+          filetrue: this.state.filetrue = true,
+          firstname: this.state.firstname = getUserById.resultObject.firstName,
+          lastname: this.state.lastname = getUserById.resultObject.lastName,
+          email: this.state.email = getUserById.resultObject.email,
+          mobilenumber: this.state.mobilenumber =
+            getUserById.resultObject.phone,
+          userid: this.state.userid = getUserById.resultObject.userId,
+          rolename: this.state.rolename = getUserById.resultObject.role,
+          roleid: this.state.roleid = getUserById.resultObject.roleId,
+          file: this.state.file = getUserById.resultObject.photoPath,
+          selectedFile: this.state.selectedFile =
+            constant.filepath + getUserById.resultObject.photoPath,
+          password: this.state.password = getUserById.resultObject.password
+            ? getUserById.resultObject.password
+            : "",
+            isActive:this.state.isActive = getUserById.resultObject.isActive
+        });
+      } else {
+        const msg1 = getUserById.message;
+        utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -145,9 +150,14 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     const getUserRole = await RoleAPI.getUserRole();
 
     if (getUserRole) {
+      if(getUserRole.status === 200) {
       this.setState({
         userrole:getUserRole.resultObject,
       });
+    } else {
+      const msg1 = getUserRole.message;
+        utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -329,7 +339,14 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         console.log("addUser", addUser);
 
         if (addUser) {
+          if(addUser.data.status === 200) {
+            const msg1 = addUser.data.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/users");
+          }  else {
+            const msg1 = addUser.data.message;
+              utils.showError(msg1);
+          }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -374,7 +391,14 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         console.log("editUser", editUser);
 
         if (editUser) {
+          if(editUser.data.status === 200) {
+            const msg1 = editUser.data.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/users");
+          } else {
+            const msg1 = editUser.data.message;
+              utils.showError(msg1);
+          }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);

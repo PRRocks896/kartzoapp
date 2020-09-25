@@ -71,6 +71,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     console.log("getCountryById", getCountryById);
 
     if (getCountryById) {
+      if(getCountryById.status === 200) {
       this.setState({
         updateTrue: this.state.updateTrue = true,
         filetrue: this.state.filetrue = true,
@@ -85,6 +86,10 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
           getCountryById.resultObject.imagePath,
           isActive: this.state.isActive = getCountryById.resultObject.isActive
       });
+    } else {
+      const msg1 = getCountryById.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -173,7 +178,14 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         console.log("addCountry", addCountry);
 
         if (addCountry) {
+          if(addCountry.status === 200) {
+            const msg1 = addCountry.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/country");
+        } else {
+          const msg1 = addCountry.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -209,7 +221,14 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         console.log("editCountry", editCountry);
 
         if (editCountry) {
+          if(editCountry.status === 200) {
+            const msg1 = editCountry.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/country");
+        } else {
+          const msg1 = editCountry.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
