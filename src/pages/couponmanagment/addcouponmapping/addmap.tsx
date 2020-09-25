@@ -152,6 +152,7 @@ class AddCouponMapping extends React.Component<{
     console.log("getCouponMappingById", getCouponMappingById);
 
     if (getCouponMappingById) {
+      if (getCouponMappingById.status === 200) {
       const tarray: any = [];
       if(this.state.tempCouponArray && getCouponMappingById.resultObject.couponId) {
         this.state.tempCouponArray.map((value: any, index: number) => {
@@ -226,6 +227,10 @@ class AddCouponMapping extends React.Component<{
       // }
       // console.log("newUpdatdCouponArray",newUpdatdCouponArray);
     } else {
+      const msg1 = getCouponMappingById.message;
+      utils.showError(msg1);
+    }
+    } else {
       // const msg1 = "Internal Server";
       // utils.showError(msg1);
     }
@@ -243,12 +248,17 @@ class AddCouponMapping extends React.Component<{
     console.log("getCouponList", getCouponList);
 
     if (getCouponList) {
+      if (getCouponList.status === 200) {
       this.setState({
         mainCouponArray: this.state.mainCouponArray =
           getCouponList.resultObject,
         tempCouponArray: this.state.tempCouponArray =
           getCouponList.resultObject,
       });
+    } else {
+      const msg1 = getCouponList.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -260,11 +270,16 @@ class AddCouponMapping extends React.Component<{
     console.log("getMerchantList", getMerchantList);
 
     if (getMerchantList) {
+      if (getMerchantList.status === 200) {
       this.setState({
         merchantdata: this.state.merchantdata = getMerchantList.resultObject,
         tempMerchantArray: this.state.tempMerchantArray =
           getMerchantList.resultObject,
       });
+    } else {
+      const msg1 = getMerchantList.message;
+      utils.showError(msg1);
+    }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -586,7 +601,14 @@ class AddCouponMapping extends React.Component<{
         const addCouponMapping = await CouponAPI.addCouponMappingMapping(obj);
         console.log("addCouponMapping", addCouponMapping);
         if (addCouponMapping) {
+          if(addCouponMapping.status === 200) {
+            const msg1 = addCouponMapping.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-coupon-map");
+        } else {
+          const msg1 = addCouponMapping.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
@@ -618,7 +640,14 @@ class AddCouponMapping extends React.Component<{
         const editCouponMapping = await CouponAPI.editCouponMapping(obj);
         console.log("editCouponMapping", editCouponMapping);
         if (editCouponMapping) {
+          if(editCouponMapping.status === 200) {
+            const msg1 = editCouponMapping.message;
+            utils.showSuccess(msg1);
           this.props.history.push("/list-coupon-map");
+        } else {
+          const msg1 = editCouponMapping.message;
+          utils.showError(msg1);
+        }
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
