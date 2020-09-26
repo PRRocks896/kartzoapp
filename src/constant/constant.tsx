@@ -695,6 +695,7 @@ export default {
       password: "",
       passworderror: "",
       citydata: [],
+      roledata:[],
       type: "text",
       file: "",
       filetrue: false,
@@ -707,6 +708,8 @@ export default {
       updateTrue: false,
       token: "",
       merchantId: "",
+      roleid:"",
+      roleiderror:""
     },
     merchantTableColumn: {
       Firstname: "First Name",
@@ -731,7 +734,9 @@ export default {
       profilePhoto:'Select Profile Photo',
       merchantidproof:'Merchant Id Proof',
       document:'Merchant Document Proof',
-      profile:'Profile Photo'
+      profile:'Profile Photo',
+      selectrole:'Select Role',
+      role:'Role'
     },
     viewmerchanrpagedetails: {
       viewmerchant: "View Merchant Details",

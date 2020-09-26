@@ -87,7 +87,8 @@ const apiUrl = {
         deleteMerchant:'merchant/',
         getMerchantById:'merchant/',
         gettoken:'token/get-merchant-token',
-        getList:'merchant/get-merchant-list-dropdown'
+        getList:'merchant/get-merchant-list-dropdown',
+        getRole:'roles/get-role-list-dropdown'
     },
     payoutController: {
         addPayout:'payout',

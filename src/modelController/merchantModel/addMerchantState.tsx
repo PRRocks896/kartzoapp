@@ -53,4 +53,7 @@ export interface addMerchantStateRequest {
       updateTrue: boolean,
       token: string,
       merchantId: string,
+      roleid:string,
+      roleiderror:string,
+      roledata:any
 }

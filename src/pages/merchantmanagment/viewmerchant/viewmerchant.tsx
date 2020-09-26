@@ -75,6 +75,7 @@ class ViewMerchant extends React.Component<{
     file2true: this.merchantState.file2true,
     file4: this.merchantState.file4,
     file4true: this.merchantState.file4true,
+    roleid: this.merchantState.roleid
   };
 
   constructor(props: any) {
@@ -132,7 +133,7 @@ class ViewMerchant extends React.Component<{
         file1: this.state.file1 = getMerchantById.resultObject.idProofPath ? getMerchantById.resultObject.idProofPath : '',
         file2: this.state.file2 = getMerchantById.resultObject.documentPath ? getMerchantById.resultObject.documentPath : '',
         file4: this.state.file4 = getMerchantById.resultObject.profilePhotoPath ? getMerchantById.resultObject.profilePhotoPath : '',
-        // file2true: this.state.file2true = getMerchantById.resultObject.
+        roleid: this.state.roleid = getMerchantById.resultObject.role
       });
     } else {
       const msg1 = getMerchantById.message;
@@ -430,7 +431,25 @@ class ViewMerchant extends React.Component<{
                           </div>
                         </FormGroup>
                       </Col>
-                    </Row>
+                      </Row>
+                      <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <Form>
+                          <FormGroup>
+                            <Label for="exampleCustomSelect">
+                              <b>
+                                {
+                                  constant.merchantPage.merchantTableColumn
+                                    .role
+                                }
+                              </b>
+                            </Label>
+                            <p>{this.state.roleid}</p>
+                          </FormGroup>
+                        </Form>
+                      </Col>
+                      </Row>
+                    
                   </CardBody>
                 </Card>
               </Col>

@@ -22,5 +22,8 @@ export default {
     deleteMerchant: async function (data:deleteByIdRequest) {
         return await WebReqUrl.delete(Constant.apiMerchantUrl + apiUrl.merchantController.deleteMerchant + data.id,true);
     },
+    getMerchantRole: async function () {
+        return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.merchantController.getRole,true);
+    },
     
 }
