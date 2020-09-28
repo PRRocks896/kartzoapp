@@ -736,7 +736,8 @@ export default {
       document:'Merchant Document Proof',
       profile:'Profile Photo',
       selectrole:'Select Role',
-      role:'Role'
+      role:'Role',
+      cityname:'City Name'
     },
     viewmerchanrpagedetails: {
       viewmerchant: "View Merchant Details",
@@ -845,8 +846,8 @@ export default {
       isFeatured: "Is Featured",
       metadescritption: "Meta Description",
       metakeyword: "Meta Keyword",
-      merchantid: "Merchant ID",
-      categoryid: "Category ID",
+      merchantid: "Merchant Name",
+      categoryid: "Category Name",
       isActive:'Is Active',
       images:'Product Images'
     },

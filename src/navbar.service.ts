@@ -27,7 +27,7 @@ export default {
         type:'simple'
       },
       {
-        name: 'RolePrivileges',
+        name: 'Role Privileges',
         icon: 'fa fa-user fs-16',
         url: '/userroletorights',
         type:'simple'

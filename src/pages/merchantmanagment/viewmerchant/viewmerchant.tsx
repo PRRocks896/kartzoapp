@@ -116,7 +116,7 @@ class ViewMerchant extends React.Component<{
           getMerchantById.resultObject.phone,
         shopname: this.state.shopname = getMerchantById.resultObject.shopName,
         address: this.state.address = getMerchantById.resultObject.address,
-        city: this.state.city = getMerchantById.resultObject.cityID,
+        city: this.state.city = getMerchantById.resultObject.cityName,
         zipcode: this.state.zipcode = getMerchantById.resultObject.zipCode,
         latitude: this.state.latitude = getMerchantById.resultObject.latitude,
         longitude: this.state.longitude =
@@ -447,6 +447,19 @@ class ViewMerchant extends React.Component<{
                             <p>{this.state.roleid}</p>
                           </FormGroup>
                         </Form>
+                      </Col>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <FormGroup>
+                          <Label htmlFor="state_name">
+                            <b>
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .cityname
+                              }
+                            </b>
+                          </Label>
+                          <p>{this.state.city}</p>
+                        </FormGroup>
                       </Col>
                       </Row>
                     
