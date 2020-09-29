@@ -239,21 +239,21 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
   };
 
   deleteImage(id: any, index: number) {
+   
 
-    // let deletearray:any = [];
-    // for(var i = 0;i<this.state.productpreview.length;i++) {
-    //   if(id === this.state.productpreview[i].id) {
-    //     deletearray.push(id)
-    //   }
-    // }
-    // console.log("deletearrayt",deletearray);
-    this.state.productpreview.splice(index, 1);
-    const updatedArray: any = this.state.productpreview;
-    this.setState({
-      newImageUpdatedArray: this.state.newImageUpdatedArray = updatedArray.map(
-        (photo: any) => photo.id
-      ),
-    })
+    for(var i = 0;i<this.state.productpreview.length;i++) {
+      if(id === this.state.productpreview[i].id) {
+        this.state.newImageUpdatedArray.push(id)
+      }
+    }
+    console.log("deletearrayt", this.state.newImageUpdatedArray);
+    
+    // const updatedArray: any = this.state.productpreview;
+    // this.setState({
+    //   newImageUpdatedArray: this.state.newImageUpdatedArray = updatedArray.map(
+    //     (photo: any) => photo.id
+    //   ),
+    // })
   }
 
   validate() {
