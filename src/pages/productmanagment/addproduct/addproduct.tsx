@@ -239,6 +239,14 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
   };
 
   deleteImage(id: any, index: number) {
+
+    // let deletearray:any = [];
+    // for(var i = 0;i<this.state.productpreview.length;i++) {
+    //   if(id === this.state.productpreview[i].id) {
+    //     deletearray.push(id)
+    //   }
+    // }
+    // console.log("deletearrayt",deletearray);
     this.state.productpreview.splice(index, 1);
     const updatedArray: any = this.state.productpreview;
     this.setState({
@@ -403,6 +411,8 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
             formData.append("ProductImages", image)
           );
         } else {
+          // const blankArray11: any = []
+          // formData.append("ProductImages", JSON.stringify(blankArray11))
           // const blankArray2:any = []
           // formData.append("ProductImages", JSON.stringify(blankArray2))
         }
