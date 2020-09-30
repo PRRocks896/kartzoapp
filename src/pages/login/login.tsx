@@ -128,7 +128,7 @@ class Login extends React.Component<{ history: any }> {
         };
 
         var forgotPassword: any = await API.forgotPassword(obj);
-        console.log("forgotPassword", forgotPassword);
+        // console.log("forgotPassword", forgotPassword);
 
         if (forgotPassword) {
           
@@ -167,11 +167,11 @@ class Login extends React.Component<{ history: any }> {
         axios
           .post(constant.apiUrl + apiUrl.userController.createData, obj)
           .then(async (res: any) => {
-            console.log("login", res);
+            // console.log("login", res);
             if (res) {
               if (res.data.status === 200) {
                 this.setState({
-                  isButton: false,
+                  isButton: true,
                   disabled: true
                 });
                 var userData = res.data.resultObject;
@@ -188,7 +188,7 @@ class Login extends React.Component<{ history: any }> {
                   refreshToken: user.refreshToken,
                 };
                 var getToken = await API.getToken(obj);
-                console.log("getToken", getToken);
+                // console.log("getToken", getToken);
                 if (getToken) {
                   localStorage.setItem("merchantToken", getToken.token);
                 }
@@ -196,12 +196,12 @@ class Login extends React.Component<{ history: any }> {
                   id: user.roleId
                 };
                 var getRightsData = await RoleAPI.getRolePreveliges(rightdata);
-                console.log("getRightsData", getRightsData);
+                // console.log("getRightsData", getRightsData);
                 if(getRightsData) {
                   if(getRightsData.resultObject) {
                     const menu = getRightsData.resultObject.menuItems;
                     const rights = getRightsData.resultObject.roleprivileges;
-                    // console.log("rigths",JSON.stringify(rights));
+                    // // console.log("rigths",JSON.stringify(rights));
                     localStorage.setItem("menuItems", JSON.stringify(menu));
                     localStorage.setItem("rolePreveliges", JSON.stringify(rights));
                   }
@@ -364,6 +364,7 @@ class Login extends React.Component<{ history: any }> {
                         <div>
                           <button
                             className="btn mt-4 d-block w-100"
+                            disabled={this.state.disabled}
                             type="button"
                             style={{
                               backgroundColor: "#eea218",

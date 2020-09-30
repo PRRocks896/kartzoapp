@@ -51,7 +51,7 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
       id: taxId
     };
     const getTaxById: any = await TaxAPI.getTaxById(obj);
-    console.log("getTaxById", getTaxById);
+    // console.log("getTaxById", getTaxById);
 
     if (getTaxById) {
       if(getTaxById.status === 200) {

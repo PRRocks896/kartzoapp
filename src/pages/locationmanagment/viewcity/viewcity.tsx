@@ -37,7 +37,7 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
       id: cityId,
     };
     const getCityById: any = await LocationAPI.getCityById(obj);
-    console.log("getCityById", getCityById);
+    // console.log("getCityById", getCityById);
 
     if (getCityById) {
       if (getCityById.status === 200) {

@@ -64,7 +64,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
       id: settingId,
     };
     const getSettingById: any = await SettingAPI.getSettingById(obj);
-    console.log("getSettingById", getSettingById);
+    // console.log("getSettingById", getSettingById);
 
     if (getSettingById) {
       if (getSettingById.status === 200) {
@@ -131,7 +131,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
         };
 
         const addSetting = await SettingAPI.addSetting(obj);
-        console.log("addSetting", addSetting);
+        // console.log("addSetting", addSetting);
 
         if (addSetting) {
           if (addSetting.status === 200) {
@@ -166,7 +166,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
         };
 
         const updateSetting = await SettingAPI.updateSetting(obj);
-        console.log("updateSetting", updateSetting);
+        // console.log("updateSetting", updateSetting);
 
         if (updateSetting) {
           if (updateSetting.status === 200) {

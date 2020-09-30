@@ -70,7 +70,7 @@ class Profile extends React.Component {
       };
       JSON.parse(user);
       const getProfile = await API.getProfile(obj);
-      console.log("getprofile", getProfile);
+      // console.log("getprofile", getProfile);
 
       if (getProfile) {
         if(getProfile.status === 200) {
@@ -97,7 +97,7 @@ class Profile extends React.Component {
 
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
-    console.log("getUserRole", getUserRole);
+    // console.log("getUserRole", getUserRole);
 
     if (getUserRole) {
       if (getUserRole.resultObject != null) {
@@ -193,7 +193,7 @@ class Profile extends React.Component {
       ) {
 
         let formData = new FormData();
-        console.log('File in formData: ', this.state.selectedFile[0]);
+        // console.log('File in formData: ', this.state.selectedFile[0]);
         formData.append('id', this.state.userid.toString());
         formData.append('firstName', this.state.firstname);
         formData.append('lastName', this.state.lastname);
@@ -202,7 +202,7 @@ class Profile extends React.Component {
         formData.append('userId', '0');
 
         const updateProfile = await API.updateProfile(formData);
-        console.log("updateProfile", updateProfile);
+        // console.log("updateProfile", updateProfile);
 
         if (updateProfile) {
           if(updateProfile.status === 200) {

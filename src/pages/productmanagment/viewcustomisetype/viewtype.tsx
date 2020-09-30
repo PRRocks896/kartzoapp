@@ -43,7 +43,7 @@ class ViewProductType extends React.Component<{ history: any; location: any }> {
     const getCustomiseTypeById: any = await ProductAPI.getCustomiseTypeById(
       obj
     );
-    console.log("getCustomiseTypeById", getCustomiseTypeById);
+    // console.log("getCustomiseTypeById", getCustomiseTypeById);
 
     if (getCustomiseTypeById) {
       if(getCustomiseTypeById.status === 200) {

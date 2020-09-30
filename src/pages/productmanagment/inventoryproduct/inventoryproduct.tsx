@@ -42,7 +42,7 @@ class InventoryProduct extends React.Component<{ history: any }> {
         document.title = constant.inventoryProduct + utils.getAppName();
 
         // const getProduct = await API.getProduct();
-        // console.log("getProduct",getProduct);
+        // // console.log("getProduct",getProduct);
     }
 
     onProductSelect(event:any) {
@@ -99,7 +99,7 @@ class InventoryProduct extends React.Component<{ history: any }> {
                 }
 
                 // const addProductInventory = await API.addProductInventory(obj);
-                // console.log("addProductInventory",addProductInventory);
+                // // console.log("addProductInventory",addProductInventory);
 
                 if (this.state.productid === obj.productid && this.state.stockqty === obj.stockqty) {
                     const msg = "Product Inventory Added Successfully";

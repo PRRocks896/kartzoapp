@@ -50,7 +50,7 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
       id: sliderId,
     };
     const getSliderDataById: any = await SliderAPI.getSliderDataById(obj);
-    console.log("getSliderDataById", getSliderDataById);
+    // console.log("getSliderDataById", getSliderDataById);
 
     if (getSliderDataById) {
       if (getSliderDataById.status === 200) {

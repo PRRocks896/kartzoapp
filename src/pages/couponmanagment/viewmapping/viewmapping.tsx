@@ -51,7 +51,7 @@ class ViewCouponMapping extends React.Component<{ history: any; location: any }>
       id: id,
     };
     const getCouponMappingById: any = await CouponAPI.getCouponMappingById(obj);
-    console.log("getCouponMappingById", getCouponMappingById);
+    // console.log("getCouponMappingById", getCouponMappingById);
 
     if (getCouponMappingById) {
       if (getCouponMappingById.status === 200) {

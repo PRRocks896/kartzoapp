@@ -49,7 +49,7 @@ class ViewFee extends React.Component<{ history: any; location: any }> {
       id: feeId,
     };
     const getFeeById: any = await FeeAPI.getFeeById(obj);
-    console.log("getFeeById", getFeeById);
+    // console.log("getFeeById", getFeeById);
 
     if (getFeeById) {
       if(getFeeById.status === 200) {

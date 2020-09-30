@@ -63,13 +63,13 @@ class AddDelivery extends React.Component<{ history: any }> {
         document.title = constant.addDelivery + utils.getAppName();
 
         // const getProfile = await API.getProfile();
-        // console.log("getprofile",getProfile);
+        // // console.log("getprofile",getProfile);
     }
 
     onChangeHandler(event: any) {
         // let data = new FormData();
         // data.append('file_name', event.target.files[0]);
-        // console.log("event",event.target.files[0].name);
+        // // console.log("event",event.target.files[0].name);
         this.setState({
             selectedFile: this.state.selectedFile = event.target.files[0].name
         })
@@ -79,7 +79,7 @@ class AddDelivery extends React.Component<{ history: any }> {
     onChangeProofHandler(event: any) {
         // let data = new FormData();
         // data.append('file_name', event.target.files[0]);
-        // console.log("event",event.target.files[0].name);
+        // // console.log("event",event.target.files[0].name);
         this.setState({
             deliveryidproof: this.state.deliveryidproof = event.target.files[0].name
         })
@@ -89,7 +89,7 @@ class AddDelivery extends React.Component<{ history: any }> {
     onChangeAddressProofHandler(event: any) {
         // let data = new FormData();
         // data.append('file_name', event.target.files[0]);
-        // console.log("event",event.target.files[0].name);
+        // // console.log("event",event.target.files[0].name);
         this.setState({
             deliveryaddressproof: this.state.deliveryaddressproof = event.target.files[0].name
         })
@@ -192,7 +192,7 @@ class AddDelivery extends React.Component<{ history: any }> {
                 }
 
                 // const addDelivery = await API.addDelivery(obj);
-                // console.log("addDelivery",addDelivery);
+                // // console.log("addDelivery",addDelivery);
 
                 if (this.state.firstname === obj.firstname && this.state.lastname === obj.lastname && this.state.email === obj.email && this.state.mobilenumber === obj.mobilenumber && this.state.password === obj.password && this.state.selectedFile === obj.selectedFile) {
                     const msg = "Delivery Added Successfully";

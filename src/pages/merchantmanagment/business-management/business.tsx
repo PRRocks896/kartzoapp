@@ -112,7 +112,7 @@ class MerchantBusiness extends React.Component<{ history: any }> {
         };
 
         // const addMerchantBusiness = await MerchantAPI.addMerchantBusiness(obj);
-        // console.log("addMerchantBusiness", addMerchantBusiness);
+        // // console.log("addMerchantBusiness", addMerchantBusiness);
 
         // if (addMerchantBusiness) {
         // } else {

@@ -52,7 +52,7 @@ class ViewPayout extends React.Component<{ history: any; location: any }> {
       id: payoutId,
     };
     const getPayoutById: any = await PayoutAPI.getPayoutById(obj);
-    console.log("getPayoutById", getPayoutById);
+    // console.log("getPayoutById", getPayoutById);
 
     if (getPayoutById) {
       if (getPayoutById.status === 200) {
@@ -80,7 +80,7 @@ class ViewPayout extends React.Component<{ history: any; location: any }> {
 
   async getMerchantById(id: any) {
     const getMerchantById: any = await MerchantAPI.getMerchantById(id);
-    console.log("getMerchantById", getMerchantById);
+    // console.log("getMerchantById", getMerchantById);
 
     if (getMerchantById) {
       if (getMerchantById.status === 200) {

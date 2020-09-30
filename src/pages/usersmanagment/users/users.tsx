@@ -124,7 +124,7 @@ class Users extends React.Component<{ history: any }> {
         event.target.options[event.target.selectedIndex].innerHTML,
     });
 
-    console.log("roleid", this.state.roleid);
+    // console.log("roleid", this.state.roleid);
 
     const obj: getAllTableDataListRequest = {
       roleID: parseInt(this.state.roleid),
@@ -134,7 +134,7 @@ class Users extends React.Component<{ history: any }> {
     };
 
     var getUserDataPagination = await API.getUserDataPagination(obj);
-    console.log("getUserDataPagination", getUserDataPagination);
+    // console.log("getUserDataPagination", getUserDataPagination);
     // This status sould becheck in intercepter only
     if (getUserDataPagination) {
       if (getUserDataPagination.status === 200) {
@@ -199,7 +199,7 @@ class Users extends React.Component<{ history: any }> {
     };
 
     var getUserDataPagination = await API.getUserDataPagination(obj);
-    console.log("getUserDataPagination", getUserDataPagination);
+    // console.log("getUserDataPagination", getUserDataPagination);
 
     if (getUserDataPagination) {
       if (getUserDataPagination.status === 200) {
@@ -251,7 +251,7 @@ class Users extends React.Component<{ history: any }> {
         isActive: data.isActive === true ? false : true,
       };
       var getStatusChange = await StatusAPI.getStatusChange(obj);
-      console.log("getStatusChange", getStatusChange);
+      // console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
@@ -280,7 +280,7 @@ class Users extends React.Component<{ history: any }> {
         id: this.state.deleteuserdata
       };
       var deleteAllData : any = await DeleteAPI.deleteAllData(obj);
-      console.log("deleteAllData", deleteAllData);
+      // console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
@@ -315,10 +315,10 @@ class Users extends React.Component<{ history: any }> {
         userdata: this.state.userdata = data,
       });
     }
-    console.log(
-      "after check the box data: ",
-      data.filter((res: any, index: number) => res._rowChecked == true)
-    );
+    // console.log(
+    //   "after check the box data: ",
+    //   data.filter((res: any, index: number) => res._rowChecked == true)
+    // );
     if (
       data.filter((res: any, index: number) => res._rowChecked === true)
         .length === data.length
@@ -349,7 +349,7 @@ class Users extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   handleMainChange(e: any) {
@@ -381,7 +381,7 @@ class Users extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   pagination(pageNumbers: number[]) {

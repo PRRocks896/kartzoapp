@@ -43,7 +43,7 @@ class ViewBusinessHours extends React.Component<{
 
   async getBusinessById(id: any) {
     // const getBusinessById: any = await MerchantAPI.getBusinessById(id);
-    // console.log("getBusinessById", getBusinessById);
+    // // console.log("getBusinessById", getBusinessById);
 
     // if (getBusinessById) {
     //   if (getBusinessById.status === 200) {

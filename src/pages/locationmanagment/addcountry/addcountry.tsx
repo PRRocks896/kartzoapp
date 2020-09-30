@@ -68,7 +68,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
       id: countryId,
     };
     const getCountryById: any = await LocationAPI.getCountryById(obj);
-    console.log("getCountryById", getCountryById);
+    // console.log("getCountryById", getCountryById);
 
     if (getCountryById) {
       if(getCountryById.status === 200) {
@@ -175,7 +175,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         formData.append("files", this.state.selectedFile[0]);
 
         const addCountry = await LocationAPI.addCountry(formData);
-        console.log("addCountry", addCountry);
+        // console.log("addCountry", addCountry);
 
         if (addCountry) {
           if(addCountry.status === 200) {
@@ -218,7 +218,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
           formData,
           this.state.countryid.toString()
         );
-        console.log("editCountry", editCountry);
+        // console.log("editCountry", editCountry);
 
         if (editCountry) {
           if(editCountry.status === 200) {

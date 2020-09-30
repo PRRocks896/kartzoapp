@@ -71,7 +71,7 @@ class ListCartManagement extends React.Component<{ history: any }> {
     async getUserCountData() {
 
         // var getuserCount = await API.getUserCount();
-        // console.log("getUsercount",getuserCount);
+        // // console.log("getUsercount",getuserCount);
       
     }
 
@@ -82,7 +82,7 @@ class ListCartManagement extends React.Component<{ history: any }> {
         // }
 
         // var getUserDataPagination = await API.getUserDataPagination();
-        // console.log("getUserDataPagination",getUserDataPagination);
+        // // console.log("getUserDataPagination",getUserDataPagination);
 
         // var getUserDataPagination : cartListRequest = [];
       

@@ -69,7 +69,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
 
   async getCountry() {
     const getCountry = await LocationAPI.getCountry();
-    console.log("getCountry", getCountry);
+    // console.log("getCountry", getCountry);
 
     if(getCountry) {
       if (getCountry.status === 200) {
@@ -91,7 +91,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
       id: stateId,
     };
     const getStateById: any = await LocationAPI.getStateById(obj);
-    console.log("getStateById", getStateById);
+    // console.log("getStateById", getStateById);
     if(getStateById) {
       if (getStateById.status === 200) {
         this.setState({
@@ -161,7 +161,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
         };
 
         const addState = await LocationAPI.addState(obj);
-        console.log("addState", addState);
+        // console.log("addState", addState);
 
         if(addState) {
           if(addState.status === 200) {
@@ -196,7 +196,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
         };
 
         const editState = await LocationAPI.editState(obj);
-        console.log("editState", editState);
+        // console.log("editState", editState);
 
         if(editState) {
           if(editState.status === 200) {

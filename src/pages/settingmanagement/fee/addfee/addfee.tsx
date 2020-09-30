@@ -59,7 +59,7 @@ class AddFee extends React.Component<{ history: any; location: any }> {
       id: settingId,
     };
     const getFeeById: any = await FeeAPI.getFeeById(obj);
-    console.log("getFeeById", getFeeById);
+    // console.log("getFeeById", getFeeById);
 
     if (getFeeById) {
       if(getFeeById.status === 200) {
@@ -127,7 +127,7 @@ class AddFee extends React.Component<{ history: any; location: any }> {
         };
 
         const addFee = await FeeAPI.addFee(obj);
-        console.log("addFee", addFee);
+        // console.log("addFee", addFee);
 
         if (addFee) {
           if(addFee.status === 200) {
@@ -162,7 +162,7 @@ class AddFee extends React.Component<{ history: any; location: any }> {
         };
 
         const updateFee = await FeeAPI.updateFee(obj);
-        console.log("updateFee", updateFee);
+        // console.log("updateFee", updateFee);
 
         if (updateFee) {
           if(updateFee.status === 200) {

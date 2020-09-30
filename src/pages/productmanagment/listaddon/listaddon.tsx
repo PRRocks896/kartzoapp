@@ -81,7 +81,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     };
 
     var getProductCustomiseData = await ProductAPI.getProductCustomiseData(obj);
-    console.log("getProductCustomiseData", getProductCustomiseData);
+    // console.log("getProductCustomiseData", getProductCustomiseData);
 
     if (getProductCustomiseData) {
       if(getProductCustomiseData.status === 200) {
@@ -136,7 +136,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
   //       id: data.productCustomizeId,
   //     };
   //     var deleteCustomise = await ProductAPI.deleteCustomise(obj);
-  //     console.log("deleteCustomise", deleteCustomise);
+  //     // console.log("deleteCustomise", deleteCustomise);
   //     if (deleteCustomise) {
   //       this.getProductCustomiseData(
   //         "",
@@ -157,7 +157,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
         id: this.state.deleteuserdata
       };
       var deleteAllData = await DeleteAPI.deleteAllMerchantData(obj);
-      console.log("deleteAllData", deleteAllData);
+      // console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
@@ -233,7 +233,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
         isActive: data.isActive === true ? false : true,
       };
       var getStatusChange = await StatusAPI.getMerchantPanelStatusChange(obj);
-      console.log("getStatusChange", getStatusChange);
+      // console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
@@ -294,7 +294,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   handleMainChange(e: any) {
@@ -326,7 +326,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   pagination(pageNumbers: any) {

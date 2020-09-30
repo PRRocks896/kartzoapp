@@ -70,7 +70,7 @@ class City extends React.Component<{ history: any }> {
     };
 
     var getCityData = await LocationAPI.getCityData(obj);
-    console.log("getCityData", getCityData);
+    // console.log("getCityData", getCityData);
 
     if (getCityData) {
       if(getCityData.status === 200) {
@@ -124,7 +124,7 @@ class City extends React.Component<{ history: any }> {
   //       id: data.cityId,
   //     };
   //     var deleteCity = await LocationAPI.deleteCity(obj);
-  //     console.log("deleteCity", deleteCity);
+  //     // console.log("deleteCity", deleteCity);
   //     if (deleteCity) {
   //       this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
   //     } else {
@@ -141,7 +141,7 @@ class City extends React.Component<{ history: any }> {
         id: this.state.deleteuserdata
       };
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
-      console.log("deleteAllData", deleteAllData);
+      // console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
@@ -210,7 +210,7 @@ class City extends React.Component<{ history: any }> {
         isActive: data.isActive === true ? false : true
        }
        var getStatusChange = await StatusAPI.getStatusChange(obj);
-       console.log("getStatusChange", getStatusChange);
+       // console.log("getStatusChange", getStatusChange);
        if (getStatusChange) {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
@@ -270,7 +270,7 @@ class City extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   handleMainChange(e: any) {
@@ -302,7 +302,7 @@ class City extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   pagination(pageNumbers: any) {

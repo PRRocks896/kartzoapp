@@ -37,7 +37,7 @@ class ViewState extends React.Component<{ history: any; location: any }> {
       id: stateId,
     };
     const getStateById: any = await LocationAPI.getStateById(obj);
-    console.log("getStateById", getStateById);
+    // console.log("getStateById", getStateById);
 
     if (getStateById) {
       if (getStateById.status === 200) {

@@ -68,7 +68,7 @@ class ListBussinessHours extends React.Component<{ history: any }> {
     };
 
     // var getBusinessHoursData = await MerchantAPI.getBusinessHoursData(obj);
-    // console.log("getBusinessHoursData", getBusinessHoursData);
+    // // console.log("getBusinessHoursData", getBusinessHoursData);
 
     // if (getBusinessHoursData) {
     //   if (getBusinessHoursData.status === 200) {
@@ -183,7 +183,7 @@ class ListBussinessHours extends React.Component<{ history: any }> {
         isActive: data.isActive === true ? false : true
        }
        var getStatusChange = await StatusAPI.getStatusChange(obj);
-       console.log("getStatusChange", getStatusChange);
+       // console.log("getStatusChange", getStatusChange);
        if (getStatusChange.status === 200) {
         const msg = getStatusChange.message;
         utils.showSuccess(msg);

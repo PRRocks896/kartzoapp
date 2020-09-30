@@ -75,7 +75,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
 
  async getMerchant() {
     const getMerchantList: any = await MerchantAPI.getMerchantList();
-    console.log("getMerchantList", getMerchantList);
+    // console.log("getMerchantList", getMerchantList);
     if (getMerchantList) {
       if(getMerchantList.status === 200) {
       this.setState({
@@ -97,7 +97,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
       id: payoutId,
     };
     const getPayoutById: any = await PayoutAPI.getPayoutById(obj);
-    console.log("getPayoutById", getPayoutById);
+    // console.log("getPayoutById", getPayoutById);
 
     if (getPayoutById) {
       if(getPayoutById.status === 200) {
@@ -125,7 +125,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
 
   async getMerchantById(id: any) {
     const getMerchantById: any = await MerchantAPI.getMerchantById(id);
-    console.log("getMerchantById", getMerchantById);
+    // console.log("getMerchantById", getMerchantById);
 
     if (getMerchantById) {
       if(getMerchantById.status === 200) {
@@ -193,7 +193,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
         };
 
         const addPayout = await PayoutAPI.addPayout(obj);
-        console.log("addPayout", addPayout);
+        // console.log("addPayout", addPayout);
 
         if (addPayout) {
           if(addPayout.status === 200) {
@@ -230,7 +230,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
         };
 
         const editPayout = await PayoutAPI.editPayout(obj);
-        console.log("editPayout", editPayout);
+        // console.log("editPayout", editPayout);
 
         if (editPayout) {
           if(editPayout.status === 200) {

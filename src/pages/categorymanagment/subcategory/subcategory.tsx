@@ -83,7 +83,7 @@ class SubCategory extends React.Component<{ history: any }> {
         this.getApplicationPageData();
 
         // const getAllCategory = await API.getAllCategory();
-        // console.log("getAllCategory",getAllCategory);
+        // // console.log("getAllCategory",getAllCategory);
     }
 
     async getSubCategory() {
@@ -96,7 +96,7 @@ class SubCategory extends React.Component<{ history: any }> {
         };
 
         var getCategory = await API.getCategory(obj);
-        console.log("getCategory", getCategory);
+        // console.log("getCategory", getCategory);
 
         if (getCategory.resultObject != null) {
             this.setState({
@@ -116,7 +116,7 @@ class SubCategory extends React.Component<{ history: any }> {
         // }
 
         // var getUserDataPagination = await API.getUserDataPagination();
-        // console.log("getUserDataPagination",getUserDataPagination);
+        // // console.log("getUserDataPagination",getUserDataPagination);
 
         // var getUserDataPagination : categoryListRequest = [];
 
@@ -186,7 +186,7 @@ class SubCategory extends React.Component<{ history: any }> {
         };
 
         var getCategory = await API.getCategory(obj);
-        console.log("getCategory", getCategory);
+        // console.log("getCategory", getCategory);
 
         if (getCategory.resultObject != null) {
             this.setState({
@@ -207,7 +207,7 @@ class SubCategory extends React.Component<{ history: any }> {
         };
 
         var getCategory = await API.getCategory(obj);
-        console.log("getCategory", getCategory);
+        // console.log("getCategory", getCategory);
 
 
         if (getCategory.resultObject.data != null) {

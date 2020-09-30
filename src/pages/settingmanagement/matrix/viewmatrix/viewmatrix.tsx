@@ -51,7 +51,7 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
       id: payoutId,
     };
     const getMatrixById: any = await MatrixAPI.getMatrixById(obj);
-    console.log("getMatrixById", getMatrixById);
+    // console.log("getMatrixById", getMatrixById);
 
     if (getMatrixById) {
       if(getMatrixById.status === 200) {

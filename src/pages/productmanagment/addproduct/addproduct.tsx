@@ -83,7 +83,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     this.setState({
       images: this.state.images = images,
     });
-    // console.log("images", this.state.images);
+    // // console.log("images", this.state.images);
     images.forEach((file: any) => {
       let reader: any = new FileReader();
       reader.onloadend = () => {
@@ -121,7 +121,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
 
   async getProductById(id: getDataByIdRequest) {
     const getProductById: any = await ProductAPI.getProductById(id);
-    console.log("getProductById", getProductById);
+    // console.log("getProductById", getProductById);
 
     if (getProductById) {
       if (getProductById.status === 200) {
@@ -162,7 +162,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
 
   async getAllCategory() {
     const getAllCategory = await CategoryAPI.getAllCategory();
-    console.log("getAllCategory", getAllCategory);
+    // console.log("getAllCategory", getAllCategory);
     if (getAllCategory) {
       if (getAllCategory.status === 200) {
         this.setState({
@@ -179,7 +179,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
 
   async getAllMerchant() {
     const getAllMerchant = await MerchantAPI.getMerchantList();
-    console.log("getAllMerchant", getAllMerchant);
+    // console.log("getAllMerchant", getAllMerchant);
     if (getAllMerchant) {
       if (getAllMerchant.status === 200) {
         this.setState({
@@ -235,7 +235,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
 
   };
   onError = (errors: any, files: any) => {
-    console.log(errors, files);
+    // console.log(errors, files);
   };
 
   deleteImage(id: any, index: number) {
@@ -352,7 +352,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         formData.append("UserId", "0");
 
         const addProduct = await ProductAPI.addProduct(formData);
-        console.log("addProduct", addProduct);
+        // console.log("addProduct", addProduct);
 
         if (addProduct) {
           if (addProduct.status === 200) {
@@ -428,7 +428,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
           formData,
           this.state.productid
         );
-        console.log("editProduct", editProduct);
+        // console.log("editProduct", editProduct);
 
         if (editProduct) {
           if (editProduct.status === 200) {

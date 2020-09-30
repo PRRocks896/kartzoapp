@@ -79,7 +79,7 @@ class ListSlider extends React.Component<{ history: any }> {
     };
 
     var getSliderData = await SliderAPI.getSliderData(obj);
-    console.log("getSliderData", getSliderData);
+    // console.log("getSliderData", getSliderData);
 
     if (getSliderData) {
       if(getSliderData.status === 200) {
@@ -134,7 +134,7 @@ class ListSlider extends React.Component<{ history: any }> {
   //       id: data.homeSliderId,
   //     };
   //     var deleteSlider = await SliderAPI.deleteSlider(obj);
-  //     console.log("deleteSlider", deleteSlider);
+  //     // console.log("deleteSlider", deleteSlider);
   //     if (deleteSlider) {
   //       this.getSliderData(
   //         "",
@@ -155,7 +155,7 @@ class ListSlider extends React.Component<{ history: any }> {
         id: this.state.deleteuserdata
       };
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
-      console.log("deleteAllData", deleteAllData);
+      // console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
@@ -231,7 +231,7 @@ class ListSlider extends React.Component<{ history: any }> {
         isActive: data.isActive === true ? false : true,
       };
       var getStatusChange = await StatusAPI.getStatusChange(obj);
-      console.log("getStatusChange", getStatusChange);
+      // console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
@@ -291,7 +291,7 @@ class ListSlider extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   handleMainChange(e: any) {
@@ -323,7 +323,7 @@ class ListSlider extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
 

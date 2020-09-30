@@ -77,7 +77,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
 
   async getAllProduct() {
     const getAllProduct = await ProductAPI.getAllProduct();
-    console.log("getAllProduct", getAllProduct);
+    // console.log("getAllProduct", getAllProduct);
     if (getAllProduct) {
       if (getAllProduct.status === 200) {
         this.setState({
@@ -98,7 +98,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
       id: categoryId
     };
     const getSliderDataById: any = await SliderAPI.getSliderDataById(obj);
-    console.log("getSliderDataById", getSliderDataById);
+    // console.log("getSliderDataById", getSliderDataById);
     if (getSliderDataById) {
       if (getSliderDataById.status === 200) {
       this.setState({
@@ -202,7 +202,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
         formData.append("userId", "0");
 
         const addSlider = await SliderAPI.addSlider(formData);
-        console.log("addSlider", addSlider);
+        // console.log("addSlider", addSlider);
         if (addSlider) {
           if(addSlider.status === 200) {
             const msg1 = addSlider.message;
@@ -240,7 +240,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
         formData.append("userId", "0");
 
         const editSlider = await SliderAPI.editSlider(formData, this.state.sliderid);
-        console.log("editSlider", editSlider);
+        // console.log("editSlider", editSlider);
         if (editSlider) {
           if(editSlider.status === 200) {
             const msg1 = editSlider.message;

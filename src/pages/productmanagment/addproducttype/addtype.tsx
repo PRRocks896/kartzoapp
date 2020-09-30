@@ -61,7 +61,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
       id: profuctCustomiseTypeId,
     };
     const getCustomiseTypeById: any = await ProductAPI.getCustomiseTypeById(obj);
-    console.log("getCustomiseTypeById", getCustomiseTypeById);
+    // console.log("getCustomiseTypeById", getCustomiseTypeById);
 
     if (getCustomiseTypeById) {
       if(getCustomiseTypeById.status === 200) {
@@ -118,7 +118,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
           isActive: this.state.isActive
         };
         const addCustomiseType = await ProductAPI.addCustomiseType(obj);
-        console.log("addCustomiseType", addCustomiseType);
+        // console.log("addCustomiseType", addCustomiseType);
 
         if (addCustomiseType) {
           if(addCustomiseType.status === 200) {
@@ -150,7 +150,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
           isActive: this.state.isActive
         };
         const editCustomiseProduct = await ProductAPI.editCustomiseProduct(obj);
-        console.log("editCustomiseProduct", editCustomiseProduct);
+        // console.log("editCustomiseProduct", editCustomiseProduct);
 
         if (editCustomiseProduct) {
           if(editCustomiseProduct.status === 200) {

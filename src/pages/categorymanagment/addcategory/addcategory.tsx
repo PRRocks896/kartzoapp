@@ -70,7 +70,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
 
   async getAllCategory() {
     const getAllCategory = await CategoryAPI.getAllCategory();
-    console.log("getAllCategory", getAllCategory);
+    // console.log("getAllCategory", getAllCategory);
     if (getAllCategory) {
       if(getAllCategory.status === 200) {
     this.setState({
@@ -91,7 +91,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
       id: categoryId
     };
     const getCategoryById: any = await CategoryAPI.getCategoryById(obj);
-    console.log("getCategoryById", getCategoryById);
+    // console.log("getCategoryById", getCategoryById);
 
     if(getCategoryById) {
       if (getCategoryById.status === 200) {
@@ -196,7 +196,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
 
         const addCategory = await CategoryAPI.addCategory(formData);
-        console.log("addCategory", addCategory);
+        // console.log("addCategory", addCategory);
         if (addCategory) {
           if(addCategory.status === 200) {
             const msg1 = addCategory.message;
@@ -233,7 +233,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
           formData,
           this.state.categoryid.toString()
         );
-        console.log("editCategory", editCategory);
+        // console.log("editCategory", editCategory);
         if (editCategory) {
           if(editCategory.status === 200) {
             const msg1 = editCategory.message;

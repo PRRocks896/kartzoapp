@@ -134,7 +134,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
 
   async getMerchantById(id: getDataByIdRequest) {
     const getMerchantById: any = await MerchantAPI.getMerchantById(id);
-    console.log("getMerchantById", getMerchantById);
+    // console.log("getMerchantById", getMerchantById);
 
     if (getMerchantById) {
       if (getMerchantById.status === 200) {
@@ -197,7 +197,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
       id: id,
     };
     const getCity = await LocationAPI.getCityById(obj);
-    console.log("getCity", getCity);
+    // console.log("getCity", getCity);
 
     if (getCity) {
       if (getCity.status === 200) {
@@ -216,7 +216,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
 
   async getCity() {
     const getCity = await LocationAPI.getCity();
-    console.log("getCity", getCity);
+    // console.log("getCity", getCity);
 
     if (getCity) {
       if (getCity.status === 200) {
@@ -235,7 +235,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
 
   async getRole() {
     const getMerchantRole = await MerchantAPI.getMerchantRole();
-    console.log("getMerchantRole", getMerchantRole);
+    // console.log("getMerchantRole", getMerchantRole);
 
     if (getMerchantRole) {
       if (getMerchantRole.status === 200) {
@@ -565,7 +565,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         formData.append("UserId", "0");
 
         const addMerchant = await MerchantAPI.addMerchant(formData);
-        console.log("addMerchant", addMerchant);
+        // console.log("addMerchant", addMerchant);
         if (addMerchant) {
           if (addMerchant.status === 200) {
             const msg1 = addMerchant.message;
@@ -684,7 +684,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
           formData,
           this.state.merchantId
         );
-        console.log("editMerchant", editMerchant);
+        // console.log("editMerchant", editMerchant);
         if (editMerchant) {
           if (editMerchant.status === 200) {
             const msg1 = editMerchant.message;

@@ -45,7 +45,7 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
       id: categoryId,
     };
     const getCategoryById: any = await CategoryAPI.getCategoryById(obj);
-    console.log("getCategoryById", getCategoryById);
+    // console.log("getCategoryById", getCategoryById);
     if (getCategoryById) {
       if (getCategoryById.status === 200) {
       this.setState({

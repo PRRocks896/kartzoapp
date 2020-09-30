@@ -86,7 +86,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
       id: usderId,
     };
     const getUserById: any = await API.getUserById(obj);
-    console.log("getUserById", getUserById);
+    // console.log("getUserById", getUserById);
 
     if (getUserById) {
       if(getUserById.status === 200) {
@@ -336,7 +336,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         formData.append("userId", "0");
 
         const addUser: any = await API.addUser(formData);
-        console.log("addUser", addUser);
+        // console.log("addUser", addUser);
 
         if (addUser) {
           if(addUser.data.status === 200) {
@@ -372,7 +372,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         this.state.mobilenumber &&
         this.state.selectedFile
       ) {
-        console.log("id", this.state.userid, this.state.roleid);
+        // console.log("id", this.state.userid, this.state.roleid);
 
         let formData = new FormData();
 
@@ -388,7 +388,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         formData.append("userId", "0");
 
         const editUser: any = await API.editUser(formData, this.state.userid);
-        console.log("editUser", editUser);
+        // console.log("editUser", editUser);
 
         if (editUser) {
           if(editUser.data.status === 200) {

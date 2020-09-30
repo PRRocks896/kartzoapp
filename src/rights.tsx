@@ -1,7 +1,7 @@
 const checkRights = {
   checkViewRights(module_name:any) {
    const viewdata:any = this.checkRightsData(module_name,'view');
-   console.log("viewdata",viewdata);
+   // console.log("viewdata",viewdata);
     if(viewdata) {
       var flag = 0;
       if (viewdata.ind > -1) {
@@ -9,7 +9,7 @@ const checkRights = {
           flag = 1;
         }
       }
-      console.log("flag",flag);
+      // console.log("flag",flag);
       return flag === 1 ? true : false;
     }
   },
@@ -65,7 +65,7 @@ const checkRights = {
   checkRightsData(module_name:any,type:any) {
     const rightdata:any = localStorage.getItem('rolePreveliges');
     let user_right = JSON.parse(rightdata);
-    console.log("user_right",user_right)
+    // console.log("user_right",user_right)
     if (user_right && user_right.length) {
       if (module_name && type) {
         let ind = user_right.findIndex((x: any) => x.menuItemController === module_name);

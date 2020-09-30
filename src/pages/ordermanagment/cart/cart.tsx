@@ -59,10 +59,10 @@ class OrderCartManagement extends React.Component<{ history: any }> {
         document.title = constant.addCartOrder + utils.getAppName();
 
         // const getUser = await API.getUser();
-        // console.log("getUser",getUser);
+        // // console.log("getUser",getUser);
 
          // const getProduct = await API.getProduct();
-        // console.log("getProduct",getProduct);
+        // // console.log("getProduct",getProduct);
     }
 
    
@@ -128,7 +128,7 @@ class OrderCartManagement extends React.Component<{ history: any }> {
                 }
 
                 // const addOrderCart = await API.addOrderCart(obj);
-                // console.log("addOrderCart",addOrderCart);
+                // // console.log("addOrderCart",addOrderCart);
 
                 if (this.state.userid === obj.userid && this.state.productid === obj.productid && this.state.quantity === obj.quantity && this.state.sellingprice === obj.sellingprice && this.state.discountapplied === obj.discountapplied) {
                     const msg = "Cart Order Added Successfully";

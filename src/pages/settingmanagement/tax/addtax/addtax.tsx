@@ -68,7 +68,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
 
   async getAllCategory() {
     const getAllCategory = await CategoryAPI.getAllCategory();
-    console.log("getAllCategory", getAllCategory);
+    // console.log("getAllCategory", getAllCategory);
     if(getAllCategory) {
       if(getAllCategory.status === 200) {
       this.setState({
@@ -88,7 +88,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
       id: taxId,
     };
     const getTaxById: any = await TaxAPI.getTaxById(obj);
-    console.log("getTaxById", getTaxById);
+    // console.log("getTaxById", getTaxById);
 
     if(getTaxById) {
       if(getTaxById.status === 200) {
@@ -177,7 +177,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
         };
 
         const addTax = await TaxAPI.addTax(obj);
-        console.log("addTax", addTax);
+        // console.log("addTax", addTax);
         if (addTax) {
           if(addTax.status === 200) {
             const msg1 = addTax.message;
@@ -217,7 +217,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
         };
 
         const updateTax = await TaxAPI.updateTax(obj);
-        console.log("updateTax", updateTax);
+        // console.log("updateTax", updateTax);
         if (updateTax) {
           if(updateTax.status === 200) {
             const msg1 = updateTax.message;

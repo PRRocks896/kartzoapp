@@ -81,7 +81,7 @@ class ListProductType extends React.Component<{ history: any }> {
     };
 
     var getProductCustomiseTypeData = await ProductAPI.getProductCustomiseTypeData(obj);
-    console.log("getProductCustomiseTypeData", getProductCustomiseTypeData);
+    // console.log("getProductCustomiseTypeData", getProductCustomiseTypeData);
 
     if (getProductCustomiseTypeData) {
       if(getProductCustomiseTypeData.status === 200) {
@@ -136,7 +136,7 @@ class ListProductType extends React.Component<{ history: any }> {
   //       id: data.productCustomizeTypeId,
   //     };
   //     var deleteCustomiseType = await ProductAPI.deleteCustomiseType(obj);
-  //     console.log("deleteCustomiseType", deleteCustomiseType);
+  //     // console.log("deleteCustomiseType", deleteCustomiseType);
   //     if (deleteCustomiseType) {
   //       this.getProductCustomiseTypeData(
   //         "",
@@ -157,7 +157,7 @@ class ListProductType extends React.Component<{ history: any }> {
         id: this.state.deleteuserdata
       };
       var deleteAllData = await DeleteAPI.deleteAllMerchantData(obj);
-      console.log("deleteAllData", deleteAllData);
+      // console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
@@ -233,7 +233,7 @@ class ListProductType extends React.Component<{ history: any }> {
         isActive: data.isActive === true ? false : true,
       };
       var getStatusChange = await StatusAPI.getMerchantPanelStatusChange(obj);
-      console.log("getStatusChange", getStatusChange);
+      // console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
@@ -298,7 +298,7 @@ class ListProductType extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   handleMainChange(e: any) {
@@ -330,7 +330,7 @@ class ListProductType extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
 

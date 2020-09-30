@@ -149,7 +149,7 @@ class AddCouponMapping extends React.Component<{
       id: id,
     };
     const getCouponMappingById: any = await CouponAPI.getCouponMappingById(obj);
-    console.log("getCouponMappingById", getCouponMappingById);
+    // console.log("getCouponMappingById", getCouponMappingById);
 
     if (getCouponMappingById) {
       if (getCouponMappingById.status === 200) {
@@ -158,7 +158,7 @@ class AddCouponMapping extends React.Component<{
         this.state.tempCouponArray.map((value: any, index: number) => {
           if (getCouponMappingById.resultObject.couponId.includes(value.value)) {
             tarray.push(value);
-            console.log("tarray", tarray);
+            // console.log("tarray", tarray);
           }
         });
         this.setState({
@@ -173,7 +173,7 @@ class AddCouponMapping extends React.Component<{
           getCouponMappingById.resultObject.merchantId.includes(value.value)
         ) {
           t2array.push(value);
-          console.log("t2array", t2array);
+          // console.log("t2array", t2array);
         }
       });
       this.setState({
@@ -188,7 +188,7 @@ class AddCouponMapping extends React.Component<{
           tarray1.push(data);
         }
       });
-      console.log("tarray1", tarray1);
+      // console.log("tarray1", tarray1);
       this.setState({ mainCouponArray: this.state.mainCouponArray = tarray1 });
     }
 
@@ -199,11 +199,11 @@ class AddCouponMapping extends React.Component<{
           tarray2.push(data);
         }
       });
-      console.log("tarray2", tarray2);
+      // console.log("tarray2", tarray2);
       this.setState({ merchantdata: this.state.merchantdata = tarray2 });
     }
 
-      console.log("Selected Coupon: ", this.state.selectedCouponArray);
+      // console.log("Selected Coupon: ", this.state.selectedCouponArray);
       this.setState({
         offername: this.state.offername =
           getCouponMappingById.resultObject.offerName,
@@ -216,7 +216,7 @@ class AddCouponMapping extends React.Component<{
       //   var newList : any = this.state.items.filter(function(x:any){
       //     return  getCouponMappingById.resultObject.couponId.indexOf(x) < 0;
       //  })
-      // console.log('filter',this.state.items.filter(item => item.news_id == id ))
+      // // console.log('filter',this.state.items.filter(item => item.news_id == id ))
       // let newUpdatdCouponArray:any = []
       // for(var i=0;i<this.state.selected.length;i++) {
       //   for(var j=0;j<this.state.items.length;j++) {
@@ -225,7 +225,7 @@ class AddCouponMapping extends React.Component<{
       //     // newUpdatdCouponArray.name.push(this.state.items[j].name);
       //   }
       // }
-      // console.log("newUpdatdCouponArray",newUpdatdCouponArray);
+      // // console.log("newUpdatdCouponArray",newUpdatdCouponArray);
     } else {
       const msg1 = getCouponMappingById.message;
       utils.showError(msg1);
@@ -245,7 +245,7 @@ class AddCouponMapping extends React.Component<{
 
   async getCouponList() {
     var getCouponList = await CouponAPI.getCouponList();
-    console.log("getCouponList", getCouponList);
+    // console.log("getCouponList", getCouponList);
 
     if (getCouponList) {
       if (getCouponList.status === 200) {
@@ -267,7 +267,7 @@ class AddCouponMapping extends React.Component<{
 
   async getMerchantList() {
     var getMerchantList = await MerchantAPI.getMerchantList();
-    console.log("getMerchantList", getMerchantList);
+    // console.log("getMerchantList", getMerchantList);
 
     if (getMerchantList) {
       if (getMerchantList.status === 200) {
@@ -319,7 +319,7 @@ class AddCouponMapping extends React.Component<{
         source,
         destination
       );
-      console.log("result", result);
+      // console.log("result", result);
       if (this.state.updateTrue === false) {
         this.setState({
           mainCouponArray: result.droppable,
@@ -333,22 +333,22 @@ class AddCouponMapping extends React.Component<{
         this.setState({
           couponselectedarray: this.state.couponselectedarray = newarray,
         });
-        console.log("result", this.state.selectedCouponArray);
+        // console.log("result", this.state.selectedCouponArray);
       } else {
-        console.log("source", source);
-        console.log("destination", destination);
+        // console.log("source", source);
+        // console.log("destination", destination);
         if (source.droppableId === "droppable") {
           let newarray: any = this.state.selectedCouponArray;
-          console.log("New Array: ", newarray);
+          // console.log("New Array: ", newarray);
           if(result.droppable2) {
             result.droppable2.map((data: any, index: number) => {
-              console.log("data: ", data);
+              // console.log("data: ", data);
               if (!newarray.includes(data)) {
-                console.log("in if condition");
+                // console.log("in if condition");
                 newarray.push(data);
               }
             });
-            console.log("newarray", newarray);
+            // console.log("newarray", newarray);
             this.setState({
               selectedCouponArray: this.state.selectedCouponArray = newarray,
             });
@@ -356,20 +356,20 @@ class AddCouponMapping extends React.Component<{
           if(result.droppable2) {
             result.droppable2.map((data: any, index: number) => {
               if (this.state.mainCouponArray.includes(data)) {
-                console.log("Found");
+                // console.log("Found");
                 const index = this.state.mainCouponArray.indexOf(data);
                 this.state.mainCouponArray.splice(index, 1);
-                console.log(this.state.mainCouponArray);
+                // console.log(this.state.mainCouponArray);
               } else {
-                console.log("Not Found");
+                // console.log("Not Found");
               }
             });
           }
-          console.log("Main array: ", this.state.mainCouponArray);
-          console.log(
-            "selectedCouponArray after updated",
-            this.state.selectedCouponArray
-          );
+          // console.log("Main array: ", this.state.mainCouponArray);
+          // console.log(
+          //   "selectedCouponArray after updated",
+          //   this.state.selectedCouponArray
+          // );
           let newarray3: any = [];
           if(this.state.selectedCouponArray) {
             this.state.selectedCouponArray.map((res: any, index: number) => {
@@ -378,20 +378,20 @@ class AddCouponMapping extends React.Component<{
             this.setState({
               couponselectedarray: this.state.couponselectedarray = newarray3,
             });
-            console.log("result", this.state.selectedCouponArray);
+            // console.log("result", this.state.selectedCouponArray);
           }
         } else if (source.droppableId === "droppable2") {
           let newarray: any = this.state.mainCouponArray;
-          console.log("New Array: ", newarray);
+          // console.log("New Array: ", newarray);
           if(result.droppable) {
             result.droppable.map((data: any, index: number) => {
-              console.log("data: ", data);
+              // console.log("data: ", data);
               if (!newarray.includes(data)) {
-                console.log("in if condition");
+                // console.log("in if condition");
                 newarray.push(data);
               }
             });
-            console.log("newarray", newarray);
+            // console.log("newarray", newarray);
             this.setState({
               mainCouponArray: this.state.mainCouponArray = newarray,
             });
@@ -399,24 +399,24 @@ class AddCouponMapping extends React.Component<{
           if(result.droppable) {
             result.droppable.map((data: any, index: number) => {
               if (this.state.selectedCouponArray.includes(data)) {
-                console.log("Found");
+                // console.log("Found");
                 const index = this.state.selectedCouponArray.indexOf(data);
                 this.state.selectedCouponArray.splice(index, 1);
-                console.log(this.state.selectedCouponArray);
+                // console.log(this.state.selectedCouponArray);
               } else {
-                console.log("Not Found");
+                // console.log("Not Found");
               }
             });
           }
-          console.log("Main array: ", this.state.mainCouponArray);
-          console.log(
-            "mainCouponArray after updated",
-            this.state.mainCouponArray
-          );
-          console.log(
-            "selectedCouponArray after updated",
-            this.state.selectedCouponArray
-          );
+          // console.log("Main array: ", this.state.mainCouponArray);
+          // console.log(
+          //   "mainCouponArray after updated",
+          //   this.state.mainCouponArray
+          // );
+          // console.log(
+          //   "selectedCouponArray after updated",
+          //   this.state.selectedCouponArray
+          // );
           let newarray3: any = [];
           if(this.state.selectedCouponArray) {
             this.state.selectedCouponArray.map((res: any, index: number) => {
@@ -460,7 +460,7 @@ class AddCouponMapping extends React.Component<{
         source,
         destination
       );
-      // console.log("result", result);
+      // // console.log("result", result);
 
       if (this.state.updateTrue === false) {
         this.setState({
@@ -475,22 +475,22 @@ class AddCouponMapping extends React.Component<{
         this.setState({
           merchantselectedarray: this.state.merchantselectedarray = newmainarray,
         });
-        console.log("result", this.state.merchantselectedarray);
+        // console.log("result", this.state.merchantselectedarray);
       } else {
-        console.log("source", source);
-        console.log("destination", destination);
+        // console.log("source", source);
+        // console.log("destination", destination);
         if (source.droppableId === "droppable") {
           let newarray: any = this.state.selectedmerchantdata;
-          console.log("New Array: ", newarray);
+          // console.log("New Array: ", newarray);
           if(result.droppable4) {
             result.droppable4.map((data: any, index: number) => {
-              console.log("data: ", data);
+              // console.log("data: ", data);
               if (!newarray.includes(data)) {
-                console.log("in if condition");
+                // console.log("in if condition");
                 newarray.push(data);
               }
             });
-            console.log("newarray", newarray);
+            // console.log("newarray", newarray);
             this.setState({
               selectedmerchantdata: this.state.selectedmerchantdata = newarray,
             });
@@ -498,16 +498,16 @@ class AddCouponMapping extends React.Component<{
           if(result.droppable4) {
             result.droppable4.map((data: any, index: number) => {
               if (this.state.merchantdata.includes(data)) {
-                console.log("Found");
+                // console.log("Found");
                 const index = this.state.merchantdata.indexOf(data);
                 this.state.merchantdata.splice(index, 1);
-                console.log(this.state.merchantdata);
+                // console.log(this.state.merchantdata);
               } else {
-                console.log("Not Found");
+                // console.log("Not Found");
               }
             });
           }
-          console.log("Main array: ", this.state.merchantdata);
+          // console.log("Main array: ", this.state.merchantdata);
           let newmainarray: any = [];
           if(this.state.selectedmerchantdata) {
             this.state.selectedmerchantdata.map((res: any, index: number) => {
@@ -517,22 +517,22 @@ class AddCouponMapping extends React.Component<{
               merchantselectedarray: this.state.merchantselectedarray = newmainarray,
             });
           }
-          console.log(
-            "selectedmerchantdata after updated",
-            this.state.selectedmerchantdata
-          );
+          // console.log(
+          //   "selectedmerchantdata after updated",
+          //   this.state.selectedmerchantdata
+          // );
         } else if (source.droppableId === "droppable4") {
           let newarray: any = this.state.merchantdata;
-          console.log("New Array: ", newarray);
+          // console.log("New Array: ", newarray);
           if(result.droppable) {
             result.droppable.map((data: any, index: number) => {
-              console.log("data: ", data);
+              // console.log("data: ", data);
               if (!newarray.includes(data)) {
-                console.log("in if condition");
+                // console.log("in if condition");
                 newarray.push(data);
               }
             });
-            console.log("newarray", newarray);
+            // console.log("newarray", newarray);
             this.setState({
               merchantdata: this.state.merchantdata = newarray,
             });
@@ -540,18 +540,18 @@ class AddCouponMapping extends React.Component<{
           if(result.droppable) {
             result.droppable.map((data: any, index: number) => {
               if (this.state.selectedmerchantdata.includes(data)) {
-                console.log("Found");
+                // console.log("Found");
                 const index = this.state.selectedmerchantdata.indexOf(data);
                 this.state.selectedmerchantdata.splice(index, 1);
-                console.log(this.state.selectedmerchantdata);
+                // console.log(this.state.selectedmerchantdata);
               } else {
-                console.log("Not Found");
+                // console.log("Not Found");
               }
             });
           }
-          console.log("Main array: ", this.state.merchantdata);
+          // console.log("Main array: ", this.state.merchantdata);
 
-          console.log("merchantdata after updated", this.state.merchantdata);
+          // console.log("merchantdata after updated", this.state.merchantdata);
           let newmainarray: any = [];
           if(this.state.selectedmerchantdata) {
             this.state.selectedmerchantdata.map((res: any, index: number) => {
@@ -599,7 +599,7 @@ class AddCouponMapping extends React.Component<{
         };
 
         const addCouponMapping = await CouponAPI.addCouponMappingMapping(obj);
-        console.log("addCouponMapping", addCouponMapping);
+        // console.log("addCouponMapping", addCouponMapping);
         if (addCouponMapping) {
           if(addCouponMapping.status === 200) {
             const msg1 = addCouponMapping.message;
@@ -635,10 +635,10 @@ class AddCouponMapping extends React.Component<{
           mappingDetail: mappingDetails,
         };
 
-        console.log("obj", obj);
+        // console.log("obj", obj);
 
         const editCouponMapping = await CouponAPI.editCouponMapping(obj);
-        console.log("editCouponMapping", editCouponMapping);
+        // console.log("editCouponMapping", editCouponMapping);
         if (editCouponMapping) {
           if(editCouponMapping.status === 200) {
             const msg1 = editCouponMapping.message;

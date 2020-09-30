@@ -78,7 +78,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
       id: profuctCustomiseTypeId,
     };
     const getCustomiseTypeById: any = await ProductAPI.getCustomiseById(obj);
-    console.log("getCustomiseTypeById", getCustomiseTypeById);
+    // console.log("getCustomiseTypeById", getCustomiseTypeById);
 
     if (getCustomiseTypeById) {
       if(getCustomiseTypeById.status === 200) {
@@ -106,7 +106,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
 
   async getAllProduct() {
     const getAllProduct = await ProductAPI.getAllProduct();
-    console.log("getAllProduct", getAllProduct);
+    // console.log("getAllProduct", getAllProduct);
     if(getAllProduct) {
       if(getAllProduct.status === 200) {
       this.setState({
@@ -121,7 +121,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
 
   async getAllProductType() {
     const getAllProductType = await ProductAPI.getAllProductTypeType();
-    console.log("getAllProductType", getAllProductType);
+    // console.log("getAllProductType", getAllProductType);
     if(getAllProductType){
       if(getAllProductType.status === 200) {
       this.setState({
@@ -221,7 +221,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
           };
 
           const addOnProduct = await ProductAPI.addOnProduct(obj);
-          console.log("addOnProduct",addOnProduct);
+          // console.log("addOnProduct",addOnProduct);
 
           if (addOnProduct) {
             if(addOnProduct.status === 200) {
@@ -260,7 +260,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
             };
   
             const editaddOnProduct = await ProductAPI.editaddOnProduct(obj);
-            console.log("editaddOnProduct",editaddOnProduct);
+            // console.log("editaddOnProduct",editaddOnProduct);
   
             if (editaddOnProduct) {
               if(editaddOnProduct.status === 200) {

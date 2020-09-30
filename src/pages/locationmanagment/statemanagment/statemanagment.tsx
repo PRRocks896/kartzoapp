@@ -74,7 +74,7 @@ class StateManagment extends React.Component<{ history: any }> {
     };
 
     var getStateData = await LocationAPI.getStateData(obj);
-    console.log("getStateData", getStateData);
+    // console.log("getStateData", getStateData);
 
     if (getStateData) {
       if(getStateData.status === 200) {
@@ -128,7 +128,7 @@ class StateManagment extends React.Component<{ history: any }> {
   //       id: data.stateId,
   //     };
   //     var deleteState = await LocationAPI.deleteState(obj);
-  //     console.log("deleteState", deleteState);
+  //     // console.log("deleteState", deleteState);
   //     if (deleteState) {
   //       this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
   //     } else {
@@ -145,7 +145,7 @@ class StateManagment extends React.Component<{ history: any }> {
         id: this.state.deleteuserdata
       };
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
-      console.log("deleteAllData", deleteAllData);
+      // console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
@@ -213,7 +213,7 @@ class StateManagment extends React.Component<{ history: any }> {
         isActive: data.isActive === true ? false : true
        }
        var getStatusChange = await StatusAPI.getStatusChange(obj);
-       console.log("getStatusChange", getStatusChange);
+       // console.log("getStatusChange", getStatusChange);
        if (getStatusChange) {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
@@ -273,7 +273,7 @@ class StateManagment extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   handleMainChange(e: any) {
@@ -305,7 +305,7 @@ class StateManagment extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
 

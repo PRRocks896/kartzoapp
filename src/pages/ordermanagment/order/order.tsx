@@ -69,10 +69,10 @@ class OrderManagement extends React.Component<{ history: any }> {
         document.title = constant.addOrder + utils.getAppName();
 
         // const getUser = await API.getUser();
-        // console.log("getUser",getUser);
+        // // console.log("getUser",getUser);
 
         // const getCoupon = await API.getCoupon();
-        // console.log("getCoupon",getCoupon);
+        // // console.log("getCoupon",getCoupon);
     }
 
     onUserSelect(event: any) {
@@ -225,10 +225,10 @@ class OrderManagement extends React.Component<{ history: any }> {
                 }
 
                 // const addOrder = await API.addOrder(obj);
-                // console.log("addOrder",addOrder);
+                // // console.log("addOrder",addOrder);
 
                  // const editOrder = await API.editOrder(obj);
-                // console.log("editOrder",editOrder);
+                // // console.log("editOrder",editOrder);
 
                 if (this.state.orderdate === obj.orderdate && this.state.userid === obj.userid) {
                     const msg = "Order Added Successfully";

@@ -48,7 +48,7 @@ class AddSubCategory extends React.Component<{ history: any }> {
     async componentDidMount() {
         document.title = constant.addSubCategoryTitle + utils.getAppName();
         // const getAllCategory = await API.getAllCategory();
-        // console.log("getAllCategory", getAllCategory);
+        // // console.log("getAllCategory", getAllCategory);
 
         // if (getAllCategory.resultObject.length > 0) {
         //     this.setState({
@@ -129,7 +129,7 @@ class AddSubCategory extends React.Component<{ history: any }> {
                 formData.append('files', this.state.selectedFile[0]);
 
                 const addCategory = await API.addCategory(formData);
-                console.log("addCategory", addCategory);
+                // console.log("addCategory", addCategory);
 
                 if (addCategory.resultObject != null) {
                     const msg = "Sub Category Added Successfully";

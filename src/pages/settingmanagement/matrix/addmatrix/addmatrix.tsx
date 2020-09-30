@@ -68,7 +68,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     let matrix = [...this.state.matrix];
     matrix.splice(i, 1);
     this.setState({ matrix });
-    console.log("remove matrix", this.state.matrix);
+    // console.log("remove matrix", this.state.matrix);
     if (this.state.matrix.length === 2) {
       this.setState({
         addflag: this.state.addflag = false,
@@ -104,7 +104,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
       id: matrixId,
     };
     const getMatrixById: any = await MatrixAPI.getMatrixById(obj);
-    console.log("getMatrixById", getMatrixById);
+    // console.log("getMatrixById", getMatrixById);
 
     if (getMatrixById) {
       if(getMatrixById.status === 200) {
@@ -138,7 +138,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
 
   async getFee() {
     const getFee: any = await FeeAPI.getFee();
-    console.log("getFee", getFee);
+    // console.log("getFee", getFee);
     if (getFee) {
       if(getFee.status === 200) {
         this.setState({
@@ -179,7 +179,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
   }
 
   // removeString(e:any) {
-  //   console.log("e",e);
+  //   // console.log("e",e);
   //   const charCode = (e.which) ? e.which : e.keyCode;
   //   if (charCode === 101 || charCode === 69 || charCode === 45 || charCode === 43 ||
   //     charCode === 44 || charCode === 46 || charCode === 47 || charCode === 61) {
@@ -277,8 +277,8 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
   }
 
   async addMatrix() {
-    console.log("feetype", this.state.feetype);
-    console.log("matrix", this.state.matrix);
+    // console.log("feetype", this.state.feetype);
+    // console.log("matrix", this.state.matrix);
 
     const isValid = this.validate();
     if (isValid) {
@@ -291,7 +291,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
           ? temparray.push(data)
           : ""
       );
-      console.log("matrix updated", temparray);
+      // console.log("matrix updated", temparray);
       if (this.state.feetype && temparray.length > 0) {
         const obj:matrixCreateRequest = {
           feeTypeId: parseInt(this.state.feetype),
@@ -299,7 +299,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
         };
 
         const addMatrix = await MatrixAPI.addMatrix(obj);
-        console.log("addMatrix", addMatrix);
+        // console.log("addMatrix", addMatrix);
 
         if (addMatrix) {
           if(addMatrix.status === 200) {
@@ -319,8 +319,8 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
   }
 
   async updateMatrix() {
-    console.log("feetype", this.state.feetype);
-    console.log("matrix", this.state.matrix);
+    // console.log("feetype", this.state.feetype);
+    // console.log("matrix", this.state.matrix);
 
     const isValid = this.validate();
     if (isValid) {
@@ -333,7 +333,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
           ? temparray.push(data)
           : ""
       );
-      console.log("matrix updated", temparray);
+      // console.log("matrix updated", temparray);
       if (this.state.feetype && temparray.length > 0) {
         const obj:matrixUpdateRequest= {
           distanceMatrixId: parseInt(this.state.matrixId),
@@ -342,7 +342,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
         };
 
         const editMatrix = await MatrixAPI.editMatrix(obj);
-        console.log("editMatrix", editMatrix);
+        // console.log("editMatrix", editMatrix);
 
         if (editMatrix) {
           if(editMatrix.status === 200) {

@@ -9,7 +9,7 @@ export default {
         return axios.post(Constant.apiUrl + apiUrl.userController.createData, data);
     },
     forgotPassword: async function (data: forgotPasswordRequest) {
-        console.log("data",data);
+        // console.log("data",data);
         const params = data.email;
         return await axios.post(Constant.apiUrl + apiUrl.userController.forgotpassword + '?email=' +  params);
     },

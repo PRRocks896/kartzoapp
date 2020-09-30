@@ -144,7 +144,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
       id: id,
     };
     const getCouponById: any = await CouponAPI.getCouponById(obj);
-    console.log("getCouponById", getCouponById);
+    // console.log("getCouponById", getCouponById);
 
     if (getCouponById) {
       if (getCouponById.status === 200) {
@@ -284,10 +284,10 @@ class Coupon extends React.Component<{ history: any; location: any }> {
           isActive: this.state.isActive,
           minAmountOrder: parseInt(this.state.minamountorder),
         };
-        console.log("obj", obj);
+        // console.log("obj", obj);
 
         const addCoupon = await CouponAPI.addCoupon(obj);
-        console.log("addCoupon", addCoupon);
+        // console.log("addCoupon", addCoupon);
         if (addCoupon) {
           if(addCoupon.status === 200) {
             const msg1 = addCoupon.message;
@@ -337,10 +337,10 @@ class Coupon extends React.Component<{ history: any; location: any }> {
           isActive: this.state.isActive,
           minAmountOrder: parseInt(this.state.minamountorder),
         };
-        console.log("obj", obj);
+        // console.log("obj", obj);
 
         const editCoupon = await CouponAPI.editCoupon(obj);
-        console.log("editCoupon", editCoupon);
+        // console.log("editCoupon", editCoupon);
         if (editCoupon) {
           if(editCoupon.status === 200) {
             const msg1 = editCoupon.message;
@@ -732,7 +732,7 @@ export default Coupon;
 //       id: id,
 //     };
 //     const getCouponById: any = await CouponAPI.getCouponById(obj);
-//     console.log("getCouponById", getCouponById);
+//     // console.log("getCouponById", getCouponById);
 
 //     if (getCouponById) {
 //       if (getCouponById.status === 200) {
@@ -882,7 +882,7 @@ export default Coupon;
 //           isActive: this.state.isActive,
 //           minAmountOrder: parseInt(this.state.minamountorder),
 //         };
-//         console.log("obj", obj);
+//         // console.log("obj", obj);
 
 //         // const obj1 : couponUpdateRequest = {
 //         //     couponcode: this.state.couponcode,
@@ -895,7 +895,7 @@ export default Coupon;
 //         // }
 
 //         const addCoupon = await CouponAPI.addCoupon(obj);
-//         console.log("addCoupon", addCoupon);
+//         // console.log("addCoupon", addCoupon);
 //         if (addCoupon) {
 //           if (addCoupon.status === 200) {
 //             const msg = addCoupon.message;
@@ -958,10 +958,10 @@ export default Coupon;
 //           isActive: this.state.isActive,
 //           minAmountOrder: parseInt(this.state.minamountorder),
 //         };
-//         console.log("obj", obj);
+//         // console.log("obj", obj);
 
 //         const editCoupon = await CouponAPI.editCoupon(obj);
-//         console.log("editCoupon", editCoupon);
+//         // console.log("editCoupon", editCoupon);
 //         if (editCoupon) {
 //           if (editCoupon.status === 200) {
 //             const msg = editCoupon.message;

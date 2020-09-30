@@ -78,7 +78,7 @@ class ListProduct extends React.Component<{ history: any }> {
     };
 
     var getProductData = await ProductAPI.getProductData(obj);
-    console.log("getProductData", getProductData);
+    // console.log("getProductData", getProductData);
 
     if (getProductData) {
       if(getProductData.status === 200) {
@@ -133,7 +133,7 @@ class ListProduct extends React.Component<{ history: any }> {
   //       id: data.productId,
   //     };
   //     var deleteProduct = await ProductAPI.deleteProduct(obj);
-  //     console.log("deleteProduct", deleteProduct);
+  //     // console.log("deleteProduct", deleteProduct);
   //     if (deleteProduct) {
   //       this.getProductData(
   //         "",
@@ -154,7 +154,7 @@ class ListProduct extends React.Component<{ history: any }> {
         id: this.state.deleteuserdata
       };
       var deleteAllData = await DeleteAPI.deleteAllMerchantData(obj);
-      console.log("deleteAllData", deleteAllData);
+      // console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
@@ -230,7 +230,7 @@ class ListProduct extends React.Component<{ history: any }> {
         isActive: data.isActive === true ? false : true,
       };
       var getStatusChange = await StatusAPI.getMerchantPanelStatusChange(obj);
-      console.log("getStatusChange", getStatusChange);
+      // console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
@@ -294,7 +294,7 @@ class ListProduct extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   handleMainChange(e: any) {
@@ -326,7 +326,7 @@ class ListProduct extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   pagination(pageNumbers: any) {

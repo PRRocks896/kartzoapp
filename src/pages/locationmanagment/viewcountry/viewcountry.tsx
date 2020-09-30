@@ -38,7 +38,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
       id: countryId,
     };
     const getCountryById: any = await LocationAPI.getCountryById(obj);
-    console.log("getCountryById", getCountryById);
+    // console.log("getCountryById", getCountryById);
 
     if (getCountryById) {
       if (getCountryById.status === 200) {

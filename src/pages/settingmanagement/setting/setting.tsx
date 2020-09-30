@@ -78,7 +78,7 @@ class ListSetting extends React.Component<{ history: any }> {
     };
 
     var getSettingData = await SettingAPI.getSettingData(obj);
-    console.log("getSettingData", getSettingData);
+    // console.log("getSettingData", getSettingData);
 
     if (getSettingData) {
       if(getSettingData.status === 200) {
@@ -133,7 +133,7 @@ class ListSetting extends React.Component<{ history: any }> {
         id: data.settingId,
       };
       var deleteSetting = await SettingAPI.deleteSetting(obj);
-      console.log("deleteSetting", deleteSetting);
+      // console.log("deleteSetting", deleteSetting);
       if (deleteSetting) {
         this.getSettingData(
           "",
@@ -203,7 +203,7 @@ class ListSetting extends React.Component<{ history: any }> {
         isActive: data.isActive === true ? false : true,
       };
       var getStatusChange = await StatusAPI.getStatusChange(obj);
-      console.log("getStatusChange", getStatusChange);
+      // console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
         this.getSettingData(
           "",
@@ -261,7 +261,7 @@ class ListSetting extends React.Component<{ history: any }> {
   //       deleteFlag: this.state.deleteFlag = false,
   //     });
   //   }
-  //   console.log("deleteuserdata array", this.state.deleteuserdata);
+  //   // console.log("deleteuserdata array", this.state.deleteuserdata);
   // }
 
   // handleMainChange(e: any) {
@@ -293,7 +293,7 @@ class ListSetting extends React.Component<{ history: any }> {
   //       deleteFlag: this.state.deleteFlag = false,
   //     });
   //   }
-  //   console.log("deleteuserdata array", this.state.deleteuserdata);
+  //   // console.log("deleteuserdata array", this.state.deleteuserdata);
   // }
 
 

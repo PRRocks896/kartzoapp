@@ -109,7 +109,7 @@ class ListAddress extends React.Component<{ history: any }> {
     async getUserCountData() {
 
         // var getuserCount = await API.getUserCount();
-        // console.log("getUsercount",getuserCount);
+        // // console.log("getUsercount",getuserCount);
       
     }
 
@@ -120,7 +120,7 @@ class ListAddress extends React.Component<{ history: any }> {
         // }
 
         // var getUserDataPagination = await API.getUserDataPagination();
-        // console.log("getUserDataPagination",getUserDataPagination);
+        // // console.log("getUserDataPagination",getUserDataPagination);
 
         // var getUserDataPagination:addressListRequest = [];
       
@@ -132,7 +132,7 @@ class ListAddress extends React.Component<{ history: any }> {
         //     items_per_page: this.state.items_per_page
         // }
         // var getUserDataPagination = await API.getUserDataPagination();
-        // console.log("getUserDataPagination",getUserDataPagination);
+        // // console.log("getUserDataPagination",getUserDataPagination);
     }
 
 

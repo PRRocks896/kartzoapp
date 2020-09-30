@@ -78,7 +78,7 @@ class ListPayout extends React.Component<{ history: any }> {
     };
 
     var getPayoutData = await PayoutAPI.getPayoutData(obj);
-    console.log("getPayoutData", getPayoutData);
+    // console.log("getPayoutData", getPayoutData);
 
     if (getPayoutData) {
       if(getPayoutData.status === 200) {
@@ -133,7 +133,7 @@ class ListPayout extends React.Component<{ history: any }> {
   //       id: data.payoutId,
   //     };
   //     var deletePayout = await PayoutAPI.deletePayout(obj);
-  //     console.log("deletePayout", deletePayout);
+  //     // console.log("deletePayout", deletePayout);
   //     if (deletePayout) {
   //       this.getPayoutData(
   //         "",
@@ -154,7 +154,7 @@ class ListPayout extends React.Component<{ history: any }> {
   //       id: this.state.deleteuserdata
   //     };
   //     var deleteAllData = await DeleteAPI.deleteAllData(obj);
-  //     console.log("deleteAllData", deleteAllData);
+  //     // console.log("deleteAllData", deleteAllData);
   //     if (deleteAllData) {
   //       this.getPayoutData(
   //         "",
@@ -223,7 +223,7 @@ class ListPayout extends React.Component<{ history: any }> {
         isActive: data.isActive === true ? false : true,
       };
       var getStatusChange = await StatusAPI.getStatusChange(obj);
-      console.log("getStatusChange", getStatusChange);
+      // console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
         if (getStatusChange.status === 200) {
         this.getPayoutData(
@@ -285,7 +285,7 @@ class ListPayout extends React.Component<{ history: any }> {
   //       deleteFlag: this.state.deleteFlag = false,
   //     });
   //   }
-  //   console.log("deleteuserdata array", this.state.deleteuserdata);
+  //   // console.log("deleteuserdata array", this.state.deleteuserdata);
   // }
 
   // handleMainChange(e: any) {
@@ -317,7 +317,7 @@ class ListPayout extends React.Component<{ history: any }> {
   //       deleteFlag: this.state.deleteFlag = false,
   //     });
   //   }
-  //   console.log("deleteuserdata array", this.state.deleteuserdata);
+  //   // console.log("deleteuserdata array", this.state.deleteuserdata);
   // }
 
   pagination(pageNumbers: any) {

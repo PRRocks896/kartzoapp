@@ -65,7 +65,7 @@ class ViewCoupon extends React.Component<{ history: any; location: any }> {
       id: id,
     };
     const getCouponById: any = await CouponAPI.getCouponById(obj);
-    console.log("getCouponById", getCouponById);
+    // console.log("getCouponById", getCouponById);
 
     if (getCouponById) {
       if (getCouponById.status === 200) {

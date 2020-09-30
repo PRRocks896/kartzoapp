@@ -50,7 +50,7 @@ class ViewSetting extends React.Component<{ history: any; location: any }> {
       id: settingId,
     };
     const getSettingById: any = await SettingAPI.getSettingById(obj);
-    console.log("getSettingById", getSettingById);
+    // console.log("getSettingById", getSettingById);
 
     if (getSettingById) {
       if (getSettingById.status === 200) {

@@ -79,7 +79,7 @@ class ListFee extends React.Component<{ history: any }> {
     };
 
     var getFeeData = await FeeAPI.getFeeData(obj);
-    console.log("getFeeData", getFeeData);
+    // console.log("getFeeData", getFeeData);
 
     if (getFeeData) {
       if(getFeeData.status === 200) {
@@ -134,7 +134,7 @@ class ListFee extends React.Component<{ history: any }> {
   //       id: data.feeId,
   //     };
   //     var deleteFee = await FeeAPI.deleteFee(obj);
-  //     console.log("deleteFee", deleteFee);
+  //     // console.log("deleteFee", deleteFee);
   //     if (deleteFee) {
   //       this.getFeeData(
   //         "",
@@ -155,7 +155,7 @@ class ListFee extends React.Component<{ history: any }> {
         id: this.state.deleteuserdata
       };
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
-      console.log("deleteAllData", deleteAllData);
+      // console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
@@ -231,7 +231,7 @@ class ListFee extends React.Component<{ history: any }> {
         isActive: data.isActive === true ? false : true,
       };
       var getStatusChange = await StatusAPI.getStatusChange(obj);
-      console.log("getStatusChange", getStatusChange);
+      // console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
@@ -295,7 +295,7 @@ class ListFee extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   handleMainChange(e: any) {
@@ -327,7 +327,7 @@ class ListFee extends React.Component<{ history: any }> {
         deleteFlag: this.state.deleteFlag = false,
       });
     }
-    console.log("deleteuserdata array", this.state.deleteuserdata);
+    // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
 
