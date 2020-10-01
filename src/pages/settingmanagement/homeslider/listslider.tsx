@@ -151,7 +151,7 @@ class ListSlider extends React.Component<{ history: any }> {
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
-        moduleName: "Homeslider",
+        moduleName: "HomeSlider",
         id: this.state.deleteuserdata
       };
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
