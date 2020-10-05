@@ -259,7 +259,6 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     let maincategoryiderror = "";
     let productnameerror = "";
     let priceerror = "";
-    let discountpriceerror = "";
 
     if (!this.state.merchantid) {
       merchantiderror = "please select merchant";
@@ -280,26 +279,17 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
       priceerror = "please enter valid price";
     }
 
-    var regex1 = /^[0-9]+$/;
-    if (!this.state.discountprice) {
-      discountpriceerror = "please enter discount price";
-    } else if (!regex1.test(this.state.discountprice.toString())) {
-      discountpriceerror = "please enter valid discount price";
-    }
-
     if (
       merchantiderror ||
       maincategoryiderror ||
       productnameerror ||
-      priceerror ||
-      discountpriceerror
+      priceerror
     ) {
       this.setState({
         merchantiderror,
         maincategoryiderror,
         productnameerror,
-        priceerror,
-        discountpriceerror
+        priceerror
       });
       return false;
     }
@@ -321,8 +311,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         maincategoryiderror: "",
         subcategoryiderror: "",
         productnameerror: "",
-        priceerror: "",
-        discountpriceerror: ""
+        priceerror: ""
       });
       if (
         this.state.merchantid &&

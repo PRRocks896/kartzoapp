@@ -561,7 +561,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         formData.append("CancellationPolicy", this.state.cancellationpolicy);
         formData.append("isActive", new Boolean(this.state.isOpen).toString());
         formData.append("Logofiles", this.state.selectedFile ? this.state.selectedFile[0] : '');
-        formData.append("ProfilePhoto", this.state.selectedProfileFile ? this.state.selectedProfileFile[0] : '');
+        formData.append("profilephotofiles", this.state.selectedProfileFile ? this.state.selectedProfileFile[0] : '');
         formData.append("UserId", "0");
 
         const addMerchant = await MerchantAPI.addMerchant(formData);
@@ -669,12 +669,12 @@ class Merchant extends React.Component<{ history: any; location: any }> {
           )
         this.state.selectedProfileFile !== '' ? (
           formData.append(
-            "ProfilePhoto",
+            "profilephotofiles",
             this.state.selectedProfileFile ? this.state.selectedProfileFile[0] : ""
           )
         ) : (
             formData.append(
-              "ProfilePhoto",
+              "profilephotofiles",
               this.state.selectedProfileFile ? this.state.selectedProfileFile : ""
             )
           )

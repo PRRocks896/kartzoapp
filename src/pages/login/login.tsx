@@ -5,19 +5,19 @@ import utils from "../../utils";
 import constant from "../../constant/constant";
 import axios from "axios";
 import apiUrl from "../../apicontroller/apicontrollers";
-import { loginCreateRequest, forgotPasswordRequest,addLoginStateRequest,getDataByIdRequest } from "../../modelController";
 import {
-  Button,
-  Input,
-  FormGroup,
-  Label,
-} from "reactstrap";
+  loginCreateRequest,
+  forgotPasswordRequest,
+  addLoginStateRequest,
+  getDataByIdRequest,
+} from "../../modelController";
+import { Button, Input, FormGroup, Label } from "reactstrap";
 import { Modal } from "react-bootstrap";
 const interceptor = require("../../intercepter");
 const publicIp = require("public-ip");
 
 class Login extends React.Component<{ history: any }> {
-  loginState:addLoginStateRequest = constant.loginPage.state;
+  loginState: addLoginStateRequest = constant.loginPage.state;
   state = {
     email: this.loginState.email,
     emailerror: this.loginState.emailerror,
@@ -27,7 +27,7 @@ class Login extends React.Component<{ history: any }> {
     isButton: this.loginState.isButton,
     type: this.loginState.type,
     forgot: this.loginState.forgot,
-    disabled:this.loginState.disabled
+    disabled: this.loginState.disabled,
   };
 
   constructor(props: any) {
@@ -123,7 +123,7 @@ class Login extends React.Component<{ history: any }> {
         emailerror: this.state.emailerror = "",
       });
       if (this.state.email) {
-        const obj:forgotPasswordRequest = {
+        const obj: forgotPasswordRequest = {
           email: this.state.email,
         };
 
@@ -131,7 +131,6 @@ class Login extends React.Component<{ history: any }> {
         // console.log("forgotPassword", forgotPassword);
 
         if (forgotPassword) {
-          
           this.setState({
             forgot: this.state.forgot = false,
           });
@@ -146,7 +145,7 @@ class Login extends React.Component<{ history: any }> {
   async login() {
     this.setState({
       isButton: true,
-      disabled: this.state.disabled = true
+      disabled: this.state.disabled = true,
     });
     const isValid = this.validate();
     if (isValid) {
@@ -172,7 +171,7 @@ class Login extends React.Component<{ history: any }> {
               if (res.data.status === 200) {
                 this.setState({
                   isButton: true,
-                  disabled: true
+                  disabled: true,
                 });
                 var userData = res.data.resultObject;
                 localStorage.setItem("user", JSON.stringify(userData));
@@ -180,7 +179,7 @@ class Login extends React.Component<{ history: any }> {
                 const ipaddress = publicIp.v4();
                 const users: any = localStorage.getItem("user");
                 let user = JSON.parse(users);
-                const obj:loginCreateRequest = {
+                const obj: loginCreateRequest = {
                   deviceType: 1,
                   deviceId: "deviceId",
                   ipAddress: await ipaddress,
@@ -192,31 +191,36 @@ class Login extends React.Component<{ history: any }> {
                 if (getToken) {
                   localStorage.setItem("merchantToken", getToken.token);
                 }
-                const rightdata:getDataByIdRequest = {
-                  id: user.roleId
+                const rightdata: getDataByIdRequest = {
+                  id: user.roleId,
                 };
                 var getRightsData = await RoleAPI.getRolePreveliges(rightdata);
                 // console.log("getRightsData", getRightsData);
-                if(getRightsData) {
-                  if(getRightsData.resultObject) {
+                if (getRightsData) {
+                  if (getRightsData.resultObject) {
                     const menu = getRightsData.resultObject.menuItems;
                     const rights = getRightsData.resultObject.roleprivileges;
                     // // console.log("rigths",JSON.stringify(rights));
                     localStorage.setItem("menuItems", JSON.stringify(menu));
-                    localStorage.setItem("rolePreveliges", JSON.stringify(rights));
+                    localStorage.setItem(
+                      "rolePreveliges",
+                      JSON.stringify(rights)
+                    );
                   }
                 }
                 this.props.history.push("/dashboard");
               } else {
                 this.setState({
                   isButton: this.state.isButton = false,
-                  disabled: false
+                  disabled: false,
                 });
+                const msg1 = res.data.message;
+                utils.showError(msg1);
               }
             } else {
               this.setState({
                 isButton: this.state.isButton = false,
-                disabled: false
+                disabled: false,
               });
               // const msg1 = "Internal server error";
               // utils.showError(msg1);
@@ -229,7 +233,7 @@ class Login extends React.Component<{ history: any }> {
   enterPressed(event: any) {
     var code = event.keyCode || event.which;
     if (code === 13) {
-  this.login();
+      this.login();
     }
   }
 
@@ -371,7 +375,6 @@ class Login extends React.Component<{ history: any }> {
                               color: "#fff",
                               fontWeight: 500,
                             }}
-                            
                           >
                             {constant.signin}
                           </button>

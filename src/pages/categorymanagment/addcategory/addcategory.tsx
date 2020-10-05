@@ -107,7 +107,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
             getCategoryById.resultObject.sortOrder,
           parentCategory: this.state.parentCategory =
             getCategoryById.resultObject.parentCategory,
-          selectcategory: this.state.selectcategory = getCategoryById.resultObject.parentCategoryId,
+          selectcategory: this.state.selectcategory = getCategoryById.resultObject.parentCategoryId !== null ? getCategoryById.resultObject.parentCategoryId : '' ,
           selectedFile: this.state.selectedFile =
             getCategoryById.resultObject.imagePath,
           isActive: this.state.isActive = getCategoryById.resultObject.isActive

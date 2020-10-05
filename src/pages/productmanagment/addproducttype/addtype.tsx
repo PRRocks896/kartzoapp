@@ -223,7 +223,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
                             className="form-control"
                             value={this.state.typeName}
                             onChange={this.handleChangeEvent}
-                            placeholder="Enter your role name"
+                            placeholder="Enter your type name"
                             required
                           />
                           <div className="mb-4 text-danger">

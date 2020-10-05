@@ -64,7 +64,7 @@ axios.interceptors.response.use(
         } else if (err.response.data.status === 415) {
           const msg1 = err.response.statusText;
           utils.showError(msg1);
-        } else if (err.response.data.status === 404) {
+        } else if (err.response.data.status === 404 || err.response.data.status === 403) {
           const msg1 = err.response.data.message;
           utils.showError(msg1);
         }

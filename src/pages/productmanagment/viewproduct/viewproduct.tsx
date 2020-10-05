@@ -244,7 +244,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                           <p>{this.state.sortorder ? this.state.sortorder : 'N/A'}</p>
                         </FormGroup>
                       </Col>
-                      <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                      {/* <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <FormGroup>
                           <Label htmlFor="mobile_no">
                             <b>
@@ -256,7 +256,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                           </Label>
                           <p>{this.state.isFeatured ? this.state.isFeatured : 'N/A'}</p>
                         </FormGroup>
-                      </Col>
+                      </Col> */}
                     </Row>
                     <Row>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
