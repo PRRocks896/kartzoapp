@@ -90,7 +90,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     this.setState({
       discountprice: this.state.discountprice = event.target.value,
     });
-   
+ 
   }
 
   async componentDidMount() {
@@ -187,12 +187,13 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     }
 
     var regex1 = /^[0-9]+$/;
-    var p = this.state.minamountorder;
+    var m = parseInt(this.state.minamountorder);
+    var d =  parseInt(this.state.discountprice);
     if (!this.state.discountprice) {
       discountpriceerror = "please enter selling price";
     } else if(!regex1.test(this.state.discountprice)) {
       discountpriceerror = "please enter valid discount price";
-    } else if(p < this.state.discountprice) {
+    } else if(m < d) {
       discountpriceerror = "please enter selling price must be less then min amount order";
     }
 
@@ -254,7 +255,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     if (isValid) {
       this.setState({
         couponcodeerror: "",
-        discountpriceerror: "",
+        discountpriceerror:this.state.discountpriceerror = "",
         startdateerror: "",
         enddateerror: "",
         discriptionerror: "",
@@ -306,7 +307,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     if (isValid) {
       this.setState({
         couponcodeerror: "",
-        discountpriceerror: "",
+        discountpriceerror:this.state.discountpriceerror = "",
         startdateerror: "",
         enddateerror: "",
         discriptionerror: "",
