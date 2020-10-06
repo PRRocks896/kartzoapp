@@ -402,6 +402,7 @@ export default {
       categorynameerror: "",
       selectedFileerror: "",
       sortorder: 0,
+      sortordererror:"",
       updateTrue: false,
       filetrue: false,
       categoryid: 0,

@@ -14,4 +14,5 @@ export interface addCategoryStateRequest {
     parentCategory: string,
     parentCategoryId:string,
     isActive: boolean,
+    sortordererror?: string
 }

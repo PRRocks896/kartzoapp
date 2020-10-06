@@ -160,6 +160,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
 
   validate() {
     let productiderror = "";
+    let sortordererror = "";
 
     // if (!this.state.categoryname) {
     //   categorynameerror = "please enter category name";
@@ -169,8 +170,13 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
       productiderror = "please select product";
     }
 
-    if (productiderror) {
-      this.setState({ productiderror });
+    var regex1 : any = /^[0-9]+$/;
+    if(!regex1.test(this.state.sortorder)) {
+      sortordererror = "please enter valid order"
+    }
+
+    if (productiderror || sortordererror) {
+      this.setState({ productiderror,sortordererror });
       return false;
     }
     return true;
@@ -187,7 +193,8 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     const isValid = this.validate();
     if (isValid) {
       this.setState({
-        productiderror: ""
+        productiderror: "",
+        sortordererror:""
       });
       if (this.state.productid) {
 
@@ -224,7 +231,8 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     const isValid = this.validate();
     if (isValid) {
       this.setState({
-        productiderror: ""
+        productiderror: "",
+        sortordererror:""
       });
       if (this.state.productid) {
 
@@ -397,10 +405,10 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
                             placeholder="Enter your sort order"
                             required
                           />
-                        </FormGroup>
                         <div className="mb-4 text-danger">
                           {this.state.sortordererror}
                         </div>
+                        </FormGroup>
                       </Col>
                     </Row>
                     <Row>

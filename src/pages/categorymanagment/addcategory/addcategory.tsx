@@ -27,6 +27,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     categorynameerror: this.categoryState.categorynameerror,
     selectedFileerror: this.categoryState.selectedFileerror,
     sortorder: this.categoryState.sortorder,
+    sortordererror: this.categoryState.sortordererror,
     updateTrue: this.categoryState.updateTrue,
     filetrue: this.categoryState.filetrue,
     categoryid: this.categoryState.categoryid,
@@ -156,6 +157,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
   validate() {
     let categorynameerror = "";
     let selectedFileerror = "";
+    let sortordererror = "";
 
     if (!this.state.categoryname) {
       categorynameerror = "please enter category name";
@@ -165,8 +167,13 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
       selectedFileerror = "please select file";
     }
 
-    if (categorynameerror || selectedFileerror) {
-      this.setState({ categorynameerror, selectedFileerror });
+    var regex1 : any = /^[0-9]+$/;
+    if(!regex1.test(this.state.sortorder)) {
+      sortordererror = "please enter valid order"
+    }
+
+    if (categorynameerror || selectedFileerror || sortordererror) {
+      this.setState({ categorynameerror, selectedFileerror, sortordererror});
       return false;
     }
     return true;
@@ -185,6 +192,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
       this.setState({
         categorynameerror: "",
         selectedFileerror: "",
+        sortordererror:""
       });
       if (this.state.categoryname && this.state.selectedFile) {
         let formData = new FormData();
@@ -220,6 +228,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
       this.setState({
         categorynameerror: "",
         selectedFileerror: "",
+        sortordererror:""
       });
       if (this.state.categoryname && this.state.selectedFile) {
         let formData = new FormData();
@@ -375,6 +384,9 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                             placeholder="Enter your sort order"
                             required
                           />
+                           <div className="mb-4 text-danger">
+                              {this.state.sortordererror}
+                            </div>
                         </FormGroup>
                       </Col>
                     </Row>
