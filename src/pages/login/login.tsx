@@ -176,6 +176,7 @@ class Login extends React.Component<{ history: any }> {
                 var userData = res.data.resultObject;
                 localStorage.setItem("user", JSON.stringify(userData));
                 localStorage.setItem("token", userData.token);
+                localStorage.setItem("refreshtoken", userData.refreshToken);
                 const ipaddress = publicIp.v4();
                 const users: any = localStorage.getItem("user");
                 let user = JSON.parse(users);
