@@ -4,6 +4,7 @@ export interface addMenuStateRequest {
       menuitemcontoller:string,
       menuitemview:string,
       sortorder:string,
+      sortordererror?: string,
       parentid:number,
       isActive:boolean,
       updateTrue:boolean,

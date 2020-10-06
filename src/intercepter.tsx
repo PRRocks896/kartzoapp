@@ -69,7 +69,8 @@ axios.interceptors.response.use(
           utils.showError(msg1);
         }
         else if (err.response.data.status === 401 || err.response.status === 401) {
-         
+          const msg1 = err.response.data.message;
+          utils.showError(msg1);
           const users: any = localStorage.getItem("user");
           let user = JSON.parse(users);
           return new Promise(async (resolve, reject) => {
@@ -87,12 +88,12 @@ axios.interceptors.response.use(
               refreshToken: user.refreshToken,
             };
 
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            localStorage.removeItem("merchantToken");
-            localStorage.removeItem("rolePreveliges");
-            localStorage.removeItem("menuItems");
-            window.location.href = "/#/login";
+            // localStorage.removeItem("token");
+            // localStorage.removeItem("user");
+            // localStorage.removeItem("merchantToken");
+            // localStorage.removeItem("rolePreveliges");
+            // localStorage.removeItem("menuItems");
+            // window.location.href = "/#/login";
 
             // let res = axios
             //   .post(constant.apiUrl + "token", data)

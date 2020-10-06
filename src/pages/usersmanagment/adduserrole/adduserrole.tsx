@@ -258,7 +258,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
                             id="description"
                             name="description"
                             className="form-control"
-                            value={this.state.description}
+                            value={this.state.description ? this.state.description : 'N/A'}
                             onChange={this.handleChangeEvent}
                             placeholder="Enter your description"
                             required

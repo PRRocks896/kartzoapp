@@ -86,24 +86,11 @@ class Coupon extends React.Component<{ history: any; location: any }> {
   };
 
   handleChangeEventDiscount(event: any) {
+
     this.setState({
       discountprice: this.state.discountprice = event.target.value,
     });
-    if (this.state.minamountorder && this.state.discountprice) {
-      
-      const d1 =
-        parseInt(this.state.minamountorder) -
-        parseInt(this.state.discountprice);
-      const d2 = d1 * 100;
-      const d3 = d2 / parseInt(this.state.minamountorder);
-      this.setState({
-        percentage: this.state.percentage = d3,
-      });
-      const finalamount =   parseInt(this.state.minamountorder) - parseInt(this.state.discountprice);
-      this.setState({
-        finalprice: this.state.finalprice = finalamount.toString(),
-      });
-    }
+   
   }
 
   async componentDidMount() {
@@ -199,8 +186,14 @@ class Coupon extends React.Component<{ history: any; location: any }> {
       couponcodeerror = "please enter coupon code";
     }
 
+    var regex1 = /^[0-9]+$/;
+    var p = this.state.minamountorder;
     if (!this.state.discountprice) {
       discountpriceerror = "please enter selling price";
+    } else if(!regex1.test(this.state.discountprice)) {
+      discountpriceerror = "please enter valid discount price";
+    } else if(p < this.state.discountprice) {
+      discountpriceerror = "please enter selling price must be less then min amount order";
     }
 
     if (!this.state.startdate) {
@@ -211,8 +204,11 @@ class Coupon extends React.Component<{ history: any; location: any }> {
       enddateerror = "please select end date";
     }
 
+    var regex = /^[0-9]+$/;
     if (!this.state.minamountorder) {
       minamountordererror = "please enter min amount order";
+    } else if(!regex.test(this.state.minamountorder)) {
+      minamountordererror = "please enter valid min amount order";
     }
 
     if (!this.state.title) {
@@ -545,7 +541,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                           placeholder="Enter your description"
                         />
                         <div className="mb-4 text-danger">
-                          {this.state.discountpriceerror}
+                          {this.state.discriptionerror}
                         </div>
                       </Col>
                     </Row>
