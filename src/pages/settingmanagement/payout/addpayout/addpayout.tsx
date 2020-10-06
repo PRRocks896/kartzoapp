@@ -149,21 +149,35 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     let merchanterror = "";
     let merchantOrderAmounterror = "";
     let merchantPayAmounterror = "";
+    let commissionerror = "";
 
     if (!this.state.merchant) {
         merchanterror = "please select merchant";
     }
 
+    var regex : any = /^[0-9]+$/;
+    if (!this.state.commission) {
+      commissionerror = "please enter commission";
+    } else  if(!regex.test(this.state.commission)) {
+      commissionerror = "please enter valid commission"
+    }
+
+    var regex1 : any = /^[0-9]+$/;
     if (!this.state.merchantOrderAmount) {
         merchantOrderAmounterror = "please enter merchant amount";
+    } else  if(!regex1.test(this.state.merchantOrderAmount)) {
+      merchantOrderAmounterror = "please enter valid merchant order amount"
     }
 
+    var regex2 : any = /^[0-9]+$/;
     if (!this.state.merchantPayAmount) {
         merchantPayAmounterror = "please enter merchant pay amount";
+    } else  if(!regex2.test(this.state.merchantPayAmount)) {
+      merchantPayAmounterror = "please enter valid merchant pay amount"
     }
 
-    if (merchanterror || merchantOrderAmounterror || merchantPayAmounterror) {
-      this.setState({ merchanterror,merchantOrderAmounterror, merchantPayAmounterror});
+    if (merchanterror || merchantOrderAmounterror || merchantPayAmounterror || commissionerror) {
+      this.setState({ merchanterror,merchantOrderAmounterror, merchantPayAmounterror,commissionerror});
       return false;
     }
     return true;
@@ -182,7 +196,8 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
       this.setState({
         merchanterror: "",
         merchantOrderAmounterror: "",
-        merchantPayAmounterror: ""
+        merchantPayAmounterror: "",
+        commissionerror:""
       });
       if (this.state.merchant && this.state.merchantOrderAmount && this.state.merchantPayAmount) {
         const obj: payoutCreateRequest = {
@@ -218,7 +233,8 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
       this.setState({
         merchanterror: "",
         merchantOrderAmounterror: "",
-        merchantPayAmounterror: ""
+        merchantPayAmounterror: "",
+        commissionerror:""
       });
       if (this.state.merchant && this.state.merchantOrderAmount && this.state.merchantPayAmount) {
         const obj: payoutUpdateRequest = {
