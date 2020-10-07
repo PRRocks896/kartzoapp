@@ -449,7 +449,7 @@ class Login extends React.Component<{ history: any }> {
             </Modal.Body>
             <Modal.Footer>
               <div className="button-ct">
-                <Button variant="primary" onClick={this.forgotpassword}>
+                <Button className="bbg" onClick={this.forgotpassword}>
                   {constant.reset}
                 </Button>
               </div>
