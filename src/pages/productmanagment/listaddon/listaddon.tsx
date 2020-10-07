@@ -201,7 +201,9 @@ class ListProductAddOn extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
+    if(event.target.id > 1) {
     this.getProductCustomiseData(obj.searchText, obj.page, obj.size);
+    }
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -435,8 +437,8 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                         onClick={() =>
                           this.statusChange(
                             data,
-                            "You should be inActive customise",
-                            "Yes, inActive it"
+                            "You should be Inactive customise",
+                            "Yes, Inactive it"
                           )
                         }
                       >
@@ -444,7 +446,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                       </button>
                     ) : (
                       <button
-                        className="status_inactive_color"
+                        className="status_Inactive_color"
                         onClick={() =>
                           this.statusChange(
                             data,
@@ -453,7 +455,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                           )
                         }
                       >
-                        InActive
+                        Inactive
                       </button>
                     )}
                   </td>
@@ -600,13 +602,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-
-                    {this.state.addondata.length > 0 ? (
-                      <>{this.getTable(this.state.addondata)}</>
-                    ) : (
-                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
-                    )}
-                     {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
@@ -618,6 +614,12 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                     ) : (
                       ""
                     )}
+                    {this.state.addondata.length > 0 ? (
+                      <>{this.getTable(this.state.addondata)}</>
+                    ) : (
+                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
+                    )}
+                    
                     {this.state.addondata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,

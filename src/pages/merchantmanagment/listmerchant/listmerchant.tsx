@@ -428,8 +428,8 @@ class ListMerchant extends React.Component<{ history: any }> {
                         onClick={() =>
                           this.statusChange(
                             data,
-                            "You should be inActive merchant",
-                            "Yes, inActive it"
+                            "You should be Inactive merchant",
+                            "Yes, Inactive it"
                           )
                         }
                       >
@@ -437,7 +437,7 @@ class ListMerchant extends React.Component<{ history: any }> {
                       </button>
                     ) : (
                       <button
-                        className="status_inactive_color"
+                        className="status_Inactive_color"
                         onClick={() =>
                           this.statusChange(
                             data,
@@ -446,7 +446,7 @@ class ListMerchant extends React.Component<{ history: any }> {
                           )
                         }
                       >
-                        InActive
+                        Inactive
                       </button>
                     )}
                   </td>
@@ -589,13 +589,7 @@ class ListMerchant extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-
-                    {this.state.merchantdata.length > 0 ? (
-                      <>{this.getTable(this.state.merchantdata)}</>
-                    ) : (
-                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
-                    )}
-                      {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
@@ -607,6 +601,12 @@ class ListMerchant extends React.Component<{ history: any }> {
                     ) : (
                       ""
                     )}
+                    {this.state.merchantdata.length > 0 ? (
+                      <>{this.getTable(this.state.merchantdata)}</>
+                    ) : (
+                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
+                    )}
+                     
                     {this.state.merchantdata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,

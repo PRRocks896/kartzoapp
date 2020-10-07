@@ -182,7 +182,9 @@ class CountryManagment extends React.Component<{ history: any }> {
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
+    if(event.target.id > 1) {
     this.getCountryData(obj.searchText, obj.page, obj.size);
+    }
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -426,8 +428,8 @@ class CountryManagment extends React.Component<{ history: any }> {
                         onClick={() =>
                           this.statusChange(
                             data,
-                            "You should be inActive country",
-                            "Yes, inActive it"
+                            "You should be Inactive country",
+                            "Yes, Inactive it"
                           )
                         }
                       >
@@ -435,7 +437,7 @@ class CountryManagment extends React.Component<{ history: any }> {
                       </button>
                     ) : (
                       <button
-                        className="status_inactive_color"
+                        className="status_Inactive_color"
                         onClick={() =>
                           this.statusChange(
                             data,
@@ -444,7 +446,7 @@ class CountryManagment extends React.Component<{ history: any }> {
                           )
                         }
                       >
-                        InActive
+                        Inactive
                       </button>
                     )}
                   </td>
@@ -587,12 +589,7 @@ class CountryManagment extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.countrydata.length > 0 ? (
-                      <>{this.getTable(this.state.countrydata)}</>
-                    ) : (
-                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
-                    )}
-                     {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
@@ -604,6 +601,12 @@ class CountryManagment extends React.Component<{ history: any }> {
                     ) : (
                       ""
                     )}
+                    {this.state.countrydata.length > 0 ? (
+                      <>{this.getTable(this.state.countrydata)}</>
+                    ) : (
+                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
+                    )}
+                   
                     {this.state.countrydata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,

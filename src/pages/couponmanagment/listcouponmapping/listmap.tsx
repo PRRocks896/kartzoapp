@@ -179,7 +179,9 @@ class ListCouponMap extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
+    if(event.target.id > 1) {
     this.getCouponMapData(obj.searchText, obj.page, obj.size);
+    }
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -406,8 +408,8 @@ class ListCouponMap extends React.Component<{ history: any }> {
                         onClick={() =>
                           this.statusChange(
                             data,
-                            "You should be inActive coupon mapping",
-                            "Yes, inActive it"
+                            "You should be Inactive coupon mapping",
+                            "Yes, Inactive it"
                           )
                         }
                       >
@@ -415,7 +417,7 @@ class ListCouponMap extends React.Component<{ history: any }> {
                       </button>
                     ) : (
                       <button
-                        className="status_inactive_color"
+                        className="status_Inactive_color"
                         onClick={() =>
                           this.statusChange(
                             data,
@@ -424,7 +426,7 @@ class ListCouponMap extends React.Component<{ history: any }> {
                           )
                         }
                       >
-                        InActive
+                        Inactive
                       </button>
                     )}
                   </td>
@@ -563,14 +565,6 @@ class ListCouponMap extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-
-                    {this.state.couponmapdata.length > 0 ? (
-                      <>{this.getTable(this.state.couponmapdata)}</>
-                    ) : (
-                      <h1 className="text-center mt-5">
-                        {constant.noDataFound.nodatafound}
-                      </h1>
-                    )}
                     {this.state.deleteFlag === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
@@ -583,6 +577,14 @@ class ListCouponMap extends React.Component<{ history: any }> {
                     ) : (
                       ""
                     )}
+                    {this.state.couponmapdata.length > 0 ? (
+                      <>{this.getTable(this.state.couponmapdata)}</>
+                    ) : (
+                      <h1 className="text-center mt-5">
+                        {constant.noDataFound.nodatafound}
+                      </h1>
+                    )}
+                    
                     {this.state.couponmapdata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,

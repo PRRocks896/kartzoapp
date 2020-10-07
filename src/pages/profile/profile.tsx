@@ -210,11 +210,20 @@ class Profile extends React.Component {
           if(updateProfile.status === 200) {
             const msg1 = updateProfile.message;
             utils.showSuccess(msg1);
+            const users: any = localStorage.getItem("user");
+            let user = JSON.parse(users);
+            user.firstName = updateProfile.resultObject.firstName;
+            user.lastName =  updateProfile.resultObject.lastName;
+            localStorage.setItem("user",JSON.stringify(user));
           this.getUserById();
           this.setState({
-            file:this.state.file = updateProfile.resultObject.photoPath ? updateProfile.resultObject.photoPath : ''
+            file:this.state.file = updateProfile.resultObject.photoPath ? updateProfile.resultObject.photoPath : '',
+            firstname: this.state.firstname = updateProfile.resultObject.firstName ? updateProfile.resultObject.firstName : '',
+            lastname: this.state.lastname = updateProfile.resultObject.lastName ? updateProfile.resultObject.lastName : '',
           })
           EventEmitter.dispatch('imageUpload', this.state.file);
+          EventEmitter.dispatch('firstname', this.state.firstname);
+          EventEmitter.dispatch('lastname', this.state.lastname);
         } else {
           const msg1 = updateProfile.message;
           utils.showError(msg1);

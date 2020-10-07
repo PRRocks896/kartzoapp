@@ -199,7 +199,9 @@ class ListSlider extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
+    if(event.target.id > 1) {
     this.getSliderData(obj.searchText, obj.page, obj.size);
+    }
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -569,13 +571,7 @@ class ListSlider extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-
-                    {this.state.sliderdata.length > 0 ? (
-                      <>{this.getTable(this.state.sliderdata)}</>
-                    ) : (
-                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
-                    )}
-                      {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
@@ -587,6 +583,14 @@ class ListSlider extends React.Component<{ history: any }> {
                     ) : (
                       ""
                     )}
+
+                    
+                    {this.state.sliderdata.length > 0 ? (
+                      <>{this.getTable(this.state.sliderdata)}</>
+                    ) : (
+                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
+                    )}
+                     
                     {this.state.sliderdata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,

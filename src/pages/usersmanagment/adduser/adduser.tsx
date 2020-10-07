@@ -170,7 +170,6 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     let emailerror = "";
     let mobilenumbererror = "";
     let passworderror = "";
-    let selectedFileerror = "";
     let onItemSelecterror = "";
 
     if (!this.state.firstname) {
@@ -199,10 +198,6 @@ class AddUser extends React.Component<{ history: any; location: any }> {
       passworderror = "please enter password";
     }
 
-    if (!this.state.selectedFile) {
-      selectedFileerror = "please select file";
-    }
-
     if (!this.state.onItemSelect) {
       onItemSelecterror = "please select role";
     }
@@ -213,7 +208,6 @@ class AddUser extends React.Component<{ history: any; location: any }> {
       emailerror ||
       mobilenumbererror ||
       passworderror ||
-      selectedFileerror ||
       onItemSelecterror
     ) {
       this.setState({
@@ -222,7 +216,6 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         emailerror,
         mobilenumbererror,
         passworderror,
-        selectedFileerror,
         onItemSelecterror,
       });
       return false;
@@ -235,7 +228,6 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     let lastnameerror = "";
     let emailerror = "";
     let mobilenumbererror = "";
-    let selectedFileerror = "";
 
     if (!this.state.firstname) {
       firstnameerror = "please enter firstname";
@@ -259,23 +251,17 @@ class AddUser extends React.Component<{ history: any; location: any }> {
       mobilenumbererror = "please enter valid mobile number";
     }
 
-    if (!this.state.selectedFile) {
-      selectedFileerror = "please select file";
-    }
-
     if (
       firstnameerror ||
       lastnameerror ||
       emailerror ||
-      mobilenumbererror ||
-      selectedFileerror
+      mobilenumbererror
     ) {
       this.setState({
         firstnameerror,
         lastnameerror,
         emailerror,
-        mobilenumbererror,
-        selectedFileerror,
+        mobilenumbererror
       });
       return false;
     }
@@ -285,7 +271,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
   onItemSelect(event: any) {
     this.setState({
       roleid: this.state.roleid =
-        event.target.options[event.target.selectedIndex].value,
+        event.target.value,
       onItemSelect: this.state.onItemSelect =
         event.target.options[event.target.selectedIndex].innerHTML,
     });
@@ -320,7 +306,6 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         this.state.email &&
         this.state.mobilenumber &&
         this.state.password &&
-        this.state.selectedFile &&
         this.state.onItemSelect
       ) {
         let formData = new FormData();
@@ -363,14 +348,12 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         lastnameerror: "",
         emailerror: "",
         mobilenumbererror: "",
-        selectedFileerror: "",
       });
       if (
         this.state.firstname &&
         this.state.lastname &&
         this.state.email &&
-        this.state.mobilenumber &&
-        this.state.selectedFile
+        this.state.mobilenumber
       ) {
         // console.log("id", this.state.userid, this.state.roleid);
 
@@ -410,6 +393,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
   removeIcon() {
     this.setState({
       file: this.state.file = "",
+      selectedFile: this.state.selectedFile = ""
     });
   }
 
@@ -536,65 +520,43 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                       </Col>
                     </Row>
                     <Row>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                      <Label htmlFor="password">{constant.userPage.userTableColumn.password}</Label>
-                        <div className="right-inner-addon input-group">
-                          <input
-                            type={this.state.type}
-                            name="password"
-                            className="form-control"
-                            id="validationCustom09"
-                            value={this.state.password}
-                            placeholder="Enter your password"
-                            onChange={this.handleChangeEvent}
-                          />
-                          {this.state.type === "password" ? (
-                            <i
-                              onClick={this.handleClick}
-                              className="fas fa-eye"
-                            ></i>
-                          ) : (
-                            <i
-                              onClick={this.handleClick}
-                              className="fas fa-eye-slash"
-                            ></i>
-                          )}
-                        </div>
-                        <div className="mb-4 text-danger">
-                          {this.state.passworderror}
-                        </div>
-                      </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        {this.state.updateTrue === true ? (
-                          <FormGroup>
-                            <Label for="exampleCustomSelect">
-                              {constant.userPage.userTableColumn.roleselect}
-                            </Label>
-                            <Input
-                              type="select"
-                              name="onItemSelect"
-                              onChange={this.onItemSelect}
-                            >
-                              <option value="">{this.state.rolename}</option>
-                              {this.state.userrole.length > 0
-                                ? this.state.userrole.map(
-                                    (data: any, index: any) => (
-                                      <option
-                                        key={index}
-                                        value={data.roleId}
-                                      >
-                                        {data.name}
-                                      </option>
-                                    )
-                                  )
-                                : ""}
-                            </Input>
-                            <div className="mb-4 text-danger">
-                              {this.state.onItemSelecterror}
+                      {
+                        this.state.updateTrue === false ?  (
+                          <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                          <Label htmlFor="password">{constant.userPage.userTableColumn.password}</Label>
+                            <div className="right-inner-addon input-group">
+                              <input
+                                type={this.state.type}
+                                name="password"
+                                className="form-control"
+                                id="validationCustom09"
+                                value={this.state.password}
+                                placeholder="Enter your password"
+                                onChange={this.handleChangeEvent}
+                              />
+                              {this.state.type === "password" ? (
+                                <i
+                                  onClick={this.handleClick}
+                                  className="fas fa-eye"
+                                ></i>
+                              ) : (
+                                <i
+                                  onClick={this.handleClick}
+                                  className="fas fa-eye-slash"
+                                ></i>
+                              )}
                             </div>
-                          </FormGroup>
+                            <div className="mb-4 text-danger">
+                              {this.state.passworderror}
+                            </div>
+                          </Col>
                         ) : (
-                          <FormGroup>
+                          ''
+                        )
+                      }
+                    
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                      <FormGroup>
                             <Label for="exampleCustomSelect">
                             {constant.userPage.userTableColumn.roleselect}
                             </Label>
@@ -602,6 +564,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                               type="select"
                               name="onItemSelect"
                               onChange={this.onItemSelect}
+                              value={this.state.roleid ? this.state.roleid : ''}
                             >
                               <option value="">{constant.userPage.userTableColumn.roleselect}</option>
                               {this.state.userrole.length > 0
@@ -621,7 +584,6 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                               {this.state.onItemSelecterror}
                             </div>
                           </FormGroup>
-                        )}
                       </Col>
                     </Row>
                     <Row>

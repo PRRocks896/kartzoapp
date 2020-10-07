@@ -69,11 +69,17 @@ axios.interceptors.response.use(
           utils.showError(msg1);
         }
         else if (err.response.data.status === 401 || err.response.status === 401) {
+          return new Promise(async (resolve, reject) => {
           const msg1 = err.response.data.message;
           utils.showError(msg1);
-          // const users: any = localStorage.getItem("user");
-          // let user = JSON.parse(users);
-          return new Promise(async (resolve, reject) => {
+          // const usertoken: any = localStorage.getItem("token");
+          // console.log('usertoken',usertoken);
+          // const userrefreshtoken: any = localStorage.getItem("refreshtoken");
+          // console.log('userrefreshtoken',userrefreshtoken);
+          const users: any = localStorage.getItem("user");
+          let user = JSON.parse(users);
+          // const users1: any = localStorage.getItem("refreshtoken");
+          // let usertoken1 = JSON.parse(users1);
             const ipaddress = publicIp.v4();
             const originalReq = err.config;
             originalReq._retry = true;
@@ -84,8 +90,8 @@ axios.interceptors.response.use(
               deviceType: 1,
               deviceId: "deviceId",
               ipAddress: await ipaddress,
-              loginToken: localStorage.getItem("token"),
-              refreshToken: localStorage.getItem("refreshtoken"),
+              loginToken: user.token,
+              refreshToken: user.refreshToken,
             };
 
             // localStorage.removeItem("token");
@@ -94,13 +100,21 @@ axios.interceptors.response.use(
             // localStorage.removeItem("rolePreveliges");
             // localStorage.removeItem("menuItems");
             // window.location.href = "/#/login";
+            setTimeout(() => {
 
+            
             let res = axios
               .post(constant.apiUrl + "token", data)
               .then((res: any) => {
                 console.log("res", res);
-                localStorage.setItem("token", JSON.stringify(res.data.token));
-                localStorage.setItem("refreshtoken", JSON.stringify(res.data.refreshToken));
+                const users: any = localStorage.getItem("user");
+                let user = JSON.parse(users);
+                user.token = res.data.token;
+                user.refreshToken =  res.data.refreshToken;
+                localStorage.setItem("user",JSON.stringify(user));
+                localStorage.setItem("token",res.data.token);
+                window.location.reload();
+              
                 // oldRequest
                 if (oldCount === 0) {
                   oldCount = 1;
@@ -176,10 +190,12 @@ axios.interceptors.response.use(
                 return axios(originalReq);
               })
               .catch((error) => {
-                window.location.href = "/#/login";
+                // window.location.href = "/#/login";
                 return Promise.reject(error);
               });
+              
             resolve(res);
+          }, 5000);
           });
         } else {
           const msg1 = "Internal server error";

@@ -25,6 +25,16 @@ class NavBar extends React.Component {
         file: this.state.file = data,
       });
     });
+    EventEmitter.subscribe("firstname", (data: any) => {
+      this.setState({
+        firstName: this.state.firstName = data,
+      });
+    });
+    EventEmitter.subscribe("lastname", (data: any) => {
+      this.setState({
+        lastName: this.state.lastName = data,
+      });
+    });
   }
 
   componentDidMount() {
@@ -68,6 +78,7 @@ class NavBar extends React.Component {
     localStorage.removeItem("merchantToken");
     localStorage.removeItem("rolePreveliges");
     localStorage.removeItem("menuItems");
+    localStorage.removeItem('refreshtoken');
     // this.props.history.push('/login');
     window.location.href = "/#/login";
   }

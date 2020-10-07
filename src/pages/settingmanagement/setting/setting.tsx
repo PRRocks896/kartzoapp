@@ -171,7 +171,9 @@ class ListSetting extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
+    if(event.target.id > 1) {
     this.getSettingData(obj.searchText, obj.page, obj.size);
+    }
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -391,8 +393,8 @@ class ListSetting extends React.Component<{ history: any }> {
                         onClick={() =>
                           this.statusChange(
                             data,
-                            "You should be inActive setting",
-                            "Yes, inActive it"
+                            "You should be Inactive setting",
+                            "Yes, Inactive it"
                           )
                         }
                       >
@@ -400,7 +402,7 @@ class ListSetting extends React.Component<{ history: any }> {
                       </button>
                     ) : (
                       <button
-                        className="status_inactive_color"
+                        className="status_Inactive_color"
                         onClick={() =>
                           this.statusChange(
                             data,
@@ -409,7 +411,7 @@ class ListSetting extends React.Component<{ history: any }> {
                           )
                         }
                       >
-                        InActive
+                        Inactive
                       </button>
                     )}
                   </td> */}

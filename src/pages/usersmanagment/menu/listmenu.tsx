@@ -212,7 +212,10 @@ class ListMenu extends React.Component<{ history: any }> {
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
+
+    if(event.target.id > 1) {
     this.getMenuData(obj.searchText, obj.page, obj.size);
+    }
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -424,8 +427,8 @@ class ListMenu extends React.Component<{ history: any }> {
                         onClick={() =>
                           this.statusChange(
                             data,
-                            "You should be inActive menu",
-                            "Yes, inActive it"
+                            "You should be Inactive menu",
+                            "Yes, Inactive it"
                           )
                         }
                       >
@@ -433,7 +436,7 @@ class ListMenu extends React.Component<{ history: any }> {
                       </button>
                     ) : (
                       <button
-                        className="status_inactive_color"
+                        className="status_Inactive_color"
                         onClick={() =>
                           this.statusChange(
                             data,
@@ -442,7 +445,7 @@ class ListMenu extends React.Component<{ history: any }> {
                           )
                         }
                       >
-                        InActive
+                        Inactive
                       </button>
                     )}
                   </td>
@@ -583,14 +586,6 @@ class ListMenu extends React.Component<{ history: any }> {
                       onKeyUp={this.searchApplicationDataKeyUp}
                     />
                   </div>
-
-                  {this.state.menudata.length > 0 ? (
-                    <>{this.getTable(this.state.menudata)}</>
-                  ) : (
-                    <h1 className="text-center mt-5">
-                      {constant.noDataFound.nodatafound}
-                    </h1>
-                  )}
                   {this.state.deleteFlag === true ? (
                     <Button
                       className="mb-2 mr-2 custom-button"
@@ -607,6 +602,14 @@ class ListMenu extends React.Component<{ history: any }> {
                   ) : (
                     ""
                   )}
+                  {this.state.menudata.length > 0 ? (
+                    <>{this.getTable(this.state.menudata)}</>
+                  ) : (
+                    <h1 className="text-center mt-5">
+                      {constant.noDataFound.nodatafound}
+                    </h1>
+                  )}
+                 
                   {this.state.menudata.length > 0
                     ? this.getPageData(
                         pageIncrementBtn,
