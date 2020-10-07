@@ -23,7 +23,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
       lastname: this.userState.lastname,
       email: this.userState.email,
       mobilenumber: this.userState.mobilenumber,
-      file: null,
+      file: "",
    
   };
 
@@ -135,7 +135,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                             <b>{constant.userPage.userTableColumn.userimage} :</b>
                           </p>
                           <div>
-                            {this.state.file != null ? (
+                            {this.state.file != "" ? (
                               <img
                                 className="user_pic"
                                 src={

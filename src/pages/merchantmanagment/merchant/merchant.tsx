@@ -28,6 +28,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     selectedProfileFile: this.merchantState.selectedProfileFile,
     selectedProofFile: this.merchantState.selectedProofFile,
     selectedDocumentFile: this.merchantState.selectedDocumentFile,
+    s1:this.merchantState.s1,
+    s2:this.merchantState.s2,
+    s3:this.merchantState.s3,
+    s4:this.merchantState.s4,
     firstname: this.merchantState.firstname,
     firstnameerror: this.merchantState.firstnameerror,
     lastname: this.merchantState.lastname,
@@ -135,21 +139,24 @@ class Merchant extends React.Component<{ history: any; location: any }> {
   async getMerchantById(id: getDataByIdRequest) {
     const getMerchantById: any = await MerchantAPI.getMerchantById(id);
     // console.log("getMerchantById", getMerchantById);
-
     if (getMerchantById) {
       if (getMerchantById.status === 200) {
         this.setState({
           merchantId: this.state.merchantId =
             getMerchantById.resultObject.merchantID,
           filetrue: this.state.filetrue = true,
-          selectedFile: this.state.selectedFile =
-            getMerchantById.resultObject.logoPath ? getMerchantById.resultObject.logoPath : '',
-          selectedProofFile: this.state.selectedProofFile =
-            getMerchantById.resultObject.merchantIDPoof ? getMerchantById.resultObject.idProofPath : '',
-          selectedDocumentFile: this.state.selectedDocumentFile =
-            getMerchantById.resultObject.merchantDocument ? getMerchantById.resultObject.documentPath : '',
-          selectedProfileFile: this.state.selectedProfileFile =
-            getMerchantById.resultObject.merchantDocument ? getMerchantById.resultObject.profilePhotoPath : '',
+          // selectedFile: this.state.selectedFile =
+          //   getMerchantById.resultObject.logoPath !== null ? getMerchantById.resultObject.logoPath : '',
+          // selectedProofFile: this.state.selectedProofFile =
+          //   getMerchantById.resultObject.merchantIDPoof !== null ? getMerchantById.resultObject.idProofPath : '',
+          // selectedDocumentFile: this.state.selectedDocumentFile =
+          //   getMerchantById.resultObject.merchantDocument !== null ? getMerchantById.resultObject.documentPath : '',
+          // selectedProfileFile: this.state.selectedProfileFile =
+          //   getMerchantById.resultObject.merchantDocument !== null ? getMerchantById.resultObject.profilePhotoPath : '',
+            s1:this.state.s1 = getMerchantById.resultObject.shopLogo !== null ? getMerchantById.resultObject.shopLogo : '',
+            s2:this.state.s2 = getMerchantById.resultObject.merchantIDPoof !== null ? getMerchantById.resultObject.merchantIDPoof : '',
+            s3:this.state.s3 = getMerchantById.resultObject.merchantDocument !== null ? getMerchantById.resultObject.merchantDocument : '',
+            s4:this.state.s4 = getMerchantById.resultObject.merchantProfilePhoto !== null ? getMerchantById.resultObject.merchantProfilePhoto : '',
           firstname: this.state.firstname =
             getMerchantById.resultObject.firstName,
           lastname: this.state.lastname = getMerchantById.resultObject.lastName,
@@ -557,14 +564,14 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         formData.append("Latitude", this.state.latitude);
         formData.append("Longitude", this.state.longitude);
         formData.append("Website", this.state.website);
-        formData.append("IDProoffiles", this.state.selectedProofFile ? this.state.selectedProofFile[0] : '');
-        formData.append("Documentfiles", this.state.selectedDocumentFile ? this.state.selectedDocumentFile[0] : '');
+        formData.append("IDProoffiles", this.state.selectedProofFile ? this.state.selectedProofFile[0] : 'null');
+        formData.append("Documentfiles", this.state.selectedDocumentFile ? this.state.selectedDocumentFile[0] : 'null');
         formData.append("ShippingPolicy", this.state.shoppingpolicy);
         formData.append("RefundPolicy", this.state.refundpolicy);
         formData.append("CancellationPolicy", this.state.cancellationpolicy);
         formData.append("isActive", new Boolean(this.state.isOpen).toString());
-        formData.append("Logofiles", this.state.selectedFile ? this.state.selectedFile[0] : '');
-        formData.append("profilephotofiles", this.state.selectedProfileFile ? this.state.selectedProfileFile[0] : '');
+        formData.append("Logofiles", this.state.selectedFile ? this.state.selectedFile[0] : 'null');
+        formData.append("profilephotofiles", this.state.selectedProfileFile ? this.state.selectedProfileFile[0] : 'null');
         formData.append("UserId", "0");
 
         const addMerchant = await MerchantAPI.addMerchant(formData);
@@ -629,58 +636,95 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         formData.append("Latitude", this.state.latitude);
         formData.append("Longitude", this.state.longitude);
         formData.append("Website", this.state.website);
-        this.state.selectedProofFile !== '' ? (
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        this.state.selectedProofFile ? (
           formData.append(
             "IDProoffiles",
             this.state.selectedProofFile ? this.state.selectedProofFile[0] : ""
           )
         ) : (
+          this.state.selectedProofFile === '' ? (
             formData.append(
               "IDProoffiles",
-              this.state.selectedProofFile ? this.state.selectedProofFile : ""
+              this.state.selectedProofFile ? this.state.selectedProofFile : "null"
+            )
+          ) : (
+            formData.append(
+              "IDProoffiles",
+              this.state.s2 ? this.state.s2 : ""
             )
           )
-        this.state.selectedDocumentFile !== '' ? (
-          formData.append(
-            "Documentfiles",
-            this.state.selectedDocumentFile
-              ? this.state.selectedDocumentFile[0]
-              : ""
-          )
+        
+        )
+        this.state.selectedDocumentFile ? (
+        formData.append(
+          "Documentfiles",
+          this.state.selectedDocumentFile
+            ? this.state.selectedDocumentFile[0]
+            : ""
+        )
         ) : (
+          this.state.selectedDocumentFile === '' ? (
             formData.append(
               "Documentfiles",
               this.state.selectedDocumentFile
                 ? this.state.selectedDocumentFile
+                : "null"
+            )
+          ) : (
+            formData.append(
+              "Documentfiles",
+              this.state.s3
+                ? this.state.s3
                 : ""
             )
           )
+        
+        )
         formData.append("ShippingPolicy", this.state.shoppingpolicy);
         formData.append("RefundPolicy", this.state.refundpolicy);
         formData.append("CancellationPolicy", this.state.cancellationpolicy);
         formData.append("isActive", new Boolean(this.state.isOpen).toString());
-        this.state.selectedFile !== '' ? (
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        this.state.selectedFile ? (
           formData.append(
             "Logofiles",
             this.state.selectedFile ? this.state.selectedFile[0] : ""
           )
         ) : (
+          this.state.selectedFile === '' ? (
             formData.append(
               "Logofiles",
-              this.state.selectedFile ? this.state.selectedFile : ""
+              this.state.selectedFile ? this.state.selectedFile : "null"
             )
-          )
-        this.state.selectedProfileFile !== '' ? (
+          ) : (
+            formData.append(
+              "Logofiles",
+              this.state.s1 ? this.state.s1 : ""
+            )
+        )
+        )
+
+        this.state.selectedProfileFile ? (
           formData.append(
             "profilephotofiles",
             this.state.selectedProfileFile ? this.state.selectedProfileFile[0] : ""
           )
         ) : (
+          this.state.selectedProfileFile === '' ? (
             formData.append(
               "profilephotofiles",
-              this.state.selectedProfileFile ? this.state.selectedProfileFile : ""
+              this.state.selectedProfileFile ? this.state.selectedProfileFile : "null"
             )
-          )
+          ) : (
+            formData.append(
+              "profilephotofiles",
+              this.state.s4 ? this.state.s4 : ""
+            )
+       
+        )
+        )
         formData.append("UserId", "0");
 
         const editMerchant = await MerchantAPI.editMerchant(
@@ -708,24 +752,28 @@ class Merchant extends React.Component<{ history: any; location: any }> {
   removeIcon() {
     this.setState({
       file: this.state.file = '',
+      selectedFile:this.state.selectedFile = ''
     });
   }
 
   removeDocumentIcon() {
     this.setState({
       file2: this.state.file2 = "",
+      selectedDocumentFile: this.state.selectedDocumentFile = ""
     });
   }
 
   removeProofIcon() {
     this.setState({
       file1: this.state.file1 = "",
+      selectedProofFile: this.state.selectedProofFile = ""
     });
   }
 
   removeProfilePhotoIcon() {
     this.setState({
       file4: this.state.file4 = "",
+      selectedProfileFile: this.state.selectedProfileFile = ""
     });
   }
 

@@ -712,7 +712,11 @@ export default {
       token: "",
       merchantId: "",
       roleid:"",
-      roleiderror:""
+      roleiderror:"",
+      s1:"",
+      s2:"",
+      s3:"",
+      s4:""
     },
     merchantTableColumn: {
       Firstname: "First Name",

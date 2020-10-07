@@ -55,5 +55,9 @@ export interface addMerchantStateRequest {
       merchantId: string,
       roleid:string,
       roleiderror:string,
-      roledata:any
+      roledata:any,
+      s1:string,
+      s2:string,
+      s3:string,
+      s4:string,
 }

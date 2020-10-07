@@ -156,24 +156,21 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
 
   validate() {
     let categorynameerror = "";
-    let selectedFileerror = "";
     let sortordererror = "";
 
     if (!this.state.categoryname) {
       categorynameerror = "please enter category name";
     }
 
-    if (!this.state.selectedFile) {
-      selectedFileerror = "please select file";
-    }
+   
 
     var regex1 : any = /^[0-9]+$/;
     if(!regex1.test(this.state.sortorder)) {
       sortordererror = "please enter valid order"
     }
 
-    if (categorynameerror || selectedFileerror || sortordererror) {
-      this.setState({ categorynameerror, selectedFileerror, sortordererror});
+    if (categorynameerror || sortordererror) {
+      this.setState({ categorynameerror, sortordererror});
       return false;
     }
     return true;
@@ -191,17 +188,17 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     if (isValid) {
       this.setState({
         categorynameerror: "",
-        selectedFileerror: "",
+     
         sortordererror:""
       });
-      if (this.state.categoryname && this.state.selectedFile) {
+      if (this.state.categoryname) {
         let formData = new FormData();
 
         formData.append("category", this.state.categoryname);
         formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("parentCategoryId", this.state.selectcategory);
         formData.append("sortOrder", this.state.sortorder.toString());
-        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
+        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : 'null');
 
         const addCategory = await CategoryAPI.addCategory(formData);
         // console.log("addCategory", addCategory);
@@ -227,17 +224,17 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     if (isValid) {
       this.setState({
         categorynameerror: "",
-        selectedFileerror: "",
+      
         sortordererror:""
       });
-      if (this.state.categoryname && this.state.selectedFile) {
+      if (this.state.categoryname) {
         let formData = new FormData();
         formData.append("categoryId", this.state.categoryid.toString());
         formData.append("category", this.state.categoryname);
         formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("parentCategoryId", this.state.selectcategory);
         formData.append("sortOrder", this.state.sortorder.toString());
-        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
+        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : 'null');
         const editCategory = await CategoryAPI.editCategory(
           formData,
           this.state.categoryid.toString()
@@ -263,6 +260,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
   removeIcon() {
     this.setState({
       file: this.state.file = "",
+      selectedFile: this.state.selectedFile = ""
     });
   }
 

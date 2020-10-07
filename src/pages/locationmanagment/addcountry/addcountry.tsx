@@ -126,7 +126,6 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
   validate() {
     let countrynameerror = "";
     let countrycodeerror = "";
-    let selectedFileerror = "";
 
     if (!this.state.countryname) {
       countrynameerror = "please enter country name";
@@ -136,12 +135,9 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
       countrycodeerror = "please enter country code";
     }
 
-    if (!this.state.selectedFile) {
-      selectedFileerror = "please select file";
-    }
-
-    if (countrynameerror || selectedFileerror || countrycodeerror) {
-      this.setState({ countrynameerror, selectedFileerror, countrycodeerror });
+    
+    if (countrynameerror || countrycodeerror) {
+      this.setState({ countrynameerror, countrycodeerror });
       return false;
     }
     return true;
@@ -159,12 +155,10 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     if (isValid) {
       this.setState({
         countrynameerror: "",
-        countrycodeerror: "",
-        selectedFileerror: "",
+        countrycodeerror: ""
       });
       if (
         this.state.countryname &&
-        this.state.selectedFile &&
         this.state.countrycode
       ) {
         let formData = new FormData();
@@ -172,7 +166,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         formData.append("countryName", this.state.countryname);
         formData.append("countryCode", this.state.countrycode);
         formData.append("isActive", new Boolean(this.state.isActive).toString());
-        formData.append("files", this.state.selectedFile[0]);
+        formData.append("files", this.state.selectedFile ?  this.state.selectedFile[0] : 'null');
 
         const addCountry = await LocationAPI.addCountry(formData);
         // console.log("addCountry", addCountry);
@@ -199,12 +193,10 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     if (isValid) {
       this.setState({
         countrynameerror: "",
-        countrycodeerror: "",
-        selectedFileerror: "",
+        countrycodeerror: ""
       });
       if (
         this.state.countryname &&
-        this.state.selectedFile &&
         this.state.countrycode
       ) {
         let formData = new FormData();
@@ -212,7 +204,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         formData.append("countryName", this.state.countryname);
         formData.append("countryCode", this.state.countrycode);
         formData.append("isActive", new Boolean(this.state.isActive).toString());
-        formData.append("files", this.state.selectedFile[0]);
+        formData.append("files", this.state.selectedFile ?  this.state.selectedFile[0] : 'null');
 
         const editCountry = await LocationAPI.editCountry(
           formData,
@@ -240,6 +232,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
   removeIcon() {
     this.setState({
       file: this.state.file = "",
+      selectedFile: this.state.selectedFile = ""
     });
   }
 

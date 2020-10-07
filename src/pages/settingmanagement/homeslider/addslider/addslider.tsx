@@ -205,7 +205,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
         formData.append("productLink", constant.productURL);
         formData.append("sortOrder", this.state.sortorder.toString());
         formData.append("isActive", new Boolean(this.state.isActive).toString());
-        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
+        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : 'null');
         formData.append("userId", "0");
 
         const addSlider = await SliderAPI.addSlider(formData);
@@ -244,7 +244,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
         formData.append("productLink", constant.productURL);
         formData.append("sortOrder", this.state.sortorder.toString());
         formData.append("isActive", new Boolean(this.state.isActive).toString());
-        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
+        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : 'null');
         formData.append("userId", "0");
 
         const editSlider = await SliderAPI.editSlider(formData, this.state.sliderid);
@@ -269,6 +269,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
   removeIcon() {
     this.setState({
       file: this.state.file = "",
+      selectedFile: this.state.selectedFile = ""
     });
   }
 

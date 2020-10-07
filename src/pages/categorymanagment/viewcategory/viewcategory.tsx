@@ -148,7 +148,7 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
                           <p style={{ fontSize: "16px" }}>
                           <b>{constant.categoryPage.caetgoryTableColumn.image} :</b>
                           </p>
-                          {this.state.file != null ? (
+                          {this.state.file != "" ? (
                             <div className="img-size">
                               {this.state.file ? (
                                 <div>

@@ -782,7 +782,7 @@ class NavBar extends React.Component {
                 </ul>
               </li>
             </ul>
-            <div
+            {/* <div
               className="ms-toggler ms-d-block-sm pr-0 ms-nav-toggler"
               data-toggle="slideDown"
               data-target="#ms-nav-options"
@@ -791,7 +791,7 @@ class NavBar extends React.Component {
               <span className="ms-toggler-bar bg-primary l-color"></span>
               <span className="ms-toggler-bar bg-primary l-color"></span>
               <span className="ms-toggler-bar bg-primary l-color"></span>
-            </div>
+            </div> */}
           </nav>
           {this.props.children}
         </main>
