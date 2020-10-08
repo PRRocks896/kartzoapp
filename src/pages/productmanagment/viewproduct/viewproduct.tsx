@@ -210,7 +210,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                               }
                             </b>
                           </Label>
-                          <p>{this.state.discountprice ? this.state.discountprice : 'N/A'}</p>
+                          <p>{this.state.discountprice ? this.state.discountprice : '0'}</p>
                         </FormGroup>
                       </Col>
                     </Row>

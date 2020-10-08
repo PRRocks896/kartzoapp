@@ -102,8 +102,9 @@ class AddUser extends React.Component<{ history: any; location: any }> {
           rolename: this.state.rolename = getUserById.resultObject.role,
           roleid: this.state.roleid = getUserById.resultObject.roleId,
           file: this.state.file = getUserById.resultObject.photoPath,
-          selectedFile: this.state.selectedFile =
-            constant.filepath + getUserById.resultObject.photoPath,
+          // selectedFile: this.state.selectedFile =
+          //   constant.filepath + getUserById.resultObject.photoPath,
+            
           password: this.state.password = getUserById.resultObject.password
             ? getUserById.resultObject.password
             : "",
@@ -367,7 +368,9 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         formData.append("phone", this.state.mobilenumber.toString());
         formData.append("password", this.state.password);
         formData.append("isActive", new Boolean(this.state.isActive).toString());
-        formData.append("files", this.state.selectedFile?this.state.selectedFile[0]:'null');
+        if(this.state.selectedFile) {
+          formData.append("files", this.state.selectedFile?this.state.selectedFile[0]:'null');
+        }
         formData.append("userId", "0");
 
         const editUser: any = await API.editUser(formData, this.state.userid);

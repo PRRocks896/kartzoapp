@@ -20,6 +20,9 @@ import constant from "../../../constant/constant";
 import { Editor } from "@tinymce/tinymce-react";
 import { LocationAPI, MerchantAPI } from "../../../service/index.service";
 import { getDataByIdRequest, addMerchantStateRequest } from "../../../modelController";
+const imageToBase64 = require('image-to-base64');
+var base64Img = require('base64-img');
+var fs = require('fs');
 
 class Merchant extends React.Component<{ history: any; location: any }> {
   merchantState: addMerchantStateRequest = constant.merchantPage.state;
@@ -153,10 +156,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
           //   getMerchantById.resultObject.merchantDocument !== null ? getMerchantById.resultObject.documentPath : '',
           // selectedProfileFile: this.state.selectedProfileFile =
           //   getMerchantById.resultObject.merchantDocument !== null ? getMerchantById.resultObject.profilePhotoPath : '',
-            s1:this.state.s1 = getMerchantById.resultObject.shopLogo !== null ? getMerchantById.resultObject.shopLogo : '',
-            s2:this.state.s2 = getMerchantById.resultObject.merchantIDPoof !== null ? getMerchantById.resultObject.merchantIDPoof : '',
-            s3:this.state.s3 = getMerchantById.resultObject.merchantDocument !== null ? getMerchantById.resultObject.merchantDocument : '',
-            s4:this.state.s4 = getMerchantById.resultObject.merchantProfilePhoto !== null ? getMerchantById.resultObject.merchantProfilePhoto : '',
+            s1:this.state.s1 = getMerchantById.resultObject.shopLogo !== null ? getMerchantById.resultObject.logoPath : '',
+            s2:this.state.s2 = getMerchantById.resultObject.merchantIDPoof !== null ? getMerchantById.resultObject.idProofPath : '',
+            s3:this.state.s3 = getMerchantById.resultObject.merchantDocument !== null ? getMerchantById.resultObject.documentPath : '',
+            s4:this.state.s4 = getMerchantById.resultObject.merchantProfilePhoto !== null ? getMerchantById.resultObject.profilePhotoPath : '',
           firstname: this.state.firstname =
             getMerchantById.resultObject.firstName,
           lastname: this.state.lastname = getMerchantById.resultObject.lastName,
@@ -593,7 +596,70 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  async getBase64ImageFromUrl(imageUrl: string) {
+    console.log("imegeurl",imageUrl);
+    const res = await fetch(imageUrl);
+    const blob = await res.blob();
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', function () {
+        resolve(reader.result);
+      }, false);
+
+      reader.onerror = () => {
+        return reject(this);
+      };
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  dataURLtoFile(dataurl:any, filename:any) {
+    // let arr:any;
+    // let bstr:any;
+    // let mime:any;
+    // let u8arr:any;
+    // let n:any;
+    let arr: any = dataurl.split(',');
+    let mime: any = arr[0].match(/:(.*?);/)[1];
+    let bstr:any = atob(arr[1]);
+     let n : any = bstr.length, u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }
+
+
   async editMerchant() {
+    console.log("s1",this.state.s1);
+    if(this.state.s1) {
+      //  console.log("shopbas64image",await this.getBase64ImageFromUrl(constant.fileMerchantpath + this.state.s1));
+      this.getBase64ImageFromUrl(constant.fileMerchantpath + this.state.s1)
+      .then((result:any) => {
+        console.log("result",result);
+       const res = this.dataURLtoFile(result, this.state.s1.split('/')[2]);
+       console.log("res",res)
+      }
+     );
+      }
+    // if(this.state.s1){
+    //   var imageAsBase64 = fs.readFileSync(constant.fileMerchantpath + this.state.s1, 'base64');
+    //   console.log("shoplogo",imageAsBase64);
+    // }
+    // if(this.state.s1) {
+    //   imageToBase64(constant.fileMerchantpath + this.state.s1) // Path to the image
+    //   .then(
+    //       (response:any) => {
+    //           console.log("shoplogo",response); // "cGF0aC90by9maWxlLmpwZw=="
+    //       }
+    //   )
+    //   .catch(
+    //       (error:any) => {
+    //           console.log(error); // Logs an error if there was one
+    //       }
+    //   )
+    // }
     const isValid = this.validate();
     if (isValid) {
       this.setState({
@@ -644,10 +710,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
             this.state.selectedProofFile ? this.state.selectedProofFile[0] : ""
           )
         ) : (
-          this.state.selectedProofFile === '' ? (
+          this.state.s2 === '' ? (
             formData.append(
               "IDProoffiles",
-              this.state.selectedProofFile ? this.state.selectedProofFile : "null"
+              this.state.s2 ? this.state.s2 : "null"
             )
           ) : (
             formData.append(
@@ -665,11 +731,11 @@ class Merchant extends React.Component<{ history: any; location: any }> {
             : ""
         )
         ) : (
-          this.state.selectedDocumentFile === '' ? (
+          this.state.s3 === '' ? (
             formData.append(
               "Documentfiles",
-              this.state.selectedDocumentFile
-                ? this.state.selectedDocumentFile
+              this.state.s3
+                ? this.state.s3
                 : "null"
             )
           ) : (
@@ -693,10 +759,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
             this.state.selectedFile ? this.state.selectedFile[0] : ""
           )
         ) : (
-          this.state.selectedFile === '' ? (
+          this.state.s1 === '' ? (
             formData.append(
               "Logofiles",
-              this.state.selectedFile ? this.state.selectedFile : "null"
+              this.state.s1 ? this.state.s1 : "null"
             )
           ) : (
             formData.append(
@@ -712,10 +778,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
             this.state.selectedProfileFile ? this.state.selectedProfileFile[0] : ""
           )
         ) : (
-          this.state.selectedProfileFile === '' ? (
+          this.state.s4 === '' ? (
             formData.append(
               "profilephotofiles",
-              this.state.selectedProfileFile ? this.state.selectedProfileFile : "null"
+              this.state.s4 ? this.state.s4 : "null"
             )
           ) : (
             formData.append(
@@ -727,24 +793,24 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         )
         formData.append("UserId", "0");
 
-        const editMerchant = await MerchantAPI.editMerchant(
-          formData,
-          this.state.merchantId
-        );
-        // console.log("editMerchant", editMerchant);
-        if (editMerchant) {
-          if (editMerchant.status === 200) {
-            const msg1 = editMerchant.message;
-            utils.showSuccess(msg1);
-            this.props.history.push("/list-merchant");
-          } else {
-            const msg1 = editMerchant.message;
-            utils.showError(msg1);
-          }
-        } else {
-          // const msg1 = "Internal server error";
-          // utils.showError(msg1);
-        }
+        // const editMerchant = await MerchantAPI.editMerchant(
+        //   formData,
+        //   this.state.merchantId
+        // );
+        // // console.log("editMerchant", editMerchant);
+        // if (editMerchant) {
+        //   if (editMerchant.status === 200) {
+        //     const msg1 = editMerchant.message;
+        //     utils.showSuccess(msg1);
+        //     this.props.history.push("/list-merchant");
+        //   } else {
+        //     const msg1 = editMerchant.message;
+        //     utils.showError(msg1);
+        //   }
+        // } else {
+        //   // const msg1 = "Internal server error";
+        //   // utils.showError(msg1);
+        // }
       }
     }
   }
@@ -752,28 +818,29 @@ class Merchant extends React.Component<{ history: any; location: any }> {
   removeIcon() {
     this.setState({
       file: this.state.file = '',
-      selectedFile:this.state.selectedFile = ''
+      s1:this.state.s1 = ''
     });
+    
   }
 
   removeDocumentIcon() {
     this.setState({
       file2: this.state.file2 = "",
-      selectedDocumentFile: this.state.selectedDocumentFile = ""
+      s3: this.state.s3 = ""
     });
   }
 
   removeProofIcon() {
     this.setState({
       file1: this.state.file1 = "",
-      selectedProofFile: this.state.selectedProofFile = ""
+      s2: this.state.s2 = ""
     });
   }
 
   removeProfilePhotoIcon() {
     this.setState({
       file4: this.state.file4 = "",
-      selectedProfileFile: this.state.selectedProfileFile = ""
+      s4: this.state.s4 = ""
     });
   }
 
