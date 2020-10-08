@@ -306,7 +306,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
                                         )
                                       )
                                     : ""}
-                              <option value="">
+                              {/* <option value="">
                                 {constant.taxPage.taxTableColumn.category}
                               </option>
                               {this.state.categorydata.length > 0
@@ -317,7 +317,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
                                       </option>
                                     )
                                   )
-                                : ""}
+                                : ""} */}
                             </CustomInput>
                             <div className="mb-4 text-danger">
                               {this.state.mainCategoryIderror}
