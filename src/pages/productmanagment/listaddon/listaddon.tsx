@@ -201,9 +201,9 @@ class ListProductAddOn extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    if(event.target.id > 1) {
+  
     this.getProductCustomiseData(obj.searchText, obj.page, obj.size);
-    }
+    
   }
 
   async searchApplicationDataKeyUp(e: any) {
