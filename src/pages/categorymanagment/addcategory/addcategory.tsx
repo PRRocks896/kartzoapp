@@ -36,7 +36,8 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     selectcategoryerror: this.categoryState.selectcategoryerror,
     parentCategory: this.categoryState.parentCategory,
     parentCategoryId: this.categoryState.parentCategoryId,
-    isActive: this.categoryState.isActive
+    isActive: this.categoryState.isActive,
+    s1:this.categoryState.s1
   };
 
   constructor(props: any) {
@@ -109,9 +110,9 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
           parentCategory: this.state.parentCategory =
             getCategoryById.resultObject.parentCategory,
           selectcategory: this.state.selectcategory = getCategoryById.resultObject.parentCategoryId !== null ? getCategoryById.resultObject.parentCategoryId : '' ,
-          selectedFile: this.state.selectedFile =
-            getCategoryById.resultObject.imagePath,
-          isActive: this.state.isActive = getCategoryById.resultObject.isActive
+        
+          isActive: this.state.isActive = getCategoryById.resultObject.isActive,
+          s1:this.state.s1 = getCategoryById.resultObject.image
         });
       } else {
         const msg1 = getCategoryById.message;
@@ -234,7 +235,13 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("parentCategoryId", this.state.selectcategory);
         formData.append("sortOrder", this.state.sortorder.toString());
-        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : 'null');
+        if(this.state.selectedFile) {
+          formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
+        } else {
+          if(this.state.file === '') {
+            formData.append("imagePath", this.state.s1 ? this.state.s1 : '');
+          }
+        }
         const editCategory = await CategoryAPI.editCategory(
           formData,
           this.state.categoryid.toString()

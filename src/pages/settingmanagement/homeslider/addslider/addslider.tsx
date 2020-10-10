@@ -35,7 +35,8 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     sortordererror: this.sliderState.sortordererror,
     isActive: this.sliderState.isActive,
     productdata: this.sliderState.productdata,
-    sliderid: this.sliderState.sliderid
+    sliderid: this.sliderState.sliderid,
+    s1:this.sliderState.s1
   };
 
   constructor(props: any) {
@@ -111,8 +112,8 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
         file: this.state.file = getSliderDataById.resultObject.photoPath,
         sortorder: this.state.sortorder =
           getSliderDataById.resultObject.sortOrder,
-        selectedFile: this.state.selectedFile =
-          getSliderDataById.resultObject.photoPath,
+        s1: this.state.s1 =
+          getSliderDataById.resultObject.imageName,
         isActive: this.state.isActive = getSliderDataById.resultObject.isActive
       });
     } else {
@@ -244,7 +245,13 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
         formData.append("productLink", constant.productURL);
         formData.append("sortOrder", this.state.sortorder.toString());
         formData.append("isActive", new Boolean(this.state.isActive).toString());
-        formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : 'null');
+        if(this.state.selectedFile) {
+          formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
+        } else {
+          if(this.state.file === '') {
+            formData.append("imageName", this.state.s1 ? this.state.s1 : '');
+          }
+        }
         formData.append("userId", "0");
 
         const editSlider = await SliderAPI.editSlider(formData, this.state.sliderid);

@@ -32,7 +32,8 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     filetrue: this.countryState.filetrue,
     updateTrue: this.countryState.updateTrue,
     countryid: this.countryState.countryid,
-    isActive:this.countryState.isActive
+    isActive:this.countryState.isActive,
+    s1:this.countryState.s1
   };
 
   constructor(props: any) {
@@ -82,8 +83,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         countryid: this.state.countryid =
           getCountryById.resultObject.countryId,
         file: this.state.file = getCountryById.resultObject.imagePath,
-        selectedFile: this.state.selectedFile =
-          getCountryById.resultObject.imagePath,
+       s1:this.state.s1 = getCountryById.resultObject.countryFlag,
           isActive: this.state.isActive = getCountryById.resultObject.isActive
       });
     } else {
@@ -204,7 +204,13 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
         formData.append("countryName", this.state.countryname);
         formData.append("countryCode", this.state.countrycode);
         formData.append("isActive", new Boolean(this.state.isActive).toString());
-        formData.append("files", this.state.selectedFile ?  this.state.selectedFile[0] : 'null');
+        if(this.state.selectedFile) {
+          formData.append("files", this.state.selectedFile ?  this.state.selectedFile[0] : '');
+        } else {
+          if(this.state.file === '') {
+            formData.append("countryFlag", this.state.s1 ?  this.state.s1 : '');
+          }
+        }
 
         const editCountry = await LocationAPI.editCountry(
           formData,

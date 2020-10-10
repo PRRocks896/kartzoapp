@@ -22,9 +22,9 @@ export default {
   logout: "Logout",
   filepath: "http://api.kartzoapp.com/",
   fileMerchantpath: "http://api-merchant.kartzoapp.com/",
-  mainUrl: "http://api.kartzoapp.com/api/",
-  apiUrl: "http://api.kartzoapp.com/v1/",
-  apiMerchantUrl: "http://api-merchant.kartzoapp.com/v1/",
+  mainUrl: "http://api.kartzoapp.com/v1/api/",
+  apiUrl: "http://api.kartzoapp.com/v1/api/",
+  apiMerchantUrl: "http://api-merchant.kartzoapp.com/v1/api/",
   productURL:'http://demo.kartzoapp.com/#/view-product',
   headers: {
     Authorization:
@@ -250,6 +250,7 @@ export default {
       rolename: "",
       type: "password",
       isActive: true,
+      s1:''
     },
     userTableColumn: {
       firstname: "First Name",
@@ -412,6 +413,7 @@ export default {
       parentCategory: "",
       parentCategoryId:'',
       isActive: true,
+      s1:''
     },
     caetgoryTableColumn: {
       categoryName: "Category Name",
@@ -536,6 +538,7 @@ export default {
       updateTrue: false,
       countryid: 0,
       isActive: true,
+      s1:''
     },
     countryTableColumn: {
       countryName: "Country Name",
@@ -1105,6 +1108,7 @@ export default {
       sortorder: 0,
       sortordererror: "",
       isActive: false,
+      s1:''
     },
     homeSliderTableColumn: {
       productId: "ProductId",

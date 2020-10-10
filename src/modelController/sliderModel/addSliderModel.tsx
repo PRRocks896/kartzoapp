@@ -11,5 +11,6 @@ export interface addSliderStateRequest {
     isActive: boolean,
     productdata: any,
     sliderid: number,
+    s1?:string
 
 }

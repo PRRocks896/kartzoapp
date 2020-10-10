@@ -21,5 +21,6 @@ export interface addUserModelRequest {
       type: string,
       isActive: boolean,
       onItemSelect: string,
-      userrole:any
+      userrole:any,
+      s1:string
 }

@@ -10,4 +10,5 @@ export interface addCountryStateRequest {
     updateTrue: boolean,
     countryid: number,
     isActive: boolean,
+    s1?:string
 }

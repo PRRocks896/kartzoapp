@@ -44,7 +44,8 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     userid: this.userState.userid,
     rolename: this.userState.rolename,
     type: this.userState.type,
-    isActive:this.userState.isActive
+    isActive:this.userState.isActive,
+    s1:this.userState.s1
   };
 
   constructor(props: any) {
@@ -102,8 +103,8 @@ class AddUser extends React.Component<{ history: any; location: any }> {
           rolename: this.state.rolename = getUserById.resultObject.role,
           roleid: this.state.roleid = getUserById.resultObject.roleId,
           file: this.state.file = getUserById.resultObject.photoPath,
-          // selectedFile: this.state.selectedFile =
-          //   constant.filepath + getUserById.resultObject.photoPath,
+          s1: this.state.s1 =
+            constant.filepath + getUserById.resultObject.photo,
             
           password: this.state.password = getUserById.resultObject.password
             ? getUserById.resultObject.password
@@ -299,7 +300,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         emailerror: "",
         mobilenumbererror: "",
         passworderror: "",
-        onItemSelecterror: "",
+        onItemSelecterror: ""
       });
       if (
         this.state.firstname &&
@@ -348,7 +349,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         firstnameerror: "",
         lastnameerror: "",
         emailerror: "",
-        mobilenumbererror: "",
+        mobilenumbererror: ""
       });
       if (
         this.state.firstname &&
@@ -369,7 +370,9 @@ class AddUser extends React.Component<{ history: any; location: any }> {
         formData.append("password", this.state.password);
         formData.append("isActive", new Boolean(this.state.isActive).toString());
         if(this.state.selectedFile) {
-          formData.append("files", this.state.selectedFile?this.state.selectedFile[0]:'null');
+          formData.append("files", this.state.selectedFile?this.state.selectedFile[0]:'');
+        } else if(this.state.file === '') {
+          formData.append("photo", this.state.s1?this.state.s1:'');
         }
         formData.append("userId", "0");
 
