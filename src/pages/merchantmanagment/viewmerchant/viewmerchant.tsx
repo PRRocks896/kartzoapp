@@ -75,7 +75,8 @@ class ViewMerchant extends React.Component<{
     file2true: this.merchantState.file2true,
     file4: this.merchantState.file4,
     file4true: this.merchantState.file4true,
-    roleid: this.merchantState.roleid
+    roleid: this.merchantState.roleid,
+    categoryname: this.merchantState.categoryname
   };
 
   constructor(props: any) {
@@ -133,7 +134,8 @@ class ViewMerchant extends React.Component<{
         file1: this.state.file1 = getMerchantById.resultObject.idProofPath ? getMerchantById.resultObject.idProofPath : '',
         file2: this.state.file2 = getMerchantById.resultObject.documentPath ? getMerchantById.resultObject.documentPath : '',
         file4: this.state.file4 = getMerchantById.resultObject.profilePhotoPath ? getMerchantById.resultObject.profilePhotoPath : '',
-        roleid: this.state.roleid = getMerchantById.resultObject.role
+        roleid: this.state.roleid = getMerchantById.resultObject.role,
+        categoryname: this.state.categoryname = getMerchantById.resultObject.categoryName ? getMerchantById.resultObject.categoryName : 'N/A'
       });
     } else {
       const msg1 = getMerchantById.message;
@@ -460,6 +462,23 @@ class ViewMerchant extends React.Component<{
                           </Label>
                           <p>{this.state.city}</p>
                         </FormGroup>
+                      </Col>
+                      </Row>
+                      <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <Form>
+                          <FormGroup>
+                            <Label for="exampleCustomSelect">
+                              <b>
+                                {
+                                  constant.merchantPage.merchantTableColumn
+                                    .category
+                                }
+                              </b>
+                            </Label>
+                            <p>{this.state.categoryname}</p>
+                          </FormGroup>
+                        </Form>
                       </Col>
                       </Row>
                     

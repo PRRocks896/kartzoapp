@@ -17,6 +17,9 @@ export interface addMerchantStateRequest {
       addresserror: string,
       city: string,
       cityerror: string,
+      categorydata:any,
+      categoryid:string,
+      categoryiderror:string,
       user: string,
       usererror: string,
       zipcode: string,
@@ -60,4 +63,5 @@ export interface addMerchantStateRequest {
       s2:string,
       s3:string,
       s4:string,
+      categoryname:string
 }

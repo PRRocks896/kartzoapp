@@ -391,8 +391,8 @@ class ListMerchant extends React.Component<{ history: any }> {
                 checked={this.state._maincheck}
               />
             </th>
-            <th>{constant.merchantPage.merchantTableColumn.Firstname}</th>
-            <th>{constant.merchantPage.merchantTableColumn.lastname}</th>
+            <th>{constant.merchantPage.merchantTableColumn.shopname}</th>
+            <th>{constant.merchantPage.merchantTableColumn.merchantname}</th>
             <th>{constant.merchantPage.merchantTableColumn.email}</th>
             <th>{constant.merchantPage.merchantTableColumn.Address}</th>
             <th style={{ textAlign: "center" }}>
@@ -417,8 +417,8 @@ class ListMerchant extends React.Component<{ history: any }> {
                       }
                     />
                   </td>
-                  <td>{data.firstName}</td>
-                  <td>{data.lastName}</td>
+                  <td>{data.shopName}</td>
+                  <td>{data.firstName} {data.lastName}</td>
                   <td>{data.email}</td>
                   <td>{data.address}</td>
                   <td style={{ textAlign: "center" }}>

@@ -658,6 +658,7 @@ export default {
       switchSort: false,
       isStatus: false,
       merchantdata: [],
+      categorydata:[],
 
       selectedFile: "",
       selectedProofFile: "",
@@ -719,7 +720,10 @@ export default {
       s1:"",
       s2:"",
       s3:"",
-      s4:""
+      s4:"",
+      categoryid:"",
+      categoryiderror:"",
+      categoryname:""
     },
     merchantTableColumn: {
       Firstname: "First Name",
@@ -747,7 +751,10 @@ export default {
       profile:'Profile Photo',
       selectrole:'Select Role',
       role:'Role',
-      cityname:'City Name'
+      cityname:'City Name',
+      merchantname:'Merchant Name',
+      selectcategory:'Select Category',
+      category:'Category Name'
     },
     viewmerchanrpagedetails: {
       viewmerchant: "View Merchant Details",

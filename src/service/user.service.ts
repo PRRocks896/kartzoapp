@@ -5,6 +5,7 @@ import axios from 'axios';
 import { loginCreateRequest, forgotPasswordRequest, profileGetRequest, resetPasswordRequest, changePasswordRequest, getAllTableDataListRequest, getDataByIdRequest, deleteByIdRequest } from "../modelController";
 
 export default {
+    
     loginUser: async function (data: loginCreateRequest) {
         return axios.post(Constant.apiUrl + apiUrl.userController.createData, data);
     },

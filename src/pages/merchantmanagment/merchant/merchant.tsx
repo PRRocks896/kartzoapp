@@ -18,11 +18,15 @@ import "./merchant.css";
 import Switch from "react-switch";
 import constant from "../../../constant/constant";
 import { Editor } from "@tinymce/tinymce-react";
-import { LocationAPI, MerchantAPI } from "../../../service/index.service";
-import { getDataByIdRequest, addMerchantStateRequest } from "../../../modelController";
-const imageToBase64 = require('image-to-base64');
-var base64Img = require('base64-img');
-var fs = require('fs');
+import {
+  LocationAPI,
+  MerchantAPI,
+  CategoryAPI,
+} from "../../../service/index.service";
+import {
+  getDataByIdRequest,
+  addMerchantStateRequest,
+} from "../../../modelController";
 
 class Merchant extends React.Component<{ history: any; location: any }> {
   merchantState: addMerchantStateRequest = constant.merchantPage.state;
@@ -31,10 +35,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     selectedProfileFile: this.merchantState.selectedProfileFile,
     selectedProofFile: this.merchantState.selectedProofFile,
     selectedDocumentFile: this.merchantState.selectedDocumentFile,
-    s1:this.merchantState.s1,
-    s2:this.merchantState.s2,
-    s3:this.merchantState.s3,
-    s4:this.merchantState.s4,
+    s1: this.merchantState.s1,
+    s2: this.merchantState.s2,
+    s3: this.merchantState.s3,
+    s4: this.merchantState.s4,
     firstname: this.merchantState.firstname,
     firstnameerror: this.merchantState.firstnameerror,
     lastname: this.merchantState.lastname,
@@ -87,7 +91,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     roleid: this.merchantState.roleid,
     roleiderror: this.merchantState.roleiderror,
     cityname: "",
-    roledata: this.merchantState.roledata
+    roledata: this.merchantState.roledata,
+    categorydata: this.merchantState.categorydata,
+    categoryid: this.merchantState.categoryid,
+    categoryiderror: this.merchantState.categoryiderror,
   };
 
   constructor(props: any) {
@@ -114,6 +121,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     this.getCityById = this.getCityById.bind(this);
     this.onChangeProfilePicture = this.onChangeProfilePicture.bind(this);
     this.onItemSelectRole = this.onItemSelectRole.bind(this);
+    this.onItemSelectCategory = this.onItemSelectCategory.bind(this);
   }
 
   handleChange(checked: boolean) {
@@ -123,6 +131,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
   async componentDidMount() {
     this.getCity();
     this.getRole();
+    this.getCategory();
     const merchantId = this.props.location.pathname.split("/")[2];
     if (merchantId !== undefined) {
       this.getMerchantById(merchantId);
@@ -148,18 +157,22 @@ class Merchant extends React.Component<{ history: any; location: any }> {
           merchantId: this.state.merchantId =
             getMerchantById.resultObject.merchantID,
           filetrue: this.state.filetrue = true,
-          // selectedFile: this.state.selectedFile =
-          //   getMerchantById.resultObject.logoPath !== null ? getMerchantById.resultObject.logoPath : '',
-          // selectedProofFile: this.state.selectedProofFile =
-          //   getMerchantById.resultObject.merchantIDPoof !== null ? getMerchantById.resultObject.idProofPath : '',
-          // selectedDocumentFile: this.state.selectedDocumentFile =
-          //   getMerchantById.resultObject.merchantDocument !== null ? getMerchantById.resultObject.documentPath : '',
-          // selectedProfileFile: this.state.selectedProfileFile =
-          //   getMerchantById.resultObject.merchantDocument !== null ? getMerchantById.resultObject.profilePhotoPath : '',
-            s1:this.state.s1 = getMerchantById.resultObject.shopLogo !== null ? getMerchantById.resultObject.shopLogo : '',
-            s2:this.state.s2 = getMerchantById.resultObject.merchantIDPoof !== null ? getMerchantById.resultObject.merchantIDPoof : '',
-            s3:this.state.s3 = getMerchantById.resultObject.merchantDocument !== null ? getMerchantById.resultObject.merchantDocument : '',
-            s4:this.state.s4 = getMerchantById.resultObject.merchantProfilePhoto !== null ? getMerchantById.resultObject.merchantProfilePhoto : '',
+          s1: this.state.s1 =
+            getMerchantById.resultObject.shopLogo !== null
+              ? getMerchantById.resultObject.shopLogo
+              : "",
+          s2: this.state.s2 =
+            getMerchantById.resultObject.merchantIDPoof !== null
+              ? getMerchantById.resultObject.merchantIDPoof
+              : "",
+          s3: this.state.s3 =
+            getMerchantById.resultObject.merchantDocument !== null
+              ? getMerchantById.resultObject.merchantDocument
+              : "",
+          s4: this.state.s4 =
+            getMerchantById.resultObject.merchantProfilePhoto !== null
+              ? getMerchantById.resultObject.merchantProfilePhoto
+              : "",
           firstname: this.state.firstname =
             getMerchantById.resultObject.firstName,
           lastname: this.state.lastname = getMerchantById.resultObject.lastName,
@@ -174,12 +187,18 @@ class Merchant extends React.Component<{ history: any; location: any }> {
           longitude: this.state.longitude =
             getMerchantById.resultObject.longitude,
           website: this.state.website = getMerchantById.resultObject.website,
-          shoppingpolicy: this.state.shoppingpolicy =
-            getMerchantById.resultObject.shippingPolicy ? getMerchantById.resultObject.shippingPolicy : '',
-          refundpolicy: this.state.refundpolicy =
-            getMerchantById.resultObject.refundPolicy ? getMerchantById.resultObject.refundPolicy : '',
-          cancellationpolicy: this.state.cancellationpolicy =
-            getMerchantById.resultObject.cancellationPolicy ? getMerchantById.resultObject.cancellationPolicy : '',
+          shoppingpolicy: this.state.shoppingpolicy = getMerchantById
+            .resultObject.shippingPolicy
+            ? getMerchantById.resultObject.shippingPolicy
+            : "",
+          refundpolicy: this.state.refundpolicy = getMerchantById.resultObject
+            .refundPolicy
+            ? getMerchantById.resultObject.refundPolicy
+            : "",
+          cancellationpolicy: this.state.cancellationpolicy = getMerchantById
+            .resultObject.cancellationPolicy
+            ? getMerchantById.resultObject.cancellationPolicy
+            : "",
           password: this.state.password = getMerchantById.resultObject.password,
           file: this.state.file = getMerchantById.resultObject.logoPath,
           isOpen: this.state.isOpen = getMerchantById.resultObject.isActive,
@@ -187,9 +206,12 @@ class Merchant extends React.Component<{ history: any; location: any }> {
           file1: this.state.file1 = getMerchantById.resultObject.idProofPath,
           file2: this.state.file2 = getMerchantById.resultObject.documentPath,
           file2true: this.state.file2true = true,
-          file4: this.state.file4 = getMerchantById.resultObject.profilePhotoPath,
+          file4: this.state.file4 =
+            getMerchantById.resultObject.profilePhotoPath,
           file4true: this.state.file4true = true,
-          roleid:this.state.roleid = getMerchantById.resultObject.roleID
+          roleid: this.state.roleid = getMerchantById.resultObject.roleID,
+          categoryid: this.state.categoryid =
+            getMerchantById.resultObject.categoryId,
         });
         this.getCityById(this.state.city);
       } else {
@@ -212,7 +234,9 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     if (getCity) {
       if (getCity.status === 200) {
         this.setState({
-          cityname: this.state.cityname = getCity.resultObject ? getCity.resultObject.cityName : '',
+          cityname: this.state.cityname = getCity.resultObject
+            ? getCity.resultObject.cityName
+            : "",
         });
       } else {
         const msg1 = getCity.message;
@@ -235,6 +259,25 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         });
       } else {
         const msg1 = getCity.message;
+        utils.showError(msg1);
+      }
+    } else {
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
+    }
+  }
+
+  async getCategory() {
+    const getCategory = await CategoryAPI.getAllCategory();
+    // console.log("getCategory", getCategory);
+
+    if (getCategory) {
+      if (getCategory.status === 200) {
+        this.setState({
+          categorydata: this.state.categorydata = getCategory.resultObject,
+        });
+      } else {
+        const msg1 = getCategory.message;
         utils.showError(msg1);
       }
     } else {
@@ -280,12 +323,18 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  onItemSelectCategory(event: any) {
+    this.setState({
+      categoryid: this.state.categoryid = event.target.value,
+    });
+  }
 
   onChangeProfilePicture(event: any) {
     if (this.state.file4true === true) {
       this.setState({
         file4true: this.state.file4true = false,
-        selectedProfileFile: this.state.selectedProfileFile = event.target.files,
+        selectedProfileFile: this.state.selectedProfileFile =
+          event.target.files,
       });
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
@@ -296,7 +345,8 @@ class Merchant extends React.Component<{ history: any; location: any }> {
       };
     } else {
       this.setState({
-        selectedProfileFile: this.state.selectedProfileFile = event.target.files,
+        selectedProfileFile: this.state.selectedProfileFile =
+          event.target.files,
       });
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
@@ -427,6 +477,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     let zipcodeerror = "";
     let passworderror = "";
     let roleiderror = "";
+    let categoryiderror = "";
 
     if (!this.state.firstname) {
       firstnameerror = "please enter firstname";
@@ -454,10 +505,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
       emailerror = "please enter valid email";
     }
 
-    const mobile:any = /^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$/;
+    const mobile: any = /^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$/;
     if (!this.state.mobilenumber) {
       mobilenumbererror = "please enter mobile number";
-    } else if(!mobile.test(this.state.mobilenumber)) {
+    } else if (!mobile.test(this.state.mobilenumber)) {
       mobilenumbererror = "please enter valid mobile number";
     }
 
@@ -485,6 +536,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
       cityerror = "please select city";
     }
 
+    if (!this.state.categoryid) {
+      categoryiderror = "please select category";
+    }
+
     if (
       firstnameerror ||
       lastnameerror ||
@@ -497,7 +552,8 @@ class Merchant extends React.Component<{ history: any; location: any }> {
       longitudeerror ||
       shopnamerror ||
       cityerror ||
-      passworderror
+      passworderror ||
+      categoryiderror
     ) {
       this.setState({
         firstnameerror,
@@ -512,6 +568,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         shopnamerror,
         cityerror,
         passworderror,
+        categoryiderror,
       });
       return false;
     }
@@ -535,7 +592,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         mobilenumbererror: "",
         addresserror: "",
         zipcodeerror: "",
-
+        categoryiderror: "",
         latitudeerror: "",
         longitudeerror: "",
         shopnamerror: "",
@@ -551,7 +608,9 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         this.state.shopname &&
         this.state.latitude &&
         this.state.longitude &&
-        this.state.password && this.state.roleid
+        this.state.password &&
+        this.state.roleid &&
+        this.state.categoryid
       ) {
         let formData = new FormData();
         formData.append("RoleId", this.state.roleid);
@@ -567,14 +626,33 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         formData.append("Latitude", this.state.latitude);
         formData.append("Longitude", this.state.longitude);
         formData.append("Website", this.state.website);
-        formData.append("IDProoffiles", this.state.selectedProofFile ? this.state.selectedProofFile[0] : 'null');
-        formData.append("Documentfiles", this.state.selectedDocumentFile ? this.state.selectedDocumentFile[0] : 'null');
+        formData.append(
+          "IDProoffiles",
+          this.state.selectedProofFile
+            ? this.state.selectedProofFile[0]
+            : "null"
+        );
+        formData.append(
+          "Documentfiles",
+          this.state.selectedDocumentFile
+            ? this.state.selectedDocumentFile[0]
+            : "null"
+        );
         formData.append("ShippingPolicy", this.state.shoppingpolicy);
         formData.append("RefundPolicy", this.state.refundpolicy);
         formData.append("CancellationPolicy", this.state.cancellationpolicy);
         formData.append("isActive", new Boolean(this.state.isOpen).toString());
-        formData.append("Logofiles", this.state.selectedFile ? this.state.selectedFile[0] : 'null');
-        formData.append("profilephotofiles", this.state.selectedProfileFile ? this.state.selectedProfileFile[0] : 'null');
+        formData.append(
+          "Logofiles",
+          this.state.selectedFile ? this.state.selectedFile[0] : "null"
+        );
+        formData.append(
+          "profilephotofiles",
+          this.state.selectedProfileFile
+            ? this.state.selectedProfileFile[0]
+            : "null"
+        );
+        formData.append("CategoryId", this.state.categoryid);
         formData.append("UserId", "0");
 
         const addMerchant = await MerchantAPI.addMerchant(formData);
@@ -610,7 +688,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         latitudeerror: "",
         longitudeerror: "",
         shopnamerror: "",
-
+        categoryiderror: "",
         cityerror: "",
         passworderror: "",
       });
@@ -622,7 +700,9 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         this.state.shopname &&
         this.state.latitude &&
         this.state.longitude &&
-        this.state.password && this.state.roleid
+        this.state.password &&
+        this.state.roleid &&
+        this.state.categoryid
       ) {
         let formData = new FormData();
         formData.append("Id", this.state.merchantId);
@@ -639,67 +719,68 @@ class Merchant extends React.Component<{ history: any; location: any }> {
         formData.append("Latitude", this.state.latitude);
         formData.append("Longitude", this.state.longitude);
         formData.append("Website", this.state.website);
+        formData.append("CategoryId", this.state.categoryid);
 
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        if(this.state.selectedProofFile) {
+        if (this.state.selectedProofFile) {
           formData.append(
             "IDProoffiles",
             this.state.selectedProofFile ? this.state.selectedProofFile[0] : ""
-          )
+          );
         } else {
-          if(this.state.file1 === '') {
+          if (this.state.file1 === "") {
             formData.append(
               "MerchantIDPoof",
               this.state.s2 ? this.state.s2 : ""
-            )
+            );
           }
         }
 
-        if(this.state.selectedDocumentFile) {
+        if (this.state.selectedDocumentFile) {
           formData.append(
             "Documentfiles",
-            this.state.selectedDocumentFile ? this.state.selectedDocumentFile[0] : ""
-          )
+            this.state.selectedDocumentFile
+              ? this.state.selectedDocumentFile[0]
+              : ""
+          );
         } else {
-          if(this.state.file2 === '') {
+          if (this.state.file2 === "") {
             formData.append(
               "MerchantDocument",
               this.state.s3 ? this.state.s3 : ""
-            )
+            );
           }
         }
-       
-       
+
         formData.append("ShippingPolicy", this.state.shoppingpolicy);
         formData.append("RefundPolicy", this.state.refundpolicy);
         formData.append("CancellationPolicy", this.state.cancellationpolicy);
         formData.append("isActive", new Boolean(this.state.isOpen).toString());
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        if(this.state.selectedFile) {
+        if (this.state.selectedFile) {
           formData.append(
             "Logofiles",
             this.state.selectedFile ? this.state.selectedFile[0] : ""
-          )
+          );
         } else {
-          if(this.state.file === '') {
-            formData.append(
-              "ShopLogo",
-              this.state.s1 ? this.state.s1 : ""
-            )
+          if (this.state.file === "") {
+            formData.append("ShopLogo", this.state.s1 ? this.state.s1 : "");
           }
         }
 
-        if(this.state.selectedProfileFile) {
+        if (this.state.selectedProfileFile) {
           formData.append(
             "profilephotofiles",
-            this.state.selectedProfileFile ? this.state.selectedProfileFile[0] : ""
-          )
+            this.state.selectedProfileFile
+              ? this.state.selectedProfileFile[0]
+              : ""
+          );
         } else {
-          if(this.state.file4 === '') {
+          if (this.state.file4 === "") {
             formData.append(
               "MerchantProfilePhoto",
               this.state.s4 ? this.state.s4 : ""
-            )
+            );
           }
         }
 
@@ -729,30 +810,25 @@ class Merchant extends React.Component<{ history: any; location: any }> {
 
   removeIcon() {
     this.setState({
-      file: this.state.file = '',
-    
+      file: this.state.file = "",
     });
-    
   }
 
   removeDocumentIcon() {
     this.setState({
       file2: this.state.file2 = "",
-     
     });
   }
 
   removeProofIcon() {
     this.setState({
       file1: this.state.file1 = "",
-      
     });
   }
 
   removeProfilePhotoIcon() {
     this.setState({
       file4: this.state.file4 = "",
-     
     });
   }
 
@@ -772,10 +848,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                         </h1>
                       </Col>
                     ) : (
-                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.merchantPage.title.addMerchantTitle}</h1>
-                        </Col>
-                      )}
+                      <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                        <h1>{constant.merchantPage.title.addMerchantTitle}</h1>
+                      </Col>
+                    )}
 
                     <Col
                       xs="12"
@@ -900,28 +976,28 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                                 </option>
                                 {this.state.citydata.length > 0
                                   ? this.state.citydata.map(
-                                    (data: any, index: any) => (
-                                      <option key={index} value={data.value}>
-                                        {data.name}
-                                      </option>
-                                    )
-                                  )
-                                  : ""}
-                              </>
-                            ) : (
-                                <>
-                                  <option value="">Select City</option>
-                                  {this.state.citydata.length > 0
-                                    ? this.state.citydata.map(
                                       (data: any, index: any) => (
                                         <option key={index} value={data.value}>
                                           {data.name}
                                         </option>
                                       )
                                     )
-                                    : ""}
-                                </>
-                              )}
+                                  : ""}
+                              </>
+                            ) : (
+                              <>
+                                <option value="">Select City</option>
+                                {this.state.citydata.length > 0
+                                  ? this.state.citydata.map(
+                                      (data: any, index: any) => (
+                                        <option key={index} value={data.value}>
+                                          {data.name}
+                                        </option>
+                                      )
+                                    )
+                                  : ""}
+                              </>
+                            )}
                           </CustomInput>
                           <div className="mb-4 text-danger">
                             {this.state.cityerror}
@@ -950,11 +1026,11 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                               className="fas fa-eye"
                             ></i>
                           ) : (
-                              <i
-                                onClick={this.handleClick}
-                                className="fas fa-eye-slash"
-                              ></i>
-                            )}
+                            <i
+                              onClick={this.handleClick}
+                              className="fas fa-eye-slash"
+                            ></i>
+                          )}
                         </div>
                         <div className="text-danger">
                           {this.state.passworderror}
@@ -1118,11 +1194,11 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                                     }
                                   />
                                 ) : (
-                                    <img
-                                      className="picture"
-                                      src={this.state.file}
-                                    />
-                                  )}
+                                  <img
+                                    className="picture"
+                                    src={this.state.file}
+                                  />
+                                )}
                                 <i
                                   className="fa fa-times cursor"
                                   onClick={() => this.removeIcon()}
@@ -1131,28 +1207,28 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                             ) : null}
                           </div>
                         ) : (
-                            <div className="">
-                              <p style={{ fontSize: "16px" }}>
-                                {
-                                  constant.merchantPage.merchantTableColumn
-                                    .selectedFile
-                                }
-                              </p>
-                              <Label className="imag" for="file-input">
-                                <i
-                                  className="fa fa-upload fa-lg"
-                                  style={{ color: "#20a8d8" }}
-                                ></i>
-                              </Label>
-                              <Input
-                                id="file-input"
-                                type="file"
-                                className="form-control"
-                                name="file"
-                                onChange={this.onChangeHandler.bind(this)}
-                              />
-                            </div>
-                          )}
+                          <div className="">
+                            <p style={{ fontSize: "16px" }}>
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .selectedFile
+                              }
+                            </p>
+                            <Label className="imag" for="file-input">
+                              <i
+                                className="fa fa-upload fa-lg"
+                                style={{ color: "#20a8d8" }}
+                              ></i>
+                            </Label>
+                            <Input
+                              id="file-input"
+                              type="file"
+                              className="form-control"
+                              name="file"
+                              onChange={this.onChangeHandler.bind(this)}
+                            />
+                          </div>
+                        )}
                         <div className="text-danger">
                           {this.state.selectedFileerror}
                         </div>
@@ -1173,11 +1249,11 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                                     }
                                   />
                                 ) : (
-                                    <img
-                                      className="picture"
-                                      src={this.state.file1}
-                                    />
-                                  )}
+                                  <img
+                                    className="picture"
+                                    src={this.state.file1}
+                                  />
+                                )}
                                 <i
                                   className="fa fa-times cursor"
                                   onClick={() => this.removeProofIcon()}
@@ -1186,28 +1262,28 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                             ) : null}
                           </div>
                         ) : (
-                            <div className="">
-                              <p style={{ fontSize: "16px" }}>
-                                {
-                                  constant.merchantPage.merchantTableColumn
-                                    .selectMerchantIdProff
-                                }
-                              </p>
-                              <Label className="imag" for="file-input1">
-                                <i
-                                  className="fa fa-upload fa-lg"
-                                  style={{ color: "#20a8d8" }}
-                                ></i>
-                              </Label>
-                              <Input
-                                id="file-input1"
-                                type="file"
-                                className="form-control"
-                                name="file1"
-                                onChange={this.onChangeIDProof.bind(this)}
-                              />
-                            </div>
-                          )}
+                          <div className="">
+                            <p style={{ fontSize: "16px" }}>
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .selectMerchantIdProff
+                              }
+                            </p>
+                            <Label className="imag" for="file-input1">
+                              <i
+                                className="fa fa-upload fa-lg"
+                                style={{ color: "#20a8d8" }}
+                              ></i>
+                            </Label>
+                            <Input
+                              id="file-input1"
+                              type="file"
+                              className="form-control"
+                              name="file1"
+                              onChange={this.onChangeIDProof.bind(this)}
+                            />
+                          </div>
+                        )}
                         <div className="text-danger">
                           {this.state.selectedProofFileerror}
                         </div>
@@ -1228,11 +1304,11 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                                     }
                                   />
                                 ) : (
-                                    <img
-                                      className="picture"
-                                      src={this.state.file2}
-                                    />
-                                  )}
+                                  <img
+                                    className="picture"
+                                    src={this.state.file2}
+                                  />
+                                )}
                                 <i
                                   className="fa fa-times cursor"
                                   onClick={() => this.removeDocumentIcon()}
@@ -1241,28 +1317,28 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                             ) : null}
                           </div>
                         ) : (
-                            <div className="">
-                              <p style={{ fontSize: "16px" }}>
-                                {
-                                  constant.merchantPage.merchantTableColumn
-                                    .selectMerchantDocument
-                                }
-                              </p>
-                              <Label className="imag" for="file-input2">
-                                <i
-                                  className="fa fa-upload fa-lg"
-                                  style={{ color: "#20a8d8" }}
-                                ></i>
-                              </Label>
-                              <Input
-                                id="file-input2"
-                                type="file"
-                                className="form-control"
-                                name="file2"
-                                onChange={this.onChangeDocumentHandler.bind(this)}
-                              />
-                            </div>
-                          )}
+                          <div className="">
+                            <p style={{ fontSize: "16px" }}>
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .selectMerchantDocument
+                              }
+                            </p>
+                            <Label className="imag" for="file-input2">
+                              <i
+                                className="fa fa-upload fa-lg"
+                                style={{ color: "#20a8d8" }}
+                              ></i>
+                            </Label>
+                            <Input
+                              id="file-input2"
+                              type="file"
+                              className="form-control"
+                              name="file2"
+                              onChange={this.onChangeDocumentHandler.bind(this)}
+                            />
+                          </div>
+                        )}
                         <div className="text-danger">
                           {this.state.selectedDocumentFileerror}
                         </div>
@@ -1285,7 +1361,11 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                           style={{ display: "none" }}
                         />
                         <Editor
-                          initialValue={this.state.shoppingpolicy ? this.state.shoppingpolicy : ''}
+                          initialValue={
+                            this.state.shoppingpolicy
+                              ? this.state.shoppingpolicy
+                              : ""
+                          }
                           init={{
                             height: 200,
                             menubar: false,
@@ -1354,7 +1434,11 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                           style={{ display: "none" }}
                         />
                         <Editor
-                          initialValue={this.state.refundpolicy ? this.state.refundpolicy : ''}
+                          initialValue={
+                            this.state.refundpolicy
+                              ? this.state.refundpolicy
+                              : ""
+                          }
                           init={{
                             height: 200,
                             menubar: false,
@@ -1423,7 +1507,11 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                           style={{ display: "none" }}
                         />
                         <Editor
-                          initialValue={this.state.cancellationpolicy ? this.state.cancellationpolicy : ''}
+                          initialValue={
+                            this.state.cancellationpolicy
+                              ? this.state.cancellationpolicy
+                              : ""
+                          }
                           init={{
                             height: 200,
                             menubar: false,
@@ -1494,11 +1582,11 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                                     }
                                   />
                                 ) : (
-                                    <img
-                                      className="picture"
-                                      src={this.state.file4}
-                                    />
-                                  )}
+                                  <img
+                                    className="picture"
+                                    src={this.state.file4}
+                                  />
+                                )}
                                 <i
                                   className="fa fa-times cursor"
                                   onClick={() => this.removeProfilePhotoIcon()}
@@ -1507,28 +1595,28 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                             ) : null}
                           </div>
                         ) : (
-                            <div className="">
-                              <p style={{ fontSize: "16px" }}>
-                                {
-                                  constant.merchantPage.merchantTableColumn
-                                    .profilePhoto
-                                }
-                              </p>
-                              <Label className="imag" for="file-input4">
-                                <i
-                                  className="fa fa-upload fa-lg"
-                                  style={{ color: "#20a8d8" }}
-                                ></i>
-                              </Label>
-                              <Input
-                                id="file-input4"
-                                type="file"
-                                className="form-control"
-                                name="file4"
-                                onChange={this.onChangeProfilePicture.bind(this)}
-                              />
-                            </div>
-                          )}
+                          <div className="">
+                            <p style={{ fontSize: "16px" }}>
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .profilePhoto
+                              }
+                            </p>
+                            <Label className="imag" for="file-input4">
+                              <i
+                                className="fa fa-upload fa-lg"
+                                style={{ color: "#20a8d8" }}
+                              ></i>
+                            </Label>
+                            <Input
+                              id="file-input4"
+                              type="file"
+                              className="form-control"
+                              name="file4"
+                              onChange={this.onChangeProfilePicture.bind(this)}
+                            />
+                          </div>
+                        )}
                         <div className="text-danger">
                           {this.state.selectedProfileFileerror}
                         </div>
@@ -1552,28 +1640,80 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                       <Form>
                         <FormGroup>
                           <Label for="exampleCustomSelect">
-                            {constant.merchantPage.merchantTableColumn.selectrole}
+                            {
+                              constant.merchantPage.merchantTableColumn
+                                .selectrole
+                            }
                           </Label>
                           <CustomInput
                             type="select"
                             id="exampleCustomSelect"
                             name="city"
                             onChange={this.onItemSelectRole}
-                            value={this.state.roleid ? this.state.roleid : ''}
+                            value={this.state.roleid ? this.state.roleid : ""}
                           >
-                            <option value=""> {constant.merchantPage.merchantTableColumn.selectrole}</option>
+                            <option value="">
+                              {" "}
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .selectrole
+                              }
+                            </option>
                             {this.state.roledata.length > 0
                               ? this.state.roledata.map(
-                                (data: any, index: any) => (
-                                  <option key={index} value={data.value}>
-                                    {data.name}
-                                  </option>
+                                  (data: any, index: any) => (
+                                    <option key={index} value={data.value}>
+                                      {data.name}
+                                    </option>
+                                  )
                                 )
-                              )
                               : ""}
                           </CustomInput>
                           <div className="mb-4 text-danger">
                             {this.state.roleiderror}
+                          </div>
+                        </FormGroup>
+                      </Form>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                      <Form>
+                        <FormGroup>
+                          <Label for="exampleCustomSelect">
+                            {
+                              constant.merchantPage.merchantTableColumn
+                                .selectcategory
+                            }
+                          </Label>
+                          <CustomInput
+                            type="select"
+                            id="exampleCustomSelect"
+                            name="category"
+                            onChange={this.onItemSelectCategory}
+                            value={
+                              this.state.categoryid ? this.state.categoryid : ""
+                            }
+                          >
+                            <option value="">
+                              {" "}
+                              {
+                                constant.merchantPage.merchantTableColumn
+                                  .selectcategory
+                              }
+                            </option>
+                            {this.state.categorydata.length > 0
+                              ? this.state.categorydata.map(
+                                  (data: any, index: any) => (
+                                    <option key={index} value={data.value}>
+                                      {data.name}
+                                    </option>
+                                  )
+                                )
+                              : ""}
+                          </CustomInput>
+                          <div className="mb-4 text-danger">
+                            {this.state.categoryiderror}
                           </div>
                         </FormGroup>
                       </Form>
@@ -1590,16 +1730,16 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                       {constant.button.update}
                     </Button>
                   ) : (
-                      <Button
-                        type="button"
-                        size="sm"
-                        color="primary"
-                        className="mb-2 mt-3 mr-2 custom-button"
-                        onClick={this.addMerchant}
-                      >
-                        {constant.button.Save}
-                      </Button>
-                    )}
+                    <Button
+                      type="button"
+                      size="sm"
+                      color="primary"
+                      className="mb-2 mt-3 mr-2 custom-button"
+                      onClick={this.addMerchant}
+                    >
+                      {constant.button.Save}
+                    </Button>
+                  )}
                 </CardBody>
               </Card>
             </Col>
