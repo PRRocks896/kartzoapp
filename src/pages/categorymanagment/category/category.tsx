@@ -394,7 +394,7 @@ class Category extends React.Component<{ history: any }> {
               />
             </th>
             <th>{constant.categoryPage.caetgoryTableColumn.categoryName}</th>
-            <th>{constant.categoryPage.caetgoryTableColumn.subCategoryName}</th>
+            {/* <th>{constant.categoryPage.caetgoryTableColumn.subCategoryName}</th> */}
             <th>{constant.categoryPage.caetgoryTableColumn.image}</th>
             <th style={{ textAlign: "center" }}>
               {constant.tableAction.status}
@@ -404,8 +404,8 @@ class Category extends React.Component<{ history: any }> {
         </thead>
         <tbody>
           {this.state.categorydata.length > 0 ? (
-            <>
-              {this.state.categorydata.map((data: any, index: any) => (
+              this.state.categorydata.map((data: any, index: any) => (
+                  data.parentCategoryId === 0 ? (
                 <tr key={index}>
                   <td className="centers">
                     <CustomInput
@@ -419,13 +419,6 @@ class Category extends React.Component<{ history: any }> {
                     />
                   </td>
                   <td>{data.category}</td>
-
-                  {data.parentCategory ? (
-                    <td>{data.parentCategory}</td>
-                  ) : (
-                    <td>N/A</td>
-                  )}
-
                   <td>
                     {data.imagePath != null ? (
                       <div className="img-size">
@@ -485,21 +478,11 @@ class Category extends React.Component<{ history: any }> {
                         className="fas fa-edit"
                         onClick={() => this.editCategory(data.categoryId)}
                       ></i>
-                      {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteCategory(
-                            data,
-                            "You should be Delete Category",
-                            "Yes, Category it"
-                          )
-                        }
-                      ></i> */}
                     </span>
                   </td>
                 </tr>
-              ))}
-            </>
+                  ) : ('')
+              ))
           ) : (
             ""
           )}

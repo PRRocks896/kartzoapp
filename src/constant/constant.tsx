@@ -381,9 +381,13 @@ export default {
   categoryPage: {
     title: {
       categoryTitle: "Category Management",
+      subcategoryTitle: "Sub Category Management",
       addCategoryTitle: "Add Category",
+      addsubCategoryTitle: "Add Sub Category",
       updateCategoryTitle: "Update Category",
+      updatesubCategoryTitle: "Update Sub Category",
       viewCategoryTitle: "View Category",
+      viewsubCategoryTitle: "View Sub Category",
     },
     state: {
       count: "10",
@@ -424,6 +428,7 @@ export default {
     },
     viewcategorydetail: {
       viewcategory: "View Catgeory Details",
+      viewsubcategory: "View Sub Catgeory Details",
     },
   },
 

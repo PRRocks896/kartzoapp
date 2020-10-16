@@ -109,7 +109,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
             getCategoryById.resultObject.sortOrder,
           parentCategory: this.state.parentCategory =
             getCategoryById.resultObject.parentCategory,
-          selectcategory: this.state.selectcategory = getCategoryById.resultObject.parentCategoryId !== null ? getCategoryById.resultObject.parentCategoryId : '' ,
+          // selectcategory: this.state.selectcategory = getCategoryById.resultObject.parentCategoryId !== null ? getCategoryById.resultObject.parentCategoryId : '' ,
         
           isActive: this.state.isActive = getCategoryById.resultObject.isActive,
           s1:this.state.s1 = getCategoryById.resultObject.image
@@ -157,21 +157,14 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
 
   validate() {
     let categorynameerror = "";
-    let sortordererror = "";
 
     if (!this.state.categoryname) {
       categorynameerror = "please enter category name";
     }
 
-   
 
-    var regex1 : any = /^[0-9]+$/;
-    if(!regex1.test(this.state.sortorder)) {
-      sortordererror = "please enter valid order"
-    }
-
-    if (categorynameerror || sortordererror) {
-      this.setState({ categorynameerror, sortordererror});
+    if (categorynameerror) {
+      this.setState({ categorynameerror});
       return false;
     }
     return true;
@@ -188,9 +181,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     const isValid = this.validate();
     if (isValid) {
       this.setState({
-        categorynameerror: "",
-     
-        sortordererror:""
+        categorynameerror: ""
       });
       if (this.state.categoryname) {
         let formData = new FormData();
@@ -198,7 +189,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         formData.append("category", this.state.categoryname);
         formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("parentCategoryId", this.state.selectcategory);
-        formData.append("sortOrder", this.state.sortorder.toString());
+        // formData.append("sortOrder", this.state.sortorder.toString());
         formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : 'null');
 
         const addCategory = await CategoryAPI.addCategory(formData);
@@ -234,7 +225,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         formData.append("category", this.state.categoryname);
         formData.append("isActive", new Boolean(this.state.isActive).toString());
         formData.append("parentCategoryId", this.state.selectcategory);
-        formData.append("sortOrder", this.state.sortorder.toString());
+        // formData.append("sortOrder", this.state.sortorder.toString());
         if(this.state.selectedFile) {
           formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
         } else {
@@ -338,7 +329,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                         </FormGroup>
                       </Col>
                     </Row>
-                    <Row>
+                    {/* <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <Form>
                           <FormGroup>
@@ -394,7 +385,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                             </div>
                         </FormGroup>
                       </Col>
-                    </Row>
+                    </Row> */}
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <FormGroup className="img-upload">

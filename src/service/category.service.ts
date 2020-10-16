@@ -21,6 +21,9 @@ export default {
     },
     deleteCategory: async function (data:deleteByIdRequest) {
         return await WebReqUrl.delete(Constant.mainUrl + apiUrl.categoryController.deleteCategory + data.id,false);
+    },
+    getSubCategory: async function (data:getAllTableDataListRequest) {
+        return await WebReqUrl.post(Constant.mainUrl + apiUrl.categoryController.getCategory,data,false);
     }
     
 }

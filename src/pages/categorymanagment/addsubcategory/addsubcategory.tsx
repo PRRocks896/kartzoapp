@@ -1,300 +1,503 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import utils from '../../../utils';
+import React from "react";
+import { Link } from "react-router-dom";
+import utils from "../../../utils";
 import {
-    Button,
-    Card,
-    CardBody,
-    CardHeader,
-    Form,
-    CustomInput,
-    Input,
-    Col,
-    FormGroup,
-    Label,
-    Row,
-} from 'reactstrap';
-// import './adduser.css';
-import API from '../../../service/category.service';
-// import Switch from "react-switch";
-import constant from '../../../constant/constant';
-// import { subCategoryCreateRequest, subCategoryUpdateRequest } from '../../../modelController/subCategoryModel';
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Input,
+  Form,
+  CustomInput,
+  Col,
+  FormGroup,
+  Label,
+  Row,
+} from "reactstrap";
+import { CategoryAPI } from "../../../service/index.service";
+import constant from "../../../constant/constant";
+import {
+  getDataByIdRequest,
+  addCategoryStateRequest,
+} from "../../../modelController";
 
-class AddSubCategory extends React.Component<{ history: any }> {
+class AddSubCategory extends React.Component<{ history: any; location: any }> {
+  categoryState: addCategoryStateRequest = constant.categoryPage.state;
+  state = {
+    selectedFile: this.categoryState.selectedFile,
+    file: this.categoryState.file,
+    categoryname: this.categoryState.categoryname,
+    categorynameerror: this.categoryState.categorynameerror,
+    selectedFileerror: this.categoryState.selectedFileerror,
+    sortorder: this.categoryState.sortorder,
+    sortordererror: this.categoryState.sortordererror,
+    updateTrue: this.categoryState.updateTrue,
+    filetrue: this.categoryState.filetrue,
+    categoryid: this.categoryState.categoryid,
+    categorylist: this.categoryState.categorylist,
+    selectcategory: this.categoryState.selectcategory,
+    selectcategoryerror: this.categoryState.selectcategoryerror,
+    parentCategory: this.categoryState.parentCategory,
+    parentCategoryId: this.categoryState.parentCategoryId,
+    isActive: this.categoryState.isActive,
+    s1: this.categoryState.s1,
+  };
 
-    state = {
-        selectedFile: '',
-        categoryname: '',
-        categorynameerror: '',
-        selectedFileerror: '',
-        selectcategory: '',
-        selectcategoryerror: '',
-        file: null,
-        sortorder: 0,
-        subcategoryid: 0,
-        categorylist: []
+  constructor(props: any) {
+    super(props);
+    this.handleChangeEvent = this.handleChangeEvent.bind(this);
+    this.removeIcon = this.removeIcon.bind(this);
+    this.addCategory = this.addCategory.bind(this);
+    this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.updateCategory = this.updateCategory.bind(this);
+    this.onItemSelect = this.onItemSelect.bind(this);
+    this.getAllCategory = this.getAllCategory.bind(this);
+    this.getCategoryById = this.getCategoryById.bind(this);
+  }
+
+  async componentDidMount() {
+    this.getAllCategory();
+    const categoryId = this.props.location.pathname.split("/")[2];
+    if (categoryId !== undefined) {
+      this.getCategoryById(categoryId);
+      this.setState({
+        updateTrue: this.state.updateTrue = true,
+      });
     }
-
-    constructor(props: any) {
-        super(props);
-        // this.Profile = this.Profile.bind(this);
-        this.handleChangeEvent = this.handleChangeEvent.bind(this);
-        this.removeIcon = this.removeIcon.bind(this);
-        this.addSubCategory = this.addSubCategory.bind(this);
-        this.onChangeHandler = this.onChangeHandler.bind(this);
-        this.onItemSelect = this.onItemSelect.bind(this);
+    if (this.state.updateTrue === true) {
+      document.title =
+        constant.categoryPage.title.updatesubCategoryTitle + utils.getAppName();
+    } else {
+      document.title =
+        constant.categoryPage.title.addsubCategoryTitle + utils.getAppName();
     }
+  }
 
-    async componentDidMount() {
-        document.title = constant.addSubCategoryTitle + utils.getAppName();
-        // const getAllCategory = await API.getAllCategory();
-        // // console.log("getAllCategory", getAllCategory);
-
-        // if (getAllCategory.resultObject.length > 0) {
-        //     this.setState({
-        //         categorylist: this.state.categorylist = getAllCategory.resultObject
-        //     })
-        // } else {
-        //     const msg1 = "Error";
-        //     utils.showError(msg1);
-        // }
-    }
-
-    onChangeHandler(event: any) {
+  async getAllCategory() {
+    const getAllCategory = await CategoryAPI.getAllCategory();
+    // console.log("getAllCategory", getAllCategory);
+    if (getAllCategory) {
+      if (getAllCategory.status === 200) {
         this.setState({
-            selectedFile: this.state.selectedFile = event.target.files,
-            file: this.state.file = event.target.files[0].name,
+          categorylist: this.state.categorylist = getAllCategory.resultObject,
         });
+      } else {
+        const msg1 = getAllCategory.message;
+        utils.showError(msg1);
+      }
+    } else {
+      //   const msg1 = "Internal server error";
+      // utils.showError(msg1);
     }
+  }
 
-    onItemSelect(event: any) {
-        this.setState({
-            selectcategory: this.state.selectcategory = event.target.options[event.target.selectedIndex].value
-        });
-    }
-
-    validate() {
-        let categorynameerror = "";
-        let selectedFileerror = "";
-        let selectcategoryerror = "";
-
-        if (!this.state.categoryname) {
-            categorynameerror = "please enter category name";
-        }
-
-        if (!this.state.selectedFile) {
-            selectedFileerror = "please select file";
-        }
-
-        if (!this.state.selectcategory) {
-            selectcategoryerror = "please select category";
-        }
-
-        if (categorynameerror || selectedFileerror || selectcategoryerror) {
-            this.setState({ categorynameerror, selectedFileerror, selectcategoryerror });
-            return false;
-        }
-        return true;
+  async getCategoryById(categoryId: any) {
+    const obj: getDataByIdRequest = {
+      id: categoryId,
     };
+    const getCategoryById: any = await CategoryAPI.getCategoryById(obj);
+    // console.log("getCategoryById", getCategoryById);
 
-    handleChangeEvent(event: any) {
-        event.preventDefault();
-        const state: any = this.state;
-        state[event.target.name] = event.target.value;
-        this.setState(state);
-    }
-
-    async addSubCategory() {
-        const isValid = this.validate();
-        if (isValid) {
-            this.setState({
-                categorynameerror: '',
-                selectedFileerror: '',
-                selectcategoryerror: ''
-            })
-            if (this.state.categoryname && this.state.selectedFile && this.state.selectcategory) {
-                // const obj : subCategoryCreateRequest = {
-                //     categoryname: this.state.categoryname,
-                //     selectedFile: this.state.selectedFile,
-                //     selectcategory: this.state.selectcategory
-                // }
-
-
-                let formData = new FormData();
-
-                formData.append('category', this.state.categoryname);
-                formData.append('isActive', 'true');
-                formData.append('parentCategoryId', this.state.selectcategory.toString());
-                formData.append('sortOrder', this.state.sortorder.toString());
-                formData.append('files', this.state.selectedFile[0]);
-
-                const addCategory = await API.addCategory(formData);
-                // console.log("addCategory", addCategory);
-
-                if (addCategory.resultObject != null) {
-                    const msg = "Sub Category Added Successfully";
-                    utils.showSuccess(msg);
-                    this.props.history.push('/subcategory');
-                } else {
-                    const msg1 = "Error";
-                    utils.showError(msg1);
-                }
-            }
-        };
-    }
-
-    removeIcon() {
+    if (getCategoryById) {
+      if (getCategoryById.status === 200) {
         this.setState({
-            file: this.state.file = null
-        })
+          updateTrue: this.state.updateTrue = true,
+          filetrue: this.state.filetrue = true,
+          categoryname: this.state.categoryname =
+            getCategoryById.resultObject.category,
+          categoryid: this.state.categoryid =
+            getCategoryById.resultObject.categoryId,
+          file: this.state.file = getCategoryById.resultObject.imagePath,
+          sortorder: this.state.sortorder =
+            getCategoryById.resultObject.sortOrder,
+          parentCategory: this.state.parentCategory =
+            getCategoryById.resultObject.parentCategory,
+          selectcategory: this.state.selectcategory =
+            getCategoryById.resultObject.parentCategoryId !== null
+              ? getCategoryById.resultObject.parentCategoryId
+              : "",
+
+          isActive: this.state.isActive = getCategoryById.resultObject.isActive,
+          s1: this.state.s1 = getCategoryById.resultObject.image,
+        });
+      } else {
+        const msg1 = getCategoryById.message;
+        utils.showError(msg1);
+      }
+    }
+  }
+
+  onItemSelect(event: any) {
+    this.setState({
+      selectcategory: event.target.value,
+    });
+  }
+
+  onChangeHandler(event: any) {
+    if (this.state.filetrue === true) {
+      this.setState({
+        filetrue: false,
+        selectedFile: event.target.files,
+      });
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onloadend = (ev) => {
+        this.setState({
+          file: reader.result,
+        });
+      };
+    } else {
+      this.setState({
+        selectedFile: event.target.files,
+      });
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onloadend = (ev) => {
+        this.setState({
+          file: reader.result,
+        });
+      };
+    }
+  }
+
+  validate() {
+    let categorynameerror = "";
+
+    if (!this.state.categoryname) {
+      categorynameerror = "please enter category name";
     }
 
-    render() {
-        return (
-            <>
-                <>
-                    <div className="ms-content-wrapper">
-                        <div className="row">
-                            <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                                <Card>
-                                    <CardHeader>
-                                        <Row>
-                                            <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                                                <h1>Add Sub Category</h1>
-                                            </Col>
-                                            <Col xs="12" sm="6" md="3" lg="3" xl="3" style={{ textAlign: "right" }}>
-                                                <Link to="/subcategory">
-                                                    <Button
-                                                        type="button"
-                                                        size="sm"
-                                                        color="primary"
-                                                        className="mb-2 mr-2 custom-button"
-                                                    >
-                                                        Back
-                                    </Button>
-                                                </Link>
-                                            </Col>
-                                        </Row>
+    if (categorynameerror) {
+      this.setState({ categorynameerror });
+      return false;
+    }
+    return true;
+  }
 
-                                    </CardHeader>
-                                    <CardBody>
-                                        <Row>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <FormGroup>
-                                                    <Label htmlFor="category_name">Sub Category Name</Label>
-                                                    <Input
-                                                        type="text"
-                                                        id="category_name"
-                                                        name="categoryname"
-                                                        className="form-control"
-                                                        // value={this.state.categoryname}
-                                                        onChange={this.handleChangeEvent}
+  handleChangeEvent(event: any) {
+    event.preventDefault();
+    const state: any = this.state;
+    state[event.target.name] = event.target.value;
+    this.setState(state);
+  }
 
-                                                        placeholder="Enter your category name"
-                                                        required
-                                                    />
-                                                    <div className="mb-4 text-danger">
-                                                        {this.state.categorynameerror}
-                                                    </div>
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <Form>
-                                                    <FormGroup>
-                                                        <Label for="exampleCustomSelect">Select Category</Label>
-                                                        <CustomInput
-                                                            type="select"
-                                                            id="exampleCustomSelect"
-                                                            name="customSelect"
-                                                            onChange={this.onItemSelect}
-                                                        >
-                                                            <option value="">Select Category</option>
-                                                            {
-                                                                this.state.categorylist.length > 0 ? this.state.categorylist.map((data: any, index: any) =>
-                                                                    <option key={data.id} value={data.value}>{data.name}</option>
-                                                                ) : ''
-                                                            }
-                                                        </CustomInput>
-                                                        <div className="mb-4 text-danger">
-                                                            {this.state.selectcategoryerror}
-                                                        </div>
-                                                    </FormGroup>
-                                                </Form>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <FormGroup>
-                                                    <Label htmlFor="category_name">Sort Order</Label>
-                                                    <Input
-                                                        type="number"
-                                                        id="sortnumber"
-                                                        name="sortorder"
-                                                        className="form-control"
-                                                        value={this.state.sortorder}
-                                                        onChange={this.handleChangeEvent}
-                                                        placeholder="Enter your sort order"
-                                                        required
-                                                    />
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                                                <FormGroup className="img-upload">
-                                                    {
-                                                        this.state.file != null ? (
-                                                            <div className="img-size">
-                                                                {
-                                                                    this.state.file ? (
-                                                                        <div>
-                                                                            <img className="picture" src={constant.filepath + this.state.file} />
-                                                                            <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i>
-                                                                        </div>
-                                                                    ) : (null)
-                                                                }
-                                                            </div>
-                                                        ) : (
-                                                                <div className="">
-                                                                    <p style={{ fontSize: '16px' }}>Sub Category Image</p>
-                                                                    <Label className="imag" for="file-input"><i className="fa fa-upload fa-lg" style={{ color: '#20a8d8' }}></i></Label>
-                                                                    <Input
-                                                                        id="file-input"
-                                                                        type="file"
-                                                                        className="form-control"
-                                                                        name="file"
-                                                                        onChange={this.onChangeHandler.bind(this)}
-                                                                    />
+  async addCategory() {
+    const isValid = this.validate();
+    if (isValid) {
+      this.setState({
+        categorynameerror: "",
+      });
+      if (this.state.categoryname) {
+        let formData = new FormData();
 
-                                                                </div>
-                                                            )
-                                                    }
-                                                    <div className="text-danger">
-                                                        {this.state.selectedFileerror}
-                                                    </div>
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Button
-                                            type="button"
-                                            size="sm"
-                                            color="primary"
-                                            className="mb-2 mr-2 custom-button"
-                                            onClick={this.addSubCategory}
-                                        >
-                                            Save
-                                    </Button>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                        </div>
-                    </div>
-                </>
-            </>
+        formData.append("category", this.state.categoryname);
+        formData.append(
+          "isActive",
+          new Boolean(this.state.isActive).toString()
         );
+        formData.append("parentCategoryId", this.state.selectcategory);
+        // formData.append("sortOrder", this.state.sortorder.toString());
+        formData.append(
+          "files",
+          this.state.selectedFile ? this.state.selectedFile[0] : "null"
+        );
+
+        const addCategory = await CategoryAPI.addCategory(formData);
+        // console.log("addCategory", addCategory);
+        if (addCategory) {
+          if (addCategory.status === 200) {
+            const msg1 = addCategory.message;
+            utils.showSuccess(msg1);
+            this.props.history.push("/subcategory");
+          } else {
+            const msg1 = addCategory.message;
+            utils.showError(msg1);
+          }
+        } else {
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
+        }
+      }
     }
+  }
+
+  async updateCategory() {
+    const isValid = this.validate();
+    if (isValid) {
+      this.setState({
+        categorynameerror: "",
+      });
+      if (this.state.categoryname) {
+        let formData = new FormData();
+        formData.append("categoryId", this.state.categoryid.toString());
+        formData.append("category", this.state.categoryname);
+        formData.append(
+          "isActive",
+          new Boolean(this.state.isActive).toString()
+        );
+        formData.append("parentCategoryId", this.state.selectcategory);
+        // formData.append("sortOrder", this.state.sortorder.toString());
+        if (this.state.selectedFile) {
+          formData.append(
+            "files",
+            this.state.selectedFile ? this.state.selectedFile[0] : ""
+          );
+        } else {
+          if (this.state.file === "") {
+            formData.append("imagePath", this.state.s1 ? this.state.s1 : "");
+          }
+        }
+        const editCategory = await CategoryAPI.editCategory(
+          formData,
+          this.state.categoryid.toString()
+        );
+        // console.log("editCategory", editCategory);
+        if (editCategory) {
+          if (editCategory.status === 200) {
+            const msg1 = editCategory.message;
+            utils.showSuccess(msg1);
+            this.props.history.push("/category");
+          } else {
+            const msg1 = editCategory.message;
+            utils.showError(msg1);
+          }
+        } else {
+          // const msg1 = "Internal server error";
+          // utils.showError(msg1);
+        }
+      }
+    }
+  }
+
+  removeIcon() {
+    this.setState({
+      file: this.state.file = "",
+      selectedFile: this.state.selectedFile = "",
+    });
+  }
+
+  render() {
+    return (
+      <>
+        <>
+          <div className="ms-content-wrapper">
+            <div className="row">
+              <Col xs="12" sm="12" md="12" lg="12" xl="12">
+                <Card>
+                  <CardHeader>
+                    <Row>
+                      {this.state.updateTrue === true ? (
+                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                          <h1>
+                            {constant.categoryPage.title.updatesubCategoryTitle}
+                          </h1>
+                        </Col>
+                      ) : (
+                        <Col xs="12" sm="6" md="9" lg="9" xl="9">
+                          <h1>
+                            {constant.categoryPage.title.addsubCategoryTitle}
+                          </h1>
+                        </Col>
+                      )}
+
+                      <Col
+                        xs="12"
+                        sm="6"
+                        md="3"
+                        lg="3"
+                        xl="3"
+                        className="search_right"
+                      >
+                        <Link to="/subcategory">
+                          <Button
+                            type="button"
+                            size="sm"
+                            color="primary"
+                            className="mb-2 mr-2 custom-button"
+                          >
+                            {constant.button.back}
+                          </Button>
+                        </Link>
+                      </Col>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <FormGroup>
+                          <Label htmlFor="category_name">
+                            {
+                              constant.categoryPage.caetgoryTableColumn
+                                .subCategoryName
+                            }
+                          </Label>
+                          <Input
+                            type="text"
+                            id="category_name"
+                            name="categoryname"
+                            className="form-control"
+                            value={this.state.categoryname}
+                            onChange={this.handleChangeEvent}
+                            placeholder="Enter your category name"
+                            required
+                          />
+                          <div className="mb-4 text-danger">
+                            {this.state.categorynameerror}
+                          </div>
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <Form>
+                          <FormGroup>
+                            <Label for="exampleCustomSelect">
+                              {
+                                constant.categoryPage.caetgoryTableColumn
+                                  .selectparentcategory
+                              }
+                            </Label>
+                            <CustomInput
+                              type="select"
+                              id="exampleCustomSelect"
+                              name="customSelect"
+                              onChange={this.onItemSelect}
+                              value={
+                                this.state.selectcategory
+                                  ? this.state.selectcategory
+                                  : ""
+                              }
+                            >
+                              <option value="">
+                                {
+                                  constant.categoryPage.caetgoryTableColumn
+                                    .selectparentcategory
+                                }
+                              </option>
+                              {this.state.categorylist.length > 0
+                                ? this.state.categorylist.map(
+                                    (data: any, index: any) =>
+                                      data.parentCategoryId === 0 ? (
+                                        <option key={index} value={data.value}>
+                                          {data.name}
+                                        </option>
+                                      ) : (
+                                        ""
+                                      )
+                                  )
+                                : ""}
+                            </CustomInput>
+                            <div className="mb-4 text-danger">
+                              {this.state.selectcategoryerror}
+                            </div>
+                          </FormGroup>
+                        </Form>
+                      </Col>
+                    </Row>
+                    {/* <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <FormGroup>
+                          <Label htmlFor="category_name">{constant.categoryPage.caetgoryTableColumn.sortorder}</Label>
+                          <Input
+                            type="number"
+                            id="sortnumber"
+                            name="sortorder"
+                            className="form-control"
+                            value={this.state.sortorder}
+                            onChange={this.handleChangeEvent}
+                            placeholder="Enter your sort order"
+                            required
+                          />
+                           <div className="mb-4 text-danger">
+                              {this.state.sortordererror}
+                            </div>
+                        </FormGroup>
+                      </Col>
+                    </Row> */}
+                    <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <FormGroup className="img-upload">
+                          {this.state.file != "" ? (
+                            <div className="img-size">
+                              {this.state.file ? (
+                                <div>
+                                  {this.state.filetrue === true ? (
+                                    <img
+                                      className="picture"
+                                      src={constant.filepath + this.state.file}
+                                    />
+                                  ) : (
+                                    <img
+                                      className="picture"
+                                      src={this.state.file}
+                                    />
+                                  )}
+                                  <i
+                                    className="fa fa-times cursor"
+                                    onClick={() => this.removeIcon()}
+                                  ></i>
+                                </div>
+                              ) : null}
+                            </div>
+                          ) : (
+                            <div className="">
+                              <p style={{ fontSize: "16px" }}>
+                                {
+                                  constant.categoryPage.caetgoryTableColumn
+                                    .image
+                                }
+                              </p>
+                              <Label className="imag" for="file-input">
+                                <i
+                                  className="fa fa-upload fa-lg"
+                                  style={{ color: "#20a8d8" }}
+                                ></i>
+                              </Label>
+                              <Input
+                                id="file-input"
+                                type="file"
+                                className="form-control"
+                                name="file"
+                                onChange={this.onChangeHandler.bind(this)}
+                              />
+                            </div>
+                          )}
+                          <div className="text-danger">
+                            {this.state.selectedFileerror}
+                          </div>
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    {this.state.updateTrue === true ? (
+                      <Button
+                        type="button"
+                        size="sm"
+                        color="primary"
+                        className="mb-2 mr-2 custom-button"
+                        onClick={this.updateCategory}
+                      >
+                        {constant.button.update}
+                      </Button>
+                    ) : (
+                      <Button
+                        type="button"
+                        size="sm"
+                        color="primary"
+                        className="mb-2 mr-2 custom-button"
+                        onClick={this.addCategory}
+                      >
+                        {constant.button.Save}
+                      </Button>
+                    )}
+                  </CardBody>
+                </Card>
+              </Col>
+            </div>
+          </div>
+        </>
+      </>
+    );
+  }
 }
 
 export default AddSubCategory;

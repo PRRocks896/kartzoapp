@@ -118,7 +118,7 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
                           </Label>
                           <span>{this.state.categoryname}</span>
                           </div>
-                          <div>
+                          {/* <div>
                           <Label htmlFor="category_name">
                             <b>
                               {
@@ -132,14 +132,14 @@ class ViewCategory extends React.Component<{ history: any; location: any }> {
                           ) : (
                             <span>{this.state.parentCategory}</span>
                           )}
-                          </div>
+                          </div> */}
                          
-                         <div>
+                         {/* <div>
                           <Label htmlFor="category_name">
                           <b>{constant.categoryPage.caetgoryTableColumn.sortorder} :</b>
                           </Label>
                           <span>{this.state.sortorder}</span>
-                         </div>
+                         </div> */}
                         </FormGroup>
                        
                       </Col>
