@@ -147,6 +147,9 @@ class City extends React.Component<{ history: any }> {
           const msg1 = deleteAllData.data.message;
           utils.showSuccess(msg1);
         this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+        this.setState({
+          deleteFlag:this.state.deleteFlag = false
+        })
       } else {
         const msg1 = deleteAllData.data.message;
         utils.showError(msg1);

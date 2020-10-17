@@ -9,7 +9,7 @@ export interface addCategoryStateRequest {
     filetrue: boolean,
     categoryid: number,
     categorylist: any,
-    selectcategory: string,
+    selectcategory: number,
     selectcategoryerror: string,
     parentCategory: string,
     parentCategoryId:string,

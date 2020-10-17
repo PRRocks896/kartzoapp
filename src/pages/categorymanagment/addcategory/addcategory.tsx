@@ -188,7 +188,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
 
         formData.append("category", this.state.categoryname);
         formData.append("isActive", new Boolean(this.state.isActive).toString());
-        formData.append("parentCategoryId", this.state.selectcategory);
+        formData.append("parentCategoryId", this.state.selectcategory.toString());
         // formData.append("sortOrder", this.state.sortorder.toString());
         formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : 'null');
 
@@ -224,7 +224,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
         formData.append("categoryId", this.state.categoryid.toString());
         formData.append("category", this.state.categoryname);
         formData.append("isActive", new Boolean(this.state.isActive).toString());
-        formData.append("parentCategoryId", this.state.selectcategory);
+        formData.append("parentCategoryId", this.state.selectcategory.toString());
         // formData.append("sortOrder", this.state.sortorder.toString());
         if(this.state.selectedFile) {
           formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');

@@ -33,6 +33,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
     sortorder: this.productState.sortorder,
     images: this.productState.images,
     isFeatured: this.productState.isFeatured,
+    subcategory: this.productState.subcategory
   };
 
   constructor(props: any) {
@@ -87,6 +88,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
         isFeatured: this.state.isFeatured =
           getProductById.resultObject.isFeatured,
         images: this.state.images = getProductById.resultObject.productImages,
+        subcategory: this.state.subcategory = getProductById.resultObject.subCategoryName
       });
     } else {
       const msg1 = getProductById.message;
@@ -242,6 +244,19 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                             </b>
                           </Label>
                           <p>{this.state.sortorder ? this.state.sortorder : 'N/A'}</p>
+                        </FormGroup>
+                      </Col>
+                      <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                        <FormGroup>
+                          <Label htmlFor="mobile_no">
+                            <b>
+                              {
+                                constant.productPage.productTableColumn
+                                  .subcategory
+                              }
+                            </b>
+                          </Label>
+                            <p>{this.state.subcategory ? this.state.subcategory : 'N/A'}</p>
                         </FormGroup>
                       </Col>
                       {/* <Col xs="12" sm="12" md="4" lg="4" xl="4">

@@ -165,6 +165,9 @@ class SubCategory extends React.Component<{ history: any }> {
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
+        this.setState({
+          deleteFlag:this.state.deleteFlag = false
+        })
       } else {
         const msg1 = deleteAllData.data.message;
         utils.showError(msg1);
@@ -228,7 +231,7 @@ class SubCategory extends React.Component<{ history: any }> {
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: statusChangeRequest = {
-        moduleName: "SubCategory",
+        moduleName: "Category",
         id: data.categoryId,
         isActive: data.isActive === true ? false : true,
       };
@@ -393,8 +396,8 @@ class SubCategory extends React.Component<{ history: any }> {
                 checked={this.state._maincheck}
               />
             </th>
-            <th>{constant.categoryPage.caetgoryTableColumn.categoryName}</th>
             <th>{constant.categoryPage.caetgoryTableColumn.subCategoryName}</th>
+            <th>{constant.categoryPage.caetgoryTableColumn.categoryName}</th>
             <th>{constant.categoryPage.caetgoryTableColumn.image}</th>
             <th style={{ textAlign: "center" }}>
               {constant.tableAction.status}
@@ -419,13 +422,13 @@ class SubCategory extends React.Component<{ history: any }> {
                         }
                       />
                     </td>
-                    <td>{data.parentCategory}</td>
-  
                     {data.parentCategory ? (
                       <td>{data.category}</td>
                     ) : (
                       <td>N/A</td>
                     )}
+                    <td>{data.parentCategory}</td>
+  
   
                     <td>
                       {data.imagePath != null ? (
@@ -454,7 +457,7 @@ class SubCategory extends React.Component<{ history: any }> {
                           onClick={() =>
                             this.statusChange(
                               data,
-                              "You should be Inactive category",
+                              "You should be Inactive subcategory",
                               "Yes, Inactive it"
                             )
                           }
@@ -467,7 +470,7 @@ class SubCategory extends React.Component<{ history: any }> {
                           onClick={() =>
                             this.statusChange(
                               data,
-                              "You should be Active category",
+                              "You should be Active subcategory",
                               "Yes, Active it"
                             )
                           }
@@ -621,8 +624,8 @@ class SubCategory extends React.Component<{ history: any }> {
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
-                        onClick={() => this.delleteAllData( "You should be Delete Category",
-                        "Yes, Category it")}
+                        onClick={() => this.delleteAllData( "You should be Delete Sub Category",
+                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>

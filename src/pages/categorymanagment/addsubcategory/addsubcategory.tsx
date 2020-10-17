@@ -195,7 +195,7 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
           "isActive",
           new Boolean(this.state.isActive).toString()
         );
-        formData.append("parentCategoryId", this.state.selectcategory);
+        formData.append("parentCategoryId", this.state.selectcategory.toString());
         // formData.append("sortOrder", this.state.sortorder.toString());
         formData.append(
           "files",
@@ -235,7 +235,7 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
           "isActive",
           new Boolean(this.state.isActive).toString()
         );
-        formData.append("parentCategoryId", this.state.selectcategory);
+        formData.append("parentCategoryId", this.state.selectcategory.toString());
         // formData.append("sortOrder", this.state.sortorder.toString());
         if (this.state.selectedFile) {
           formData.append(

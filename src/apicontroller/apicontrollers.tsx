@@ -139,7 +139,9 @@ const apiUrl = {
         deleteproductImage:'product',
         editproductImage:'product',
         getProductById:'products/',
-        getAllProduct:'products/get-product-list-dropdown'
+        getAllProduct:'products/get-product-list-dropdown',
+        getCategory:'merchant/',
+        getSubCategory:'category/get-sub-category-list-dropdown/'
     },
     productTypeController: {
         addtype:'productcustomizetype',

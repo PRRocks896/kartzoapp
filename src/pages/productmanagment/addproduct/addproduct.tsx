@@ -58,6 +58,9 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     productid: this.productState.productid,
     productpreview: this.productState.productpreview,
     newImageUpdatedArray: this.productState.newImageUpdatedArray,
+    category: this.productState.category,
+    showCategory: this.productState.showCategory,
+    categoryid: this.productState.categoryid
   };
 
   constructor(props: any) {
@@ -75,6 +78,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     this.getProductById = this.getProductById.bind(this);
     this.editProduct = this.editProduct.bind(this);
     this.deleteImage = this.deleteImage.bind(this);
+    this.getCategoryDataByMerchantId = this.getCategoryDataByMerchantId.bind(this);
   }
 
   _handleImageChange(e: any) {
@@ -100,13 +104,15 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
   }
 
   async componentDidMount() {
-    this.getAllCategory();
+    // this.getAllCategory();
+    
     this.getAllMerchant();
     const productId = this.props.location.pathname.split("/")[2];
     if (productId !== undefined) {
       this.getProductById(productId);
       this.setState({
         updateTrue: this.state.updateTrue = true,
+        showCategory: this.state.showCategory = true,
         productid: this.state.productid = productId,
       });
     }
@@ -128,8 +134,10 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         this.setState({
           merchantid: this.state.merchantid =
             getProductById.resultObject.merchantId,
+            category: this.state.category =  getProductById.resultObject.categoryName,
+            categoryid: this.state.categoryid = getProductById.resultObject.categoryId,
           maincategoryid: this.state.maincategoryid =
-            getProductById.resultObject.categoryId,
+            getProductById.resultObject.subCategoryId,
           prodctname: this.state.productname =
             getProductById.resultObject.productName,
           price: this.state.price = getProductById.resultObject.price,
@@ -150,6 +158,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
           productpreview: this.state.productpreview =
             getProductById.resultObject.productImages,
         });
+        this.getSubCategory(this.state.categoryid);
       } else {
         const msg1 = getProductById.message;
         utils.showError(msg1);
@@ -160,22 +169,22 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     }
   }
 
-  async getAllCategory() {
-    const getAllCategory = await CategoryAPI.getAllCategory();
-    // console.log("getAllCategory", getAllCategory);
-    if (getAllCategory) {
-      if (getAllCategory.status === 200) {
-        this.setState({
-          categorylist: this.state.categorylist = getAllCategory.resultObject,
-        });
-      } else {
-        const msg1 = getAllCategory.message;
-        utils.showError(msg1);
-      }
-    } else {
+  // async getAllCategory() {
+  //   const getAllCategory = await CategoryAPI.getAllCategory();
+  //   // console.log("getAllCategory", getAllCategory);
+  //   if (getAllCategory) {
+  //     if (getAllCategory.status === 200) {
+  //       this.setState({
+  //         categorylist: this.state.categorylist = getAllCategory.resultObject,
+  //       });
+  //     } else {
+  //       const msg1 = getAllCategory.message;
+  //       utils.showError(msg1);
+  //     }
+  //   } else {
 
-    }
-  }
+  //   }
+  // }
 
   async getAllMerchant() {
     const getAllMerchant = await MerchantAPI.getMerchantList();
@@ -198,6 +207,48 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     this.setState({
       merchantid: this.state.merchantid = event.target.value,
     });
+    this.getCategoryDataByMerchantId(this.state.merchantid);
+  }
+
+  async getCategoryDataByMerchantId(id:any) {
+    const getCategoryById = await ProductAPI.getCategoryById(id);
+    console.log("getCategoryById", getCategoryById);
+
+    if (getCategoryById) {
+      if (getCategoryById.status === 200) {
+        this.setState({
+          showCategory:this.state.showCategory = true,
+            category:this.state.category = getCategoryById.resultObject.categoryName,
+            categoryid : this.state.categoryid = getCategoryById.resultObject.categoryId
+        })
+        this.getSubCategory(this.state.categoryid);
+      } else {
+        const msg1 = getCategoryById.message;
+        utils.showError(msg1);
+      }
+    } else {
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
+    }
+  }
+
+  async getSubCategory(id:any) {
+    const getSubCategory = await ProductAPI.getSubCategory(id);
+    console.log("getSubCategory", getSubCategory);
+
+    if (getSubCategory) {
+      if (getSubCategory.status === 200) {
+        this.setState({
+          categorylist: this.state.categorylist = getSubCategory.resultObject,
+        });
+      } else {
+        const msg1 = getSubCategory.message;
+        utils.showError(msg1);
+      }
+    } else {
+      // const msg1 = "Internal server error";
+      // utils.showError(msg1);
+    }
   }
 
   onMainCategorySelect(event: any) {
@@ -321,7 +372,8 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
       ) {
         let formData = new FormData();
         formData.append("MerchantId", this.state.merchantid);
-        formData.append("CategoryId", this.state.maincategoryid);
+        formData.append("CategoryId", this.state.categoryid);
+        formData.append("SubCategoryId", this.state.maincategoryid);
         formData.append("ProductName", this.state.productname);
         formData.append("Price", this.state.price.toString());
         formData.append("ProductDesc", this.state.productdescription);
@@ -379,7 +431,8 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
         let formData = new FormData();
         formData.append("productId", this.state.productid);
         formData.append("MerchantId", this.state.merchantid);
-        formData.append("CategoryId", this.state.maincategoryid);
+        formData.append("CategoryId", this.state.categoryid);
+        formData.append("SubCategoryId", this.state.maincategoryid);
         formData.append("ProductName", this.state.productname);
         formData.append("Price", this.state.price.toString());
         formData.append("ProductDesc", this.state.productdescription);
@@ -525,13 +578,33 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
                           </FormGroup>
                         </Form>
                       </Col>
+                      {
+                        this.state.showCategory === true ? (
+                          <>
+                             <Col xs="12" sm="12" md="4" lg="4" xl="4">
+                        <FormGroup>
+                          <Label htmlFor="Category Name">
+                            {" "}
+                            {constant.productPage.productTableColumn.categoryid}
+                          </Label>
+                          <Input
+                            type="text"
+                            id="Category Name"
+                            name="category"
+                            className="form-control"
+                            value={this.state.category ? this.state.category : 'N/A'}
+                            disabled
+                          />
+                         
+                        </FormGroup>
+                      </Col>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">
                         <Form>
                           <FormGroup>
                             <Label for="exampleCustomSelect">
                               {
                                 constant.productPage.productTableColumn
-                                  .selectcategory
+                                  .selectsubcategory
                               }
                             </Label>
                             <CustomInput
@@ -548,17 +621,19 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
                               <option value="">
                                 {" "}
                                 {
-                                  constant.productPage.productTableColumn
-                                    .selectcategory
-                                }
+                                constant.productPage.productTableColumn
+                                  .selectsubcategory
+                              }
                               </option>
 
                               {this.state.categorylist.length > 0
                                 ? this.state.categorylist.map(
                                   (data: any, index: any) => (
+                                 
                                     <option key={index} value={data.value}>
                                       {data.name}
                                     </option>
+                                
                                   )
                                 )
                                 : ""}
@@ -569,6 +644,10 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
                           </FormGroup>
                         </Form>
                       </Col>
+                          </>
+                        ) : ('')
+                      }
+                   
                     </Row>
                     <Row>
                       <Col xs="12" sm="12" md="4" lg="4" xl="4">

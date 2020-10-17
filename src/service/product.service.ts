@@ -74,6 +74,12 @@ export default {
     getCustomiseById: async function (data:getDataByIdRequest) {
         return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.productTypeController.getcustomisebyid + data.id,true);
     },
+    getCategoryById: async function (data:getDataByIdRequest) {
+        return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.productController.getCategory + data,true);
+    },
+    getSubCategory: async function (data:getDataByIdRequest) {
+        return await WebReqUrl.get(Constant.apiUrl + apiUrl.productController.getSubCategory + data,false);
+    },
     
     
     

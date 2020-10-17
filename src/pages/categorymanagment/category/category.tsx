@@ -11,18 +11,23 @@ import {
   CustomInput,
   Row,
 } from "reactstrap";
-import { CategoryAPI, DeleteAPI, StatusAPI } from "../../../service/index.service";
+import {
+  CategoryAPI,
+  DeleteAPI,
+  StatusAPI,
+} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import {
   getAllTableDataListRequest,
   statusChangeRequest,
   allStateRequest,
-  categoryStateRequest,deleteAllDataRequest
+  categoryStateRequest,
+  deleteAllDataRequest,
 } from "../../../modelController";
 
 class Category extends React.Component<{ history: any }> {
-  categoryState:categoryStateRequest = constant.categoryPage.state;
-  userState:allStateRequest = constant.userPage.state;
+  categoryState: categoryStateRequest = constant.categoryPage.state;
+  userState: allStateRequest = constant.userPage.state;
   state = {
     count: this.categoryState.count,
     currentPage: this.categoryState.currentPage,
@@ -83,15 +88,15 @@ class Category extends React.Component<{ history: any }> {
     // console.log("getCategory", getCategory);
 
     if (getCategory) {
-      if(getCategory.status === 200) {
-      this.setState({
-        categorydata: this.state.categorydata = getCategory.resultObject.data,
-        count: this.state.count = getCategory.resultObject.totalcount,
-      });
-    } else {
-      const msg1 = getCategory.message;
-      utils.showError(msg1);
-    }
+      if (getCategory.status === 200) {
+        this.setState({
+          categorydata: this.state.categorydata = getCategory.resultObject.data,
+          count: this.state.count = getCategory.resultObject.totalcount,
+        });
+      } else {
+        const msg1 = getCategory.message;
+        utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -152,7 +157,7 @@ class Category extends React.Component<{ history: any }> {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
         moduleName: "Category",
-        id: this.state.deleteuserdata
+        id: this.state.deleteuserdata,
       };
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
       // console.log("deleteAllData", deleteAllData);
@@ -160,15 +165,18 @@ class Category extends React.Component<{ history: any }> {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
           utils.showSuccess(msg1);
-        this.getCategory(
-          "",
-          parseInt(this.state.currentPage),
-          parseInt(this.state.items_per_page)
-        );
-      } else {
-        const msg1 = deleteAllData.data.message;
-        utils.showError(msg1);
-      }
+          this.getCategory(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+          this.setState({
+            deleteFlag: this.state.deleteFlag = false,
+          });
+        } else {
+          const msg1 = deleteAllData.data.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -199,9 +207,7 @@ class Category extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-  
     this.getCategory(obj.searchText, obj.page, obj.size);
-    
   }
 
   async searchApplicationDataKeyUp(e: any) {
@@ -219,7 +225,7 @@ class Category extends React.Component<{ history: any }> {
       switchSort: !this.state.switchSort,
     });
     let copyTableData = [...this.state.categorydata];
-    copyTableData.sort(utils.compareByDesc(key,this.state.switchSort));
+    copyTableData.sort(utils.compareByDesc(key, this.state.switchSort));
     this.setState({
       categorydata: this.state.categorydata = copyTableData,
     });
@@ -238,18 +244,18 @@ class Category extends React.Component<{ history: any }> {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
           utils.showSuccess(msg1);
-        this.getCategory(
-          "",
-          parseInt(this.state.currentPage),
-          parseInt(this.state.items_per_page)
-        );
+          this.getCategory(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+        } else {
+          const msg1 = getStatusChange.message;
+          utils.showError(msg1);
+        }
       } else {
-        const msg1 = getStatusChange.message;
-        utils.showError(msg1);
-      }
-      } else {
-      //   const msg1 = "Internal server error";
-      // utils.showError(msg1);
+        //   const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }
@@ -377,9 +383,9 @@ class Category extends React.Component<{ history: any }> {
   getTable(categorydata: any) {
     return (
       <table
-      id="dtBasicExample"
-      className="table table-striped table-bordered table_responsive table-sm sortable"
-      width="100%"
+        id="dtBasicExample"
+        className="table table-striped table-bordered table_responsive table-sm sortable"
+        width="100%"
       >
         <thead>
           <tr onClick={() => this.handleSort("category")}>
@@ -394,7 +400,6 @@ class Category extends React.Component<{ history: any }> {
               />
             </th>
             <th>{constant.categoryPage.caetgoryTableColumn.categoryName}</th>
-            {/* <th>{constant.categoryPage.caetgoryTableColumn.subCategoryName}</th> */}
             <th>{constant.categoryPage.caetgoryTableColumn.image}</th>
             <th style={{ textAlign: "center" }}>
               {constant.tableAction.status}
@@ -403,89 +408,84 @@ class Category extends React.Component<{ history: any }> {
           </tr>
         </thead>
         <tbody>
-          {this.state.categorydata.length > 0 ? (
-              this.state.categorydata.map((data: any, index: any) => (
-                  data.parentCategoryId === 0 ? (
-                <tr key={index}>
-                  <td className="centers">
-                    <CustomInput
-                      // name="name"
-                      type="checkbox"
-                      id={data.categoryId}
-                      onChange={(e) => this.handleChange(data, e)}
-                      checked={
-                        this.state.categorydata[index]["_rowChecked"] === true
-                      }
-                    />
-                  </td>
-                  <td>{data.category}</td>
-                  <td>
-                    {data.imagePath != null ? (
-                      <div className="img-size">
-                        {data.imagePath ? (
-                          <div>
-                            <img
-                              className="table-picture"
-                              src={constant.filepath + data.imagePath}
-                            />
-                            {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
-                          </div>
-                        ) : null}
-                      </div>
-                    ) : (
-                      <div>
-                        <i className="fa fa-user picture"></i>
-                        {/* <i className="fa fa-times cursor" onClick={() => this.removeIcon()}></i> */}
-                      </div>
-                    )}
-                  </td>
-                  <td style={{ textAlign: "center" }}>
-                    {data.isActive === true ? (
-                      <button
-                        className="status_active_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Inactive category",
-                            "Yes, Inactive it"
-                          )
+          {this.state.categorydata.length > 0
+            ? this.state.categorydata.map((data: any, index: any) =>
+                data.parentCategoryId === 0 ? (
+                  <tr key={index}>
+                    <td className="centers">
+                      <CustomInput
+                        type="checkbox"
+                        id={data.categoryId}
+                        onChange={(e) => this.handleChange(data, e)}
+                        checked={
+                          this.state.categorydata[index]["_rowChecked"] === true
                         }
-                      >
-                        Active
-                      </button>
-                    ) : (
-                      <button
-                        className="status_Inactive_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Active category",
-                            "Yes, Active it"
-                          )
-                        }
-                      >
-                        Inactive
-                      </button>
-                    )}
-                  </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewCategory(data.categoryId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editCategory(data.categoryId)}
-                      ></i>
-                    </span>
-                  </td>
-                </tr>
-                  ) : ('')
-              ))
-          ) : (
-            ""
-          )}
+                      />
+                    </td>
+                    <td>{data.category}</td>
+                    <td>{data.imagePath != null ? (
+                        <div className="img-size">
+                          {data.imagePath ? (
+                            <div>
+                              <img
+                                className="table-picture"
+                                src={constant.filepath + data.imagePath}
+                              />
+                            </div>
+                          ) : null}
+                        </div>
+                      ) : (
+                        <div>
+                          <i className="fa fa-user picture"></i>
+                        </div>
+                      )}</td>
+                    <td style={{ textAlign: "center" }}>
+                      {data.isActive === true ? (
+                        <button
+                          className="status_active_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Inactive category",
+                              "Yes, Inactive it"
+                            )
+                          }
+                        >
+                          Active
+                        </button>
+                      ) : (
+                        <button
+                          className="status_Inactive_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Active category",
+                              "Yes, Active it"
+                            )
+                          }
+                        >
+                          Inactive
+                        </button>
+                      )}
+                    </td>
+                    <td className="action">
+                      <span className="padding">
+                        <i
+                          className="fa fa-eye"
+                          onClick={() => this.viewCategory(data.categoryId)}
+                        ></i>
+                        <i
+                          className="fas fa-edit"
+                          onClick={() => this.editCategory(data.categoryId)}
+                        ></i>
+                      </span>
+                    </td>
+                  </tr>
+                ) : (
+                  ""
+                )
+              )
+            : ""}
         </tbody>
       </table>
     );
@@ -536,7 +536,6 @@ class Category extends React.Component<{ history: any }> {
       this.state.items_per_page
     );
     var renderPageNumbers = this.pagination(pageNumbers);
-
     let pageIncrementBtn = null;
     if (pageNumbers.length > this.state.upperPageBound) {
       pageIncrementBtn = (
@@ -547,7 +546,6 @@ class Category extends React.Component<{ history: any }> {
         </li>
       );
     }
-
     let pageDecrementBtn = null;
     if (this.state.lowerPageBound >= 1) {
       pageDecrementBtn = (
@@ -560,75 +558,76 @@ class Category extends React.Component<{ history: any }> {
     }
 
     return (
-      <>
-        <>
-          <div className="ms-content-wrapper">
-            <div className="row">
-              <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                <Card className="main-card mb-12">
-                  <CardHeader>
-                    <Row>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <CardTitle className="font">
-                          {constant.categoryPage.title.categoryTitle}
-                        </CardTitle>
-                      </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/addcategory">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
-                    </Row>
-                  </CardHeader>
-                  <CardBody>
-                    <div className="search_right">
-                      <input
-                        className="form-control custom_text_width search"
-                        type="text"
-                        placeholder="Search"
-                        aria-label="Search"
-                        onKeyUp={this.searchApplicationDataKeyUp}
-                      />
+      <div className="ms-content-wrapper">
+        <div className="row">
+          <Col xs="12" sm="12" md="12" lg="12" xl="12">
+            <Card className="main-card mb-12">
+              <CardHeader>
+                <Row>
+                  <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                    <CardTitle className="font">
+                      {constant.categoryPage.title.categoryTitle}
+                    </CardTitle>
+                  </Col>
+                  <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                    <div className="right">
+                      <Link to="/addcategory">
+                        <Button
+                          className="mb-2 mr-2 custom-button"
+                          color="primary"
+                        >
+                          {constant.button.add}
+                        </Button>
+                      </Link>
                     </div>
-                    {this.state.deleteFlag === true ? (
-                      <Button
-                        className="mb-2 mr-2 custom-button"
-                        color="primary"
-                        onClick={() => this.delleteAllData( "You should be Delete Category",
-                        "Yes, Category it")}
-                      >
-                        {constant.button.remove}
-                      </Button>
-                    ) : (
-                      ""
-                    )}
-                    {this.state.categorydata.length > 0 ? (
-                      <>{this.getTable(this.state.categorydata)}</>
-                    ) : (
-                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
-                    )}
-                  
-                    {this.state.categorydata.length > 0
-                      ? this.getPageData(
-                          pageIncrementBtn,
-                          renderPageNumbers,
-                          pageDecrementBtn
-                        )
-                      : ""}
-                  </CardBody>
-                </Card>
-              </Col>
-            </div>
-          </div>
-        </>
-      </>
+                  </Col>
+                </Row>
+              </CardHeader>
+              <CardBody>
+                <div className="search_right">
+                  <input
+                    className="form-control custom_text_width search"
+                    type="text"
+                    placeholder="Search"
+                    aria-label="Search"
+                    onKeyUp={this.searchApplicationDataKeyUp}
+                  />
+                </div>
+                {this.state.deleteFlag === true ? (
+                  <Button
+                    className="mb-2 mr-2 custom-button"
+                    color="primary"
+                    onClick={() =>
+                      this.delleteAllData(
+                        "You should be Delete Category",
+                        "Yes, Delete it"
+                      )
+                    }
+                  >
+                    {constant.button.remove}
+                  </Button>
+                ) : (
+                  ""
+                )}
+                {this.state.categorydata.length > 0 ? (
+                  <>{this.getTable(this.state.categorydata)}</>
+                ) : (
+                  <h1 className="text-center mt-5">
+                    {constant.noDataFound.nodatafound}
+                  </h1>
+                )}
+                {this.state.categorydata.length > 0
+                  ? this.getPageData(
+                      pageIncrementBtn,
+                      renderPageNumbers,
+                      pageDecrementBtn
+                    )
+                  : ""}
+              </CardBody>
+            </Card>
+          </Col>
+        </div>
+      </div>
     );
   }
 }

@@ -30,5 +30,11 @@ export interface addProductStateRequest {
     categorylist: any,
     merchantlist: any,
     productpreview:any,
-    newImageUpdatedArray:any
+    newImageUpdatedArray:any,
+    category:string,
+    showCategory:boolean,
+    categoryid:string,
+    subcategory?:string
+    
+    
 }

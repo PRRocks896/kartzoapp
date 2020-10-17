@@ -1705,9 +1705,11 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                             {this.state.categorydata.length > 0
                               ? this.state.categorydata.map(
                                   (data: any, index: any) => (
+                                    data.parentCategoryId === 0 ? (
                                     <option key={index} value={data.value}>
                                       {data.name}
                                     </option>
+                                    ) : ('')
                                   )
                                 )
                               : ""}
