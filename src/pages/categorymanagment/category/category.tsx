@@ -26,6 +26,8 @@ import {
 } from "../../../modelController";
 
 class Category extends React.Component<{ history: any }> {
+
+  /** Category State */
   categoryState: categoryStateRequest = constant.categoryPage.state;
   userState: allStateRequest = constant.userPage.state;
   state = {
@@ -44,6 +46,7 @@ class Category extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.editCategory = this.editCategory.bind(this);
@@ -66,6 +69,7 @@ class Category extends React.Component<{ history: any }> {
     this.delleteAllData = this.delleteAllData.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     document.title =
       constant.categoryPage.title.categoryTitle + utils.getAppName();
@@ -73,6 +77,7 @@ class Category extends React.Component<{ history: any }> {
     this.getCategory();
   }
 
+  /** Get Category */
   async getCategory(
     searchText: string = "",
     page: number = 1,
@@ -103,6 +108,7 @@ class Category extends React.Component<{ history: any }> {
     }
   }
 
+  /** Button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -114,6 +120,7 @@ class Category extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** Button previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -125,10 +132,18 @@ class Category extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : edit category
+   */
   editCategory(id: any) {
     this.props.history.push("/editcategory/" + id);
   }
 
+  /**
+   * 
+   * @param id : view category
+   */
   viewCategory(id: any) {
     this.props.history.push("/viewcategory/" + id);
   }
@@ -153,6 +168,11 @@ class Category extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param text : message
+   * @param btext : buton message
+   */
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -184,6 +204,10 @@ class Category extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : record par page select
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
@@ -197,6 +221,10 @@ class Category extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -210,6 +238,10 @@ class Category extends React.Component<{ history: any }> {
     this.getCategory(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param e : search category
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj: getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -220,6 +252,10 @@ class Category extends React.Component<{ history: any }> {
     this.getCategory(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting table list
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -231,6 +267,12 @@ class Category extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : status change data
+   * @param text : message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: statusChangeRequest = {
@@ -260,6 +302,11 @@ class Category extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.categoryId;
     let ind: any = this.state.categorydata.findIndex(
@@ -306,6 +353,10 @@ class Category extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.categorydata.forEach((element: any) => {
@@ -338,6 +389,10 @@ class Category extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -380,6 +435,7 @@ class Category extends React.Component<{ history: any }> {
     return res;
   }
 
+  /** Table List */
   getTable(categorydata: any) {
     return (
       <table
@@ -491,6 +547,7 @@ class Category extends React.Component<{ history: any }> {
     );
   }
 
+  /** Get Page Data */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -530,6 +587,7 @@ class Category extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,

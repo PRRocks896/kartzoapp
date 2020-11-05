@@ -17,6 +17,8 @@ import constant from "../../../constant/constant";
 import { addCategoryStateRequest, getDataByIdRequest } from "../../../modelController";
 
 class ViewSubCategory extends React.Component<{ history: any; location: any }> {
+
+  /** Subcategory state */
   categoryState:addCategoryStateRequest = constant.categoryPage.state;
   state = {
     categoryname: this.categoryState.categoryname,
@@ -25,11 +27,13 @@ class ViewSubCategory extends React.Component<{ history: any; location: any }> {
     parentCategory: this.categoryState.parentCategory,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.getCategory = this.getCategory.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     document.title =
       constant.categoryPage.title.viewCategoryTitle + utils.getAppName();
@@ -40,6 +44,10 @@ class ViewSubCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param categoryId : category id
+   */
   async getCategory(categoryId:any){
     const obj:getDataByIdRequest = {
       id: categoryId,
@@ -69,6 +77,7 @@ class ViewSubCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

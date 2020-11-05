@@ -16,6 +16,8 @@ import constant from "../../../constant/constant";
 import { createCouponStateRequest } from "../../../modelController";
 
 class ViewCoupon extends React.Component<{ history: any; location: any }> {
+
+  /** Coupon State */
   couponState : createCouponStateRequest = constant.couponPage.state;
   state = {
     checked: this.couponState.checked,
@@ -31,12 +33,14 @@ class ViewCoupon extends React.Component<{ history: any; location: any }> {
     isActive: this.couponState.isActive,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.IOSDateToYYYYMMDD = this.IOSDateToYYYYMMDD.bind(this);
     this.getCouponById = this.getCouponById.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     document.title =
       constant.couponPage.viewcouponpagedetails.viewcoupon + utils.getAppName();
@@ -46,6 +50,10 @@ class ViewCoupon extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param d : IOS format
+   */
   IOSDateToYYYYMMDD(d: any) {
     const date = new Date(d);
     const year = date.getFullYear();
@@ -60,6 +68,10 @@ class ViewCoupon extends React.Component<{ history: any; location: any }> {
     return year + "-" + month + "-" + dt;
   }
 
+  /**
+   * 
+   * @param id : get coupon map id
+   */
   async getCouponById(id: any) {
     const obj = {
       id: id,

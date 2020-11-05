@@ -17,6 +17,8 @@ import constant from "../../../constant/constant";
 import {getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, cityStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController/index";
 
 class City extends React.Component<{ history: any }> {
+
+  /** City state */
   cityState:cityStateRequest = constant.cityPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -35,6 +37,7 @@ class City extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.editCity = this.editCity.bind(this);
@@ -52,12 +55,19 @@ class City extends React.Component<{ history: any }> {
     this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     document.title = constant.cityPage.title.cityTitle + utils.getAppName();
     utils.dataTable();
     this.getCityData();
   }
 
+  /**
+   * 
+   * @param searchText : get search text
+   * @param page : page number
+   * @param size : page size
+   */
   async getCityData(
     searchText: string = "",
     page: number = 1,
@@ -88,6 +98,7 @@ class City extends React.Component<{ history: any }> {
     }
   }
 
+  /** Button Next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -99,6 +110,7 @@ class City extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** Button Previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -110,10 +122,18 @@ class City extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : city id
+   */
   editCity(id: any) {
     this.props.history.push("/editcity/" + id);
   }
 
+  /**
+   * 
+   * @param id : city id
+   */
   viewCity(id: any) {
     this.props.history.push("/viewcity/" + id);
   }
@@ -134,6 +154,11 @@ class City extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param text : message
+   * @param btext : button message
+   */
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -161,7 +186,10 @@ class City extends React.Component<{ history: any }> {
     }
   }
 
-
+/**
+ * 
+ * @param event : record per page
+ */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: 
@@ -171,6 +199,10 @@ class City extends React.Component<{ history: any }> {
     this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -186,6 +218,10 @@ class City extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : search city
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -196,6 +232,7 @@ class City extends React.Component<{ history: any }> {
     this.getCityData(obj.searchText, obj.page, obj.size);
   }
 
+  /** Sorting Table */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -207,6 +244,12 @@ class City extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : data
+   * @param text : message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -232,6 +275,11 @@ class City extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.cityId;
     let ind: any = this.state.citydata.findIndex(
@@ -278,6 +326,10 @@ class City extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.citydata.forEach((element: any) => {
@@ -310,6 +362,10 @@ class City extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -352,6 +408,7 @@ class City extends React.Component<{ history: any }> {
     return res;
   }
 
+  /** Get Table Listing */
   getTable(citydata: any) {
     return (
       <table
@@ -460,6 +517,12 @@ class City extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param pageDecrementBtn : page decrement
+   * @param renderPageNumbers : page number
+   * @param pageIncrementBtn : page increment
+   */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -499,6 +562,7 @@ class City extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,

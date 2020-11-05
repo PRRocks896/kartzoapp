@@ -6,8 +6,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
   Input,
   Col,
   FormGroup,
@@ -20,6 +18,8 @@ import constant from "../../../constant/constant";
 import { getDataByIdRequest, addCountryStateRequest } from "../../../modelController";
 
 class AddCountry extends React.Component<{ history: any; location: any }> {
+
+  /** Country State */
   countryState:addCountryStateRequest = constant.countryPage.state;
   state = {
     selectedFile: this.countryState.selectedFile,
@@ -36,6 +36,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     s1:this.countryState.s1
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -46,6 +47,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     this.getCountryById = this.getCountryById.bind(this);
   }
 
+  /** Page Render call */
   async componentDidMount() {
     const countryId = this.props.location.pathname.split("/")[2];
     if (countryId !== undefined) {
@@ -64,6 +66,10 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param countryId : country id
+   */
   async getCountryById(countryId:any) {
     const obj:getDataByIdRequest = {
       id: countryId,
@@ -96,6 +102,10 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : file upload
+   */
   onChangeHandler(event: any) {
     if (this.state.filetrue === true) {
       this.setState({
@@ -123,6 +133,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Validate or not */
   validate() {
     let countrynameerror = "";
     let countrycodeerror = "";
@@ -143,6 +154,10 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update the state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -150,6 +165,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add country */
   async addCountry() {
     const isValid = this.validate();
     if (isValid) {
@@ -188,6 +204,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Edit Country */
   async editCountry() {
     const isValid = this.validate();
     if (isValid) {
@@ -235,6 +252,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Remove Icon */
   removeIcon() {
     this.setState({
       file: this.state.file = "",
@@ -242,6 +260,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

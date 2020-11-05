@@ -23,6 +23,8 @@ import {
 } from "../../modelController";
 
 class Coupon extends React.Component<{ history: any; location: any }> {
+
+  /** Coupon state */
   couponState : createCouponStateRequest = constant.couponPage.state;
   state = {
     checked: this.couponState.checked,
@@ -50,6 +52,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     finalprice: this.couponState.finalprice
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     // this.Profile = this.Profile.bind(this);
@@ -62,6 +65,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     this.handleChangeEventDiscount = this.handleChangeEventDiscount.bind(this);
   }
 
+  /** Checked boolean */
   handleChange(checked: boolean) {
     this.setState({
       isByPrice: this.state.isByPrice = checked,
@@ -69,6 +73,10 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  /**
+   * 
+   * @param value : percentage value 
+   */
   handleOnChange = (value: any) => {
     this.setState({
       percentage: value,
@@ -85,6 +93,10 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     }
   };
 
+  /**
+   * 
+   * @param event : discount price
+   */
   handleChangeEventDiscount(event: any) {
 
     this.setState({
@@ -93,6 +105,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
  
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     const couponId = this.props.location.pathname.split("/")[2];
     if (couponId !== undefined) {
@@ -110,6 +123,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** IOS Format */
   IOSDateToYYYYMMDD(d: any) {
     const date = new Date(d);
     const year = date.getFullYear();
@@ -126,6 +140,10 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     return year + "-" + month + "-" + dt;
   }
 
+  /**
+   * 
+   * @param id : get coupon mapping id
+   */
   async getCouponById(id: any) {
     const obj: getDataByIdRequest = {
       id: id,
@@ -173,6 +191,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Validate or not */
   validate() {
     let couponcodeerror = "";
     let discountpriceerror = "";
@@ -243,6 +262,10 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -250,6 +273,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add coupon */
   async addCoupon() {
     const isValid = this.validate();
     if (isValid) {
@@ -302,6 +326,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Edit coupon */
   async editCoupon() {
     const isValid = this.validate();
     if (isValid) {
@@ -355,6 +380,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

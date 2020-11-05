@@ -16,6 +16,8 @@ import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, countryStateRequest,allStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class CountryManagment extends React.Component<{ history: any }> {
+
+  /** Country State */
   countryState:countryStateRequest = constant.countryPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -34,6 +36,7 @@ class CountryManagment extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.editCountry = this.editCountry.bind(this);
@@ -56,6 +59,7 @@ class CountryManagment extends React.Component<{ history: any }> {
     this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     document.title =
       constant.countryPage.title.countryTitle + utils.getAppName();
@@ -63,6 +67,12 @@ class CountryManagment extends React.Component<{ history: any }> {
       this.getCountryData();
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page 
+   * @param size 
+   */
   async getCountryData(
     searchText: string = "",
     page: number = 1,
@@ -94,6 +104,7 @@ class CountryManagment extends React.Component<{ history: any }> {
     }
   }
 
+  /** Button Next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -105,6 +116,7 @@ class CountryManagment extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** Button Previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -116,10 +128,18 @@ class CountryManagment extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : country id
+   */
   editCountry(id: any) {
     this.props.history.push("/editcountry/" + id);
   }
 
+  /**
+   * 
+   * @param id : country id
+   */
   viewCountry(id: any) {
     this.props.history.push("/viewcountry/" + id);
   }
@@ -140,6 +160,11 @@ class CountryManagment extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param text : message
+   * @param btext : button message
+   */
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -167,7 +192,10 @@ class CountryManagment extends React.Component<{ history: any }> {
     }
   }
 
-
+/**
+ * 
+ * @param event : recored per page select
+ */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: 
@@ -176,6 +204,10 @@ class CountryManagment extends React.Component<{ history: any }> {
     this.getCountryData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -190,6 +222,10 @@ class CountryManagment extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : search country
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -199,6 +235,10 @@ class CountryManagment extends React.Component<{ history: any }> {
     this.getCountryData(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting table
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -210,6 +250,12 @@ class CountryManagment extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : status data
+   * @param text : message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -235,7 +281,11 @@ class CountryManagment extends React.Component<{ history: any }> {
     }
   }
 
-  
+  /**
+   * 
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.countryId;
     let ind: any = this.state.countrydata.findIndex(
@@ -282,6 +332,10 @@ class CountryManagment extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.countrydata.forEach((element: any) => {
@@ -314,6 +368,10 @@ class CountryManagment extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -356,6 +414,7 @@ class CountryManagment extends React.Component<{ history: any }> {
     return res;
   }
 
+  /** Get Table */
   getTable(countrydata: any) {
     return (
       <table
@@ -486,6 +545,7 @@ class CountryManagment extends React.Component<{ history: any }> {
     );
   }
 
+  /** Get Pagination */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -525,6 +585,7 @@ class CountryManagment extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,

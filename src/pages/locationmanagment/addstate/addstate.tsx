@@ -24,6 +24,8 @@ import {
 } from "../../../modelController/index";
 
 class AddState extends React.Component<{ history: any; location: any }> {
+
+  /** State state */
   stateState : stateStatesRequest = constant.statePage.state;
   state = {
     selectedFile: this.stateState.selectedFile,
@@ -41,6 +43,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
     isActive: this.stateState.isActive
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -51,6 +54,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
     this.getCountryById = this.getCountryById.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     this.getCountry();
     const stateId = this.props.location.pathname.split("/")[2];
@@ -67,6 +71,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Get country */
   async getCountry() {
     const getCountry = await LocationAPI.getCountry();
     // console.log("getCountry", getCountry);
@@ -86,6 +91,10 @@ class AddState extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param stateId : state id
+   */
   async getCountryById(stateId:any) {
     const obj:getDataByIdRequest = {
       id: stateId,
@@ -114,6 +123,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** validate or not */
   validate() {
     let statenameerror = "";
     let countryiderror = "";
@@ -133,12 +143,20 @@ class AddState extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : select country
+   */
   onItemSelect(event: any) {
     this.setState({
       countryid: this.state.countryid = event.target.value,
     });
   }
 
+  /**
+   * 
+   * @param event : update the state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -146,6 +164,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add state */
   async addState() {
     const isValid = this.validate();
     if (isValid) {
@@ -180,6 +199,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Edit state */
   async editState() {
     const isValid = this.validate();
     if (isValid) {
@@ -215,6 +235,7 @@ class AddState extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

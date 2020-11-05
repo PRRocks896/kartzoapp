@@ -19,6 +19,8 @@ import {
 } from "../../modelController";
 
 class ChangePassword extends Component<{ history: any }> {
+
+  /** Change password state */
   changeState: changePasswordStateRequest = constant.changePasswordPage.state;
   state = {
     oldpassword: this.changeState.oldpassword,
@@ -30,6 +32,7 @@ class ChangePassword extends Component<{ history: any }> {
     userid: this.changeState.userid,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.ChangePassword = this.ChangePassword.bind(this);
@@ -37,12 +40,14 @@ class ChangePassword extends Component<{ history: any }> {
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     let userid: any = localStorage.getItem("user");
     this.state.userid = JSON.parse(userid).userId;
     document.title = constant.changepassword + utils.getAppName();
   }
 
+  /** Reset Form */
   resetForm(){
     this.setState({
       oldpassword: this.state.oldpassword = '',
@@ -51,6 +56,7 @@ class ChangePassword extends Component<{ history: any }> {
     })
   }
 
+  /** Check Validate or not */
   validate() {
     let oldpassworderror = "";
     let newpassworderror = "";
@@ -79,6 +85,10 @@ class ChangePassword extends Component<{ history: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -86,6 +96,7 @@ class ChangePassword extends Component<{ history: any }> {
     this.setState(state);
   }
 
+  /** Change Password */
   async ChangePassword() {
     const isValid = this.validate();
     if (isValid) {
@@ -131,6 +142,7 @@ class ChangePassword extends Component<{ history: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

@@ -22,6 +22,8 @@ import {
 } from "../../../modelController";
 
 class AddSubCategory extends React.Component<{ history: any; location: any }> {
+
+  /** SubCategory state */
   categoryState: addCategoryStateRequest = constant.categoryPage.state;
   state = {
     selectedFile: this.categoryState.selectedFile,
@@ -43,6 +45,7 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
     s1: this.categoryState.s1,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -55,6 +58,7 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
     this.getCategoryById = this.getCategoryById.bind(this);
   }
 
+  /** Page Render */
   async componentDidMount() {
     this.getAllCategory();
     const categoryId = this.props.location.pathname.split("/")[2];
@@ -73,6 +77,7 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Get All Category */
   async getAllCategory() {
     const getAllCategory = await CategoryAPI.getAllCategory();
     // console.log("getAllCategory", getAllCategory);
@@ -91,6 +96,10 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param categoryId : sub category id
+   */
   async getCategoryById(categoryId: any) {
     const obj: getDataByIdRequest = {
       id: categoryId,
@@ -127,12 +136,20 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : sub category select
+   */
   onItemSelect(event: any) {
     this.setState({
       selectcategory: event.target.value,
     });
   }
 
+  /**
+   * 
+   * @param event : file upload
+   */
   onChangeHandler(event: any) {
     if (this.state.filetrue === true) {
       this.setState({
@@ -160,6 +177,7 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Check valid or not */
   validate() {
     let categorynameerror = "";
 
@@ -174,6 +192,10 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : upadate state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -181,6 +203,7 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add Category */
   async addCategory() {
     const isValid = this.validate();
     if (isValid) {
@@ -221,6 +244,7 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Update Category */
   async updateCategory() {
     const isValid = this.validate();
     if (isValid) {
@@ -269,6 +293,7 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Remove Icon */
   removeIcon() {
     this.setState({
       file: this.state.file = "",
@@ -276,6 +301,7 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

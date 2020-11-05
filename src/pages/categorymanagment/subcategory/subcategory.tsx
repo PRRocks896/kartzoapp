@@ -21,6 +21,8 @@ import {
 } from "../../../modelController";
 
 class SubCategory extends React.Component<{ history: any }> {
+
+  /** Subcategory List */
   categoryState:categoryStateRequest = constant.categoryPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -39,6 +41,7 @@ class SubCategory extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.editCategory = this.editCategory.bind(this);
@@ -61,6 +64,7 @@ class SubCategory extends React.Component<{ history: any }> {
     this.delleteAllData = this.delleteAllData.bind(this);
   }
 
+  /** Page Render */
   async componentDidMount() {
     document.title =
       constant.categoryPage.title.subcategoryTitle + utils.getAppName();
@@ -68,6 +72,7 @@ class SubCategory extends React.Component<{ history: any }> {
     this.getSubCategory();
   }
 
+  /** Get Sub category */
   async getSubCategory(
     searchText: string = "",
     page: number = 1,
@@ -98,6 +103,7 @@ class SubCategory extends React.Component<{ history: any }> {
     }
   }
 
+  /** Button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -109,6 +115,7 @@ class SubCategory extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** Button previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -120,10 +127,18 @@ class SubCategory extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : edit category
+   */
   editCategory(id: any) {
     this.props.history.push("/editsubcategory/" + id);
   }
 
+  /**
+   * 
+   * @param id : view category
+   */
   viewCategory(id: any) {
     this.props.history.push("/viewsubcategory/" + id);
   }
@@ -148,6 +163,11 @@ class SubCategory extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param text : message
+   * @param btext : button message
+   */
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -179,6 +199,10 @@ class SubCategory extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : record per page value
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
@@ -192,6 +216,10 @@ class SubCategory extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -207,6 +235,10 @@ class SubCategory extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : search sub category data
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj: getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -217,6 +249,10 @@ class SubCategory extends React.Component<{ history: any }> {
     this.getSubCategory(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting table
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -228,6 +264,12 @@ class SubCategory extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : status change data
+   * @param text : message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: statusChangeRequest = {
@@ -257,6 +299,11 @@ class SubCategory extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.categoryId;
     let ind: any = this.state.categorydata.findIndex(
@@ -303,6 +350,10 @@ class SubCategory extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.categorydata.forEach((element: any) => {
@@ -335,6 +386,10 @@ class SubCategory extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -377,6 +432,10 @@ class SubCategory extends React.Component<{ history: any }> {
     return res;
   }
 
+  /**
+   * 
+   * @param categorydata : Table List
+   */
   getTable(categorydata: any) {
     return (
       <table
@@ -514,6 +573,7 @@ class SubCategory extends React.Component<{ history: any }> {
     );
   }
 
+  /** Get Page Data */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -553,6 +613,7 @@ class SubCategory extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,

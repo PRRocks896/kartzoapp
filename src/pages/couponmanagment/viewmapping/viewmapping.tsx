@@ -16,6 +16,8 @@ import constant from "../../../constant/constant";
 import {addCouponStateRequest, getDataByIdRequest} from "../../../modelController";
 
 class ViewCouponMapping extends React.Component<{ history: any; location: any }> {
+
+    /** Coupon mapping state */
     couponState :addCouponStateRequest = constant.couponPage.state;
     state:any = {
       items: this.couponState.items,
@@ -32,11 +34,13 @@ class ViewCouponMapping extends React.Component<{ history: any; location: any }>
     };
   
 
+    /** Constructor call */
   constructor(props: any) {
     super(props);
     this.getCouponMappingById = this.getCouponMappingById.bind(this);
   }
 
+  /** Page Render call */
   async componentDidMount() {
     document.title =
       constant.couponPage.title.viewCouponMappingTitle + utils.getAppName();
@@ -46,6 +50,10 @@ class ViewCouponMapping extends React.Component<{ history: any; location: any }>
     }
   }
 
+  /**
+   * 
+   * @param id : coupon mapping id
+   */
   async getCouponMappingById(id: any) {
     const obj : getDataByIdRequest = {
       id: id,
@@ -70,6 +78,7 @@ class ViewCouponMapping extends React.Component<{ history: any; location: any }>
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
