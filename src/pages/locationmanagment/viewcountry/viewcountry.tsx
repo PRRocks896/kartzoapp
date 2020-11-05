@@ -17,6 +17,8 @@ import constant from "../../../constant/constant";
 import { addCountryStateRequest, getDataByIdRequest } from "../../../modelController";
 
 class ViewCountry extends React.Component<{ history: any; location: any }> {
+
+  /** Country State */
   countryState:addCountryStateRequest = constant.countryPage.state;
   state = {
     countryname: this.countryState.countryname,
@@ -24,6 +26,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
     file: null,
   };
 
+  /** Page Render Call */
   async componentDidMount() {
     document.title =
       constant.countryPage.title.viewCountryTitle + utils.getAppName();
@@ -33,6 +36,10 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param countryId : country id
+   */
  async getCountry(countryId:any) {
     const obj:getDataByIdRequest = {
       id: countryId,
@@ -59,6 +66,7 @@ class ViewCountry extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

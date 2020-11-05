@@ -80,16 +80,16 @@ axios.interceptors.response.use(
           let user = JSON.parse(users);
           // const users1: any = localStorage.getItem("refreshtoken");
           // let usertoken1 = JSON.parse(users1);
-            const ipaddress = publicIp.v4();
+            const ipaddress = await publicIp.v4();
             const originalReq = err.config;
             originalReq._retry = true;
             let oldCount = 0;
 
-            // if(err.response)
+            
             const data = {
               deviceType: 1,
               deviceId: "deviceId",
-              ipAddress: await ipaddress,
+              ipAddress: ipaddress ? ipaddress : '',
               loginToken: user.token,
               refreshToken: user.refreshToken,
             };

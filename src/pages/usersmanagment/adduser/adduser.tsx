@@ -396,6 +396,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Remove icon */
   removeIcon() {
     this.setState({
       file: this.state.file = "",

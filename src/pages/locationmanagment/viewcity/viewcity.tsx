@@ -18,12 +18,15 @@ import constant from "../../../constant/constant";
 import { addCityStateRequest, getDataByIdRequest } from "../../../modelController";
 
 class ViewCity extends React.Component<{ history: any; location: any }> {
+
+  /** City state */
   cityState:addCityStateRequest = constant.cityPage.state;
   state  = {
     statename: this.cityState.statename,
     cityname: this.cityState.cityname,
   };
 
+  /** Page Render Call */
   async componentDidMount() {
     document.title = constant.cityPage.title.viewCityTitle + utils.getAppName();
     const cityId = this.props.location.pathname.split("/")[2];
@@ -32,6 +35,10 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param cityId : city id
+   */
   async getCity(cityId:any){
     const obj:getDataByIdRequest = {
       id: cityId,
@@ -56,6 +63,7 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

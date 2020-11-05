@@ -16,6 +16,8 @@ import constant from "../../../constant/constant";
 import {getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, stateStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController/index";
 
 class StateManagment extends React.Component<{ history: any }> {
+
+  /** State state */
   stateState:stateStateRequest = constant.statePage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -34,6 +36,7 @@ class StateManagment extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.editState = this.editState.bind(this);
@@ -56,12 +59,19 @@ class StateManagment extends React.Component<{ history: any }> {
     this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     document.title = constant.statePage.title.stateTitle + utils.getAppName();
     utils.dataTable();
     this.getStateData();
   }
 
+  /**
+   * 
+   * @param searchText : search data
+   * @param page : page number
+   * @param size : page render
+   */
   async getStateData(
     searchText: string = "",
     page: number = 1,
@@ -92,6 +102,7 @@ class StateManagment extends React.Component<{ history: any }> {
     }
   }
 
+  /** Button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -103,6 +114,7 @@ class StateManagment extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** Button previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -114,10 +126,18 @@ class StateManagment extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : state id
+   */
   editState(id: any) {
     this.props.history.push("/editstate/" + id);
   }
 
+  /**
+   * 
+   * @param id : state id
+   */
   viewState(id: any) {
     this.props.history.push("/viewstate/" + id);
   }
@@ -138,6 +158,11 @@ class StateManagment extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param text : message
+   * @param btext : button message
+   */
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -165,6 +190,10 @@ class StateManagment extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : record per page select
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: 
@@ -174,6 +203,10 @@ class StateManagment extends React.Component<{ history: any }> {
     this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -189,6 +222,10 @@ class StateManagment extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : search state
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -199,6 +236,10 @@ class StateManagment extends React.Component<{ history: any }> {
     this.getStateData(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting value
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -210,6 +251,12 @@ class StateManagment extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : data
+   * @param text : message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -235,6 +282,11 @@ class StateManagment extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.stateId;
     let ind: any = this.state.statedata.findIndex(
@@ -281,6 +333,10 @@ class StateManagment extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.statedata.forEach((element: any) => {
@@ -314,6 +370,10 @@ class StateManagment extends React.Component<{ history: any }> {
   }
 
 
+  /**
+   * 
+   * @param pageNumbers : pagination
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -356,6 +416,7 @@ class StateManagment extends React.Component<{ history: any }> {
     return res;
   }
 
+  /** Table List */
   getTable(statedata: any) {
     return (
       <table
@@ -463,6 +524,7 @@ class StateManagment extends React.Component<{ history: any }> {
     );
   }
 
+  /** Page Data */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -502,6 +564,7 @@ class StateManagment extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,

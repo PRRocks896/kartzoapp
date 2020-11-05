@@ -13,10 +13,13 @@ import {
 } from "../../modelController";
 import { Button, Input, FormGroup, Label } from "reactstrap";
 import { Modal } from "react-bootstrap";
+import { any } from "prop-types";
 const interceptor = require("../../intercepter");
 const publicIp = require("public-ip");
 
 class Login extends React.Component<{ history: any }> {
+
+  /** Login state */
   loginState: addLoginStateRequest = constant.loginPage.state;
   state = {
     email: this.loginState.email,
@@ -28,8 +31,10 @@ class Login extends React.Component<{ history: any }> {
     type: this.loginState.type,
     forgot: this.loginState.forgot,
     disabled: this.loginState.disabled,
+    refreshTokenTimeout:0
   };
 
+  /** Consructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -41,14 +46,17 @@ class Login extends React.Component<{ history: any }> {
     this.handleCloseForgot = this.handleCloseForgot.bind(this);
   }
 
+  /** Forgot Model Open */
   forgotmodelOpen() {
     this.setState({ forgot: !this.state.forgot });
   }
 
+  /** Forgot Model Close */
   handleCloseForgot() {
     this.setState({ forgot: !this.state.forgot });
   }
 
+  /** Page Render  Call */
   async componentDidMount() {
     document.title = constant.loginTitle + utils.getAppName();
     const ipaddress = publicIp.v4();
@@ -58,6 +66,10 @@ class Login extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -65,6 +77,10 @@ class Login extends React.Component<{ history: any }> {
     this.setState(state);
   }
 
+  /**
+   * 
+   * @param event : change password event state
+   */
   handleChangeEventPassword(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -72,11 +88,13 @@ class Login extends React.Component<{ history: any }> {
     this.setState(state);
   }
 
+  /** Click on next page */
   handleClick = () =>
     this.setState(({ type }: any) => ({
       type: type === "password" ? "text" : "password",
     }));
 
+  /** check validate or not */
   validate() {
     let emailerror = "";
     let passworderror = "";
@@ -99,6 +117,7 @@ class Login extends React.Component<{ history: any }> {
     return true;
   }
 
+  /** check validate or not password */
   validatePassword() {
     let emailerror = "";
 
@@ -116,6 +135,7 @@ class Login extends React.Component<{ history: any }> {
     return true;
   }
 
+  /** Forgot Password */
   async forgotpassword() {
     const isValid = this.validatePassword();
     if (isValid) {
@@ -142,6 +162,63 @@ class Login extends React.Component<{ history: any }> {
     }
   }
 
+  /** Refresh token */
+  async refreshToken() {
+    
+    const ipaddress = publicIp.v4();
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const data = {
+      deviceType: 1,
+      deviceId: "deviceId",
+      ipAddress: await ipaddress,
+      loginToken: user.token,
+      refreshToken: user.refreshToken,
+    };
+
+    axios
+    .post(constant.apiUrl + "token", data)
+    .then(async (res: any) => {
+      console.log("res",res);
+      const users: any = localStorage.getItem("user");
+      let user = JSON.parse(users);
+      user.token = res.data.token;
+      user.refreshToken =  res.data.refreshToken;
+      localStorage.setItem("user",JSON.stringify(user));
+      localStorage.setItem("token",res.data.token);
+      await this.tokenexpire(res.data.token);
+    })
+  }
+
+  /**
+   * 
+   * @param token : token
+   */
+  tokenexpire(token:any) {
+    const jwtToken = JSON.parse(atob(token.split('.')[1]));
+    console.log("jwtToken",jwtToken);
+    // set a timeout to refresh the token a 2 minute before it expires
+    const expires = new Date(jwtToken.exp * 1000);
+    console.log("expires",expires);
+    const timeout:any = expires.getTime() - Date.now() - (120 * 1000);
+    console.log("timeout",timeout);
+    let _this:any = this;
+    // setTimeout(function() {
+    //   console.log('called time out');
+    //   _this.tokenexpire(token);
+    // }, timeout);
+    // setTimeout(() => (this.refreshToken(), timeout))
+    // this.setState({
+    //   refreshTokenTimeout:this.state.refreshTokenTimeout = 
+    // })
+    // console.log("refreshTokenTimeout",refreshTokenTimeout);
+  }
+
+  // stopRefreshTokenTimer() {
+  //   clearTimeout(this.state.refreshTokenTimeout);
+  // }
+
+  /** Login */
   async login() {
     this.setState({
       isButton: true,
@@ -177,13 +254,15 @@ class Login extends React.Component<{ history: any }> {
                 localStorage.setItem("user", JSON.stringify(userData));
                 localStorage.setItem("token", userData.token);
                 localStorage.setItem("refreshtoken", userData.refreshToken);
-                const ipaddress = publicIp.v4();
+                this.tokenexpire(userData.token);
+              
+                const ipaddress = await publicIp.v4();
                 const users: any = localStorage.getItem("user");
                 let user = JSON.parse(users);
                 const obj: loginCreateRequest = {
                   deviceType: 1,
                   deviceId: "deviceId",
-                  ipAddress: await ipaddress,
+                  ipAddress:  ipaddress,
                   loginToken: user.token,
                   refreshToken: user.refreshToken,
                 };
@@ -231,6 +310,10 @@ class Login extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : enter pressed call
+   */
   enterPressed(event: any) {
     var code = event.keyCode || event.which;
     if (code === 13) {
@@ -238,6 +321,7 @@ class Login extends React.Component<{ history: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <div className="ms-body ms-primary-theme ms-logged-out">
