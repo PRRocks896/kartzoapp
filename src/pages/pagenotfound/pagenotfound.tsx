@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import constant from "../../constant/constant";
 
 class Page404 extends Component {
+
+  /** Render DOM */
   render() {
     return (
       <div className="main-box-404">

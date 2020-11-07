@@ -11,43 +11,43 @@ import {
   CustomInput,
   Row,
 } from "reactstrap";
+
 import {
   StatusAPI,
-  ProductAPI, DeleteAPI
+  SettingAPI,
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, productStateRequest, allStateRequest , deleteAllDataRequest} from "../../../modelController";
+import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, settingStateRequest, allStateRequest } from "../../../modelController";
 
-class ListProduct extends React.Component<{ history: any }> {
+class ListPopularCity extends React.Component<{ history: any }> {
 
-  /** Product state */
-  productState:productStateRequest = constant.productPage.state;
+  /** setting state */
+  settingState:settingStateRequest = constant.settingPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
-    count: this.productState.count,
-    currentPage: this.productState.currentPage,
-    items_per_page: this.productState.items_per_page,
-    upperPageBound: this.productState.upperPageBound,
-    lowerPageBound: this.productState.lowerPageBound,
-    pageBound: this.productState.pageBound,
-    onItemSelect: this.productState.onItemSelect,
-    productdata: this.productState.productdata,
-    switchSort: this.productState.switchSort,
-    isStatus: this.productState.isStatus,
+    count: this.settingState.count,
+    currentPage: this.settingState.currentPage,
+    items_per_page: this.settingState.items_per_page,
+    upperPageBound: this.settingState.upperPageBound,
+    lowerPageBound: this.settingState.lowerPageBound,
+    pageBound: this.settingState.pageBound,
+    onItemSelect: this.settingState.onItemSelect,
+    settingdata: this.settingState.settingdata,
+    switchSort: this.settingState.switchSort,
+    isStatus: this.settingState.isStatus,
     deleteuserdata: this.userState.deleteuserdata,
     _maincheck: this.userState._maincheck,
     deleteFlag: this.userState.deleteFlag,
   };
 
-  /** constructor call */
+  /** Constructor call */
   constructor(props: any) {
     super(props);
-    this.editProduct = this.editProduct.bind(this);
-    // this.deleteProduct = this.deleteProduct.bind(this);
-    this.deleteAllData = this.deleteAllData.bind(this);
+    this.editSetting = this.editSetting.bind(this);
+    this.deleteSetting = this.deleteSetting.bind(this);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
-    this.viewProduct = this.viewProduct.bind(this);
+    this.viewSetting = this.viewSetting.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(
       this
@@ -58,25 +58,20 @@ class ListProduct extends React.Component<{ history: any }> {
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleMainChange = this.handleMainChange.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
+    // this.handleMainChange = this.handleMainChange.bind(this);
   }
 
   /** Page render call */
   async componentDidMount() {
     document.title =
-      constant.productPage.title.productTitle + utils.getAppName();
+      constant.settingPage.title.popularcitytitle + utils.getAppName();
     utils.dataTable();
-    this.getProductData();
+    this.getSettingData();
   }
 
-  /**
-   * 
-   * @param searchText : search value
-   * @param page : page
-   * @param size : per page value
-   */
-  async getProductData(
+  /** Get setting data */
+  async getSettingData(
     searchText: string = "",
     page: number = 1,
     size: number = 10
@@ -87,18 +82,18 @@ class ListProduct extends React.Component<{ history: any }> {
       size: size,
     };
 
-    var getProductData = await ProductAPI.getProductData(obj);
-    // console.log("getProductData", getProductData);
+    var getSettingData = await SettingAPI.getSettingData(obj);
+    // console.log("getSettingData", getSettingData);
 
-    if (getProductData) {
-      if(getProductData.status === 200) {
+    if (getSettingData) {
+      if(getSettingData.status === 200) {
       this.setState({
-        productdata: this.state.productdata =
-          getProductData.resultObject.data,
-        count: this.state.count = getProductData.resultObject.totalcount,
+        settingdata: this.state.settingdata =
+          getSettingData.resultObject.data,
+        count: this.state.count = getSettingData.resultObject.totalcount,
       });
     } else {
-      const msg1 = getProductData.message;
+      const msg1 = getSettingData.message;
       utils.showError(msg1);
     }
     } else {
@@ -107,7 +102,7 @@ class ListProduct extends React.Component<{ history: any }> {
     }
   }
 
-  /** Button next */
+  /** button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -119,7 +114,7 @@ class ListProduct extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
-  /** Butoon previous */
+  /** button previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -133,58 +128,35 @@ class ListProduct extends React.Component<{ history: any }> {
 
   /**
    * 
-   * @param id : product id
+   * @param id : setting id
    */
-  editProduct(id: any) {
-    this.props.history.push("/edit-product/" + id);
+  editSetting(id: any) {
+    this.props.history.push("/edit-popular-city/" + id);
   }
 
   /**
    * 
-   * @param id : product id
+   * @param id : setting id
    */
-  viewProduct(id: any) {
-    this.props.history.push("/view-product/" + id);
+  viewSetting(id: any) {
+    this.props.history.push("/view-popular-city/" + id);
   }
-
-  // async deleteProduct(data: any, text: string, btext: string) {
-  //   if (await utils.alertMessage(text, btext)) {
-  //     const obj: deleteByIdRequest = {
-  //       id: data.productId,
-  //     };
-  //     var deleteProduct = await ProductAPI.deleteProduct(obj);
-  //     // console.log("deleteProduct", deleteProduct);
-  //     if (deleteProduct) {
-  //       this.getProductData(
-  //         "",
-  //         parseInt(this.state.currentPage),
-  //         parseInt(this.state.items_per_page)
-  //       );
-  //     } else {
-  //       const msg1 = "Internal server error";
-  //       utils.showError(msg1);
-  //     }
-  //   }
-  // }
 
   /**
    * 
-   * @param text : text
+   * @param data : data
+   * @param text : text message
    * @param btext : button message
    */
-  async deleteAllData(text: string, btext: string) {
+  async deleteSetting(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj: deleteAllDataRequest = {
-        moduleName: "Product",
-        id: this.state.deleteuserdata
+      const obj: deleteByIdRequest = {
+        id: data.settingId,
       };
-      var deleteAllData = await DeleteAPI.deleteAllMerchantData(obj);
-      // console.log("deleteAllData", deleteAllData);
-      if (deleteAllData) {
-        if (deleteAllData.data.status === 200) {
-          const msg1 = deleteAllData.data.message;
-          utils.showSuccess(msg1);
-        this.getProductData(
+      var deleteSetting = await SettingAPI.deleteSetting(obj);
+      // console.log("deleteSetting", deleteSetting);
+      if (deleteSetting) {
+        this.getSettingData(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
@@ -193,27 +165,23 @@ class ListProduct extends React.Component<{ history: any }> {
           deleteFlag:this.state.deleteFlag = false
         })
       } else {
-        const msg1 = deleteAllData.data.message;
-        utils.showError(msg1);
-      }
-      } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
       }
     }
   }
 
-  /**
-   * 
-   * @param event : record per page
-   */
+/**
+ * 
+ * @param event : record per page
+ */
   onItemSelect(event: any) {
     this.setState({
-      items_per_page:
+      items_per_page: this.state.items_per_page =
         event.target.options[event.target.selectedIndex].value,
     });
 
-    this.getProductData(
+    this.getSettingData(
       "",
       parseInt(this.state.currentPage),
       parseInt(this.state.items_per_page)
@@ -234,14 +202,14 @@ class ListProduct extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-  
-    this.getProductData(obj.searchText, obj.page, obj.size);
+   
+    this.getSettingData(obj.searchText, obj.page, obj.size);
     
   }
 
   /**
    * 
-   * @param e : search data value
+   * @param e : popular city search
    */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
@@ -250,7 +218,7 @@ class ListProduct extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-    this.getProductData(obj.searchText, obj.page, obj.size);
+    this.getSettingData(obj.searchText, obj.page, obj.size);
   }
 
   /**
@@ -261,126 +229,124 @@ class ListProduct extends React.Component<{ history: any }> {
     this.setState({
       switchSort: !this.state.switchSort,
     });
-    let copyTableData = [...this.state.productdata];
+    let copyTableData = [...this.state.settingdata];
     copyTableData.sort(utils.compareByDesc(key,this.state.switchSort));
     this.setState({
-      productdata: this.state.productdata = copyTableData,
+      settingdata: this.state.settingdata = copyTableData,
     });
   }
 
   /**
    * 
    * @param data : data
-   * @param text : message
-   * @param btext : button messge
+   * @param text : text
+   * @param btext : button message
    */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
-        moduleName: "Product",
-        id: data.productId,
+        moduleName: "Setting",
+        id: data.settingId,
         isActive: data.isActive === true ? false : true,
       };
-      var getStatusChange = await StatusAPI.getMerchantPanelStatusChange(obj);
+      var getStatusChange = await StatusAPI.getStatusChange(obj);
       // console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
-        if (getStatusChange.status === 200) {
-          const msg1 = getStatusChange.message;
-          utils.showSuccess(msg1);
-        this.getProductData(
+        this.getSettingData(
           "",
           parseInt(this.state.currentPage),
           parseInt(this.state.items_per_page)
         );
       } else {
-        const msg1 = getStatusChange.message;
-        utils.showError(msg1);
-      }
-      } else {
-        // const msg1 = "Internal server error";
-        // utils.showError(msg1);
+      //   const msg1 = "Internal server error";
+      // utils.showError(msg1);
       }
     }
   }
 
-  handleChange(item: any, e: any) {
-    let _id = item.productId;
-    let ind: any = this.state.productdata.findIndex(
-      (x: any) => x.productId === _id
-    );
-    let data: any = this.state.productdata;
-    if (ind > -1) {
-      let newState: any = !item._rowChecked;
-      data[ind]._rowChecked = newState;
-      this.setState({
-        productdata: this.state.productdata = data,
-      });
-    }
-    if (
-      data.filter((res: any, index: number) => res._rowChecked === true)
-        .length === data.length
-    ) {
-      this.setState({
-        _maincheck: true,
-      });
-    } else {
-      this.setState({
-        _maincheck: false,
-      });
-    }
-    let newarray: any = [];
-    data.map((res: any, index: number) => {
-      if (res._rowChecked === true) {
-        newarray.push(res.productId);
-      }
-    });
-    this.setState({
-      deleteuserdata: this.state.deleteuserdata = newarray,
-    });
-    if (this.state.deleteuserdata.length > 0) {
-      this.setState({
-        deleteFlag: this.state.deleteFlag = true,
-      });
-    } else {
-      this.setState({
-        deleteFlag: this.state.deleteFlag = false,
-      });
-    }
-    // console.log("deleteuserdata array", this.state.deleteuserdata);
-  }
+   
+  // handleChange(item: any, e: any) {
+  //   let _id = item.settingId;
+  //   let ind: any = this.state.settingdata.findIndex(
+  //     (x: any) => x.settingId === _id
+  //   );
+  //   let data: any = this.state.settingdata;
+  //   if (ind > -1) {
+  //     let newState: any = !item._rowChecked;
+  //     data[ind]._rowChecked = newState;
+  //     this.setState({
+  //       settingdata: this.state.settingdata = data,
+  //     });
+  //   }
+  //   if (
+  //     data.filter((res: any, index: number) => res._rowChecked === true)
+  //       .length === data.length
+  //   ) {
+  //     this.setState({
+  //       _maincheck: true,
+  //     });
+  //   } else {
+  //     this.setState({
+  //       _maincheck: false,
+  //     });
+  //   }
+  //   let newarray: any = [];
+  //   data.map((res: any, index: number) => {
+  //     if (res._rowChecked === true) {
+  //       newarray.push(res.settingId);
+  //     }
+  //   });
+  //   this.setState({
+  //     deleteuserdata: this.state.deleteuserdata = newarray,
+  //   });
+  //   if (this.state.deleteuserdata.length > 0) {
+  //     this.setState({
+  //       deleteFlag: this.state.deleteFlag = true,
+  //     });
+  //   } else {
+  //     this.setState({
+  //       deleteFlag: this.state.deleteFlag = false,
+  //     });
+  //   }
+  //   // console.log("deleteuserdata array", this.state.deleteuserdata);
+  // }
 
-  handleMainChange(e: any) {
-    let _val = e.target.checked;
-    this.state.productdata.forEach((element: any) => {
-      element._rowChecked = _val;
-    });
-    this.setState({
-      productdata: this.state.productdata,
-    });
-    this.setState({
-      _maincheck: _val,
-    });
-    let newmainarray: any = [];
-    this.state.productdata.map((res: any, index: number) => {
-      if (res._rowChecked === true) {
-        newmainarray.push(res.productId);
-      }
-    });
-    this.setState({
-      deleteuserdata: this.state.deleteuserdata = newmainarray,
-    });
-    if (this.state.deleteuserdata.length > 0) {
-      this.setState({
-        deleteFlag: this.state.deleteFlag = true,
-      });
-    } else {
-      this.setState({
-        deleteFlag: this.state.deleteFlag = false,
-      });
-    }
-    // console.log("deleteuserdata array", this.state.deleteuserdata);
-  }
+  // handleMainChange(e: any) {
+  //   let _val = e.target.checked;
+  //   this.state.settingdata.forEach((element: any) => {
+  //     element._rowChecked = _val;
+  //   });
+  //   this.setState({
+  //     settingdata: this.state.settingdata,
+  //   });
+  //   this.setState({
+  //     _maincheck: _val,
+  //   });
+  //   let newmainarray: any = [];
+  //   this.state.settingdata.map((res: any, index: number) => {
+  //     if (res._rowChecked === true) {
+  //       newmainarray.push(res.settingId);
+  //     }
+  //   });
+  //   this.setState({
+  //     deleteuserdata: this.state.deleteuserdata = newmainarray,
+  //   });
+  //   if (this.state.deleteuserdata.length > 0) {
+  //     this.setState({
+  //       deleteFlag: this.state.deleteFlag = true,
+  //     });
+  //   } else {
+  //     this.setState({
+  //       deleteFlag: this.state.deleteFlag = false,
+  //     });
+  //   }
+  //   // console.log("deleteuserdata array", this.state.deleteuserdata);
+  // }
 
+  /**
+   * 
+   * @param pageNumbers : pagination 
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -423,7 +389,8 @@ class ListProduct extends React.Component<{ history: any }> {
     return res;
   }
 
-  getTable(coupondata: any) {
+  /** Get table list data */
+  getTable(settingdata: any) {
     return (
       <table
       id="dtBasicExample"
@@ -431,8 +398,8 @@ class ListProduct extends React.Component<{ history: any }> {
       width="100%"
       >
         <thead>
-          <tr onClick={() => this.handleSort("productName")}>
-          <th className="centers">
+          <tr onClick={() => this.handleSort("value")}>
+          {/* <th className="centers">
               <CustomInput
                 name="name"
                 defaultValue="value"
@@ -441,87 +408,87 @@ class ListProduct extends React.Component<{ history: any }> {
                 onChange={this.handleMainChange}
                 checked={this.state._maincheck}
               />
-            </th>
-            <th>{constant.productPage.productTableColumn.prodctname}</th>
-            <th>{constant.productPage.productTableColumn.price}</th>
-            <th>{constant.productPage.productTableColumn.discountPrice}</th>
-            <th style={{ textAlign: "center" }}>
+            </th> */}
+            <th>{constant.settingPage.settingTableColumn.identifier}</th>
+            <th>{constant.settingPage.settingTableColumn.value}</th>
+            {/* <th style={{ textAlign: "center" }}>
               {constant.tableAction.status}
-            </th>
+            </th> */}
             <th className="action">{constant.tableAction.action}</th>
           </tr>
         </thead>
         <tbody>
-          {this.state.productdata.length > 0 ? (
+          {this.state.settingdata.length > 0 ? (
             <>
-              {this.state.productdata.map((data: any, index: any) => (
-                <tr key={index}>
-                   <td className="centers">
-                    <CustomInput
-                      // name="name"
-                      type="checkbox"
-                      id={data.productId}
-                      onChange={(e) => this.handleChange(data, e)}
-                      checked={
-                        this.state.productdata[index]["_rowChecked"] === true
-                      }
-                    />
-                  </td>
-                  <td>{data.productName}</td>
-                  <td>{data.price}</td>
-                  <td>{data.discountPrice}</td>
-                  <td style={{ textAlign: "center" }}>
-                    {data.isActive === true ? (
-                      <button
-                        className="status_active_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Inactive product",
-                            "Yes, Inactive it"
-                          )
-                        }
-                      >
-                        Active
-                      </button>
-                    ) : (
-                      <button
-                        className="status_Inactive_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Active product",
-                            "Yes, Active it"
-                          )
-                        }
-                      >
-                        Inactive
-                      </button>
-                    )}
-                  </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewProduct(data.productId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editProduct(data.productId)}
-                      ></i>
+              {this.state.settingdata.map((data: any, index: any) => (
+                  data.identifier === "City" ? (
+                    <tr key={index}>
+                    {/* <td className="centers">
+                     <CustomInput
+                       // name="name"
+                       type="checkbox"
+                       id={data.settingId}
+                       onChange={(e) => this.handleChange(data, e)}
+                       checked={
+                         this.state.settingdata[index]["_rowChecked"] === true
+                       }
+                     />
+                   </td> */}
+                   <td>{data.identifier}</td>
+                   <td>{data.value}</td>
+                   {/* <td style={{ textAlign: "center" }}>
+                     {data.isActive === true ? (
+                       <button
+                         className="status_active_color"
+                         onClick={() =>
+                           this.statusChange(
+                             data,
+                             "You should be Inactive setting",
+                             "Yes, Inactive it"
+                           )
+                         }
+                       >
+                         Active
+                       </button>
+                     ) : (
+                       <button
+                         className="status_Inactive_color"
+                         onClick={() =>
+                           this.statusChange(
+                             data,
+                             "You should be Active setting",
+                             "Yes, Active it"
+                           )
+                         }
+                       >
+                         Inactive
+                       </button>
+                     )}
+                   </td> */}
+                   <td className="action">
+                     <span className="padding">
+                       <i
+                         className="fa fa-eye"
+                         onClick={() => this.viewSetting(data.settingId)}
+                       ></i>
+                       <i
+                         className="fas fa-edit"
+                         onClick={() => this.editSetting(data.settingId)}
+                       ></i>
                        {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteProduct(
-                            data,
-                            "You should be Delete Product",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
-                </tr>
+                         className="fa fa-trash"
+                         onClick={() =>
+                           this.deleteSetting(
+                             data,
+                             "You should be Delete Setting",
+                             "Yes, Delete it"
+                           )
+                         }
+                       ></i> */}
+                     </span>
+                   </td>
+                 </tr>
+                  ) : ('')
               ))}
             </>
           ) : (
@@ -532,6 +499,7 @@ class ListProduct extends React.Component<{ history: any }> {
     );
   }
 
+  /** Get page data */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -571,6 +539,7 @@ class ListProduct extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,
@@ -611,12 +580,12 @@ class ListProduct extends React.Component<{ history: any }> {
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <CardTitle className="font">
-                          {constant.productPage.title.productTitle}
+                          {constant.settingPage.title.popularcitytitle}
                         </CardTitle>
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <div className="right">
-                          <Link to="/product">
+                          <Link to="/add-popular-city">
                             <Button
                               className="mb-2 mr-2 custom-button"
                               color="primary"
@@ -638,25 +607,23 @@ class ListProduct extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+
+                    {this.state.settingdata.length > 0 ? (
+                      <>{this.getTable(this.state.settingdata)}</>
+                    ) : (
+                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
+                    )}
+                      {/* {this.state.deleteFlag === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
-                        onClick={() => this.deleteAllData("You should be Delete Product",
-                        "Yes, Delete it")}
                       >
                         {constant.button.remove}
                       </Button>
                     ) : (
                       ""
-                    )}
-                    {this.state.productdata.length > 0 ? (
-                      <>{this.getTable(this.state.productdata)}</>
-                    ) : (
-                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
-                    )}
-                       
-                    {this.state.productdata.length > 0
+                    )} */}
+                    {this.state.settingdata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,
                           renderPageNumbers,
@@ -674,4 +641,4 @@ class ListProduct extends React.Component<{ history: any }> {
   }
 }
 
-export default ListProduct;
+export default ListPopularCity;

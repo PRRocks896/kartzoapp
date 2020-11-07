@@ -141,6 +141,11 @@ export default {
         url: '/list-matrix'
       },
       {
+        name: 'Popular-City',
+         icon: 'fa fa-cog fs-16',
+        url: '/list-popular-city'
+      },
+      {
         name:'Merchant Management',
         type:'header'
       },

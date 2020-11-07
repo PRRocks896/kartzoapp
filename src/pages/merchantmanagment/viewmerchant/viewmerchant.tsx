@@ -23,6 +23,8 @@ class ViewMerchant extends React.Component<{
   history: any;
   location: any;
 }> {
+
+  /** Merchant state */
   merchantState: addMerchantStateRequest = constant.merchantPage.state;
   state = {
     selectedFile: this.merchantState.selectedFile,
@@ -79,11 +81,13 @@ class ViewMerchant extends React.Component<{
     categoryname: this.merchantState.categoryname
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.getMerchantById = this.getMerchantById.bind(this);
   }
 
+  /** Page Render call */
   async componentDidMount() {
     document.title =
       constant.merchantPage.viewmerchanrpagedetails.viewmerchant +
@@ -94,6 +98,10 @@ class ViewMerchant extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param id : merchant id
+   */
   async getMerchantById(id: getDataByIdRequest) {
     const getMerchantById: any = await MerchantAPI.getMerchantById(id);
     // console.log("getMerchantById", getMerchantById);
@@ -147,6 +155,7 @@ class ViewMerchant extends React.Component<{
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

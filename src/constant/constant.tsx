@@ -887,9 +887,13 @@ export default {
   settingPage: {
     title: {
       addSettingTitle: "Add Setting",
+      addpopularcityTitle: "Add Popular City",
       settingTitle: "Setting Management",
       viewsettingTitle: "View Setting",
+      viewpopularcityTitle: "View Popular City",
       updatesettingTitle: "Update Setting",
+      updatepopularcityTitle: "Update Popular City",
+      popularcitytitle:'Popular City'
     },
     state: {
       count: "10",
@@ -917,6 +921,7 @@ export default {
     },
     viewsettingdetails: {
       viewsetting: "View Setting Details",
+      viewpopularcity:"View Popular City"
     },
   },
   feePage: {

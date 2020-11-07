@@ -19,6 +19,8 @@ import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, productTypeStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListProductType extends React.Component<{ history: any }> {
+
+  /** Product customise state */
   productCustomiseState:productTypeStateRequest = constant.productCustomisePage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -37,6 +39,7 @@ class ListProductType extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.editCustomiseType = this.editCustomiseType.bind(this);
@@ -62,6 +65,7 @@ class ListProductType extends React.Component<{ history: any }> {
     this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** Page Render call */
   async componentDidMount() {
     document.title =
       constant.productCustomisePage.title.typeTitle + utils.getAppName();
@@ -69,6 +73,12 @@ class ListProductType extends React.Component<{ history: any }> {
     this.getProductCustomiseTypeData();
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page : page number
+   * @param size : per page value
+   */
   async getProductCustomiseTypeData(
     searchText: string = "",
     page: number = 1,
@@ -100,6 +110,7 @@ class ListProductType extends React.Component<{ history: any }> {
     }
   }
 
+  /** Button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -111,6 +122,7 @@ class ListProductType extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** Button previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -122,10 +134,18 @@ class ListProductType extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : redirect in edit customise type 
+   */
   editCustomiseType(id: any) {
     this.props.history.push("/edit-type/" + id);
   }
 
+  /**
+   * 
+   * @param id : redirect in view customise type
+   */
   viewCustomiseType(id: any) {
     this.props.history.push("/view-type/" + id);
   }
@@ -149,7 +169,11 @@ class ListProductType extends React.Component<{ history: any }> {
   //     }
   //   }
   // }
-
+/**
+ * 
+ * @param text : text 
+ * @param btext : button message
+ */
   async deleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -181,6 +205,10 @@ class ListProductType extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : record per page
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
@@ -194,6 +222,10 @@ class ListProductType extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -209,6 +241,10 @@ class ListProductType extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : search list type value
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -219,6 +255,10 @@ class ListProductType extends React.Component<{ history: any }> {
     this.getProductCustomiseTypeData(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting table
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -230,6 +270,12 @@ class ListProductType extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : data
+   * @param text : message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -259,7 +305,11 @@ class ListProductType extends React.Component<{ history: any }> {
     }
   }
 
-   
+   /**
+    * 
+    * @param item : item
+    * @param e : event
+    */
   handleChange(item: any, e: any) {
     let _id = item.productCustomizeTypeId;
     let ind: any = this.state.typedata.findIndex(
@@ -306,6 +356,10 @@ class ListProductType extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box value
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.typedata.forEach((element: any) => {
@@ -338,7 +392,10 @@ class ListProductType extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
-
+/**
+ * 
+ * @param pageNumbers : page number 
+ */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -381,6 +438,7 @@ class ListProductType extends React.Component<{ history: any }> {
     return res;
   }
 
+  /** Get Table data  */
   getTable(typedata: any) {
     return (
       <table
@@ -493,6 +551,12 @@ class ListProductType extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param pageDecrementBtn : page decrement
+   * @param renderPageNumbers : page number
+   * @param pageIncrementBtn : page increment
+   */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -532,6 +596,7 @@ class ListProductType extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,

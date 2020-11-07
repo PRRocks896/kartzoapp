@@ -106,6 +106,9 @@ import ViewCouponMapping from '../pages/couponmanagment/viewmapping/viewmapping'
 import ListMenu from '../pages/usersmanagment/menu/listmenu';
 import ViewMenuItem from '../pages/usersmanagment/viewmenu/viewmenu';
 import AddMenu from '../pages/usersmanagment/addmenu/addmenu';
+import AddPopularCity from '../pages/settingmanagement/popular-city/addcity/addcity';
+import ViewPopularCity from '../pages/settingmanagement/popular-city/viewcity/viewcity';
+import ListPopularCity from '../pages/settingmanagement/popular-city/popular-city';
 
 class Main extends React.Component<{history:any}> {
   render() {
@@ -255,6 +258,22 @@ class Main extends React.Component<{history:any}> {
             <Route
               path="/view-menu/:id"
               render={(props: any) => <ViewMenuItem {...props} />}
+            />
+            <Route
+              path="/list-popular-city"
+              render={(props: any) => <ListPopularCity {...props} />}
+            />
+            <Route
+              path="/add-popular-city"
+              render={(props: any) => <AddPopularCity {...props} />}
+            />
+            <Route
+              path="/edit-popular-city/:id"
+              render={(props: any) => <AddPopularCity {...props} />}
+            />
+            <Route
+              path="/view-popular-city/:id"
+              render={(props: any) => <ViewPopularCity {...props} />}
             />
             {
                     this.props.history.location.pathname !== '/' ? (
