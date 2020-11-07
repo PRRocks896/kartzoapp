@@ -307,6 +307,11 @@ class Login extends React.Component<{ history: any }> {
             }
           });
       }
+    } else {
+      this.setState({
+        isButton: this.state.isButton = false,
+        disabled: false,
+      });
     }
   }
 
