@@ -18,6 +18,8 @@ import {
 import { getDataByIdRequest, addMatrixStateRequest } from "../../../../modelController";
 
 class ViewMatrix extends React.Component<{ history: any; location: any }> {
+
+  /** matrix state */
   matrixState: addMatrixStateRequest= constant.matrixPage.state;
   state = {
     isActive: this.matrixState.isActive,
@@ -31,12 +33,14 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
     to: this.matrixState.matrix,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.getMatrixById = this.getMatrixById.bind(this);
     // this.getMerchantById = this.getMerchantById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.matrixPage.viewMatrixdetails.viewMatrix + utils.getAppName();
@@ -46,6 +50,10 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param payoutId : payout id
+   */
   async getMatrixById(payoutId: any) {
     const obj:getDataByIdRequest = {
       id: payoutId,
@@ -70,6 +78,7 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

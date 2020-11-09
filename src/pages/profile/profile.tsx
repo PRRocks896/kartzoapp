@@ -24,6 +24,8 @@ interface User {
 }
 
 class Profile extends React.Component {
+
+  /** profile state */
   profileState : addProfileStateRequest = constant.profilePage.state;
   state = {
     selectedFile: this.profileState.selectedFile,
@@ -47,6 +49,7 @@ class Profile extends React.Component {
     file: this.profileState.file
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.Profile = this.Profile.bind(this);
@@ -55,12 +58,14 @@ class Profile extends React.Component {
     this.removeIcon = this.removeIcon.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title = constant.profileTitle + utils.getAppName();
     this.getUserRole();
     this.getUserById();
   }
 
+  /** get user by id */
   async getUserById() {
     var user = localStorage.getItem("user");
     if (user) {
@@ -95,6 +100,7 @@ class Profile extends React.Component {
     }
   }
 
+  /** Get user role */
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
     // console.log("getUserRole", getUserRole);
@@ -115,6 +121,10 @@ class Profile extends React.Component {
     }
   }
 
+  /**
+   * 
+   * @param event : role select
+   */
   onItemSelect(event: any) {
     if (event.target.value === "User") {
       this.setState({
@@ -129,6 +139,7 @@ class Profile extends React.Component {
     }
   }
 
+  /** check validate or not */
   validate() {
     let firstnameerror = "";
     let lastnameerror = "";
@@ -171,6 +182,10 @@ class Profile extends React.Component {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -178,6 +193,7 @@ class Profile extends React.Component {
     this.setState(state);
   }
 
+  /** profile */
   async Profile() {
     const isValid = this.validate();
     if (isValid) {
@@ -236,6 +252,10 @@ class Profile extends React.Component {
     }
   }
 
+  /**
+   * 
+   * @param event : file upload
+   */
   onChangeHandler(event: any) {
     if (this.state.filetrue === true) {
       this.setState({

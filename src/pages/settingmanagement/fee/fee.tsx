@@ -20,6 +20,8 @@ import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, feeStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListFee extends React.Component<{ history: any }> {
+
+  /** Fee State */
   feeState:feeStateRequest = constant.feePage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -38,6 +40,7 @@ class ListFee extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.editFee = this.editFee.bind(this);
@@ -60,6 +63,7 @@ class ListFee extends React.Component<{ history: any }> {
     this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** Page Render call */
   async componentDidMount() {
     document.title =
       constant.feePage.title.feeTitle + utils.getAppName();
@@ -67,6 +71,7 @@ class ListFee extends React.Component<{ history: any }> {
     this.getFeeData();
   }
 
+  /** get fee data */
   async getFeeData(
     searchText: string = "",
     page: number = 1,
@@ -98,6 +103,7 @@ class ListFee extends React.Component<{ history: any }> {
     }
   }
 
+  /** button increment */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -109,6 +115,7 @@ class ListFee extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** button decrement */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -120,10 +127,18 @@ class ListFee extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : fee id
+   */
   editFee(id: any) {
     this.props.history.push("/edit-fee/" + id);
   }
 
+  /**
+   * 
+   * @param id : fee id
+   */
   viewFee(id: any) {
     this.props.history.push("/view-fee/" + id);
   }
@@ -148,6 +163,11 @@ class ListFee extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param text : message
+   * @param btext : button message
+   */
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -179,6 +199,10 @@ class ListFee extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : record per page
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
@@ -192,6 +216,10 @@ class ListFee extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -207,6 +235,10 @@ class ListFee extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : fee search value
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -217,6 +249,10 @@ class ListFee extends React.Component<{ history: any }> {
     this.getFeeData(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting value
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -228,6 +264,12 @@ class ListFee extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : data
+   * @param text : message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -257,6 +299,11 @@ class ListFee extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.feeId;
     let ind: any = this.state.feedata.findIndex(
@@ -303,6 +350,10 @@ class ListFee extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.feedata.forEach((element: any) => {
@@ -336,7 +387,10 @@ class ListFee extends React.Component<{ history: any }> {
   }
 
 
-
+  /**
+   * 
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -379,6 +433,10 @@ class ListFee extends React.Component<{ history: any }> {
     return res;
   }
 
+  /**
+   * 
+   * @param feedata : get fee table data
+   */
   getTable(feedata: any) {
     return (
       <table
@@ -486,6 +544,12 @@ class ListFee extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param pageDecrementBtn : page decrement
+   * @param renderPageNumbers : render page number
+   * @param pageIncrementBtn : page increment
+   */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -525,6 +589,7 @@ class ListFee extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,

@@ -17,6 +17,8 @@ import { PayoutAPI, MerchantAPI } from "../../../../service/index.service";
 import { getDataByIdRequest, addPayoutStateRequest } from "../../../../modelController";
 
 class ViewPayout extends React.Component<{ history: any; location: any }> {
+
+  /** payout state */
   payoutState: addPayoutStateRequest = constant.payoutPage.state;
   state = {
     merchant: this.payoutState.merchant,
@@ -32,12 +34,14 @@ class ViewPayout extends React.Component<{ history: any; location: any }> {
     shopname: this.payoutState.shopname
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.getPayoutById = this.getPayoutById.bind(this);
     this.getMerchantById = this.getMerchantById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.payoutPage.title.viewpayoutTitle + utils.getAppName();
@@ -47,6 +51,10 @@ class ViewPayout extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param payoutId : product id
+   */
   async getPayoutById(payoutId: any) {
     const obj: getDataByIdRequest = {
       id: payoutId,
@@ -78,6 +86,10 @@ class ViewPayout extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param id : get merchant id
+   */
   async getMerchantById(id: any) {
     const getMerchantById: any = await MerchantAPI.getMerchantById(id);
     // console.log("getMerchantById", getMerchantById);
@@ -99,7 +111,7 @@ class ViewPayout extends React.Component<{ history: any; location: any }> {
     }
   }
 
-
+/** Render DOM */
   render() {
     return (
       <>

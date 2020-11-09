@@ -435,7 +435,7 @@ class ListPopularCity extends React.Component<{ history: any }> {
                      />
                    </td> */}
                    <td>{data.identifier}</td>
-                   <td>{data.value}</td>
+                   <td>{data.name}</td>
                    {/* <td style={{ textAlign: "center" }}>
                      {data.isActive === true ? (
                        <button

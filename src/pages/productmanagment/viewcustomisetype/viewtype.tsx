@@ -16,17 +16,21 @@ import constant from "../../../constant/constant";
 import { getDataByIdRequest, addProdcutTypeStateRequest } from "../../../modelController";
 
 class ViewProductType extends React.Component<{ history: any; location: any }> {
+
+  /** Product customise state */
   productCustomiseState : addProdcutTypeStateRequest= constant.productCustomisePage.state;
   state = {
     typeName: this.productCustomiseState.typeName,
     isActive: this.productCustomiseState.isActive
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.getCustomiseTypeById = this.getCustomiseTypeById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.productCustomisePage.title.viewTypeTitle + utils.getAppName();
@@ -36,6 +40,10 @@ class ViewProductType extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param productCustomiseTypeId : customise type id
+   */
   async getCustomiseTypeById(productCustomiseTypeId: any) {
     const obj:getDataByIdRequest = {
       id: productCustomiseTypeId,
@@ -63,6 +71,7 @@ class ViewProductType extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

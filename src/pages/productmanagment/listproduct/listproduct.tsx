@@ -303,6 +303,11 @@ class ListProduct extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.productId;
     let ind: any = this.state.productdata.findIndex(
@@ -349,6 +354,10 @@ class ListProduct extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.productdata.forEach((element: any) => {
@@ -381,6 +390,10 @@ class ListProduct extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -423,6 +436,7 @@ class ListProduct extends React.Component<{ history: any }> {
     return res;
   }
 
+  /** Get Table List */
   getTable(coupondata: any) {
     return (
       <table
@@ -532,6 +546,12 @@ class ListProduct extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param pageDecrementBtn : page decrement
+   * @param renderPageNumbers : page number
+   * @param pageIncrementBtn : page increment
+   */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -571,6 +591,7 @@ class ListProduct extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,

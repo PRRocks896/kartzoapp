@@ -21,6 +21,8 @@ import { MenuAPI } from "../../../service/index.service";
 // import { getDataByIdRequest, addCategoryStateRequest } from "../../../modelController";
 
 class AddMenu extends React.Component<{ history: any; location: any }> {
+
+  /** menu state */
   menuState: addMenuStateRequest = constant.menuPage.state;
   state = {
     menuitemname: this.menuState.menuitemname,
@@ -36,6 +38,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     menudata: this.menuState.menudata
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -46,6 +49,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     this.getAllMenu = this.getAllMenu.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     this.getAllMenu();
     const menuId = this.props.location.pathname.split("/")[2];
@@ -64,6 +68,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** get all menu */
   async getAllMenu() {
     const getAllMenu = await MenuAPI.getAllMenu();
     // console.log("getAllMenu", getAllMenu);
@@ -79,6 +84,10 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param id : menu id
+   */
   async getMenuDataById(id: any) {
     const obj: getDataByIdRequest = {
       id: id,
@@ -106,7 +115,10 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     }
   }
 
-
+/**
+ * 
+ * @param event : parent menu id
+ */
   onItemSelect(event: any) {
     this.setState({
       parentid:this.state.parentid = 
@@ -115,7 +127,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
   }
 
 
-
+/** validare check or not */
   validate() {
     let menuitemnameerror = "";
     let sortordererror = "";
@@ -136,6 +148,10 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -143,6 +159,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add menu */
   async addMenu() {
     const isValid = this.validate();
     if (isValid) {
@@ -178,6 +195,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** update menu */
   async updateMenu() {
     const isValid = this.validate();
     if (isValid) {
@@ -214,6 +232,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

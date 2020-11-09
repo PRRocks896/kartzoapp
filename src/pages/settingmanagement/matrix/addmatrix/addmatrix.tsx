@@ -28,6 +28,8 @@ import {
 import "./addmatrix.css";
 
 class AddMatrix extends React.Component<{ history: any; location: any }> {
+
+  /** matrix state */
   matrixState : addMatrixStateRequest = constant.matrixPage.state;
   state = {
     isActive: this.matrixState.isActive,
@@ -42,6 +44,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     feetypeid: this.matrixState.feetypeid,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -57,6 +60,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     // this.removeString = this.removeString.bind(this);
   }
 
+  /** Add click  */
   addClick() {
     this.setState((prevState: any) => ({
       addflag: this.state.addflag = true,
@@ -64,6 +68,10 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     }));
   }
 
+  /**
+   * 
+   * @param i : index number
+   */
   removeClick(i: number) {
     let matrix = [...this.state.matrix];
     matrix.splice(i, 1);
@@ -80,6 +88,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** page render call */
   async componentDidMount() {
     const matrixId = this.props.location.pathname.split("/")[2];
     if (matrixId !== undefined) {
@@ -99,6 +108,10 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     this.getFee();
   }
 
+  /**
+   * 
+   * @param matrixId : matrix id
+   */
   async getMatrixById(matrixId: any) {
     const obj:getDataByIdRequest = {
       id: matrixId,
@@ -130,12 +143,17 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : fee select
+   */
   onItemSelect(event: any) {
     this.setState({
       feetype: this.state.feetype = event.target.value,
     });
   }
 
+  /** get fee */
   async getFee() {
     const getFee: any = await FeeAPI.getFee();
     // console.log("getFee", getFee);
@@ -155,6 +173,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** validate or not */
   validate() {
     let feetypeerror = "";
 
@@ -169,6 +188,11 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param i : index
+   * @param e : event
+   */
   handleChange(i: number, e: any) {
     const { name, value } = e.target;
     let matrix = [...this.state.matrix];
@@ -188,6 +212,11 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
   //   return true;
   // }
 
+  /**
+   * 
+   * @param i :index
+   * @param e : event
+   */
   handleChangeFee(i: number, e: any) {
     const { name, value } = e.target;
     let matrix = [...this.state.matrix];
@@ -196,7 +225,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
   }
 
   
-
+/** matrix UI */
   matrixUI() {
     return this.state.matrix.map((el:any, i:number) => (
       <Row key={i}>
@@ -276,6 +305,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     ));
   }
 
+  /** Add Matrix */
   async addMatrix() {
     // console.log("feetype", this.state.feetype);
     // console.log("matrix", this.state.matrix);
@@ -318,6 +348,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Update Matrix */
   async updateMatrix() {
     // console.log("feetype", this.state.feetype);
     // console.log("matrix", this.state.matrix);
@@ -361,6 +392,7 @@ class AddMatrix extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

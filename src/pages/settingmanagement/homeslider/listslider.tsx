@@ -19,6 +19,8 @@ import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest, allStateRequest,sliderStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListSlider extends React.Component<{ history: any }> {
+
+  /** Home slider state */
   homesliderState:sliderStateRequest = constant.homesliderPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -37,6 +39,7 @@ class ListSlider extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.editSlider = this.editSlider.bind(this);
@@ -60,6 +63,7 @@ class ListSlider extends React.Component<{ history: any }> {
     this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** Page render call */
   async componentDidMount() {
     document.title =
       constant.homesliderPage.title.homeSliderTitle + utils.getAppName();
@@ -67,6 +71,12 @@ class ListSlider extends React.Component<{ history: any }> {
     this.getSliderData();
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page : page
+   * @param size : per page 
+   */
   async getSliderData(
     searchText: string = "",
     page: number = 1,
@@ -98,6 +108,7 @@ class ListSlider extends React.Component<{ history: any }> {
     }
   }
 
+  /** button increment */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -109,6 +120,7 @@ class ListSlider extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** button decrement */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -120,10 +132,18 @@ class ListSlider extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : slider id
+   */
   editSlider(id: any) {
     this.props.history.push("/edit-slider/" + id);
   }
 
+  /**
+   * 
+   * @param id : slider id
+   */
   viewSlider(id: any) {
     this.props.history.push("/view-slider/" + id);
   }
@@ -148,6 +168,11 @@ class ListSlider extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param text : text message
+   * @param btext : button message
+   */
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -179,6 +204,10 @@ class ListSlider extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : record per page value
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
@@ -192,6 +221,10 @@ class ListSlider extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -208,6 +241,10 @@ class ListSlider extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : search value
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -218,6 +255,10 @@ class ListSlider extends React.Component<{ history: any }> {
     this.getSliderData(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting table
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -229,6 +270,12 @@ class ListSlider extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : data
+   * @param text : text message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -254,6 +301,11 @@ class ListSlider extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param item : item
+   * @param e  event
+   */
   handleChange(item: any, e: any) {
     let _id = item.homeSliderId;
     let ind: any = this.state.sliderdata.findIndex(
@@ -300,6 +352,10 @@ class ListSlider extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.sliderdata.forEach((element: any) => {
@@ -332,7 +388,10 @@ class ListSlider extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
-
+/**
+ * 
+ * @param pageNumbers : page number
+ */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -375,6 +434,10 @@ class ListSlider extends React.Component<{ history: any }> {
     return res;
   }
 
+  /**
+   * 
+   * @param sliderdata : slider data
+   */
   getTable(sliderdata: any) {
     return (
       <table
@@ -469,6 +532,12 @@ class ListSlider extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param pageDecrementBtn : page decrement
+   * @param renderPageNumbers : page number
+   * @param pageIncrementBtn : page incement
+   */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -508,6 +577,7 @@ class ListSlider extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,

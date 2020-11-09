@@ -19,6 +19,8 @@ import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest, allStateRequest,payoutStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListPayout extends React.Component<{ history: any }> {
+
+  /** payout state */
   payoutState:payoutStateRequest = constant.payoutPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -37,6 +39,7 @@ class ListPayout extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.editPayout = this.editPayout.bind(this);
@@ -59,6 +62,7 @@ class ListPayout extends React.Component<{ history: any }> {
     // this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.payoutPage.title.payoutTitle + utils.getAppName();
@@ -66,6 +70,7 @@ class ListPayout extends React.Component<{ history: any }> {
     this.getPayoutData();
   }
 
+  /** get payout data */
   async getPayoutData(
     searchText: string = "",
     page: number = 1,
@@ -97,6 +102,7 @@ class ListPayout extends React.Component<{ history: any }> {
     }
   }
 
+  /** button increment */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -108,6 +114,7 @@ class ListPayout extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** button decrement */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -119,10 +126,18 @@ class ListPayout extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : payout id
+   */
   editPayout(id: any) {
     this.props.history.push("/edit-payout/" + id);
   }
 
+  /**
+   * 
+   * @param id : payout id
+   */
   viewPayout(id: any) {
     this.props.history.push("/view-payout/" + id);
   }

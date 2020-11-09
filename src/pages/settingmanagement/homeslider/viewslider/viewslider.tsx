@@ -18,6 +18,8 @@ import {
 import { getDataByIdRequest, addSliderStateRequest } from "../../../../modelController";
 
 class ViewSlider extends React.Component<{ history: any; location: any }> {
+
+  /** slider state */
   sliderState: addSliderStateRequest = constant.homesliderPage.state;
   state = {
     selectedFile: this.sliderState.selectedFile,
@@ -30,12 +32,14 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
     productLink: "",
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.getSliderById = this.getSliderById.bind(this);
     // this.getMerchantById = this.getMerchantById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.homesliderPage.title.viewHomesliderTitle + utils.getAppName();
@@ -45,6 +49,10 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param sliderId : slider id
+   */
   async getSliderById(sliderId: any) {
     const obj: getDataByIdRequest = {
       id: sliderId,
@@ -76,6 +84,7 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

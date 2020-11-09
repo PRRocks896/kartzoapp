@@ -17,6 +17,8 @@ import { SettingAPI } from "../../../../service/index.service";
 import { getDataByIdRequest, addSettingStateRequest } from "../../../../modelController";
 
 class ViewSetting extends React.Component<{ history: any; location: any }> {
+
+  /** setting state */
     settingState : addSettingStateRequest = constant.settingPage.state;
     state = {
       identifier: this.settingState.identifier,
@@ -28,11 +30,13 @@ class ViewSetting extends React.Component<{ history: any; location: any }> {
       settingid:this.settingState.settingid
     };
   
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.getSettingById = this.getSettingById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.settingPage.viewsettingdetails.viewsetting + utils.getAppName();
@@ -45,6 +49,10 @@ class ViewSetting extends React.Component<{ history: any; location: any }> {
       }
   }
 
+  /**
+   * 
+   * @param settingId : setting id
+   */
   async getSettingById(settingId: any) {
     const obj:getDataByIdRequest = {
       id: settingId,
@@ -72,6 +80,7 @@ class ViewSetting extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

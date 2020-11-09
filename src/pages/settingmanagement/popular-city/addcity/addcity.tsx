@@ -299,7 +299,7 @@ class AddPopularCity extends React.Component<{ history: any; location: any }> {
                                         (data: any, index: any) => (
                                           <option
                                             key={index}
-                                            value={data.name}
+                                            value={data.value}
                                           >
                                             {data.name}
                                           </option>

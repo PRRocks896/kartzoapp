@@ -22,6 +22,8 @@ import {
 import { StatusAPI, DeleteAPI, MenuAPI } from "../../../service/index.service";
 
 class ListMenu extends React.Component<{ history: any }> {
+
+  /** Menu state */
   menuState: menuStateRequest = constant.menuPage.state;
   userState: allStateRequest = constant.userPage.state;
   state = {
@@ -40,6 +42,7 @@ class ListMenu extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.editMenu = this.editMenu.bind(this);
@@ -63,6 +66,7 @@ class ListMenu extends React.Component<{ history: any }> {
     this.deleteDataById = this.deleteDataById.bind(this);
   }
 
+  /** Page render call */
   componentDidMount() {
     document.title =
       constant.menuPage.title.menuTitle + utils.getAppName();
@@ -70,6 +74,12 @@ class ListMenu extends React.Component<{ history: any }> {
     this.getMenuData();
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page : page number
+   * @param size : per page value
+   */
   async getMenuData(searchText: string = "", page: number = 1, size: number = 10) {
     const obj: getAllTableDataListRequest = {
       searchText: searchText,
@@ -95,11 +105,16 @@ class ListMenu extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param pageNumber : page number
+   */
   handlePageChange(pageNumber: number) {
     // console.log(`active page is ${pageNumber}`);
     this.setState({ activePage: pageNumber });
   }
 
+  /** button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -111,6 +126,7 @@ class ListMenu extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** button previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -122,10 +138,18 @@ class ListMenu extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param data : menu id
+   */
   editMenu(data: any) {
     this.props.history.push("/edit-menu/" + data.menuItemID);
   }
 
+  /**
+   * 
+   * @param data : menu id
+   */
   viewMenu(data: any) {
     this.props.history.push("/view-menu/" + data.menuItemID);
   }
@@ -149,6 +173,11 @@ class ListMenu extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param text : tex message
+   * @param btext : button message
+   */
   async deleteDataById(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -183,6 +212,10 @@ class ListMenu extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : record per page
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
@@ -195,6 +228,10 @@ class ListMenu extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param key : sorting table
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -206,6 +243,10 @@ class ListMenu extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -221,6 +262,10 @@ class ListMenu extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : menu list searching data
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj: getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -230,6 +275,12 @@ class ListMenu extends React.Component<{ history: any }> {
     this.getMenuData(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param data : data
+   * @param text : text message
+   * @param btext : buton message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj : statusChangeRequest = {
@@ -259,6 +310,11 @@ class ListMenu extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.menuItemID;
     let ind: any = this.state.menudata.findIndex((x: any) => x.menuItemID === _id);
@@ -303,6 +359,10 @@ class ListMenu extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.menudata.forEach((element: any) => {
@@ -335,6 +395,10 @@ class ListMenu extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -377,6 +441,7 @@ class ListMenu extends React.Component<{ history: any }> {
     return res;
   }
 
+  /** get table */
   getTable(userrole: any) {
     return (
       <table
@@ -484,6 +549,7 @@ class ListMenu extends React.Component<{ history: any }> {
     );
   }
 
+  /** get page data */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -523,6 +589,7 @@ class ListMenu extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,

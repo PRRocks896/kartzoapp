@@ -20,6 +20,8 @@ import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, settingStateRequest, allStateRequest } from "../../../modelController";
 
 class ListSetting extends React.Component<{ history: any }> {
+
+  /** setting state */
   settingState:settingStateRequest = constant.settingPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -38,6 +40,7 @@ class ListSetting extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.editSetting = this.editSetting.bind(this);
@@ -59,6 +62,7 @@ class ListSetting extends React.Component<{ history: any }> {
     // this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.settingPage.title.settingTitle + utils.getAppName();
@@ -66,6 +70,12 @@ class ListSetting extends React.Component<{ history: any }> {
     this.getSettingData();
   }
 
+  /**
+   * 
+   * @param searchText : search text
+   * @param page : page
+   * @param size : per page size
+   */
   async getSettingData(
     searchText: string = "",
     page: number = 1,
@@ -97,6 +107,7 @@ class ListSetting extends React.Component<{ history: any }> {
     }
   }
 
+  /** button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -108,6 +119,7 @@ class ListSetting extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** button previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -119,14 +131,28 @@ class ListSetting extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : setting id
+   */
   editSetting(id: any) {
     this.props.history.push("/edit-setting/" + id);
   }
 
+  /**
+   * 
+   * @param id : setting id
+   */
   viewSetting(id: any) {
     this.props.history.push("/view-setting/" + id);
   }
 
+  /**
+   * 
+   * @param data : data
+   * @param text : text message
+   * @param btext : button message
+   */
   async deleteSetting(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteByIdRequest = {
@@ -150,7 +176,10 @@ class ListSetting extends React.Component<{ history: any }> {
     }
   }
 
-
+/**
+ * 
+ * @param event : record per page select
+ */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
@@ -164,6 +193,10 @@ class ListSetting extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -179,6 +212,10 @@ class ListSetting extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : list setting data
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -189,6 +226,10 @@ class ListSetting extends React.Component<{ history: any }> {
     this.getSettingData(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting table
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -200,6 +241,12 @@ class ListSetting extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : data
+   * @param text : message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -301,7 +348,10 @@ class ListSetting extends React.Component<{ history: any }> {
   //   // console.log("deleteuserdata array", this.state.deleteuserdata);
   // }
 
-
+/**
+ * 
+ * @param pageNumbers : page number
+ */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -344,6 +394,10 @@ class ListSetting extends React.Component<{ history: any }> {
     return res;
   }
 
+  /**
+   * 
+   * @param settingdata : setting data
+   */
   getTable(settingdata: any) {
     return (
       <table
@@ -451,6 +505,12 @@ class ListSetting extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param pageDecrementBtn : page decrement
+   * @param renderPageNumbers : page number
+   * @param pageIncrementBtn : page increment
+   */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -490,6 +550,7 @@ class ListSetting extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,

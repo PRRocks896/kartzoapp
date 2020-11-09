@@ -36,6 +36,7 @@ class ViewPopularCity extends React.Component<{ history: any; location: any }> {
     this.getSettingById = this.getSettingById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.settingPage.viewsettingdetails.viewpopularcity + utils.getAppName();
@@ -48,6 +49,10 @@ class ViewPopularCity extends React.Component<{ history: any; location: any }> {
       }
   }
 
+  /**
+   * 
+   * @param settingId : setting id
+   */
   async getSettingById(settingId: any) {
     const obj:getDataByIdRequest = {
       id: settingId,
@@ -62,7 +67,7 @@ class ViewPopularCity extends React.Component<{ history: any; location: any }> {
         identifier: this.state.identifier = getSettingById.resultObject.identifier,
         settingid: this.state.settingid = getSettingById.resultObject.settingId,
         value: this.state.value =
-          getSettingById.resultObject.value,
+          getSettingById.resultObject.name,
         isActive: this.state.isActive = getSettingById.resultObject.isActive
       });
     } else {
@@ -75,6 +80,7 @@ class ViewPopularCity extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

@@ -19,6 +19,8 @@ import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, matrixStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
 
 class ListMatrix extends React.Component<{ history: any }> {
+
+  /** matrix state */
   matrixState:matrixStateRequest = constant.matrixPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -37,6 +39,7 @@ class ListMatrix extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.editmatrix = this.editmatrix.bind(this);
@@ -60,6 +63,7 @@ class ListMatrix extends React.Component<{ history: any }> {
     // this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.matrixPage.title.matrixTitle + utils.getAppName();
@@ -67,6 +71,12 @@ class ListMatrix extends React.Component<{ history: any }> {
     this.getMatrixData();
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page : per page
+   * @param size : per page value
+   */
   async getMatrixData(
     searchText: string = "",
     page: number = 1,
@@ -98,6 +108,7 @@ class ListMatrix extends React.Component<{ history: any }> {
     }
   }
 
+  /** button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -109,6 +120,7 @@ class ListMatrix extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** button previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -120,10 +132,18 @@ class ListMatrix extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : matrix id
+   */
   editmatrix(id: any) {
     this.props.history.push("/edit-matrix/" + id);
   }
 
+  /**
+   * 
+   * @param id : matrix id
+   */
   viewmatrix(id: any) {
     this.props.history.push("/view-matrix/" + id);
   }
@@ -169,6 +189,10 @@ class ListMatrix extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param event : record per page
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
@@ -182,6 +206,10 @@ class ListMatrix extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -197,6 +225,10 @@ class ListMatrix extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : search matrix value
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -207,6 +239,10 @@ class ListMatrix extends React.Component<{ history: any }> {
     this.getMatrixData(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting table
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -218,6 +254,12 @@ class ListMatrix extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : data
+   * @param text : text message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -323,6 +365,10 @@ class ListMatrix extends React.Component<{ history: any }> {
   //   // console.log("deleteuserdata array", this.state.deleteuserdata);
   // }
 
+  /**
+   * 
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -365,6 +411,10 @@ class ListMatrix extends React.Component<{ history: any }> {
     return res;
   }
 
+  /**
+   * 
+   * @param matrixdata : get table data
+   */
   getTable(matrixdata: any) {
     return (
       <table
@@ -438,6 +488,12 @@ class ListMatrix extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param pageDecrementBtn : page decrement
+   * @param renderPageNumbers : render page number
+   * @param pageIncrementBtn : page increment
+   */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -477,6 +533,7 @@ class ListMatrix extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,

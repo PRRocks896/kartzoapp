@@ -16,6 +16,8 @@ import constant from "../../../../constant/constant";
 import { getDataByIdRequest, addTaxRequest } from "../../../../modelController";
 
 class ViewTax extends React.Component<{ history: any; location: any }> {
+
+  /** Tax state */
   taxState : addTaxRequest = constant.taxPage.state;
   state = {
     mainCategoryId: this.taxState.mainCategoryId,
@@ -31,11 +33,13 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
     categoryname: this.taxState.categoryname,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.getTaxById = this.getTaxById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.taxPage.viewtaxdetails.viewtax + utils.getAppName();
@@ -46,6 +50,10 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param taxId : tax id
+   */
   async getTaxById(taxId: any) {
     const obj:getDataByIdRequest = {
       id: taxId
@@ -74,6 +82,7 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
