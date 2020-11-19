@@ -38,6 +38,7 @@ class UserRoleToRights extends React.Component {
     _deletecheck: this.roleState._deletecheck,
     _detailcheck: this.roleState._detailcheck,
     show: this.roleState.show,
+    rolename:this.roleState.rolename
   };
 
   /** constructor call */
@@ -88,8 +89,9 @@ class UserRoleToRights extends React.Component {
   async onItemSelect(event: any) {
     this.setState({
       roleid: this.state.roleid =
-        event.target.options[event.target.selectedIndex].value,
+        event.target.value,
       show: this.state.show = true,
+      rolename: this.state.rolename = event.target.options[event.target.selectedIndex].text
     });
     const obj:getDataByIdRequest = {
       id: this.state.roleid,
@@ -346,6 +348,17 @@ class UserRoleToRights extends React.Component {
 
     if (updateRolePreveliges) {
       if (updateRolePreveliges.resultObject !== null) {
+        const users: any = localStorage.getItem("user");
+        let user = JSON.parse(users);
+        if(this.state.rolename === user.role) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          localStorage.removeItem("merchantToken");
+          localStorage.removeItem("rolePreveliges");
+          localStorage.removeItem("menuItems");
+          localStorage.removeItem("refreshtoken");
+          window.location.href = "/#/login";
+        }
         const msg = "Role privileges Updated Successfully";
         utils.showSuccess(msg);
       } else {
@@ -361,7 +374,6 @@ class UserRoleToRights extends React.Component {
   /** Render DOM */
   render() {
     return (
-      <>
         <>
           <div className="ms-content-wrapper">
             <div className="row">
@@ -391,12 +403,15 @@ class UserRoleToRights extends React.Component {
                                 {this.state.userrole.length > 0
                                   ? this.state.userrole.map(
                                       (data: any, index:number) => (
+                                        data.name !== "Admin" ? (
                                         <option
-                                          key={data.value}
+                                          key={index}
+                                          id={data.name}
                                           value={data.value}
                                         >
                                           {data.name}
                                         </option>
+                                        ) : ('')
                                       )
                                     )
                                   : ""}
@@ -725,7 +740,6 @@ class UserRoleToRights extends React.Component {
             </div>
           </div>
         </>
-      </>
     );
   }
 }

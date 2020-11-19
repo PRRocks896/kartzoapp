@@ -697,6 +697,8 @@ class Users extends React.Component<{ history: any }> {
                           {constant.userPage.title.userTitle}
                         </CardTitle>
                       </Col>
+                      {
+                        (checkRights.checkViewRights('User') === true && checkRights.checkAddRights('User') === true) ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <div className="right">
                           <Link to="/adduser">
@@ -709,6 +711,10 @@ class Users extends React.Component<{ history: any }> {
                           </Link>
                         </div>
                       </Col>
+                        ) : (
+                          ''
+                        )
+                      }
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -748,7 +754,7 @@ class Users extends React.Component<{ history: any }> {
                         {constant.noDataFound.nodatafound}
                       </h1>
                     )}
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true && checkRights.checkViewRights('User') === true && checkRights.checkAddRights('User') === true ? (
                       <Button className="mb-2 mr-2 custom-button" color="primary" onClick={() => this.delleteAllData("You should be Delete user","Yes, Delete it")}>
                         {constant.button.remove}
                       </Button>
@@ -766,88 +772,9 @@ class Users extends React.Component<{ history: any }> {
                 </Card>
               </Col>
               ) : (
-                <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                <Card className="main-card mb-12">
-                  <CardHeader>
-                    <Row>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <CardTitle className="font">
-                          {constant.userPage.title.userTitle}
-                        </CardTitle>
-                      </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/adduser">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
-                    </Row>
-                  </CardHeader>
-                  <CardBody>
-                    <div className="filter">
-                      <CustomInput
-                        type="select"
-                        id="onselect"
-                        name="role"
-                        className="custom_text_width bottom_text"
-                        onChange={this.onRoleSelect}
-                      >
-                        <option value="">
-                          {constant.userPage.userTableColumn.roleselect}
-                        </option>
-                        {this.state.userrole.length > 0
-                          ? this.state.userrole.map(
-                              (data: any, index: number) => (
-                                <option key={data.value} value={data.value}>
-                                  {data.name}
-                                </option>
-                              )
-                            )
-                          : ""}
-                      </CustomInput>
-                      <input
-                        className="form-control custom_text_width"
-                        type="text"
-                        placeholder="Search"
-                        aria-label="Search"
-                        onKeyUp={this.searchApplicationDataKeyUp}
-                      />
-                    </div>
-                    {this.state.deleteFlag === true ? (
-                      <Button className="mb-2 mr-2 custom-button" color="primary" onClick={() => this.delleteAllData("You should be Delete user","Yes, Delete it")}>
-                        {constant.button.remove}
-                      </Button>
-                    ) : (
-                      ""
-                    )}
-                    {this.state.userdata.length > 0 ? (
-                      <>{this.getTable(this.state.userdata)}</>
-                    ) : (
-                      <h1 className="text-center mt-5">
-                        {constant.noDataFound.nodatafound}
-                      </h1>
-                    )}
-                  
-                    {this.state.userdata.length > 0
-                      ? this.getPageData(
-                          pageIncrementBtn,
-                          renderPageNumbers,
-                          pageDecrementBtn
-                        )
-                      : ""}
-                  </CardBody>
-                </Card>
-              </Col>
-                // <h1>You are not authorized</h1>
+                <h1>You are not authorized</h1>
               )
             }
-         
           </div>
         </div>
       </>

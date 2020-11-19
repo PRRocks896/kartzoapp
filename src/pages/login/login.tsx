@@ -254,6 +254,8 @@ class Login extends React.Component<{ history: any }> {
                 localStorage.setItem("user", JSON.stringify(userData));
                 localStorage.setItem("token", userData.token);
                 localStorage.setItem("refreshtoken", userData.refreshToken);
+                localStorage.setItem("rolePreveliges",  JSON.stringify(userData.roleprivileges));
+                localStorage.setItem("menuItems", JSON.stringify(userData.menuItems));
                 this.tokenexpire(userData.token);
               
                 const ipaddress = await publicIp.v4();
@@ -271,23 +273,23 @@ class Login extends React.Component<{ history: any }> {
                 if (getToken) {
                   localStorage.setItem("merchantToken", getToken.token);
                 }
-                const rightdata: getDataByIdRequest = {
-                  id: user.roleId,
-                };
-                var getRightsData = await RoleAPI.getRolePreveliges(rightdata);
-                // console.log("getRightsData", getRightsData);
-                if (getRightsData) {
-                  if (getRightsData.resultObject) {
-                    const menu = getRightsData.resultObject.menuItems;
-                    const rights = getRightsData.resultObject.roleprivileges;
-                    // // console.log("rigths",JSON.stringify(rights));
-                    localStorage.setItem("menuItems", JSON.stringify(menu));
-                    localStorage.setItem(
-                      "rolePreveliges",
-                      JSON.stringify(rights)
-                    );
-                  }
-                }
+                // const rightdata: getDataByIdRequest = {
+                //   id: user.roleId,
+                // };
+                // var getRightsData = await RoleAPI.getRolePreveliges(rightdata);
+                // // console.log("getRightsData", getRightsData);
+                // if (getRightsData) {
+                //   if (getRightsData.resultObject) {
+                //     const menu = getRightsData.resultObject.menuItems;
+                //     const rights = getRightsData.resultObject.roleprivileges;
+                //     // // console.log("rigths",JSON.stringify(rights));
+                //     localStorage.setItem("menuItems", JSON.stringify(menu));
+                //     localStorage.setItem(
+                //       "rolePreveliges",
+                //       JSON.stringify(rights)
+                //     );
+                //   }
+                // }
                 this.props.history.push("/dashboard");
               } else {
                 this.setState({

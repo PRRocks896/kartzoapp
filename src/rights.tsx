@@ -1,7 +1,7 @@
 const checkRights = {
   checkViewRights(module_name:any) {
    const viewdata:any = this.checkRightsData(module_name,'view');
-   // console.log("viewdata",viewdata);
+  //  console.log("viewdata",viewdata);
     if(viewdata) {
       var flag = 0;
       if (viewdata.ind > -1) {
@@ -15,12 +15,13 @@ const checkRights = {
   },
   checkAddRights(module_name: any) {
     const adddata:any = this.checkRightsData(module_name,'add');
+     console.log("adddata",adddata);
     if(adddata) {
       var flag = 0;
       if (adddata.ind > -1) {
-        if ("view" && adddata.user_right[adddata.ind].view === true) {
-          flag = 1;
-        }
+        // if ("view" && adddata.user_right[adddata.ind].view === true) {
+        //   flag = 1;
+        // }
         if ("add" && adddata.user_right[adddata.ind].add === true) {
           flag = 1;
         }
@@ -68,7 +69,13 @@ const checkRights = {
     // console.log("user_right",user_right)
     if (user_right && user_right.length) {
       if (module_name && type) {
-        let ind = user_right.findIndex((x: any) => x.menuItemController === module_name);
+        let ind = user_right.findIndex((x: any) => 
+        x.menuItemController === "" ? (
+          x.menuItem === module_name
+        ) : (
+          x.menuItemController === module_name
+        )
+        );
         return {
           user_right,ind
         }

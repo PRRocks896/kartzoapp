@@ -365,6 +365,7 @@ export default {
       _deletecheck: false,
       _detailcheck: false,
       show: false,
+      rolename:''
     },
     title: {
       title: "Select Role To Manage The All Rights:",
