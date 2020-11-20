@@ -3,15 +3,30 @@ import WebReqUrl from '../web-req/web-req';
 import apiUrl from '../apicontroller/apicontrollers';
 
 export default {
+
+    /**
+     * 
+     * @param data : add order
+     */
     addOrder: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.orderController.addOrder, data,false);
     },
+
+    /**
+     * 
+     * @param data : edit order
+     */
     editOrder: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.orderController.editOrder, data,false);
     },
     // deleteOrder: async function () {
     //     return await WebReqUrl.delete(Constant.apiUrl + apiUrl.orderController.deleteOrder);
     // },
+
+    /**
+     * 
+     * @param data : add order cart
+     */
     addOrderCart: async function (data: any) {
         return await WebReqUrl.post(Constant.apiUrl + apiUrl.orderController.addOrderCart,data,false);
     }
