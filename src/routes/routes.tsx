@@ -111,6 +111,7 @@ import ViewPopularCity from "../pages/settingmanagement/popular-city/viewcity/vi
 import ListPopularCity from "../pages/settingmanagement/popular-city/popular-city";
 
 class Main extends React.Component<{ history: any }> {
+  
   /** constructor call */
   constructor(props: any) {
     super(props);
@@ -123,6 +124,7 @@ class Main extends React.Component<{ history: any }> {
 
   }
 
+  /** Render DOM */
   render() {
     // let rights = {
     //   add: true,

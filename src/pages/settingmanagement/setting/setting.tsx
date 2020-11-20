@@ -402,7 +402,7 @@ class ListSetting extends React.Component<{ history: any }> {
     return (
       <table
       id="dtBasicExample"
-      className="table table-striped table-bordered table_responsive table-sm sortable"
+      className="table table-striped table-bordered table-sm sortable"
       width="100%"
       >
         <thead>

@@ -14,6 +14,7 @@ import ResetPassword from "./pages/resetpassword/resetpassword";
 class App extends React.Component {
   render() {
 
+    /** Private Route */
     const PrivateRoute = ({ component: Component, ...rest }: any) => (
       <Route
         {...rest}

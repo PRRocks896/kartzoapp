@@ -283,6 +283,7 @@ class Profile extends React.Component {
     }
   }
 
+  /** Remove Icon */
   removeIcon() {
     this.setState({
       file: this.state.file = '',
@@ -290,6 +291,7 @@ class Profile extends React.Component {
     EventEmitter.dispatch('imageUpload', this.state.file);
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
