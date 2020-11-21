@@ -88,6 +88,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
   _handleImageChange(e: any) {
     e.preventDefault();
     let images: any = Array.from(e.target.files);
+    console.log("images",images);
     this.setState({
       images: this.state.images = images,
     });

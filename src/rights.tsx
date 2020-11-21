@@ -70,10 +70,10 @@ const checkRights = {
     if (user_right && user_right.length) {
       if (module_name && type) {
         let ind = user_right.findIndex((x: any) => 
-        x.menuItemController === "" ? (
+        x.menuItemController === "null" ? (
           x.menuItem === module_name
         ) : (
-          x.menuItemController === module_name
+          x.menuItem === module_name
         )
         );
         return {

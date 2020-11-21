@@ -411,7 +411,13 @@ class UserRoleToRights extends React.Component {
                                         >
                                           {data.name}
                                         </option>
-                                        ) : ('')
+                                        ) : ( <option
+                                          key={index}
+                                          id={data.name}
+                                          value={data.value}
+                                        >
+                                          {data.name}
+                                        </option>)
                                       )
                                     )
                                   : ""}

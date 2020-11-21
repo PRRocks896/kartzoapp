@@ -115,7 +115,8 @@ export default {
       file:'',
       firstName:'',
       lastName:'',
-      classshow:'collapsed sidebar-manage'
+      classshow:'collapsed sidebar-manage',
+      sidebar:[]
     }
   },
 
@@ -333,7 +334,9 @@ export default {
       parentid:0,
       isActive:true,
       updateTrue:false,
-      menuid:''
+      menuid:'',
+      menuicon:'',
+      menuiconerror:''
     },
     menuTableColumn: {
       menuname: "Menu Name",
@@ -344,6 +347,7 @@ export default {
       select:'Select ParentID',
       isActive:'IsActive',
       isadminrole: "IsAdminRole",
+      menuicon:'Menu Icon'
     },
     viewmenu: {
       menuview: "View Menu",

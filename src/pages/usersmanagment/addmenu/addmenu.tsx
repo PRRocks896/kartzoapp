@@ -35,7 +35,9 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     isActive: this.menuState.isActive,
     updateTrue: this.menuState.updateTrue,
     menuid: this.menuState.menuid,
-    menudata: this.menuState.menudata
+    menudata: this.menuState.menudata,
+    menuicon: this.menuState.menuicon,
+    menuiconerror: this.menuState.menuiconerror
   };
 
   /** constructor call */
@@ -174,7 +176,8 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
           menuItemView: this.state.menuitemview,
           sortOrder: parseInt(this.state.sortorder),
           parentID: this.state.parentid,
-          isActive: this.state.isActive
+          isActive: this.state.isActive,
+          iconImage: this.state.menuicon
         }
         const addMenu = await MenuAPI.addMenu(obj);
         // console.log("addMenu", addMenu);
@@ -211,7 +214,8 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
           menuItemView: this.state.menuitemview,
           sortOrder: parseInt(this.state.sortorder),
           parentID: this.state.parentid,
-          isActive: this.state.isActive
+          isActive: this.state.isActive,
+          iconImage:this.state.menuicon
         }
         const editMenu = await MenuAPI.editMenu(obj);
         // console.log("editMenu", editMenu);
@@ -398,7 +402,30 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
                         </FormGroup>
                       </Col>
                     </Row>
-
+                    <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <FormGroup>
+                          <Label htmlFor="menuname">
+                            {
+                              constant.menuPage.menuTableColumn.menuicon
+                            }
+                          </Label>
+                          <Input
+                            type="text"
+                            id="menuicon"
+                            name="menuicon"
+                            className="form-control"
+                            value={this.state.menuicon}
+                            onChange={this.handleChangeEvent}
+                            placeholder="Enter your menu icon"
+                            required
+                          />
+                          <div className="mb-4 text-danger">
+                            {this.state.menuiconerror}
+                          </div>
+                        </FormGroup>
+                      </Col>
+                    </Row>
 
 
                     {this.state.updateTrue === true ? (

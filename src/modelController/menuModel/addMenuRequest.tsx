@@ -5,5 +5,6 @@ export interface addMenuRequest {
     menuItemView: string,
     sortOrder: number,
     parentID: number,
-    isActive: boolean
+    isActive: boolean,
+    iconImage:string
 }

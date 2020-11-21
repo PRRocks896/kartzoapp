@@ -14,6 +14,7 @@ import {
 import { Button, Input, FormGroup, Label } from "reactstrap";
 import { Modal } from "react-bootstrap";
 import { any } from "prop-types";
+import EventEmitter from "../../event";
 const interceptor = require("../../intercepter");
 const publicIp = require("public-ip");
 
@@ -165,53 +166,69 @@ class Login extends React.Component<{ history: any }> {
   /** Refresh token */
   async refreshToken() {
     
-    const ipaddress = publicIp.v4();
-    const users: any = localStorage.getItem("user");
-    let user = JSON.parse(users);
-    const data = {
-      deviceType: 1,
-      deviceId: "deviceId",
-      ipAddress: await ipaddress,
-      loginToken: user.token,
-      refreshToken: user.refreshToken,
-    };
+    // const ipaddress = publicIp.v4();
+    // const users: any = localStorage.getItem("user");
+    // let user = JSON.parse(users);
+    // const data = {
+    //   deviceType: 1,
+    //   deviceId: "deviceId",
+    //   ipAddress: await ipaddress,
+    //   loginToken: user.token,
+    //   refreshToken: user.refreshToken,
+    // };
 
-    axios
-    .post(constant.apiUrl + "token", data)
-    .then(async (res: any) => {
-      console.log("res",res);
-      const users: any = localStorage.getItem("user");
-      let user = JSON.parse(users);
-      user.token = res.data.token;
-      user.refreshToken =  res.data.refreshToken;
-      localStorage.setItem("user",JSON.stringify(user));
-      localStorage.setItem("token",res.data.token);
-      await this.tokenexpire(res.data.token);
-    })
+    // axios
+    // .post(constant.apiUrl + "token", data)
+    // .then(async (res: any) => {
+    //   console.log("res",res);
+    //   const users: any = localStorage.getItem("user");
+    //   let user = JSON.parse(users);
+    //   user.token = res.data.token;
+    //   user.refreshToken =  res.data.refreshToken;
+    //   localStorage.setItem("user",JSON.stringify(user));
+    //   localStorage.setItem("token",res.data.token);
+    //   await this.tokenexpire(res.data.token);
+    // })
   }
 
   /**
    * 
    * @param token : token
    */
-  tokenexpire(token:any) {
-    const jwtToken = JSON.parse(atob(token.split('.')[1]));
-    console.log("jwtToken",jwtToken);
-    // set a timeout to refresh the token a 2 minute before it expires
-    const expires = new Date(jwtToken.exp * 1000);
-    console.log("expires",expires);
-    const timeout:any = expires.getTime() - Date.now() - (120 * 1000);
-    console.log("timeout",timeout);
-    let _this:any = this;
-    // setTimeout(function() {
-    //   console.log('called time out');
-    //   _this.tokenexpire(token);
-    // }, timeout);
-    // setTimeout(() => (this.refreshToken(), timeout))
-    // this.setState({
-    //   refreshTokenTimeout:this.state.refreshTokenTimeout = 
-    // })
-    // console.log("refreshTokenTimeout",refreshTokenTimeout);
+  sidenavarray(rights:any,menu:any) {
+   console.log("rights",rights);
+   console.log("menu",menu);
+    let sideMenu:any = [];
+    menu.map((data: any, index: number) => {
+      if(data.menuItemView === 'header') {
+        sideMenu.push({
+          name: data.menuItemName,
+          type:data.menuItemView
+        })
+      }
+      if(data.menuItemView === 'Index') {
+        sideMenu.push({
+          name: data.menuItemName,
+          icon: data.iconImage,
+          url: '/' + data.menuItemController,
+          type: data.menuItemView
+        })
+      }
+    });
+  
+    localStorage.setItem('menuItems',JSON.stringify(sideMenu));
+    console.log("sideMenu",sideMenu);
+  //  let sidenavarray = [{name:'',type:''},{name:'',icon:'',url:'',type:''}];
+  //  if(rights && rights.length > 0) {
+  //   rights.map((menu:any,index:number) => {
+  //      menu.parentID === 0 ? (
+  //        sidenavarray.push(
+  //          {name:menu.menuItem,type:menu.menuItemView}
+
+  //          )
+  //      )
+  //    })
+  //  }
   }
 
   // stopRefreshTokenTimer() {
@@ -255,8 +272,8 @@ class Login extends React.Component<{ history: any }> {
                 localStorage.setItem("token", userData.token);
                 localStorage.setItem("refreshtoken", userData.refreshToken);
                 localStorage.setItem("rolePreveliges",  JSON.stringify(userData.roleprivileges));
-                localStorage.setItem("menuItems", JSON.stringify(userData.menuItems));
-                this.tokenexpire(userData.token);
+                // localStorage.setItem("menuItems", JSON.stringify(userData.menuItems));
+                this.sidenavarray(userData.roleprivileges,userData.menuItems);
               
                 const ipaddress = await publicIp.v4();
                 const users: any = localStorage.getItem("user");

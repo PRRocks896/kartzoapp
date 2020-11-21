@@ -15,6 +15,7 @@ class NavBar extends React.Component {
     firstName: this.navbarState.firstName,
     lastName: this.navbarState.lastName,
     classshow: this.navbarState.classshow,
+    sidebar:''
   };
 
   constructor(props: any) {
@@ -36,6 +37,8 @@ class NavBar extends React.Component {
         lastName: this.state.lastName = data,
       });
     });
+
+  
   }
 
   componentDidMount() {
@@ -85,8 +88,11 @@ class NavBar extends React.Component {
   }
 
   render() {
-    var rightdata: any = localStorage.getItem("rolePreveliges");
+    var rightdata: any = localStorage.getItem("menuItems");
     var user_right = JSON.parse(rightdata);
+
+    var rights: any = localStorage.getItem("rolePreveliges");
+    var user_menu = JSON.parse(rights);
 
     return (
       <div
@@ -147,10 +153,10 @@ class NavBar extends React.Component {
                   </span>
                 </a>
               </div>
-              {nav.items.map((menu: any, index: any) =>
+              {user_right.map((menu: any, index: any) =>
                 menu.type === "header" ? (
                   <div key={index} className="menu_name">
-                    {user_right.map((data: any, index: number) =>
+                    {user_menu.map((data: any, index: number) =>
                       data.menuItem === menu.name &&
                       checkRights.checkViewRights(data.menuItem) === true ? (
                         <span key={index} className="header_side">
@@ -162,19 +168,19 @@ class NavBar extends React.Component {
                     )}
                   </div>
                 ) : (
-                  user_right.map((data: any, index: number) =>
-                    data.menuItemController === menu.name &&
-                    checkRights.checkViewRights(data.menuItemController) ===
+                  user_menu.map((data: any, index: number) =>
+                    data.menuItem === menu.name &&
+                    checkRights.checkViewRights(data.menuItem) ===
                       true ? (
                       <a
                         key={index}
                         href="#"
-                        id={`dropdown-${menu.id}`}
+                      
                         className={this.activeRoute(menu.url)}
                         data-toggle="collapse"
-                        data-target={`#${menu.id}`}
+                       
                         aria-expanded="false"
-                        aria-controls={`${menu.id}`}
+                     
                         onClick={() => this.handleClick(menu.url)}
                       >
                         <span key={index}>
@@ -189,7 +195,7 @@ class NavBar extends React.Component {
                 )
               )}
 
-              {/* {nav.items.map((menu: any, index: any) =>
+              {/* {user_right.map((menu: any, index: any) =>
                 menu.type === "header" ? (
                   <div key={index} className="menu_name">
                     <span key={index} className="header_side">
@@ -200,12 +206,12 @@ class NavBar extends React.Component {
                   <a
                     key={index}
                     href="#"
-                    id={`dropdown-${menu.id}`}
+                 
                     className={this.activeRoute(menu.url)}
                     data-toggle="collapse"
-                    data-target={`#${menu.id}`}
+                 
                     aria-expanded="false"
-                    aria-controls={`${menu.id}`}
+       
                     onClick={() => this.handleClick(menu.url)}
                   >
                     <span key={index}>

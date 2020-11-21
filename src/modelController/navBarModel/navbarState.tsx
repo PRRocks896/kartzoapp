@@ -4,5 +4,6 @@ export interface navBarStateRequest {
     file:string,
     firstName:string,
     lastName:string,
-    classshow:string
+    classshow:string,
+    sidebar:any
 }
