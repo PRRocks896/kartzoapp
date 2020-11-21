@@ -25,6 +25,8 @@ class Login extends React.Component<{ history: any }> {
   state = {
     email: this.loginState.email,
     emailerror: this.loginState.emailerror,
+    forgotemail: this.loginState.forgotemail,
+    forgotemailerror: this.loginState.forgotemailerror,
     password: this.loginState.password,
     passworderror: this.loginState.passworderror,
     ipAddress: this.loginState.ipAddress,
@@ -60,9 +62,9 @@ class Login extends React.Component<{ history: any }> {
   /** Page Render  Call */
   async componentDidMount() {
     document.title = constant.loginTitle + utils.getAppName();
-    const ipaddress = publicIp.v4();
+    // const ipaddress = await publicIp.v4();
     this.setState({
-      ipAddress: this.state.ipAddress = await ipaddress,
+      ipAddress: this.state.ipAddress = "104.168.123.145",
       isButton: this.state.isButton = false,
     });
   }
@@ -120,17 +122,17 @@ class Login extends React.Component<{ history: any }> {
 
   /** check validate or not password */
   validatePassword() {
-    let emailerror = "";
+    let forgotemailerror = "";
 
     const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-    if (!this.state.email) {
-      emailerror = "please enter email";
-    } else if (!reg.test(this.state.email)) {
-      emailerror = "please enter valid email";
+    if (!this.state.forgotemail) {
+      forgotemailerror = "please enter email";
+    } else if (!reg.test(this.state.forgotemail)) {
+      forgotemailerror = "please enter valid email";
     }
 
-    if (emailerror) {
-      this.setState({ emailerror });
+    if (forgotemailerror) {
+      this.setState({ forgotemailerror });
       return false;
     }
     return true;
@@ -141,11 +143,11 @@ class Login extends React.Component<{ history: any }> {
     const isValid = this.validatePassword();
     if (isValid) {
       this.setState({
-        emailerror: this.state.emailerror = "",
+        forgotemailerror: this.state.forgotemailerror = "",
       });
-      if (this.state.email) {
+      if (this.state.forgotemail) {
         const obj: forgotPasswordRequest = {
-          email: this.state.email,
+          email: this.state.forgotemail,
         };
 
         var forgotPassword: any = await API.forgotPassword(obj);
@@ -543,14 +545,14 @@ class Login extends React.Component<{ history: any }> {
                   <Label> {constant.email}:</Label>
                   <Input
                     type="email"
-                    name="email"
+                    name="forgotemail"
                     placeholder="Email Address"
                     className="form-control"
                     onChange={this.handleChangeEventPassword}
                     required
                   />
                   <div className="mb-4 text-danger">
-                    {this.state.emailerror}
+                    {this.state.forgotemailerror}
                   </div>
                 </div>
               </FormGroup>

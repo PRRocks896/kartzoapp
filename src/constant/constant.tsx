@@ -166,7 +166,9 @@ export default {
       isButton: false,
       type: "password",
       forgot:false,
-      disabled:false
+      disabled:false,
+      forgotemail:'',
+      forgotemailerror:''
     },
   },
 
