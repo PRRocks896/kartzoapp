@@ -63,9 +63,9 @@ class Login extends React.Component<{ history: any }> {
   /** Page Render  Call */
   async componentDidMount() {
     document.title = constant.loginTitle + utils.getAppName();
-    // const ipaddress = await publicIp.v4();
+    const ipaddress = await publicIp.v4();
     this.setState({
-      ipAddress: this.state.ipAddress = "104.168.123.145",
+      ipAddress: this.state.ipAddress = ipaddress,
       isButton: this.state.isButton = false,
     });
   }
@@ -278,13 +278,13 @@ class Login extends React.Component<{ history: any }> {
                 // localStorage.setItem("menuItems", JSON.stringify(userData.menuItems));
                 this.sidenavarray(userData.roleprivileges,userData.menuItems);
               
-                // const ipaddress = await publicIp.v4();
+                const ipaddress = await publicIp.v4();
                 const users: any = localStorage.getItem("user");
                 let user = JSON.parse(users);
                 const obj: loginCreateRequest = {
                   deviceType: 1,
                   deviceId: "deviceId",
-                  ipAddress:  "104.168.123.145",
+                  ipAddress: await ipaddress,
                   loginToken: user.token,
                   refreshToken: user.refreshToken,
                 };
