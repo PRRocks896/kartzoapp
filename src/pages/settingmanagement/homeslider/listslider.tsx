@@ -17,6 +17,7 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest, allStateRequest,sliderStateRequest, deleteAllDataRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListSlider extends React.Component<{ history: any }> {
 
@@ -459,7 +460,12 @@ class ListSlider extends React.Component<{ history: any }> {
             </th>
             <th>{constant.homesliderPage.homeSliderTableColumn.sliderimage}</th>
             <th>{constant.homesliderPage.homeSliderTableColumn.alterTag}</th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkViewRights("HomeSlider") === true ||
+            checkRights.checkEditRights("HomeSlider") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -499,28 +505,31 @@ class ListSlider extends React.Component<{ history: any }> {
                     )}
                   </td>
                   <td>{data.alterTag}</td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
+                  {checkRights.checkViewRights("HomeSlider") === true ||
+                  checkRights.checkEditRights("HomeSlider") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("HomeSlider") === true ? (
+                        <i
                         className="fa fa-eye"
                         onClick={() => this.viewSlider(data.homeSliderId)}
                       ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editSlider(data.homeSliderId)}
-                      ></i>
-                        {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteSlider(
-                            data,
-                            "You should be Delete Slider",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("HomeSlider") === true ? (
+                            <i
+                            className="fas fa-edit"
+                            onClick={() => this.editSlider(data.homeSliderId)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -621,18 +630,22 @@ class ListSlider extends React.Component<{ history: any }> {
                           {constant.homesliderPage.title.homeSliderTitle}
                         </CardTitle>
                       </Col>
+                      {checkRights.checkAddRights("HomeSlider") === true ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/add-slider">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      <div className="right">
+                        <Link to="/add-slider">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                    ) : (
+                      ""
+                    )}
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -645,7 +658,7 @@ class ListSlider extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true &&  checkRights.checkDeleteRights("HomeSlider") === true  ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
@@ -658,7 +671,6 @@ class ListSlider extends React.Component<{ history: any }> {
                       ""
                     )}
 
-                    
                     {this.state.sliderdata.length > 0 ? (
                       <>{this.getTable(this.state.sliderdata)}</>
                     ) : (

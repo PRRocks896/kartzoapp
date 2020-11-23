@@ -13,16 +13,24 @@ import {
 } from "reactstrap";
 import {
   StatusAPI,
-  MerchantAPI,DeleteAPI
+  MerchantAPI,
+  DeleteAPI,
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, allStateRequest,merchantStateRequest, deleteAllDataRequest } from "../../../modelController";
+import {
+  getAllTableDataListRequest,
+  statusChangeRequest,
+  deleteByIdRequest,
+  allStateRequest,
+  merchantStateRequest,
+  deleteAllDataRequest,
+} from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListMerchant extends React.Component<{ history: any }> {
-
   /** Merchant state */
-  merchantState:merchantStateRequest = constant.merchantPage.state;
-  userState:allStateRequest = constant.userPage.state;
+  merchantState: merchantStateRequest = constant.merchantPage.state;
+  userState: allStateRequest = constant.userPage.state;
   state = {
     count: this.merchantState.count,
     currentPage: this.merchantState.currentPage,
@@ -72,7 +80,7 @@ class ListMerchant extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param searchText : search value
    * @param page : page
    * @param size : per page value
@@ -82,26 +90,26 @@ class ListMerchant extends React.Component<{ history: any }> {
     page: number = 1,
     size: number = 10
   ) {
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: searchText,
       page: page,
-      size: size
+      size: size,
     };
 
     var getMerchantData = await MerchantAPI.getMerchantData(obj);
     // console.log("getMerchantData", getMerchantData);
 
     if (getMerchantData) {
-      if(getMerchantData.status === 200) {
-      this.setState({
-        merchantdata: this.state.merchantdata =
-          getMerchantData.resultObject.data,
-        count: this.state.count = getMerchantData.resultObject.totalcount,
-      });
-    } else {
-      const msg1 = getMerchantData.message;
-      utils.showError(msg1);
-    }
+      if (getMerchantData.status === 200) {
+        this.setState({
+          merchantdata: (this.state.merchantdata =
+            getMerchantData.resultObject.data),
+          count: (this.state.count = getMerchantData.resultObject.totalcount),
+        });
+      } else {
+        const msg1 = getMerchantData.message;
+        utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -133,7 +141,7 @@ class ListMerchant extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param id : edit merchant id
    */
   editMerchant(id: any) {
@@ -141,7 +149,7 @@ class ListMerchant extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param id : view merchant id
    */
   viewMerchant(id: any) {
@@ -169,7 +177,7 @@ class ListMerchant extends React.Component<{ history: any }> {
   // }
 
   /**
-   * 
+   *
    * @param text : message
    * @param btext : button message
    */
@@ -177,7 +185,7 @@ class ListMerchant extends React.Component<{ history: any }> {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
         moduleName: "Merchant",
-        id: this.state.deleteuserdata
+        id: this.state.deleteuserdata,
       };
       var deleteAllData = await DeleteAPI.deleteAllMerchantData(obj);
       // console.log("deleteAllData", deleteAllData);
@@ -185,18 +193,18 @@ class ListMerchant extends React.Component<{ history: any }> {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
           utils.showSuccess(msg1);
-        this.getMerchantData(
-          "",
-          parseInt(this.state.currentPage),
-          parseInt(this.state.items_per_page)
-        );
-        this.setState({
-          deleteFlag:this.state.deleteFlag = false
-        })
-      } else {
-        const msg1 = deleteAllData.data.message;
-        utils.showError(msg1);
-      }
+          this.getMerchantData(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+          this.setState({
+            deleteFlag: (this.state.deleteFlag = false),
+          });
+        } else {
+          const msg1 = deleteAllData.data.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -205,13 +213,13 @@ class ListMerchant extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param event : record per page
    */
   onItemSelect(event: any) {
     this.setState({
-      items_per_page: this.state.items_per_page =
-        event.target.options[event.target.selectedIndex].value,
+      items_per_page: (this.state.items_per_page =
+        event.target.options[event.target.selectedIndex].value),
     });
 
     this.getMerchantData(
@@ -221,15 +229,15 @@ class ListMerchant extends React.Component<{ history: any }> {
     );
   }
 
- /**
-  * 
-  * @param event : click on next page
-  */
+  /**
+   *
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
-      currentPage: this.state.currentPage = event.target.id,
+      currentPage: (this.state.currentPage = event.target.id),
     });
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: "",
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
@@ -239,11 +247,11 @@ class ListMerchant extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param e : search merchant value
    */
   async searchApplicationDataKeyUp(e: any) {
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: e.target.value,
       page: 1,
       size: parseInt(this.state.items_per_page),
@@ -253,7 +261,7 @@ class ListMerchant extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param key : sorting table
    */
   handleSort(key: any) {
@@ -261,21 +269,21 @@ class ListMerchant extends React.Component<{ history: any }> {
       switchSort: !this.state.switchSort,
     });
     let copyTableData = [...this.state.merchantdata];
-    copyTableData.sort(utils.compareByDesc(key,this.state.switchSort));
+    copyTableData.sort(utils.compareByDesc(key, this.state.switchSort));
     this.setState({
-      merchantdata: this.state.merchantdata = copyTableData,
+      merchantdata: (this.state.merchantdata = copyTableData),
     });
   }
 
   /**
-   * 
+   *
    * @param data : data
    * @param text : message
    * @param btext : button message
    */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj:statusChangeRequest = {
+      const obj: statusChangeRequest = {
         moduleName: "Merchant",
         id: data.merchantID,
         isActive: data.isActive === true ? false : true,
@@ -286,15 +294,15 @@ class ListMerchant extends React.Component<{ history: any }> {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
           utils.showSuccess(msg1);
-        this.getMerchantData(
-          "",
-          parseInt(this.state.currentPage),
-          parseInt(this.state.items_per_page)
-        );
-      } else {
-        const msg1 = getStatusChange.message;
-        utils.showError(msg1);
-      }
+          this.getMerchantData(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+        } else {
+          const msg1 = getStatusChange.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -303,7 +311,7 @@ class ListMerchant extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param item : item
    * @param e : event
    */
@@ -317,7 +325,7 @@ class ListMerchant extends React.Component<{ history: any }> {
       let newState: any = !item._rowChecked;
       data[ind]._rowChecked = newState;
       this.setState({
-        merchantdata: this.state.merchantdata = data,
+        merchantdata: (this.state.merchantdata = data),
       });
     }
     if (
@@ -339,22 +347,22 @@ class ListMerchant extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newarray,
+      deleteuserdata: (this.state.deleteuserdata = newarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   /**
-   * 
+   *
    * @param e : main check box event
    */
   handleMainChange(e: any) {
@@ -375,22 +383,22 @@ class ListMerchant extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newmainarray,
+      deleteuserdata: (this.state.deleteuserdata = newmainarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   /**
-   * 
+   *
    * @param pageNumbers : page number
    */
   pagination(pageNumbers: any) {
@@ -439,13 +447,13 @@ class ListMerchant extends React.Component<{ history: any }> {
   getTable(coupondata: any) {
     return (
       <table
-      id="dtBasicExample"
-      className="table table-striped table-bordered table_responsive table-sm sortable"
-      width="100%"
+        id="dtBasicExample"
+        className="table table-striped table-bordered table_responsive table-sm sortable"
+        width="100%"
       >
         <thead>
           <tr onClick={() => this.handleSort("firstName")}>
-          <th className="centers">
+            <th className="centers">
               <CustomInput
                 name="name"
                 defaultValue="value"
@@ -459,10 +467,19 @@ class ListMerchant extends React.Component<{ history: any }> {
             <th>{constant.merchantPage.merchantTableColumn.merchantname}</th>
             <th>{constant.merchantPage.merchantTableColumn.email}</th>
             <th>{constant.merchantPage.merchantTableColumn.Address}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Merchant") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Merchant") === true ||
+            checkRights.checkEditRights("Merchant") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -470,7 +487,7 @@ class ListMerchant extends React.Component<{ history: any }> {
             <>
               {this.state.merchantdata.map((data: any, index: any) => (
                 <tr key={index}>
-                   <td className="centers">
+                  <td className="centers">
                     <CustomInput
                       // name="name"
                       type="checkbox"
@@ -482,60 +499,69 @@ class ListMerchant extends React.Component<{ history: any }> {
                     />
                   </td>
                   <td>{data.shopName}</td>
-                  <td>{data.firstName} {data.lastName}</td>
+                  <td>
+                    {data.firstName} {data.lastName}
+                  </td>
                   <td>{data.email}</td>
                   <td>{data.address}</td>
-                  <td style={{ textAlign: "center" }}>
-                    {data.isActive === true ? (
-                      <button
-                        className="status_active_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Inactive merchant",
-                            "Yes, Inactive it"
-                          )
-                        }
-                      >
-                        Active
-                      </button>
-                    ) : (
-                      <button
-                        className="status_Inactive_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Active merchant",
-                            "Yes, Active it"
-                          )
-                        }
-                      >
-                        Inactive
-                      </button>
-                    )}
-                  </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewMerchant(data.merchantID)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editMerchant(data.merchantID)}
-                      ></i>
-                      {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteMerchant(
-                            data,
-                            "You should be Delete Merchant",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  {checkRights.checkEditRights("Merchant") === true ? (
+                    <td style={{ textAlign: "center" }}>
+                      {data.isActive === true ? (
+                        <button
+                          className="status_active_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Inactive merchant",
+                              "Yes, Inactive it"
+                            )
+                          }
+                        >
+                          Active
+                        </button>
+                      ) : (
+                        <button
+                          className="status_Inactive_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Active merchant",
+                              "Yes, Active it"
+                            )
+                          }
+                        >
+                          Inactive
+                        </button>
+                      )}
+                    </td>
+                  ) : (
+                    ""
+                  )}
+                  {checkRights.checkViewRights("Merchant") === true ||
+                  checkRights.checkEditRights("Merchant") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Merchant") === true ? (
+                          <i
+                            className="fa fa-eye"
+                            onClick={() => this.viewMerchant(data.merchantID)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Merchant") === true ? (
+                          <i
+                            className="fas fa-edit"
+                            onClick={() => this.editMerchant(data.merchantID)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -548,7 +574,7 @@ class ListMerchant extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param pageDecrementBtn : page decrement
    * @param renderPageNumbers : page number
    * @param pageIncrementBtn : page increment
@@ -636,18 +662,22 @@ class ListMerchant extends React.Component<{ history: any }> {
                           {constant.merchantPage.title.merchantTitle}
                         </CardTitle>
                       </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/merchant">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      {checkRights.checkAddRights("Merchant") === true ? (
+                        <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                          <div className="right">
+                            <Link to="/merchant">
+                              <Button
+                                className="mb-2 mr-2 custom-button"
+                                color="primary"
+                              >
+                                {constant.button.add}
+                              </Button>
+                            </Link>
+                          </div>
+                        </Col>
+                      ) : (
+                        ""
+                      )}
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -660,12 +690,17 @@ class ListMerchant extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true &&
+                    checkRights.checkDeleteRights("Merchant") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
-                        onClick={() => this.deleteAllData("You should be Delete Merchant",
-                        "Yes, Delete it")}
+                        onClick={() =>
+                          this.deleteAllData(
+                            "You should be Delete Merchant",
+                            "Yes, Delete it"
+                          )
+                        }
                       >
                         {constant.button.remove}
                       </Button>
@@ -675,9 +710,11 @@ class ListMerchant extends React.Component<{ history: any }> {
                     {this.state.merchantdata.length > 0 ? (
                       <>{this.getTable(this.state.merchantdata)}</>
                     ) : (
-                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
+                      <h1 className="text-center mt-5">
+                        {constant.noDataFound.nodatafound}
+                      </h1>
                     )}
-                     
+
                     {this.state.merchantdata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,

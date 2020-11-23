@@ -18,6 +18,7 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, settingStateRequest, allStateRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListSetting extends React.Component<{ history: any }> {
 
@@ -422,7 +423,12 @@ class ListSetting extends React.Component<{ history: any }> {
             {/* <th style={{ textAlign: "center" }}>
               {constant.tableAction.status}
             </th> */}
-            <th className="action">{constant.tableAction.action}</th>
+             {checkRights.checkViewRights("Setting") === true ||
+            checkRights.checkEditRights("Setting") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -472,28 +478,31 @@ class ListSetting extends React.Component<{ history: any }> {
                       </button>
                     )}
                   </td> */}
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewSetting(data.settingId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editSetting(data.settingId)}
-                      ></i>
-                      {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteSetting(
-                            data,
-                            "You should be Delete Setting",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                    {checkRights.checkViewRights("Setting") === true ||
+                  checkRights.checkEditRights("Setting") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Setting") === true ? (
+                           <i
+                           className="fa fa-eye"
+                           onClick={() => this.viewSetting(data.settingId)}
+                         ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Setting") === true ? (
+                          <i
+                          className="fas fa-edit"
+                          onClick={() => this.editSetting(data.settingId)}
+                        ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -594,18 +603,23 @@ class ListSetting extends React.Component<{ history: any }> {
                           {constant.settingPage.title.settingTitle}
                         </CardTitle>
                       </Col>
+                      {checkRights.checkAddRights("Setting") === true ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/add-setting">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      <div className="right">
+                        <Link to="/add-setting">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                    ) : (
+                      ""
+                    )}
+                     
                     </Row>
                   </CardHeader>
                   <CardBody>

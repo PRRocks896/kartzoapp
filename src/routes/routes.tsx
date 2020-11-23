@@ -109,26 +109,19 @@ import AddMenu from "../pages/usersmanagment/addmenu/addmenu";
 import AddPopularCity from "../pages/settingmanagement/popular-city/addcity/addcity";
 import ViewPopularCity from "../pages/settingmanagement/popular-city/viewcity/viewcity";
 import ListPopularCity from "../pages/settingmanagement/popular-city/popular-city";
+import checkRights from "../rights";
 
 class Main extends React.Component<{ history: any }> {
-  
   /** constructor call */
   constructor(props: any) {
     super(props);
     // console.log("Main props", this.props);
   }
 
-  componentDidMount() {
-    // const rightdata: any = localStorage.getItem("rolePreveliges");
-    // let user_right = JSON.parse(rightdata);
-
-  }
+  componentDidMount() {}
 
   /** Render DOM */
   render() {
-    // let rights = {
-    //   add: true,
-    // };
     return (
       <Router>
         <NavBar {...this.props}>
@@ -138,127 +131,321 @@ class Main extends React.Component<{ history: any }> {
               name="Dashboard"
               render={(props: any) => <Dashboard {...props} />}
             />
+
             <Route
               path="/signup"
               render={(props: any) => <Signup {...props} />}
             />
-            <Route
-              path="/users"
-              render={(props: any) => <Users {...props} />}
-            />
-            <Route
-              path="/userrole"
-              render={(props: any) => <UserRole {...props} />}
-            />
-            <Route
-              path="/userroletorights"
-              render={(props: any) => <UserRoleToRights {...props} />}
-            />
+
+            {checkRights.checkViewRights("User Management") === true &&
+            checkRights.checkViewRights("User") === true ? (
+              <Route
+                path="/users"
+                render={(props: any) => <Users {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("User Management") === true &&
+            checkRights.checkViewRights("Role") === true ? (
+              <Route
+                path="/userrole"
+                render={(props: any) => <UserRole {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("User Management") === true &&
+            checkRights.checkViewRights("Role Privileges") === true ? (
+              <Route
+                path="/userroletorights"
+                render={(props: any) => <UserRoleToRights {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
             <Route
               path="/profile"
               render={(props: any) => <Profile {...props} />}
             />
-            <Route
-              path="/adduser"
-              render={(props: any) => <AddUser {...props} />}
-            />
-            <Route
-              path="/edituser/:id"
-              render={(props: any) => <AddUser {...props} />}
-            />
-            <Route
-              path="/category"
-              render={(props: any) => <Category {...props} />}
-            />
-            <Route
-              path="/subcategory"
-              render={(props: any) => <SubCategory {...props} />}
-            />
-            <Route
-              path="/addcategory"
-              render={(props: any) => <AddCategory {...props} />}
-            />
-            <Route
-              path="/editcategory/:id"
-              render={(props: any) => <AddCategory {...props} />}
-            />
-            <Route
-              path="/addsubcategory"
-              render={(props: any) => <AddSubCategory {...props} />}
-            />
-            <Route
-              path="/editsubcategory/:id"
-              render={(props: any) => <AddSubCategory {...props} />}
-            />
-            <Route
-              path="/adduserrole"
-              render={(props: any) => <AddUserRole {...props} />}
-            />
-            <Route
-              path="/edituserrole/:id"
-              render={(props: any) => <AddUserRole {...props} />}
-            />
-            <Route
-              path="/country"
-              render={(props: any) => <CountryManagment {...props} />}
-            />
-            <Route
-              path="/addcountry"
-              render={(props: any) => <AddCountry {...props} />}
-            />
-            <Route
-              path="/editcountry/:id"
-              render={(props: any) => <AddCountry {...props} />}
-            />
-            <Route
-              path="/state"
-              render={(props: any) => <StateManagment {...props} />}
-            />
-            <Route
-              path="/addstate"
-              render={(props: any) => <AddState {...props} />}
-            />
-            <Route
-              path="/editstate/:id"
-              render={(props: any) => <AddState {...props} />}
-            />
-            <Route path="/city" render={(props: any) => <City {...props} />} />
-            <Route
-              path="/addcity"
-              render={(props: any) => <AddCity {...props} />}
-            />
-            <Route
-              path="/editcity/:id"
-              render={(props: any) => <AddCity {...props} />}
-            />
-            <Route
-              path="/viewuser/:id"
-              render={(props: any) => <ViewUser {...props} />}
-            />
-            <Route
-              path="/viewuserrole/:id"
-              render={(props: any) => <ViewUserRole {...props} />}
-            />
-            <Route
-              path="/viewcategory/:id"
-              render={(props: any) => <ViewCategory {...props} />}
-            />
-            <Route
-              path="/viewsubcategory/:id"
-              render={(props: any) => <ViewSubCategory {...props} />}
-            />
-            <Route
-              path="/viewcity/:id"
-              render={(props: any) => <ViewCity {...props} />}
-            />
-            <Route
-              path="/viewstate/:id"
-              render={(props: any) => <ViewState {...props} />}
-            />
-            <Route
-              path="/viewcountry/:id"
-              render={(props: any) => <ViewCountry {...props} />}
-            />
+
+            {checkRights.checkViewRights("User Management") === true &&
+            checkRights.checkViewRights("User") === true &&
+            checkRights.checkAddRights("User") === true ? (
+              <Route
+                path="/adduser"
+                render={(props: any) => <AddUser {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("User Management") === true &&
+            checkRights.checkViewRights("User") === true &&
+            checkRights.checkEditRights("User") === true ? (
+              <Route
+                path="/edituser/:id"
+                render={(props: any) => <AddUser {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Category Management") === true &&
+            checkRights.checkViewRights("Category") === true ? (
+              <Route
+                path="/category"
+                render={(props: any) => <Category {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Category Management") === true &&
+            checkRights.checkViewRights("Sub Category") === true ? (
+              <Route
+                path="/subcategory"
+                render={(props: any) => <SubCategory {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Category Management") === true &&
+            checkRights.checkViewRights("Category") === true &&
+            checkRights.checkAddRights("Category") === true ? (
+              <Route
+                path="/addcategory"
+                render={(props: any) => <AddCategory {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Category Management") === true &&
+            checkRights.checkViewRights("Category") === true &&
+            checkRights.checkEditRights("Category") === true ? (
+              <Route
+                path="/editcategory/:id"
+                render={(props: any) => <AddCategory {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Category Management") === true &&
+            checkRights.checkViewRights("Sub Category") === true &&
+            checkRights.checkAddRights("Sub Category") === true ? (
+              <Route
+                path="/addsubcategory"
+                render={(props: any) => <AddSubCategory {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Category Management") === true &&
+            checkRights.checkViewRights("Sub Category") === true &&
+            checkRights.checkEditRights("Sub Category") === true ? (
+              <Route
+                path="/editsubcategory/:id"
+                render={(props: any) => <AddSubCategory {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("User Management") === true &&
+            checkRights.checkViewRights("Role") === true &&
+            checkRights.checkAddRights("Role") === true ? (
+              <Route
+                path="/adduserrole"
+                render={(props: any) => <AddUserRole {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("User Management") === true &&
+            checkRights.checkViewRights("Role") === true &&
+            checkRights.checkEditRights("Role") === true ? (
+              <Route
+                path="/edituserrole/:id"
+                render={(props: any) => <AddUserRole {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Location Management") === true &&
+            checkRights.checkViewRights("Country") === true ? (
+              <Route
+                path="/country"
+                render={(props: any) => <CountryManagment {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Location Management") === true &&
+            checkRights.checkViewRights("Country") === true &&
+            checkRights.checkAddRights("Country") === true ? (
+              <Route
+                path="/addcountry"
+                render={(props: any) => <AddCountry {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Location Management") === true &&
+            checkRights.checkViewRights("Country") === true &&
+            checkRights.checkEditRights("Country") === true ? (
+              <Route
+                path="/editcountry/:id"
+                render={(props: any) => <AddCountry {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Location Management") === true &&
+            checkRights.checkViewRights("State") === true ? (
+              <Route
+                path="/state"
+                render={(props: any) => <StateManagment {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Location Management") === true &&
+            checkRights.checkViewRights("State") === true &&
+            checkRights.checkAddRights("State") === true ? (
+              <Route
+                path="/addstate"
+                render={(props: any) => <AddState {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Location Management") === true &&
+            checkRights.checkViewRights("State") === true &&
+            checkRights.checkEditRights("State") === true ? (
+              <Route
+                path="/editstate/:id"
+                render={(props: any) => <AddState {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Location Management") === true &&
+            checkRights.checkViewRights("City") === true ? (
+              <Route
+                path="/city"
+                render={(props: any) => <City {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Location Management") === true &&
+            checkRights.checkViewRights("City") === true &&
+            checkRights.checkAddRights("City") === true ? (
+              <Route
+                path="/addcity"
+                render={(props: any) => <AddCity {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Location Management") === true &&
+            checkRights.checkViewRights("City") === true &&
+            checkRights.checkEditRights("City") === true ? (
+              <Route
+                path="/editcity/:id"
+                render={(props: any) => <AddCity {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("User Management") === true &&
+            checkRights.checkViewRights("User") === true ? (
+              <Route
+                path="/viewuser/:id"
+                render={(props: any) => <ViewUser {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("User Management") === true &&
+            checkRights.checkViewRights("Role") === true ? (
+              <Route
+                path="/viewuserrole/:id"
+                render={(props: any) => <ViewUserRole {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Category Management") === true &&
+            checkRights.checkViewRights("Category") === true ? (
+              <Route
+                path="/viewcategory/:id"
+                render={(props: any) => <ViewCategory {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Category Management") === true &&
+            checkRights.checkViewRights("Sub Category") === true ? (
+              <Route
+                path="/viewsubcategory/:id"
+                render={(props: any) => <ViewSubCategory {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Location Management") === true &&
+            checkRights.checkViewRights("City") === true ? (
+              <Route
+                path="/viewcity/:id"
+                render={(props: any) => <ViewCity {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Location Management") === true &&
+            checkRights.checkViewRights("State") === true ? (
+              <Route
+                path="/viewstate/:id"
+                render={(props: any) => <ViewState {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Location Management") === true &&
+            checkRights.checkViewRights("Country") === true ? (
+              <Route
+                path="/viewcountry/:id"
+                render={(props: any) => <ViewCountry {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
             <Route
               path="/table"
               render={(props: any) => <Tables {...props} />}
@@ -268,18 +455,39 @@ class Main extends React.Component<{ history: any }> {
               path="/merchant-review"
               render={(props: any) => <MerchantReview {...props} />}
             />
-            <Route
-              path="/product"
-              render={(props: any) => <AddProduct {...props} />}
-            />
-            <Route
-              path="/edit-product/:id"
-              render={(props: any) => <AddProduct {...props} />}
-            />
-            <Route
-              path="/view-product/:id"
-              render={(props: any) => <ViewProduct {...props} />}
-            />
+
+            {checkRights.checkViewRights("Product Management") === true &&
+            checkRights.checkViewRights("Product") === true &&
+            checkRights.checkAddRights("Product") === true ? (
+              <Route
+                path="/product"
+                render={(props: any) => <AddProduct {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Product Management") === true &&
+            checkRights.checkViewRights("Product") === true &&
+            checkRights.checkEditRights("Product") === true ? (
+              <Route
+                path="/edit-product/:id"
+                render={(props: any) => <AddProduct {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Product Management") === true &&
+            checkRights.checkViewRights("Product") === true ? (
+              <Route
+                path="/view-product/:id"
+                render={(props: any) => <ViewProduct {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
             <Route
               path="/product-image"
               render={(props: any) => <ImageProduct {...props} />}
@@ -288,10 +496,17 @@ class Main extends React.Component<{ history: any }> {
               path="/product-inventory"
               render={(props: any) => <InventoryProduct {...props} />}
             />
-            <Route
-              path="/list-product"
-              render={(props: any) => <ListProduct {...props} />}
-            />
+
+            {checkRights.checkViewRights("Product Management") === true &&
+            checkRights.checkViewRights("Product") === true ? (
+              <Route
+                path="/list-product"
+                render={(props: any) => <ListProduct {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
             <Route
               path="/product-review"
               render={(props: any) => <ProductReview {...props} />}
@@ -433,54 +648,132 @@ class Main extends React.Component<{ history: any }> {
               path="/change-password"
               render={(props: any) => <ChangePassword {...props} />}
             />
-            <Route
-              path="/listcoupon"
-              render={(props: any) => <ListCoupon {...props} />}
-            />
-            <Route
-              path="/add-coupon"
-              render={(props: any) => <Coupon {...props} />}
-            />
-            <Route
-              path="/edit-coupon/:id"
-              render={(props: any) => <Coupon {...props} />}
-            />
-            <Route
-              path="/view-coupon/:id"
-              render={(props: any) => <ViewCoupon {...props} />}
-            />
-            <Route
-              path="/list-coupon-map"
-              render={(props: any) => <ListCouponMap {...props} />}
-            />
-            <Route
-              path="/add-coupon-map"
-              render={(props: any) => <AddCouponMapping {...props} />}
-            />
-            <Route
-              path="/edit-coupon-map/:id"
-              render={(props: any) => <AddCouponMapping {...props} />}
-            />
-            <Route
-              path="/view-coupon-map/:id"
-              render={(props: any) => <ViewCouponMapping {...props} />}
-            />
-            <Route
-              path="/list-merchant"
-              render={(props: any) => <ListMerchant {...props} />}
-            />
-            <Route
-              path="/merchant"
-              render={(props: any) => <Merchant {...props} />}
-            />
-            <Route
-              path="/edit-merchant/:id"
-              render={(props: any) => <Merchant {...props} />}
-            />
-            <Route
-              path="/view-merchant/:id"
-              render={(props: any) => <ViewMerchant {...props} />}
-            />
+            {checkRights.checkViewRights("Coupon Management") === true &&
+            checkRights.checkViewRights("Coupon") === true ? (
+              <Route
+                path="/listcoupon"
+                render={(props: any) => <ListCoupon {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Coupon Management") === true &&
+            checkRights.checkViewRights("Coupon") === true &&
+            checkRights.checkAddRights("Coupon") === true ? (
+              <Route
+                path="/add-coupon"
+                render={(props: any) => <Coupon {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Coupon Management") === true &&
+            checkRights.checkViewRights("Coupon") === true &&
+            checkRights.checkEditRights("Coupon") === true ? (
+              <Route
+                path="/edit-coupon/:id"
+                render={(props: any) => <Coupon {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Coupon Management") === true &&
+            checkRights.checkViewRights("Coupon") === true ? (
+              <Route
+                path="/view-coupon/:id"
+                render={(props: any) => <ViewCoupon {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Coupon Management") === true &&
+            checkRights.checkViewRights("Coupon Mapping") === true ? (
+              <Route
+                path="/list-coupon-map"
+                render={(props: any) => <ListCouponMap {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Coupon Management") === true &&
+            checkRights.checkViewRights("Coupon Mapping") === true &&
+            checkRights.checkAddRights("Coupon Mapping") === true ? (
+              <Route
+                path="/add-coupon-map"
+                render={(props: any) => <AddCouponMapping {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Coupon Management") === true &&
+            checkRights.checkViewRights("Coupon Mapping") === true &&
+            checkRights.checkEditRights("Coupon Mapping") === true ? (
+              <Route
+                path="/edit-coupon-map/:id"
+                render={(props: any) => <AddCouponMapping {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Coupon Management") === true &&
+            checkRights.checkViewRights("Coupon Mapping") === true ? (
+              <Route
+                path="/view-coupon-map/:id"
+                render={(props: any) => <ViewCouponMapping {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Merchant Management") === true &&
+            checkRights.checkViewRights("Merchant") === true ? (
+              <Route
+                path="/list-merchant"
+                render={(props: any) => <ListMerchant {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Merchant Management") === true &&
+            checkRights.checkViewRights("Merchant") === true &&
+            checkRights.checkAddRights("Merchant") === true ? (
+              <Route
+                path="/merchant"
+                render={(props: any) => <Merchant {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Merchant Management") === true &&
+            checkRights.checkViewRights("Merchant") === true &&
+            checkRights.checkEditRights("Merchant") === true ? (
+              <Route
+                path="/edit-merchant/:id"
+                render={(props: any) => <Merchant {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Merchant Management") === true &&
+            checkRights.checkViewRights("Merchant") === true ? (
+              <Route
+                path="/view-merchant/:id"
+                render={(props: any) => <ViewMerchant {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
             <Route
               path="/list-business-hours"
               render={(props: any) => <ListBussinessHours {...props} />}
@@ -497,134 +790,342 @@ class Main extends React.Component<{ history: any }> {
               path="/view-merchant-business/:id"
               render={(props: any) => <ViewBusinessHours {...props} />}
             />
-            <Route
-              path="/list-setting"
-              render={(props: any) => <ListSetting {...props} />}
-            />
-            <Route
-              path="/add-setting"
-              render={(props: any) => <AddSetting {...props} />}
-            />
-            <Route
-              path="/edit-setting/:id"
-              render={(props: any) => <AddSetting {...props} />}
-            />
-            <Route
-              path="/view-setting/:id"
-              render={(props: any) => <ViewSetting {...props} />}
-            />
-            <Route
-              path="/list-fee"
-              render={(props: any) => <ListFee {...props} />}
-            />
-            <Route
-              path="/add-fee"
-              render={(props: any) => <AddFee {...props} />}
-            />
-            <Route
-              path="/edit-fee/:id"
-              render={(props: any) => <AddFee {...props} />}
-            />
-            <Route
-              path="/view-fee/:id"
-              render={(props: any) => <ViewFee {...props} />}
-            />
-            <Route
-              path="/list-tax"
-              render={(props: any) => <ListTax {...props} />}
-            />
-            <Route
-              path="/add-tax"
-              render={(props: any) => <AddTax {...props} />}
-            />
-            <Route
-              path="/edit-tax/:id"
-              render={(props: any) => <AddTax {...props} />}
-            />
-            <Route
-              path="/view-tax/:id"
-              render={(props: any) => <ViewTax {...props} />}
-            />
-            <Route
-              path="/list-payout"
-              render={(props: any) => <ListPayout {...props} />}
-            />
-            <Route
-              path="/add-payout"
-              render={(props: any) => <AddPayout {...props} />}
-            />
-            <Route
-              path="/edit-payout/:id"
-              render={(props: any) => <AddPayout {...props} />}
-            />
-            <Route
-              path="/view-payout/:id"
-              render={(props: any) => <ViewPayout {...props} />}
-            />
-            <Route
-              path="/list-matrix"
-              render={(props: any) => <ListMatrix {...props} />}
-            />
-            <Route
-              path="/add-matrix"
-              render={(props: any) => <AddMatrix {...props} />}
-            />
-            <Route
-              path="/edit-matrix/:id"
-              render={(props: any) => <AddMatrix {...props} />}
-            />
-            <Route
-              path="/view-matrix/:id"
-              render={(props: any) => <ViewMatrix {...props} />}
-            />
-            <Route
-              path="/list-slider"
-              render={(props: any) => <ListSlider {...props} />}
-            />
-            <Route
-              path="/add-slider"
-              render={(props: any) => <AddSlider {...props} />}
-            />
-            <Route
-              path="/edit-slider/:id"
-              render={(props: any) => <AddSlider {...props} />}
-            />
-            <Route
-              path="/view-slider/:id"
-              render={(props: any) => <ViewSlider {...props} />}
-            />
-            <Route
-              path="/list-type"
-              render={(props: any) => <ListProductType {...props} />}
-            />
-            <Route
-              path="/add-type"
-              render={(props: any) => <AddProductType {...props} />}
-            />
-            <Route
-              path="/edit-type/:id"
-              render={(props: any) => <AddProductType {...props} />}
-            />
-            <Route
-              path="/view-type/:id"
-              render={(props: any) => <ViewProductType {...props} />}
-            />
-            <Route
-              path="/list-product-customise"
-              render={(props: any) => <ListProductAddOn {...props} />}
-            />
-            <Route
-              path="/product-addondetail"
-              render={(props: any) => <AddOnProduct {...props} />}
-            />
-            <Route
-              path="/edit-customise/:id"
-              render={(props: any) => <AddOnProduct {...props} />}
-            />
-            <Route
-              path="/view-customise/:id"
-              render={(props: any) => <ViewProductCustomise {...props} />}
-            />
+
+            {checkRights.checkViewRights("Setting") === true ? (
+              <Route
+                path="/list-setting"
+                render={(props: any) => <ListSetting {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Setting") === true &&
+            checkRights.checkAddRights("Setting") === true ? (
+              <Route
+                path="/add-setting"
+                render={(props: any) => <AddSetting {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Setting") === true &&
+            checkRights.checkEditRights("Setting") === true ? (
+              <Route
+                path="/edit-setting/:id"
+                render={(props: any) => <AddSetting {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Setting") === true ? (
+              <Route
+                path="/view-setting/:id"
+                render={(props: any) => <ViewSetting {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Fee") === true ? (
+              <Route
+                path="/list-fee"
+                render={(props: any) => <ListFee {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Fee") === true &&
+            checkRights.checkAddRights("Fee") === true ? (
+              <Route
+                path="/add-fee"
+                render={(props: any) => <AddFee {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Fee") === true &&
+            checkRights.checkEditRights("Fee") === true ? (
+              <Route
+                path="/edit-fee/:id"
+                render={(props: any) => <AddFee {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Fee") === true ? (
+              <Route
+                path="/view-fee/:id"
+                render={(props: any) => <ViewFee {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Tax") === true ? (
+              <Route
+                path="/list-tax"
+                render={(props: any) => <ListTax {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Tax") === true &&
+            checkRights.checkAddRights("Tax") === true ? (
+              <Route
+                path="/add-tax"
+                render={(props: any) => <AddTax {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Tax") === true &&
+            checkRights.checkEditRights("Tax") === true ? (
+              <Route
+                path="/edit-tax/:id"
+                render={(props: any) => <AddTax {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Tax") === true ? (
+              <Route
+                path="/view-tax/:id"
+                render={(props: any) => <ViewTax {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Payout") === true ? (
+              <Route
+                path="/list-payout"
+                render={(props: any) => <ListPayout {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Payout") === true &&
+            checkRights.checkAddRights("Payout") === true ? (
+              <Route
+                path="/add-payout"
+                render={(props: any) => <AddPayout {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Payout") === true &&
+            checkRights.checkEditRights("Payout") === true ? (
+              <Route
+                path="/edit-payout/:id"
+                render={(props: any) => <AddPayout {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Payout") === true ? (
+              <Route
+                path="/view-payout/:id"
+                render={(props: any) => <ViewPayout {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Distance-Matrix") === true ? (
+              <Route
+                path="/list-matrix"
+                render={(props: any) => <ListMatrix {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Distance-Matrix") === true &&
+            checkRights.checkAddRights("Distance-Matrix") === true ? (
+              <Route
+                path="/add-matrix"
+                render={(props: any) => <AddMatrix {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Distance-Matrix") === true &&
+            checkRights.checkEditRights("Distance-Matrix") === true ? (
+              <Route
+                path="/edit-matrix/:id"
+                render={(props: any) => <AddMatrix {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Distance-Matrix") === true ? (
+              <Route
+                path="/view-matrix/:id"
+                render={(props: any) => <ViewMatrix {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("HomeSlider") === true ? (
+              <Route
+                path="/list-slider"
+                render={(props: any) => <ListSlider {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("HomeSlider") === true &&
+            checkRights.checkAddRights("HomeSlider") === true ? (
+              <Route
+                path="/add-slider"
+                render={(props: any) => <AddSlider {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("HomeSlider") === true &&
+            checkRights.checkEditRights("HomeSlider") === true ? (
+              <Route
+                path="/edit-slider/:id"
+                render={(props: any) => <AddSlider {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("HomeSlider") === true ? (
+              <Route
+                path="/view-slider/:id"
+                render={(props: any) => <ViewSlider {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Product Management") === true &&
+            checkRights.checkViewRights("Customise Type") === true ? (
+              <Route
+                path="/list-type"
+                render={(props: any) => <ListProductType {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Product Management") === true &&
+            checkRights.checkViewRights("Customise Type") === true &&
+            checkRights.checkAddRights("Customise Type") === true ? (
+              <Route
+                path="/add-type"
+                render={(props: any) => <AddProductType {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Product Management") === true &&
+            checkRights.checkViewRights("Customise Type") === true &&
+            checkRights.checkEditRights("Customise Type") === true ? (
+              <Route
+                path="/edit-type/:id"
+                render={(props: any) => <AddProductType {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Product Management") === true &&
+            checkRights.checkViewRights("Customise Type") === true ? (
+              <Route
+                path="/view-type/:id"
+                render={(props: any) => <ViewProductType {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Product Management") === true &&
+            checkRights.checkViewRights("Customise") === true ? (
+              <Route
+                path="/list-product-customise"
+                render={(props: any) => <ListProductAddOn {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Product Management") === true &&
+            checkRights.checkViewRights("Customise") === true &&
+            checkRights.checkAddRights("Customise") === true ? (
+              <Route
+                path="/product-addondetail"
+                render={(props: any) => <AddOnProduct {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Product Management") === true &&
+            checkRights.checkViewRights("Customise") === true &&
+            checkRights.checkEditRights("Customise") === true ? (
+              <Route
+                path="/edit-customise/:id"
+                render={(props: any) => <AddOnProduct {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Product Management") === true &&
+            checkRights.checkViewRights("Customise") === true ? (
+              <Route
+                path="/view-customise/:id"
+                render={(props: any) => <ViewProductCustomise {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
             <Route
               path="/listmenu"
               render={(props: any) => <ListMenu {...props} />}
@@ -641,22 +1142,49 @@ class Main extends React.Component<{ history: any }> {
               path="/view-menu/:id"
               render={(props: any) => <ViewMenuItem {...props} />}
             />
-            <Route
-              path="/list-popular-city"
-              render={(props: any) => <ListPopularCity {...props} />}
-            />
-            <Route
-              path="/add-popular-city"
-              render={(props: any) => <AddPopularCity {...props} />}
-            />
-            <Route
-              path="/edit-popular-city/:id"
-              render={(props: any) => <AddPopularCity {...props} />}
-            />
-            <Route
-              path="/view-popular-city/:id"
-              render={(props: any) => <ViewPopularCity {...props} />}
-            />
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Popular-City") === true ? (
+              <Route
+                path="/list-popular-city"
+                render={(props: any) => <ListPopularCity {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Popular-City") === true &&
+            checkRights.checkAddRights("Popular-City") === true ? (
+              <Route
+                path="/add-popular-city"
+                render={(props: any) => <AddPopularCity {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Popular-City") === true &&
+            checkRights.checkEditRights("Popular-City") === true ? (
+              <Route
+                path="/edit-popular-city/:id"
+                render={(props: any) => <AddPopularCity {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+            {checkRights.checkViewRights("Setting Management") === true &&
+            checkRights.checkViewRights("Popular-City") === true ? (
+              <Route
+                path="/view-popular-city/:id"
+                render={(props: any) => <ViewPopularCity {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
             {this.props.history.location.pathname !== "/" ? (
               <Route path="*" component={Page404} />
             ) : (

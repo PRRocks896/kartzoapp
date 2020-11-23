@@ -195,11 +195,10 @@ class Login extends React.Component<{ history: any }> {
 
   /**
    * 
-   * @param token : token
+   * @param menu : menu
    */
   sidenavarray(rights:any,menu:any) {
-   console.log("rights",rights);
-   console.log("menu",menu);
+  
     let sideMenu:any = [];
     menu.map((data: any, index: number) => {
       if(data.menuItemView === 'header') {
@@ -217,20 +216,7 @@ class Login extends React.Component<{ history: any }> {
         })
       }
     });
-  
     localStorage.setItem('menuItems',JSON.stringify(sideMenu));
-    console.log("sideMenu",sideMenu);
-  //  let sidenavarray = [{name:'',type:''},{name:'',icon:'',url:'',type:''}];
-  //  if(rights && rights.length > 0) {
-  //   rights.map((menu:any,index:number) => {
-  //      menu.parentID === 0 ? (
-  //        sidenavarray.push(
-  //          {name:menu.menuItem,type:menu.menuItemView}
-
-  //          )
-  //      )
-  //    })
-  //  }
   }
 
   // stopRefreshTokenTimer() {
@@ -277,13 +263,13 @@ class Login extends React.Component<{ history: any }> {
                 // localStorage.setItem("menuItems", JSON.stringify(userData.menuItems));
                 this.sidenavarray(userData.roleprivileges,userData.menuItems);
               
-                const ipaddress = await publicIp.v4();
+                // const ipaddress = await publicIp.v4();
                 const users: any = localStorage.getItem("user");
                 let user = JSON.parse(users);
                 const obj: loginCreateRequest = {
                   deviceType: 1,
                   deviceId: "deviceId",
-                  ipAddress:  ipaddress,
+                  ipAddress:  "104.168.123.145",
                   loginToken: user.token,
                   refreshToken: user.refreshToken,
                 };

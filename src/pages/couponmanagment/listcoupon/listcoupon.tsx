@@ -14,6 +14,7 @@ import {
 import {StatusAPI, CouponAPI, DeleteAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest, couponStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListCoupon extends React.Component<{ history: any }> {
 
@@ -441,10 +442,19 @@ class ListCoupon extends React.Component<{ history: any }> {
             <th>{constant.couponPage.couponTableColumn.title}</th>
             <th>{constant.couponPage.couponTableColumn.percentage}</th>
             {/* <th>{constant.couponPage.couponTableColumn.percentage}</th> */}
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Coupon") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Coupon") === true ||
+            checkRights.checkEditRights("Coupon") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -470,6 +480,7 @@ class ListCoupon extends React.Component<{ history: any }> {
                     (((data.minAmountOrder) - (data.sellingPrice))/data.minAmountOrder * 100).toFixed(2)
                   }%</td>
                   {/* <td>{data.percentage}%</td> */}
+                  {checkRights.checkEditRights("Coupon") === true ? (
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -499,28 +510,33 @@ class ListCoupon extends React.Component<{ history: any }> {
                       </button>
                     )}
                   </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewCoupon(data.couponId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editCoupon(data.couponId)}
-                      ></i>
-                     {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteCoupon(
-                            data,
-                            "You should be Delete Coupon",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  ) : ('') }
+                   {checkRights.checkViewRights("Coupon") === true ||
+                  checkRights.checkEditRights("Coupon") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Coupon") === true ? (
+                           <i
+                           className="fa fa-eye"
+                           onClick={() => this.viewCoupon(data.couponId)}
+                         ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Coupon") === true ? (
+                           <i
+                           className="fas fa-edit"
+                           onClick={() => this.editCoupon(data.couponId)}
+                         ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
+                 
                 </tr>
               ))}
             </>
@@ -616,18 +632,23 @@ class ListCoupon extends React.Component<{ history: any }> {
                           {constant.couponPage.title.counponTitle}
                         </CardTitle>
                       </Col>
+                      {checkRights.checkAddRights("Coupon") === true ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/add-coupon">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      <div className="right">
+                        <Link to="/add-coupon">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                    ) : (
+                      ""
+                    )}
+                     
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -640,7 +661,7 @@ class ListCoupon extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true && checkRights.checkDeleteRights("Coupon") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"

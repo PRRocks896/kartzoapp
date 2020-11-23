@@ -17,6 +17,7 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, addOnStateRequest,allStateRequest,deleteAllDataRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListProductAddOn extends React.Component<{ history: any }> {
 
@@ -467,8 +468,17 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                 constant.productCustomPage.productCustomiseTableColumn.customisetype
               }
             </th>
-            <th className="text-center">{constant.tableAction.status}</th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Customise") === true ? (
+               <th className="text-center">{constant.tableAction.status}</th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Customise") === true ||
+            checkRights.checkEditRights("Customise") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -490,6 +500,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                   <td>{data.product}</td>
                   <td>{data.amount}</td>
                   <td>{data.productCustomizeType}</td>
+                  {checkRights.checkEditRights("Customise") === true ? (
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -519,32 +530,37 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                       </button>
                     )}
                   </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() =>
-                          this.viewCustomise(data.productCustomizeId)
-                        }
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() =>
-                          this.editCustomise(data.productCustomizeId)
-                        }
-                      ></i>
-                       {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteCustomise(
-                            data,
-                            "You should be Delete Customise",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  ) : ('') }
+
+{checkRights.checkViewRights("Customise") === true ||
+                  checkRights.checkEditRights("Customise") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Customise") === true ? (
+                          <i
+                          className="fa fa-eye"
+                          onClick={() =>
+                            this.viewCustomise(data.productCustomizeId)
+                          }
+                        ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Customise") === true ? (
+                          <i
+                          className="fas fa-edit"
+                          onClick={() =>
+                            this.editCustomise(data.productCustomizeId)
+                          }
+                        ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -645,18 +661,23 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                           {constant.productCustomPage.title.customiseTitle}
                         </CardTitle>
                       </Col>
+                      {checkRights.checkAddRights("Customise") === true ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/product-addondetail">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      <div className="right">
+                        <Link to="/product-addondetail">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                    ) : (
+                      ""
+                    )}
+                      
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -669,7 +690,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true && checkRights.checkDeleteRights("Customise") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"

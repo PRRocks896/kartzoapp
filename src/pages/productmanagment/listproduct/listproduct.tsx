@@ -17,6 +17,7 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, productStateRequest, allStateRequest , deleteAllDataRequest} from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListProduct extends React.Component<{ history: any }> {
 
@@ -459,10 +460,19 @@ class ListProduct extends React.Component<{ history: any }> {
             <th>{constant.productPage.productTableColumn.prodctname}</th>
             <th>{constant.productPage.productTableColumn.price}</th>
             <th>{constant.productPage.productTableColumn.discountPrice}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Product") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Product") === true ||
+            checkRights.checkEditRights("Product") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -484,6 +494,7 @@ class ListProduct extends React.Component<{ history: any }> {
                   <td>{data.productName}</td>
                   <td>{data.price}</td>
                   <td>{data.discountPrice}</td>
+                  {checkRights.checkEditRights("Product") === true ? (
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -513,28 +524,32 @@ class ListProduct extends React.Component<{ history: any }> {
                       </button>
                     )}
                   </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewProduct(data.productId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editProduct(data.productId)}
-                      ></i>
-                       {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteProduct(
-                            data,
-                            "You should be Delete Product",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  ) : ('') }
+                  {checkRights.checkViewRights("Product") === true ||
+                  checkRights.checkEditRights("Product") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Product") === true ? (
+                         <i
+                         className="fa fa-eye"
+                         onClick={() => this.viewProduct(data.productId)}
+                       ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Product") === true ? (
+                         <i
+                         className="fas fa-edit"
+                         onClick={() => this.editProduct(data.productId)}
+                       ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -635,18 +650,22 @@ class ListProduct extends React.Component<{ history: any }> {
                           {constant.productPage.title.productTitle}
                         </CardTitle>
                       </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/product">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      {checkRights.checkAddRights("Product") === true ? (
+                    <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                    <div className="right">
+                      <Link to="/product">
+                        <Button
+                          className="mb-2 mr-2 custom-button"
+                          color="primary"
+                        >
+                          {constant.button.add}
+                        </Button>
+                      </Link>
+                    </div>
+                  </Col>
+                    ) : (
+                      ""
+                    )}
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -659,7 +678,7 @@ class ListProduct extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true &&  checkRights.checkDeleteRights("Product") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"

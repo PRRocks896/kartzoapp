@@ -12,15 +12,26 @@ import {
   Row,
 } from "reactstrap";
 
-import {DeleteAPI, LocationAPI, StatusAPI} from "../../../service/index.service";
+import {
+  DeleteAPI,
+  LocationAPI,
+  StatusAPI,
+} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import {getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, cityStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController/index";
+import {
+  getAllTableDataListRequest,
+  statusChangeRequest,
+  deleteByIdRequest,
+  cityStateRequest,
+  allStateRequest,
+  deleteAllDataRequest,
+} from "../../../modelController/index";
+import checkRights from "../../../rights";
 
 class City extends React.Component<{ history: any }> {
-
   /** City state */
-  cityState:cityStateRequest = constant.cityPage.state;
-  userState:allStateRequest = constant.userPage.state;
+  cityState: cityStateRequest = constant.cityPage.state;
+  userState: allStateRequest = constant.userPage.state;
   state = {
     count: this.cityState.count,
     currentPage: this.cityState.currentPage,
@@ -50,7 +61,9 @@ class City extends React.Component<{ history: any }> {
     this.pagination = this.pagination.bind(this);
     this.getTable = this.getTable.bind(this);
     this.getPageData = this.getPageData.bind(this);
-    this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(this);
+    this.searchApplicationDataKeyUp = this.searchApplicationDataKeyUp.bind(
+      this
+    );
     this.handleChange = this.handleChange.bind(this);
     this.handleMainChange = this.handleMainChange.bind(this);
   }
@@ -63,7 +76,7 @@ class City extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param searchText : get search text
    * @param page : page number
    * @param size : page size
@@ -73,7 +86,7 @@ class City extends React.Component<{ history: any }> {
     page: number = 1,
     size: number = 10
   ) {
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: searchText,
       page: page,
       size: size,
@@ -83,15 +96,15 @@ class City extends React.Component<{ history: any }> {
     // console.log("getCityData", getCityData);
 
     if (getCityData) {
-      if(getCityData.status === 200) {
-      this.setState({
-        citydata: this.state.citydata = getCityData.resultObject.data,
-        count: this.state.count = getCityData.resultObject.totalcount,
-      });
-    } else {
-      const msg1 = getCityData.message;
-      utils.showError(msg1);
-    }
+      if (getCityData.status === 200) {
+        this.setState({
+          citydata: (this.state.citydata = getCityData.resultObject.data),
+          count: (this.state.count = getCityData.resultObject.totalcount),
+        });
+      } else {
+        const msg1 = getCityData.message;
+        utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -123,7 +136,7 @@ class City extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param id : city id
    */
   editCity(id: any) {
@@ -131,7 +144,7 @@ class City extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param id : city id
    */
   viewCity(id: any) {
@@ -155,7 +168,7 @@ class City extends React.Component<{ history: any }> {
   // }
 
   /**
-   * 
+   *
    * @param text : message
    * @param btext : button message
    */
@@ -163,7 +176,7 @@ class City extends React.Component<{ history: any }> {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
         moduleName: "City",
-        id: this.state.deleteuserdata
+        id: this.state.deleteuserdata,
       };
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
       // console.log("deleteAllData", deleteAllData);
@@ -171,14 +184,18 @@ class City extends React.Component<{ history: any }> {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
           utils.showSuccess(msg1);
-        this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
-        this.setState({
-          deleteFlag:this.state.deleteFlag = false
-        })
-      } else {
-        const msg1 = deleteAllData.data.message;
-        utils.showError(msg1);
-      }
+          this.getCityData(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+          this.setState({
+            deleteFlag: (this.state.deleteFlag = false),
+          });
+        } else {
+          const msg1 = deleteAllData.data.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -186,44 +203,45 @@ class City extends React.Component<{ history: any }> {
     }
   }
 
-/**
- * 
- * @param event : record per page
- */
+  /**
+   *
+   * @param event : record per page
+   */
   onItemSelect(event: any) {
     this.setState({
-      items_per_page: 
-        event.target.options[event.target.selectedIndex].value,
+      items_per_page: event.target.options[event.target.selectedIndex].value,
     });
 
-    this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+    this.getCityData(
+      "",
+      parseInt(this.state.currentPage),
+      parseInt(this.state.items_per_page)
+    );
   }
 
   /**
-   * 
+   *
    * @param event : click on next page
    */
   async handleClick(event: any) {
     this.setState({
-      currentPage: this.state.currentPage = event.target.id,
+      currentPage: (this.state.currentPage = event.target.id),
     });
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: "",
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
 
-    
     this.getCityData(obj.searchText, obj.page, obj.size);
-    
   }
 
   /**
-   * 
+   *
    * @param e : search city
    */
   async searchApplicationDataKeyUp(e: any) {
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: e.target.value,
       page: 1,
       size: parseInt(this.state.items_per_page),
@@ -238,36 +256,40 @@ class City extends React.Component<{ history: any }> {
       switchSort: !this.state.switchSort,
     });
     let copyTableData = [...this.state.citydata];
-    copyTableData.sort(utils.compareByDesc(key,this.state.switchSort));
+    copyTableData.sort(utils.compareByDesc(key, this.state.switchSort));
     this.setState({
-      citydata: this.state.citydata = copyTableData,
+      citydata: (this.state.citydata = copyTableData),
     });
   }
 
   /**
-   * 
+   *
    * @param data : data
    * @param text : message
    * @param btext : button message
    */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj:statusChangeRequest = {
+      const obj: statusChangeRequest = {
         moduleName: "City",
         id: data.cityId,
-        isActive: data.isActive === true ? false : true
-       }
-       var getStatusChange = await StatusAPI.getStatusChange(obj);
-       // console.log("getStatusChange", getStatusChange);
-       if (getStatusChange) {
+        isActive: data.isActive === true ? false : true,
+      };
+      var getStatusChange = await StatusAPI.getStatusChange(obj);
+      // console.log("getStatusChange", getStatusChange);
+      if (getStatusChange) {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
           utils.showSuccess(msg1);
-        this.getCityData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
-      } else {
-        const msg1 = getStatusChange.message;
-        utils.showError(msg1);
-      }
+          this.getCityData(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+        } else {
+          const msg1 = getStatusChange.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -276,21 +298,19 @@ class City extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param item : item
    * @param e : event
    */
   handleChange(item: any, e: any) {
     let _id = item.cityId;
-    let ind: any = this.state.citydata.findIndex(
-      (x: any) => x.cityId === _id
-    );
+    let ind: any = this.state.citydata.findIndex((x: any) => x.cityId === _id);
     let data: any = this.state.citydata;
     if (ind > -1) {
       let newState: any = !item._rowChecked;
       data[ind]._rowChecked = newState;
       this.setState({
-        citydata: this.state.citydata = data,
+        citydata: (this.state.citydata = data),
       });
     }
     if (
@@ -312,22 +332,22 @@ class City extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newarray,
+      deleteuserdata: (this.state.deleteuserdata = newarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   /**
-   * 
+   *
    * @param e : main check box event
    */
   handleMainChange(e: any) {
@@ -348,22 +368,22 @@ class City extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newmainarray,
+      deleteuserdata: (this.state.deleteuserdata = newmainarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   /**
-   * 
+   *
    * @param pageNumbers : page number
    */
   pagination(pageNumbers: any) {
@@ -412,13 +432,13 @@ class City extends React.Component<{ history: any }> {
   getTable(citydata: any) {
     return (
       <table
-      id="dtBasicExample"
-      className="table table-striped table-bordered table_responsive table-sm sortable"
-      width="100%"
+        id="dtBasicExample"
+        className="table table-striped table-bordered table_responsive table-sm sortable"
+        width="100%"
       >
         <thead>
           <tr onClick={() => this.handleSort("cityName")}>
-          <th className="centers">
+            <th className="centers">
               <CustomInput
                 name="name"
                 defaultValue="value"
@@ -430,10 +450,19 @@ class City extends React.Component<{ history: any }> {
             </th>
             <th>{constant.cityPage.cityTableColumn.cityName}</th>
             <th>{constant.cityPage.cityTableColumn.stateName}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("City") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("City") === true ||
+            checkRights.checkEditRights("City") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -441,7 +470,7 @@ class City extends React.Component<{ history: any }> {
             <>
               {this.state.citydata.map((data: any, index: any) => (
                 <tr key={index}>
-                       <td className="centers">
+                  <td className="centers">
                     <CustomInput
                       // name="name"
                       type="checkbox"
@@ -454,58 +483,64 @@ class City extends React.Component<{ history: any }> {
                   </td>
                   <td>{data.cityName}</td>
                   <td>{data.stateName}</td>
-
-                  <td style={{ textAlign: "center" }}>
-                    {data.isActive === true ? (
-                      <button
-                        className="status_active_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Inactive city",
-                            "Yes, Inactive it"
-                          )
-                        }
-                      >
-                        Active
-                      </button>
-                    ) : (
-                      <button
-                        className="status_Inactive_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Active city",
-                            "Yes, Active it"
-                          )
-                        }
-                      >
-                        Inactive
-                      </button>
-                    )}
-                  </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewCity(data.cityId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editCity(data.cityId)}
-                      ></i>
-                         {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteState(
-                            data,
-                            "You should be Delete City",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  {checkRights.checkEditRights("City") === true ? (
+                    <td style={{ textAlign: "center" }}>
+                      {data.isActive === true ? (
+                        <button
+                          className="status_active_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Inactive city",
+                              "Yes, Inactive it"
+                            )
+                          }
+                        >
+                          Active
+                        </button>
+                      ) : (
+                        <button
+                          className="status_Inactive_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Active city",
+                              "Yes, Active it"
+                            )
+                          }
+                        >
+                          Inactive
+                        </button>
+                      )}
+                    </td>
+                  ) : (
+                    ""
+                  )}
+                  {checkRights.checkViewRights("City") === true ||
+                  checkRights.checkEditRights("City") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("City") === true ? (
+                          <i
+                            className="fa fa-eye"
+                            onClick={() => this.viewCity(data.cityId)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("City") === true ? (
+                          <i
+                            className="fas fa-edit"
+                            onClick={() => this.editCity(data.cityId)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -518,7 +553,7 @@ class City extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param pageDecrementBtn : page decrement
    * @param renderPageNumbers : page number
    * @param pageIncrementBtn : page increment
@@ -602,20 +637,26 @@ class City extends React.Component<{ history: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-    <CardTitle className="font">{constant.cityPage.title.cityTitle}</CardTitle>
+                        <CardTitle className="font">
+                          {constant.cityPage.title.cityTitle}
+                        </CardTitle>
                       </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/addcity">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      {checkRights.checkAddRights("City") === true ? (
+                        <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                          <div className="right">
+                            <Link to="/addcity">
+                              <Button
+                                className="mb-2 mr-2 custom-button"
+                                color="primary"
+                              >
+                                {constant.button.add}
+                              </Button>
+                            </Link>
+                          </div>
+                        </Col>
+                      ) : (
+                        ""
+                      )}
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -629,12 +670,17 @@ class City extends React.Component<{ history: any }> {
                       />
                     </div>
 
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true &&
+                    checkRights.checkDeleteRights("City") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
-                        onClick={() => this.delleteAllData("You should be Delete City",
-                        "Yes, Delete it")}
+                        onClick={() =>
+                          this.delleteAllData(
+                            "You should be Delete City",
+                            "Yes, Delete it"
+                          )
+                        }
                       >
                         {constant.button.remove}
                       </Button>
@@ -644,9 +690,11 @@ class City extends React.Component<{ history: any }> {
                     {this.state.citydata.length > 0 ? (
                       <>{this.getTable(this.state.citydata)}</>
                     ) : (
-                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
+                      <h1 className="text-center mt-5">
+                        {constant.noDataFound.nodatafound}
+                      </h1>
                     )}
-                     
+
                     {this.state.citydata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,

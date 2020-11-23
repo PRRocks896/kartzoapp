@@ -17,6 +17,7 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, productTypeStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListProductType extends React.Component<{ history: any }> {
 
@@ -464,8 +465,17 @@ class ListProductType extends React.Component<{ history: any }> {
                   .typename
               }
             </th>
-            <th className="text-center">{constant.tableAction.status}</th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Customise Type") === true ? (
+              <th className="text-center">{constant.tableAction.status}</th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Customise Type") === true ||
+            checkRights.checkEditRights("Customise Type") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -485,6 +495,7 @@ class ListProductType extends React.Component<{ history: any }> {
                     />
                   </td>
                   <td>{data.typeName}</td>
+                  {checkRights.checkEditRights("Customise Type") === true ? (
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -514,32 +525,36 @@ class ListProductType extends React.Component<{ history: any }> {
                       </button>
                     )}
                   </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() =>
-                          this.viewCustomiseType(data.productCustomizeTypeId)
-                        }
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() =>
-                          this.editCustomiseType(data.productCustomizeTypeId)
-                        }
-                      ></i>
-                       {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteCustomiseType(
-                            data,
-                            "You should be Delete Customise Type",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  ) : ('')}
+                  {checkRights.checkViewRights("Customise Type") === true ||
+                  checkRights.checkEditRights("Customise Type") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Customise Type") === true ? (
+                          <i
+                          className="fa fa-eye"
+                          onClick={() =>
+                            this.viewCustomiseType(data.productCustomizeTypeId)
+                          }
+                        ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Customise Type") === true ? (
+                           <i
+                           className="fas fa-edit"
+                           onClick={() =>
+                             this.editCustomiseType(data.productCustomizeTypeId)
+                           }
+                         ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -640,18 +655,22 @@ class ListProductType extends React.Component<{ history: any }> {
                           {constant.productCustomisePage.title.typeTitle}
                         </CardTitle>
                       </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/add-type">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      {checkRights.checkAddRights("Customise Type") === true ? (
+                     <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                     <div className="right">
+                       <Link to="/add-type">
+                         <Button
+                           className="mb-2 mr-2 custom-button"
+                           color="primary"
+                         >
+                           {constant.button.add}
+                         </Button>
+                       </Link>
+                     </div>
+                   </Col>
+                    ) : (
+                      ""
+                    )}
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -664,7 +683,7 @@ class ListProductType extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true && checkRights.checkDeleteRights("Customise Type") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"

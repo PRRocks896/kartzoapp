@@ -11,15 +11,26 @@ import {
   Col,
   Row,
 } from "reactstrap";
-import {DeleteAPI, LocationAPI, StatusAPI} from "../../../service/index.service";
+import {
+  DeleteAPI,
+  LocationAPI,
+  StatusAPI,
+} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import {getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, stateStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController/index";
+import {
+  getAllTableDataListRequest,
+  statusChangeRequest,
+  deleteByIdRequest,
+  stateStateRequest,
+  allStateRequest,
+  deleteAllDataRequest,
+} from "../../../modelController/index";
+import checkRights from "../../../rights";
 
 class StateManagment extends React.Component<{ history: any }> {
-
   /** State state */
-  stateState:stateStateRequest = constant.statePage.state;
-  userState:allStateRequest = constant.userPage.state;
+  stateState: stateStateRequest = constant.statePage.state;
+  userState: allStateRequest = constant.userPage.state;
   state = {
     count: this.stateState.count,
     currentPage: this.stateState.currentPage,
@@ -67,7 +78,7 @@ class StateManagment extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param searchText : search data
    * @param page : page number
    * @param size : page render
@@ -77,7 +88,7 @@ class StateManagment extends React.Component<{ history: any }> {
     page: number = 1,
     size: number = 10
   ) {
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: searchText,
       page: page,
       size: size,
@@ -87,15 +98,15 @@ class StateManagment extends React.Component<{ history: any }> {
     // console.log("getStateData", getStateData);
 
     if (getStateData) {
-      if(getStateData.status === 200) {
-      this.setState({
-        statedata: this.state.statedata = getStateData.resultObject.data,
-        count: this.state.count = getStateData.resultObject.totalcount,
-      });
-    } else {
-      const msg1 = getStateData.message;
-      utils.showError(msg1);
-    }
+      if (getStateData.status === 200) {
+        this.setState({
+          statedata: (this.state.statedata = getStateData.resultObject.data),
+          count: (this.state.count = getStateData.resultObject.totalcount),
+        });
+      } else {
+        const msg1 = getStateData.message;
+        utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -127,7 +138,7 @@ class StateManagment extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param id : state id
    */
   editState(id: any) {
@@ -135,7 +146,7 @@ class StateManagment extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param id : state id
    */
   viewState(id: any) {
@@ -159,7 +170,7 @@ class StateManagment extends React.Component<{ history: any }> {
   // }
 
   /**
-   * 
+   *
    * @param text : message
    * @param btext : button message
    */
@@ -167,7 +178,7 @@ class StateManagment extends React.Component<{ history: any }> {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
         moduleName: "State",
-        id: this.state.deleteuserdata
+        id: this.state.deleteuserdata,
       };
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
       // console.log("deleteAllData", deleteAllData);
@@ -175,14 +186,18 @@ class StateManagment extends React.Component<{ history: any }> {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
           utils.showSuccess(msg1);
-        this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
-        this.setState({
-          deleteFlag:this.state.deleteFlag = false
-        })
-      } else {
-        const msg1 = deleteAllData.data.message;
-        utils.showError(msg1);
-      }
+          this.getStateData(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+          this.setState({
+            deleteFlag: (this.state.deleteFlag = false),
+          });
+        } else {
+          const msg1 = deleteAllData.data.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -191,43 +206,44 @@ class StateManagment extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param event : record per page select
    */
   onItemSelect(event: any) {
     this.setState({
-      items_per_page: 
-        event.target.options[event.target.selectedIndex].value,
+      items_per_page: event.target.options[event.target.selectedIndex].value,
     });
 
-    this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+    this.getStateData(
+      "",
+      parseInt(this.state.currentPage),
+      parseInt(this.state.items_per_page)
+    );
   }
 
   /**
-   * 
+   *
    * @param event : click on next page
    */
   async handleClick(event: any) {
     this.setState({
-      currentPage: this.state.currentPage = event.target.id,
+      currentPage: (this.state.currentPage = event.target.id),
     });
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: "",
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
 
-   
     this.getStateData(obj.searchText, obj.page, obj.size);
-    
   }
 
   /**
-   * 
+   *
    * @param e : search state
    */
   async searchApplicationDataKeyUp(e: any) {
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: e.target.value,
       page: 1,
       size: parseInt(this.state.items_per_page),
@@ -237,7 +253,7 @@ class StateManagment extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param key : sorting value
    */
   handleSort(key: any) {
@@ -245,45 +261,49 @@ class StateManagment extends React.Component<{ history: any }> {
       switchSort: !this.state.switchSort,
     });
     let copyTableData = [...this.state.statedata];
-    copyTableData.sort(utils.compareByDesc(key,this.state.switchSort));
+    copyTableData.sort(utils.compareByDesc(key, this.state.switchSort));
     this.setState({
-      statedata: this.state.statedata = copyTableData,
+      statedata: (this.state.statedata = copyTableData),
     });
   }
 
   /**
-   * 
+   *
    * @param data : data
    * @param text : message
    * @param btext : button message
    */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj:statusChangeRequest = {
+      const obj: statusChangeRequest = {
         moduleName: "State",
         id: data.stateId,
-        isActive: data.isActive === true ? false : true
-       }
-       var getStatusChange = await StatusAPI.getStatusChange(obj);
-       // console.log("getStatusChange", getStatusChange);
-       if (getStatusChange) {
+        isActive: data.isActive === true ? false : true,
+      };
+      var getStatusChange = await StatusAPI.getStatusChange(obj);
+      // console.log("getStatusChange", getStatusChange);
+      if (getStatusChange) {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
           utils.showSuccess(msg1);
-        this.getStateData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+          this.getStateData(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+        } else {
+          const msg1 = getStatusChange.message;
+          utils.showError(msg1);
+        }
       } else {
-        const msg1 = getStatusChange.message;
-        utils.showError(msg1);
-      }
-      } else {
-      //   const msg1 = "Internal server error";
-      // utils.showError(msg1);
+        //   const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }
 
   /**
-   * 
+   *
    * @param item : item
    * @param e : event
    */
@@ -297,7 +317,7 @@ class StateManagment extends React.Component<{ history: any }> {
       let newState: any = !item._rowChecked;
       data[ind]._rowChecked = newState;
       this.setState({
-        statedata: this.state.statedata = data,
+        statedata: (this.state.statedata = data),
       });
     }
     if (
@@ -319,22 +339,22 @@ class StateManagment extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newarray,
+      deleteuserdata: (this.state.deleteuserdata = newarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   /**
-   * 
+   *
    * @param e : main check box event
    */
   handleMainChange(e: any) {
@@ -355,23 +375,22 @@ class StateManagment extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newmainarray,
+      deleteuserdata: (this.state.deleteuserdata = newmainarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
-
   /**
-   * 
+   *
    * @param pageNumbers : pagination
    */
   pagination(pageNumbers: any) {
@@ -420,13 +439,13 @@ class StateManagment extends React.Component<{ history: any }> {
   getTable(statedata: any) {
     return (
       <table
-      id="dtBasicExample"
-      className="table table-striped table-bordered table_responsive table-sm sortable"
-      width="100%"
+        id="dtBasicExample"
+        className="table table-striped table-bordered table_responsive table-sm sortable"
+        width="100%"
       >
         <thead>
           <tr onClick={() => this.handleSort("stateName")}>
-          <th className="centers">
+            <th className="centers">
               <CustomInput
                 name="name"
                 defaultValue="value"
@@ -438,10 +457,19 @@ class StateManagment extends React.Component<{ history: any }> {
             </th>
             <th>{constant.statePage.stateTableColumn.stateName}</th>
             <th>{constant.statePage.stateTableColumn.countryName}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("State") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("State") === true ||
+            checkRights.checkEditRights("State") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -449,7 +477,7 @@ class StateManagment extends React.Component<{ history: any }> {
             <>
               {this.state.statedata.map((data: any, index: any) => (
                 <tr key={index}>
-                    <td className="centers">
+                  <td className="centers">
                     <CustomInput
                       // name="name"
                       type="checkbox"
@@ -462,57 +490,64 @@ class StateManagment extends React.Component<{ history: any }> {
                   </td>
                   <td>{data.stateName}</td>
                   <td>{data.countryName}</td>
-                  <td style={{ textAlign: "center" }}>
-                    {data.isActive === true ? (
-                      <button
-                        className="status_active_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Inactive state",
-                            "Yes, Inactive it"
-                          )
-                        }
-                      >
-                        Active
-                      </button>
-                    ) : (
-                      <button
-                        className="status_Inactive_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Active state",
-                            "Yes, Active it"
-                          )
-                        }
-                      >
-                        Inactive
-                      </button>
-                    )}
-                  </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewState(data.stateId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editState(data.stateId)}
-                      ></i>
-                         {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteState(
-                            data,
-                            "You should be Delete State",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  {checkRights.checkEditRights("State") === true ? (
+                    <td style={{ textAlign: "center" }}>
+                      {data.isActive === true ? (
+                        <button
+                          className="status_active_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Inactive state",
+                              "Yes, Inactive it"
+                            )
+                          }
+                        >
+                          Active
+                        </button>
+                      ) : (
+                        <button
+                          className="status_Inactive_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Active state",
+                              "Yes, Active it"
+                            )
+                          }
+                        >
+                          Inactive
+                        </button>
+                      )}
+                    </td>
+                  ) : (
+                    ""
+                  )}
+                  {checkRights.checkViewRights("State") === true ||
+                  checkRights.checkEditRights("State") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("State") === true ? (
+                          <i
+                            className="fa fa-eye"
+                            onClick={() => this.viewState(data.stateId)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("State") === true ? (
+                          <i
+                            className="fas fa-edit"
+                            onClick={() => this.editState(data.stateId)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -604,20 +639,26 @@ class StateManagment extends React.Component<{ history: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-    <CardTitle className="font">{constant.statePage.title.stateTitle}</CardTitle>
+                        <CardTitle className="font">
+                          {constant.statePage.title.stateTitle}
+                        </CardTitle>
                       </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/addstate">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      {checkRights.checkAddRights("State") === true ? (
+                        <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                          <div className="right">
+                            <Link to="/addstate">
+                              <Button
+                                className="mb-2 mr-2 custom-button"
+                                color="primary"
+                              >
+                                {constant.button.add}
+                              </Button>
+                            </Link>
+                          </div>
+                        </Col>
+                      ) : (
+                        ""
+                      )}
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -631,12 +672,17 @@ class StateManagment extends React.Component<{ history: any }> {
                       />
                     </div>
 
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true &&
+                    checkRights.checkDeleteRights("State") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
-                        onClick={() => this.delleteAllData("You should be Delete State",
-                        "Yes, Delete it")}
+                        onClick={() =>
+                          this.delleteAllData(
+                            "You should be Delete State",
+                            "Yes, Delete it"
+                          )
+                        }
                       >
                         {constant.button.remove}
                       </Button>
@@ -646,9 +692,11 @@ class StateManagment extends React.Component<{ history: any }> {
                     {this.state.statedata.length > 0 ? (
                       <>{this.getTable(this.state.statedata)}</>
                     ) : (
-                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
+                      <h1 className="text-center mt-5">
+                        {constant.noDataFound.nodatafound}
+                      </h1>
                     )}
-                      
+
                     {this.state.statedata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,

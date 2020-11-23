@@ -16,15 +16,16 @@ import constant from "../../../constant/constant";
 import {
   getAllTableDataListRequest,
   statusChangeRequest,
-  roleStateRequest,deleteAllDataRequest
+  roleStateRequest,
+  deleteAllDataRequest,
 } from "../../../modelController/index";
 import { DeleteAPI, RoleAPI, StatusAPI } from "../../../service/index.service";
+import checkRights from "../../../rights";
 
 class UserRole extends React.Component<{ history: any }> {
-
   /** User role state */
   userState = constant.userPage.state;
-  state:roleStateRequest = {
+  state: roleStateRequest = {
     count: this.userState.count,
     currentPage: this.userState.currentPage,
     items_per_page: this.userState.items_per_page,
@@ -73,10 +74,10 @@ class UserRole extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
-   * @param searchText : search text 
+   *
+   * @param searchText : search text
    * @param page : page number
-   * @param size : per page value 
+   * @param size : per page value
    */
   async getRole(searchText: string = "", page: number = 1, size: number = 10) {
     const obj: getAllTableDataListRequest = {
@@ -88,10 +89,10 @@ class UserRole extends React.Component<{ history: any }> {
     // console.log("getRole", getRole);
 
     if (getRole) {
-      if(getRole.status === 200) {
+      if (getRole.status === 200) {
         this.setState({
-          userrole: this.state.userrole = getRole.resultObject.data,
-          count: this.state.count = getRole.resultObject.totalcount,
+          userrole: (this.state.userrole = getRole.resultObject.data),
+          count: (this.state.count = getRole.resultObject.totalcount),
         });
       } else {
         const msg1 = getRole.message;
@@ -104,7 +105,7 @@ class UserRole extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param pageNumber : page number
    */
   handlePageChange(pageNumber: number) {
@@ -136,7 +137,7 @@ class UserRole extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param data : role id
    */
   editRole(data: any) {
@@ -144,7 +145,7 @@ class UserRole extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param data : role id
    */
   viewRole(data: any) {
@@ -171,13 +172,12 @@ class UserRole extends React.Component<{ history: any }> {
   // }
 
   /**
-   * 
+   *
    * @param event : record per page
    */
   onItemSelect(event: any) {
     this.setState({
-      items_per_page: 
-        event.target.options[event.target.selectedIndex].value,
+      items_per_page: event.target.options[event.target.selectedIndex].value,
     });
     this.getRole(
       "",
@@ -187,7 +187,7 @@ class UserRole extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param key : sorting table data
    */
   handleSort(key: any) {
@@ -195,19 +195,19 @@ class UserRole extends React.Component<{ history: any }> {
       switchSort: !this.state.switchSort,
     });
     let copyTableData = [...this.state.userrole];
-    copyTableData.sort(utils.compareByDesc(key,this.state.switchSort));
+    copyTableData.sort(utils.compareByDesc(key, this.state.switchSort));
     this.setState({
-      userrole: this.state.userrole = copyTableData,
+      userrole: (this.state.userrole = copyTableData),
     });
   }
 
   /**
-   * 
+   *
    * @param event : click on next page
    */
   async handleClick(event: any) {
     this.setState({
-      currentPage: this.state.currentPage = event.target.id,
+      currentPage: (this.state.currentPage = event.target.id),
     });
     const obj: getAllTableDataListRequest = {
       searchText: "",
@@ -215,13 +215,11 @@ class UserRole extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-  
     this.getRole(obj.searchText, obj.page, obj.size);
-    
   }
 
   /**
-   * 
+   *
    * @param e : search user role event
    */
   async searchApplicationDataKeyUp(e: any) {
@@ -234,7 +232,7 @@ class UserRole extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param data : data
    * @param text : text message
    * @param btext : button message
@@ -249,19 +247,18 @@ class UserRole extends React.Component<{ history: any }> {
       var getStatusChange = await StatusAPI.getStatusChange(obj);
       // console.log("getStatusChange", getStatusChange);
       if (getStatusChange) {
-        if(getStatusChange.status === 200) {
+        if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
           utils.showSuccess(msg1);
-        this.getRole(
-          "",
-          parseInt(this.state.currentPage),
-          parseInt(this.state.items_per_page)
-        );
+          this.getRole(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
         } else {
           const msg1 = getStatusChange.message;
           utils.showError(msg1);
         }
-       
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -270,7 +267,7 @@ class UserRole extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param text : text message
    * @param btext : button message
    */
@@ -278,22 +275,22 @@ class UserRole extends React.Component<{ history: any }> {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
         moduleName: "Role",
-        id: this.state.deleteuserdata
+        id: this.state.deleteuserdata,
       };
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
       // console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
-        if(deleteAllData.data.status === 200) {
+        if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
           utils.showSuccess(msg1);
-        this.getRole(
-          "",
-          parseInt(this.state.currentPage),
-          parseInt(this.state.items_per_page)
-        );
-        this.setState({
-          deleteFlag:this.state.deleteFlag = false
-        })
+          this.getRole(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+          this.setState({
+            deleteFlag: (this.state.deleteFlag = false),
+          });
         } else {
           const msg1 = deleteAllData.data.message;
           utils.showError(msg1);
@@ -306,7 +303,7 @@ class UserRole extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param item : item data
    * @param e : check box event
    */
@@ -318,7 +315,7 @@ class UserRole extends React.Component<{ history: any }> {
       let newState: any = !item._rowChecked;
       data[ind]._rowChecked = newState;
       this.setState({
-        userrole: this.state.userrole = data,
+        userrole: (this.state.userrole = data),
       });
     }
     if (
@@ -340,22 +337,22 @@ class UserRole extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newarray,
+      deleteuserdata: (this.state.deleteuserdata = newarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   /**
-   * 
+   *
    * @param e : main check box event
    */
   handleMainChange(e: any) {
@@ -376,22 +373,22 @@ class UserRole extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newmainarray,
+      deleteuserdata: (this.state.deleteuserdata = newmainarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   /**
-   * 
+   *
    * @param pageNumbers : page number
    */
   pagination(pageNumbers: any) {
@@ -437,15 +434,15 @@ class UserRole extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param userrole : user role
    */
   getTable(userrole: any) {
     return (
       <table
-      id="dtBasicExample"
-      className="table table-striped table-bordered table-sm sortable"
-      width="100%"
+        id="dtBasicExample"
+        className="table table-striped table-bordered table-sm sortable"
+        width="100%"
       >
         <thead>
           <tr onClick={() => this.handleSort("role")}>
@@ -460,10 +457,19 @@ class UserRole extends React.Component<{ history: any }> {
               />
             </th>
             <th>{constant.userRolePage.userRoleTableColumn.rolename}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Role") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Role") === true ||
+            checkRights.checkEditRights("Role") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -477,62 +483,71 @@ class UserRole extends React.Component<{ history: any }> {
                       type="checkbox"
                       id={data.roleId}
                       onChange={(e) => this.handleChange(data, e)}
-                      checked={this.state.userrole[index]["_rowChecked"] === true}
+                      checked={
+                        this.state.userrole[index]["_rowChecked"] === true
+                      }
                     />
                   </td>
                   <td>{data.role}</td>
-                  {/* <td>{data.description}</td> */}
-                  <td style={{ textAlign: "center" }}>
-                    {data.isActive === true ? (
-                      <button
-                        className="status_active_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Inactive user role",
-                            "Yes, Inactive it"
-                          )
-                        }
-                      >
-                        Active
-                      </button>
-                    ) : (
-                      <button
-                        className="status_Inactive_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Active user role",
-                            "Yes, Active it"
-                          )
-                        }
-                      >
-                        Inactive
-                      </button>
-                    )}
-                  </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewRole(data)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editRole(data)}
-                      ></i>
-                      {/* <i
-                        className="fas fa-trash"
-                        onClick={() =>
-                          this.deleteRole(
-                            data,
-                            "You should be Delete Role",
-                            "Yes, Role it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  {checkRights.checkEditRights("Role") === true ? (
+                    <td style={{ textAlign: "center" }}>
+                      {data.isActive === true ? (
+                        <button
+                          className="status_active_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Inactive user role",
+                              "Yes, Inactive it"
+                            )
+                          }
+                        >
+                          Active
+                        </button>
+                      ) : (
+                        <button
+                          className="status_Inactive_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Active user role",
+                              "Yes, Active it"
+                            )
+                          }
+                        >
+                          Inactive
+                        </button>
+                      )}
+                    </td>
+                  ) : (
+                    ""
+                  )}
+                  {checkRights.checkViewRights("Role") === true ||
+                  checkRights.checkEditRights("Role") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Role") === true ? (
+                          <i
+                            className="fa fa-eye"
+                            onClick={() => this.viewRole(data)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+
+                        {checkRights.checkEditRights("Role") === true ? (
+                          <i
+                            className="fas fa-edit"
+                            onClick={() => this.editRole(data)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -545,7 +560,7 @@ class UserRole extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param pageDecrementBtn : page decrement
    * @param renderPageNumbers : render page number
    * @param pageIncrementBtn : page increment
@@ -633,18 +648,24 @@ class UserRole extends React.Component<{ history: any }> {
                           {constant.userRolePage.title.userRoleTitle}
                         </CardTitle>
                       </Col>
+                      {
+                    checkRights.checkAddRights("Role") === true ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/adduserrole">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      <div className="right">
+                        <Link to="/adduserrole">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                    ) : (
+                      ""
+                    )}
+                      
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -657,12 +678,17 @@ class UserRole extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true &&
+                    checkRights.checkDeleteRights("Role") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
-                        onClick={() => this.delleteAllData( "You should be Delete Role",
-                        "Yes, Role it")}
+                        onClick={() =>
+                          this.delleteAllData(
+                            "You should be Delete Role",
+                            "Yes, Role it"
+                          )
+                        }
                       >
                         {constant.button.remove}
                       </Button>
@@ -672,9 +698,11 @@ class UserRole extends React.Component<{ history: any }> {
                     {this.state.userrole.length > 0 ? (
                       <>{this.getTable(this.state.userrole)}</>
                     ) : (
-                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
+                      <h1 className="text-center mt-5">
+                        {constant.noDataFound.nodatafound}
+                      </h1>
                     )}
-                     
+
                     {this.state.userrole.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,

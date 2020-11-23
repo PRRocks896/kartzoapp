@@ -17,6 +17,7 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, matrixStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListMatrix extends React.Component<{ history: any }> {
 
@@ -435,7 +436,12 @@ class ListMatrix extends React.Component<{ history: any }> {
               />
             </th> */}
             <th>{constant.matrixPage.matrixTableColumn.feeType}</th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkViewRights("Distance-Matrix") === true ||
+            checkRights.checkEditRights("Distance-Matrix") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -455,28 +461,31 @@ class ListMatrix extends React.Component<{ history: any }> {
                     />
                   </td> */}
                   <td>{data.feeType}</td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewmatrix(data.distanceId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editmatrix(data.distanceId)}
-                      ></i>
-                       {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteMatrix(
-                            data,
-                            "You should be Delete Matrix",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  {checkRights.checkViewRights("Distance-Matrix") === true ||
+                  checkRights.checkEditRights("Distance-Matrix") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Distance-Matrix") === true ? (
+                          <i
+                          className="fa fa-eye"
+                          onClick={() => this.viewmatrix(data.distanceId)}
+                        ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Distance-Matrix") === true ? (
+                          <i
+                          className="fas fa-edit"
+                          onClick={() => this.editmatrix(data.distanceId)}
+                        ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -577,18 +586,23 @@ class ListMatrix extends React.Component<{ history: any }> {
                           {constant.matrixPage.title.matrixTitle}
                         </CardTitle>
                       </Col>
+                      {checkRights.checkAddRights("Distance-Matrix") === true ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/add-matrix">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      <div className="right">
+                        <Link to="/add-matrix">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                    ) : (
+                      ""
+                    )}
+                   
                     </Row>
                   </CardHeader>
                   <CardBody>

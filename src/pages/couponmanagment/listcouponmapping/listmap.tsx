@@ -20,6 +20,7 @@ import {
   allStateRequest,
   addCouponMappingStateRequest,deleteAllDataRequest
 } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListCouponMap extends React.Component<{ history: any }> {
 
@@ -440,10 +441,19 @@ class ListCouponMap extends React.Component<{ history: any }> {
             <th>{constant.couponPage.couponTableColumn.merchantname}</th>
             <th>{constant.couponPage.couponTableColumn.offername}</th>
             {/* <th>{constant.couponPage.couponTableColumn.title}</th> */}
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Coupon Mapping") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Coupon Mapping") === true ||
+            checkRights.checkEditRights("Coupon Mapping") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -465,6 +475,7 @@ class ListCouponMap extends React.Component<{ history: any }> {
                   <td>{data.coupon ? data.coupon : "N/A"}</td>
                   <td>{data.merchant ? data.merchant : "N/A"}</td>
                   <td>{data.offerName ? data.offerName : "N/A"}</td>
+                  {checkRights.checkEditRights("Coupon Mapping") === true ? (
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -494,24 +505,33 @@ class ListCouponMap extends React.Component<{ history: any }> {
                       </button>
                     )}
                   </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewCouponMapping(data.couponMappingId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editCouponMapping(data.couponMappingId)}
-                      ></i>
-                      {/* <i
-                        className="far fa-trash-alt"
-                        onClick={() =>
-                          this.deleteCategory(data.categoryId)
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  ) : ('') }
+                  {checkRights.checkViewRights("Coupon Mapping") === true ||
+                  checkRights.checkEditRights("Coupon Mapping") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Coupon Mapping") === true ? (
+                           <i
+                           className="fa fa-eye"
+                           onClick={() => this.viewCouponMapping(data.couponMappingId)}
+                         ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Coupon Mapping") === true ? (
+                         <i
+                         className="fas fa-edit"
+                         onClick={() => this.editCouponMapping(data.couponMappingId)}
+                       ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
+               
                 </tr>
               ))}
             </>
@@ -612,18 +632,23 @@ class ListCouponMap extends React.Component<{ history: any }> {
                           {constant.couponPage.title.counponMappingTitle}
                         </CardTitle>
                       </Col>
+                      {checkRights.checkAddRights("Coupon Mapping") === true ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/add-coupon-map">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      <div className="right">
+                        <Link to="/add-coupon-map">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                    ) : (
+                      ""
+                    )}
+                     
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -636,7 +661,7 @@ class ListCouponMap extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true && checkRights.checkDeleteRights("Coupon Mapping") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"

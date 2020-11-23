@@ -11,15 +11,26 @@ import {
   CustomInput,
   Row,
 } from "reactstrap";
-import {DeleteAPI, LocationAPI, StatusAPI} from "../../../service/index.service";
+import {
+  DeleteAPI,
+  LocationAPI,
+  StatusAPI,
+} from "../../../service/index.service";
 import constant from "../../../constant/constant";
-import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, countryStateRequest,allStateRequest, deleteAllDataRequest } from "../../../modelController";
+import {
+  getAllTableDataListRequest,
+  statusChangeRequest,
+  deleteByIdRequest,
+  countryStateRequest,
+  allStateRequest,
+  deleteAllDataRequest,
+} from "../../../modelController";
+import checkRights from "../../../rights";
 
 class CountryManagment extends React.Component<{ history: any }> {
-
   /** Country State */
-  countryState:countryStateRequest = constant.countryPage.state;
-  userState:allStateRequest = constant.userPage.state;
+  countryState: countryStateRequest = constant.countryPage.state;
+  userState: allStateRequest = constant.userPage.state;
   state = {
     count: this.countryState.count,
     currentPage: this.countryState.currentPage,
@@ -63,22 +74,22 @@ class CountryManagment extends React.Component<{ history: any }> {
   componentDidMount() {
     document.title =
       constant.countryPage.title.countryTitle + utils.getAppName();
-      utils.dataTable();
-      this.getCountryData();
+    utils.dataTable();
+    this.getCountryData();
   }
 
   /**
-   * 
+   *
    * @param searchText : search value
-   * @param page 
-   * @param size 
+   * @param page
+   * @param size
    */
   async getCountryData(
     searchText: string = "",
     page: number = 1,
     size: number = 10
   ) {
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: searchText,
       page: page,
       size: size,
@@ -88,16 +99,16 @@ class CountryManagment extends React.Component<{ history: any }> {
     // console.log("getCountryData", getCountryData);
 
     if (getCountryData) {
-      if(getCountryData.status === 200) {
-      this.setState({
-        countrydata: this.state.countrydata =
-          getCountryData.resultObject.data,
-        count: this.state.count = getCountryData.resultObject.totalcount,
-      });
-    } else {
-      const msg1 = getCountryData.message;
-      utils.showError(msg1);
-    }
+      if (getCountryData.status === 200) {
+        this.setState({
+          countrydata: (this.state.countrydata =
+            getCountryData.resultObject.data),
+          count: (this.state.count = getCountryData.resultObject.totalcount),
+        });
+      } else {
+        const msg1 = getCountryData.message;
+        utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -129,7 +140,7 @@ class CountryManagment extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param id : country id
    */
   editCountry(id: any) {
@@ -137,7 +148,7 @@ class CountryManagment extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param id : country id
    */
   viewCountry(id: any) {
@@ -161,7 +172,7 @@ class CountryManagment extends React.Component<{ history: any }> {
   // }
 
   /**
-   * 
+   *
    * @param text : message
    * @param btext : button message
    */
@@ -169,7 +180,7 @@ class CountryManagment extends React.Component<{ history: any }> {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
         moduleName: "Country",
-        id: this.state.deleteuserdata
+        id: this.state.deleteuserdata,
       };
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
       // console.log("deleteAllData", deleteAllData);
@@ -177,14 +188,18 @@ class CountryManagment extends React.Component<{ history: any }> {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
           utils.showSuccess(msg1);
-        this.getCountryData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
-        this.setState({
-          deleteFlag:this.state.deleteFlag = false
-        })
-      } else {
-        const msg1 = deleteAllData.data.message;
-        utils.showError(msg1);
-      }
+          this.getCountryData(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+          this.setState({
+            deleteFlag: (this.state.deleteFlag = false),
+          });
+        } else {
+          const msg1 = deleteAllData.data.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -192,42 +207,44 @@ class CountryManagment extends React.Component<{ history: any }> {
     }
   }
 
-/**
- * 
- * @param event : recored per page select
- */
+  /**
+   *
+   * @param event : recored per page select
+   */
   onItemSelect(event: any) {
     this.setState({
-      items_per_page: 
-        event.target.options[event.target.selectedIndex].value,
+      items_per_page: event.target.options[event.target.selectedIndex].value,
     });
-    this.getCountryData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+    this.getCountryData(
+      "",
+      parseInt(this.state.currentPage),
+      parseInt(this.state.items_per_page)
+    );
   }
 
   /**
-   * 
+   *
    * @param event : click on next page
    */
   async handleClick(event: any) {
     this.setState({
-      currentPage: this.state.currentPage = event.target.id,
+      currentPage: (this.state.currentPage = event.target.id),
     });
     const obj = {
       searchText: "",
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
-   
+
     this.getCountryData(obj.searchText, obj.page, obj.size);
-    
   }
 
   /**
-   * 
+   *
    * @param e : search country
    */
   async searchApplicationDataKeyUp(e: any) {
-    const obj:getAllTableDataListRequest = {
+    const obj: getAllTableDataListRequest = {
       searchText: e.target.value,
       page: 1,
       size: parseInt(this.state.items_per_page),
@@ -236,7 +253,7 @@ class CountryManagment extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param key : sorting table
    */
   handleSort(key: any) {
@@ -244,45 +261,49 @@ class CountryManagment extends React.Component<{ history: any }> {
       switchSort: !this.state.switchSort,
     });
     let copyTableData = [...this.state.countrydata];
-    copyTableData.sort(utils.compareByDesc(key,this.state.switchSort));
+    copyTableData.sort(utils.compareByDesc(key, this.state.switchSort));
     this.setState({
-      countrydata: this.state.countrydata = copyTableData,
+      countrydata: (this.state.countrydata = copyTableData),
     });
   }
 
   /**
-   * 
+   *
    * @param data : status data
    * @param text : message
    * @param btext : button message
    */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
-      const obj:statusChangeRequest = {
+      const obj: statusChangeRequest = {
         moduleName: "Country",
         id: data.countryId,
-        isActive: data.isActive === true ? false : true
-       }
-       var getStatusChange = await StatusAPI.getStatusChange(obj);
-       // console.log("getStatusChange", getStatusChange);
-       if (getStatusChange) {
+        isActive: data.isActive === true ? false : true,
+      };
+      var getStatusChange = await StatusAPI.getStatusChange(obj);
+      // console.log("getStatusChange", getStatusChange);
+      if (getStatusChange) {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
           utils.showSuccess(msg1);
-        this.getCountryData('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
+          this.getCountryData(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+        } else {
+          const msg1 = getStatusChange.message;
+          utils.showError(msg1);
+        }
       } else {
-        const msg1 = getStatusChange.message;
-        utils.showError(msg1);
-      }
-      } else {
-      //   const msg1 = "Internal server error";
-      // utils.showError(msg1);
+        //   const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }
 
   /**
-   * 
+   *
    * @param item : item
    * @param e : event
    */
@@ -296,7 +317,7 @@ class CountryManagment extends React.Component<{ history: any }> {
       let newState: any = !item._rowChecked;
       data[ind]._rowChecked = newState;
       this.setState({
-        countrydata: this.state.countrydata = data,
+        countrydata: (this.state.countrydata = data),
       });
     }
     if (
@@ -318,22 +339,22 @@ class CountryManagment extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newarray,
+      deleteuserdata: (this.state.deleteuserdata = newarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   /**
-   * 
+   *
    * @param e : main check box event
    */
   handleMainChange(e: any) {
@@ -354,22 +375,22 @@ class CountryManagment extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newmainarray,
+      deleteuserdata: (this.state.deleteuserdata = newmainarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   /**
-   * 
+   *
    * @param pageNumbers : page number
    */
   pagination(pageNumbers: any) {
@@ -418,13 +439,13 @@ class CountryManagment extends React.Component<{ history: any }> {
   getTable(countrydata: any) {
     return (
       <table
-      id="dtBasicExample"
-      className="table table-striped table-bordered table_responsive table-sm sortable"
-      width="100%"
+        id="dtBasicExample"
+        className="table table-striped table-bordered table_responsive table-sm sortable"
+        width="100%"
       >
         <thead>
           <tr onClick={() => this.handleSort("countryName")}>
-          <th className="centers">
+            <th className="centers">
               <CustomInput
                 name="name"
                 defaultValue="value"
@@ -437,10 +458,19 @@ class CountryManagment extends React.Component<{ history: any }> {
             <th>{constant.countryPage.countryTableColumn.countryName}</th>
             <th>{constant.countryPage.countryTableColumn.countryCode}</th>
             <th>{constant.countryPage.countryTableColumn.countryFlag}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Country") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Country") === true ||
+            checkRights.checkEditRights("Country") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -448,7 +478,7 @@ class CountryManagment extends React.Component<{ history: any }> {
             <>
               {this.state.countrydata.map((data: any, index: any) => (
                 <tr key={index}>
-                   <td className="centers">
+                  <td className="centers">
                     <CustomInput
                       // name="name"
                       type="checkbox"
@@ -483,57 +513,64 @@ class CountryManagment extends React.Component<{ history: any }> {
                       </div>
                     )}
                   </td>
-                  <td style={{ textAlign: "center" }}>
-                    {data.isActive === true ? (
-                      <button
-                        className="status_active_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Inactive country",
-                            "Yes, Inactive it"
-                          )
-                        }
-                      >
-                        Active
-                      </button>
-                    ) : (
-                      <button
-                        className="status_Inactive_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Active country",
-                            "Yes, Active it"
-                          )
-                        }
-                      >
-                        Inactive
-                      </button>
-                    )}
-                  </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewCountry(data.countryId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editCountry(data.countryId)}
-                      ></i>
-                          {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteCountry(
-                            data,
-                            "You should be Delete Country",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  {checkRights.checkEditRights("Country") === true ? (
+                    <td style={{ textAlign: "center" }}>
+                      {data.isActive === true ? (
+                        <button
+                          className="status_active_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Inactive country",
+                              "Yes, Inactive it"
+                            )
+                          }
+                        >
+                          Active
+                        </button>
+                      ) : (
+                        <button
+                          className="status_Inactive_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Active country",
+                              "Yes, Active it"
+                            )
+                          }
+                        >
+                          Inactive
+                        </button>
+                      )}
+                    </td>
+                  ) : (
+                    ""
+                  )}
+                  {checkRights.checkViewRights("Country") === true ||
+                  checkRights.checkEditRights("Country") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Country") === true ? (
+                          <i
+                            className="fa fa-eye"
+                            onClick={() => this.viewCountry(data.countryId)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Country") === true ? (
+                          <i
+                            className="fas fa-edit"
+                            onClick={() => this.editCountry(data.countryId)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -629,18 +666,22 @@ class CountryManagment extends React.Component<{ history: any }> {
                           {constant.countryPage.title.countryTitle}
                         </CardTitle>
                       </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/addcountry">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      {checkRights.checkAddRights("Country") === true ? (
+                        <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                          <div className="right">
+                            <Link to="/addcountry">
+                              <Button
+                                className="mb-2 mr-2 custom-button"
+                                color="primary"
+                              >
+                                {constant.button.add}
+                              </Button>
+                            </Link>
+                          </div>
+                        </Col>
+                      ) : (
+                        ""
+                      )}
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -653,12 +694,17 @@ class CountryManagment extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true &&
+                    checkRights.checkDeleteRights("Country") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
-                        onClick={() => this.delleteAllData( "You should be Delete Country",
-                        "Yes, Delete it")}
+                        onClick={() =>
+                          this.delleteAllData(
+                            "You should be Delete Country",
+                            "Yes, Delete it"
+                          )
+                        }
                       >
                         {constant.button.remove}
                       </Button>
@@ -668,9 +714,11 @@ class CountryManagment extends React.Component<{ history: any }> {
                     {this.state.countrydata.length > 0 ? (
                       <>{this.getTable(this.state.countrydata)}</>
                     ) : (
-                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
+                      <h1 className="text-center mt-5">
+                        {constant.noDataFound.nodatafound}
+                      </h1>
                     )}
-                   
+
                     {this.state.countrydata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,

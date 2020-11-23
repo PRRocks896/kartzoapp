@@ -18,6 +18,7 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, taxStateRequest,allStateRequest, deleteAllDataRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListTax extends React.Component<{ history: any }> {
 
@@ -460,10 +461,19 @@ class ListTax extends React.Component<{ history: any }> {
           <th>{constant.taxPage.taxTableColumn.categoryname}</th>
             <th>{constant.taxPage.taxTableColumn.taxname}</th>
             <th>{constant.taxPage.taxTableColumn.percentage}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Tax") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Tax") === true ||
+            checkRights.checkEditRights("Tax") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -485,6 +495,7 @@ class ListTax extends React.Component<{ history: any }> {
                     <td>{data.categoryName}</td>
                   <td>{data.taxName}</td>
                   <td>{data.percentage}%</td>
+                  {checkRights.checkEditRights("Tax") === true ? (
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -514,28 +525,33 @@ class ListTax extends React.Component<{ history: any }> {
                       </button>
                     )}
                   </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewTax(data.taxId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editTax(data.taxId)}
-                      ></i>
-                      {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteTax(
-                            data,
-                            "You should be Delete Tax",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  ) : ('') }
+
+{checkRights.checkViewRights("Tax") === true ||
+                  checkRights.checkEditRights("Tax") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Tax") === true ? (
+                           <i
+                           className="fa fa-eye"
+                           onClick={() => this.viewTax(data.taxId)}
+                         ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Tax") === true ? (
+                          <i
+                          className="fas fa-edit"
+                          onClick={() => this.editTax(data.taxId)}
+                        ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -636,18 +652,23 @@ class ListTax extends React.Component<{ history: any }> {
                           {constant.taxPage.title.taxTitle}
                         </CardTitle>
                       </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/add-tax">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      {checkRights.checkAddRights("Tax") === true ? (
+                    <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                    <div className="right">
+                      <Link to="/add-tax">
+                        <Button
+                          className="mb-2 mr-2 custom-button"
+                          color="primary"
+                        >
+                          {constant.button.add}
+                        </Button>
+                      </Link>
+                    </div>
+                  </Col>
+                    ) : (
+                      ""
+                    )}
+                     
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -660,7 +681,7 @@ class ListTax extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true &&  checkRights.checkDeleteRights("Tax") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"

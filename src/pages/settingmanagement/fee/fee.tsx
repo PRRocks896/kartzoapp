@@ -18,6 +18,7 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, feeStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListFee extends React.Component<{ history: any }> {
 
@@ -458,10 +459,19 @@ class ListFee extends React.Component<{ history: any }> {
             </th>
             <th>{constant.feePage.feeTableColumn.name}</th>
             <th>{constant.feePage.feeTableColumn.description}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Fee") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Fee") === true ||
+            checkRights.checkEditRights("Fee") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -482,6 +492,7 @@ class ListFee extends React.Component<{ history: any }> {
                   </td>
                   <td>{data.name}</td>
                   <td>{data.description}</td>
+                  {checkRights.checkEditRights("Fee") === true ? (
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -511,28 +522,32 @@ class ListFee extends React.Component<{ history: any }> {
                       </button>
                     )}
                   </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewFee(data.feeId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editFee(data.feeId)}
-                      ></i>
-                       {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteFee(
-                            data,
-                            "You should be Delete Fee",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  ) : ('') }
+                    {checkRights.checkViewRights("Fee") === true ||
+                  checkRights.checkEditRights("Fee") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Fee") === true ? (
+                         <i
+                         className="fa fa-eye"
+                         onClick={() => this.viewFee(data.feeId)}
+                       ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Fee") === true ? (
+                           <i
+                           className="fas fa-edit"
+                           onClick={() => this.editFee(data.feeId)}
+                         ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -633,18 +648,23 @@ class ListFee extends React.Component<{ history: any }> {
                           {constant.feePage.title.feeTitle}
                         </CardTitle>
                       </Col>
+                      {checkRights.checkAddRights("Fee") === true ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/add-fee">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      <div className="right">
+                        <Link to="/add-fee">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                    ) : (
+                      ""
+                    )}
+                     
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -658,7 +678,7 @@ class ListFee extends React.Component<{ history: any }> {
                       />
                     </div>
 
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true && checkRights.checkDeleteRights("Fee") === true  ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"

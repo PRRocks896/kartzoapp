@@ -1,7 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import utils from "../../../utils";
-import { API, DeleteAPI, RoleAPI, StatusAPI } from "../../../service/index.service";
+import {
+  API,
+  DeleteAPI,
+  RoleAPI,
+  StatusAPI,
+} from "../../../service/index.service";
 import {
   Button,
   Card,
@@ -17,14 +22,14 @@ import constant from "../../../constant/constant";
 import {
   getAllTableDataListRequest,
   statusChangeRequest,
-  allStateRequest,deleteAllDataRequest
+  allStateRequest,
+  deleteAllDataRequest,
 } from "../../../modelController";
-import checkRights from '../../../rights';
+import checkRights from "../../../rights";
 const $ = require("jquery");
 var _ = require("lodash");
 
 class Users extends React.Component<{ history: any }> {
-
   /** User state */
   userState = constant.userPage.state;
   state: allStateRequest = {
@@ -102,7 +107,7 @@ class Users extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param data : edit user data
    */
   edituser(data: any) {
@@ -110,7 +115,7 @@ class Users extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param data : view user data
    */
   viewuser(data: any) {
@@ -118,13 +123,13 @@ class Users extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
-   * @param event : record per page 
+   *
+   * @param event : record per page
    */
   onItemSelect(event: any) {
     this.setState({
-      items_per_page: this.state.items_per_page =
-        event.target.options[event.target.selectedIndex].value,
+      items_per_page: (this.state.items_per_page =
+        event.target.options[event.target.selectedIndex].value),
     });
     this.getUsers(
       parseInt(this.state.roleid),
@@ -135,15 +140,15 @@ class Users extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param event : role id select
    */
   async onRoleSelect(event: any) {
     this.setState({
-      roleid: this.state.roleid =
-        event.target.options[event.target.selectedIndex].value,
-      onItemSelect: this.state.onItemSelect =
-        event.target.options[event.target.selectedIndex].innerHTML,
+      roleid: (this.state.roleid =
+        event.target.options[event.target.selectedIndex].value),
+      onItemSelect: (this.state.onItemSelect =
+        event.target.options[event.target.selectedIndex].innerHTML),
     });
 
     // console.log("roleid", this.state.roleid);
@@ -160,13 +165,12 @@ class Users extends React.Component<{ history: any }> {
     // This status sould becheck in intercepter only
     if (getUserDataPagination) {
       if (getUserDataPagination.status === 200) {
-      
         this.setState({
           // rows: { 'firstName','lastName' },
-          userdata: this.state.userdata =
-            getUserDataPagination.resultObject.data,
-          count: this.state.count =
-            getUserDataPagination.resultObject.totalcount,
+          userdata: (this.state.userdata =
+            getUserDataPagination.resultObject.data),
+          count: (this.state.count =
+            getUserDataPagination.resultObject.totalcount),
         });
       } else {
         const msg1 = getUserDataPagination.message;
@@ -179,7 +183,7 @@ class Users extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param key : sorting table
    */
   handleSort(key: any) {
@@ -189,7 +193,7 @@ class Users extends React.Component<{ history: any }> {
     let copyTableData = [...this.state.userdata];
     copyTableData.sort(utils.compareByDesc(key, this.state.switchSort));
     this.setState({
-      userdata: this.state.userdata = copyTableData,
+      userdata: (this.state.userdata = copyTableData),
     });
   }
 
@@ -198,14 +202,13 @@ class Users extends React.Component<{ history: any }> {
     const getUserRole = await RoleAPI.getUserRole();
     if (getUserRole) {
       if (getUserRole.status === 200) {
-       
-      this.setState({
-        userrole: this.state.userrole = getUserRole.resultObject,
-      });
-    } else {
-      const msg1 = getUserRole.data.message;
-      utils.showError(msg1);
-    }
+        this.setState({
+          userrole: (this.state.userrole = getUserRole.resultObject),
+        });
+      } else {
+        const msg1 = getUserRole.data.message;
+        utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -213,7 +216,7 @@ class Users extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param roleID : role id
    * @param searchText : search text
    * @param page : page number
@@ -237,15 +240,16 @@ class Users extends React.Component<{ history: any }> {
 
     if (getUserDataPagination) {
       if (getUserDataPagination.status === 200) {
-      
-      this.setState({
-        userdata: this.state.userdata = getUserDataPagination.resultObject.data,
-        count: this.state.count = getUserDataPagination.resultObject.totalcount,
-      });
-    } else {
-      const msg1 = getUserDataPagination.message;
-      utils.showError(msg1);
-    }
+        this.setState({
+          userdata: (this.state.userdata =
+            getUserDataPagination.resultObject.data),
+          count: (this.state.count =
+            getUserDataPagination.resultObject.totalcount),
+        });
+      } else {
+        const msg1 = getUserDataPagination.message;
+        utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
@@ -253,12 +257,12 @@ class Users extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param event : click on next page
    */
   async handleClick(event: any) {
     this.setState({
-      currentPage: this.state.currentPage = event.target.id,
+      currentPage: (this.state.currentPage = event.target.id),
     });
     const obj: getAllTableDataListRequest = {
       roleID: parseInt(this.state.roleid),
@@ -266,13 +270,12 @@ class Users extends React.Component<{ history: any }> {
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
-   
+
     this.getUsers(obj.roleID, obj.searchText, obj.page, obj.size);
-    
   }
 
   /**
-   * 
+   *
    * @param e : search user
    */
   async searchApplicationDataKeyUp(e: any) {
@@ -287,7 +290,7 @@ class Users extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param data : data
    * @param text : message
    * @param btext : button message
@@ -305,12 +308,12 @@ class Users extends React.Component<{ history: any }> {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
           utils.showSuccess(msg1);
-        this.getUsers(
-          parseInt(this.state.roleid),
-          "",
-          parseInt(this.state.currentPage),
-          parseInt(this.state.items_per_page)
-        );
+          this.getUsers(
+            parseInt(this.state.roleid),
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
         } else {
           const msg1 = getStatusChange.message;
           utils.showError(msg1);
@@ -323,7 +326,7 @@ class Users extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param text : message
    * @param btext : button message
    */
@@ -331,23 +334,23 @@ class Users extends React.Component<{ history: any }> {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
         moduleName: "User",
-        id: this.state.deleteuserdata
+        id: this.state.deleteuserdata,
       };
-      var deleteAllData : any = await DeleteAPI.deleteAllData(obj);
+      var deleteAllData: any = await DeleteAPI.deleteAllData(obj);
       // console.log("deleteAllData", deleteAllData);
       if (deleteAllData) {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
           utils.showSuccess(msg1);
-        this.getUsers(
-          parseInt(this.state.roleid),
-          "",
-          parseInt(this.state.currentPage),
-          parseInt(this.state.items_per_page)
-        );
-        this.setState({
-          deleteFlag:this.state.deleteFlag = false
-        })
+          this.getUsers(
+            parseInt(this.state.roleid),
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+          this.setState({
+            deleteFlag: (this.state.deleteFlag = false),
+          });
         } else {
           const msg1 = deleteAllData.data.message;
           utils.showError(msg1);
@@ -360,7 +363,7 @@ class Users extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param item : itewm
    * @param e : event
    */
@@ -374,7 +377,7 @@ class Users extends React.Component<{ history: any }> {
       let newState: any = !item._rowChecked;
       data[index]._rowChecked = newState;
       this.setState({
-        userdata: this.state.userdata = data,
+        userdata: (this.state.userdata = data),
       });
     }
     // console.log(
@@ -400,22 +403,22 @@ class Users extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newarray,
+      deleteuserdata: (this.state.deleteuserdata = newarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   /**
-   * 
+   *
    * @param e : main check box event
    */
   handleMainChange(e: any) {
@@ -436,22 +439,22 @@ class Users extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newmainarray,
+      deleteuserdata: (this.state.deleteuserdata = newmainarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
   /**
-   * 
+   *
    * @param pageNumbers : page number
    */
   pagination(pageNumbers: number[]) {
@@ -520,10 +523,19 @@ class Users extends React.Component<{ history: any }> {
             <th>{constant.userPage.userTableColumn.lastname}</th>
             <th>{constant.userPage.userTableColumn.email}</th>
             <th>{constant.userPage.userTableColumn.role}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("User") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("User") === true ||
+            checkRights.checkEditRights("User") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -544,60 +556,64 @@ class Users extends React.Component<{ history: any }> {
                   <td>{data.lastName}</td>
                   <td>{data.email}</td>
                   <td>{data.role}</td>
-                  <td style={{ textAlign: "center" }}>
-                    {data.isActive === true ? (
-                      <button
-                        className="status_active_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Inactive user",
-                            "Yes, Inactive it"
-                          )
-                        }
-                      >
-                        Active
-                      </button>
-                    ) : (
-                      <button
-                        className="status_Inactive_color"
-                        onClick={() =>
-                          this.statusChange(
-                            data,
-                            "You should be Active user",
-                            "Yes, Active it"
-                          )
-                        }
-                      >
-                        Inactive
-                      </button>
-                    )}
-                  </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewuser(data)}
-                      ></i>
-                      {/* {
-                        (checkRights('Users', 'write') == true)
-                      } */}
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.edituser(data)}
-                      ></i>
-                      {/* <i
-                        className="fas fa-trash"
-                        onClick={() =>
-                          this.deleteuser(
-                            data,
-                            "You should be Delete user",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  {checkRights.checkEditRights("User") === true ? (
+                    <td style={{ textAlign: "center" }}>
+                      {data.isActive === true ? (
+                        <button
+                          className="status_active_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Inactive user",
+                              "Yes, Inactive it"
+                            )
+                          }
+                        >
+                          Active
+                        </button>
+                      ) : (
+                        <button
+                          className="status_Inactive_color"
+                          onClick={() =>
+                            this.statusChange(
+                              data,
+                              "You should be Active user",
+                              "Yes, Active it"
+                            )
+                          }
+                        >
+                          Inactive
+                        </button>
+                      )}
+                    </td>
+                  ) : (
+                    ""
+                  )}
+                  {checkRights.checkViewRights("User") === true ||
+                  checkRights.checkEditRights("User") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("User") === true ? (
+                          <i
+                            className="fa fa-eye"
+                            onClick={() => this.viewuser(data)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("User") === true ? (
+                          <i
+                            className="fas fa-edit"
+                            onClick={() => this.edituser(data)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -610,7 +626,7 @@ class Users extends React.Component<{ history: any }> {
   }
 
   /**
-   * 
+   *
    * @param pageDecrementBtn : page decrement
    * @param renderPageNumbers : render page number
    * @param pageIncrementBtn : page increment
@@ -686,19 +702,16 @@ class Users extends React.Component<{ history: any }> {
       <>
         <div className="ms-content-wrapper">
           <div className="row">
-            {
-              (checkRights.checkViewRights('User') === true) ? (
-                <Col xs="12" sm="12" md="12" lg="12" xl="12">
-                <Card className="main-card mb-12">
-                  <CardHeader>
-                    <Row>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <CardTitle className="font">
-                          {constant.userPage.title.userTitle}
-                        </CardTitle>
-                      </Col>
-                      {
-                        (checkRights.checkViewRights('User') === true && checkRights.checkAddRights('User') === true) ? (
+            <Col xs="12" sm="12" md="12" lg="12" xl="12">
+              <Card className="main-card mb-12">
+                <CardHeader>
+                  <Row>
+                    <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                      <CardTitle className="font">
+                        {constant.userPage.title.userTitle}
+                      </CardTitle>
+                    </Col>
+                    {checkRights.checkAddRights("User") === true ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                         <div className="right">
                           <Link to="/adduser">
@@ -711,70 +724,76 @@ class Users extends React.Component<{ history: any }> {
                           </Link>
                         </div>
                       </Col>
-                        ) : (
-                          ''
-                        )
-                      }
-                    </Row>
-                  </CardHeader>
-                  <CardBody>
-                    <div className="filter">
-                      <CustomInput
-                        type="select"
-                        id="onselect"
-                        name="role"
-                        className="custom_text_width bottom_text"
-                        onChange={this.onRoleSelect}
-                      >
-                        <option value="">
-                          {constant.userPage.userTableColumn.roleselect}
-                        </option>
-                        {this.state.userrole.length > 0
-                          ? this.state.userrole.map(
-                              (data: any, index: number) => (
-                                <option key={data.value} value={data.value}>
-                                  {data.name}
-                                </option>
-                              )
-                            )
-                          : ""}
-                      </CustomInput>
-                      <input
-                        className="form-control custom_text_width"
-                        type="text"
-                        placeholder="Search"
-                        aria-label="Search"
-                        onKeyUp={this.searchApplicationDataKeyUp}
-                      />
-                    </div>
-                    {this.state.userdata.length > 0 ? (
-                      <>{this.getTable(this.state.userdata)}</>
-                    ) : (
-                      <h1 className="text-center mt-5">
-                        {constant.noDataFound.nodatafound}
-                      </h1>
-                    )}
-                    {this.state.deleteFlag === true && checkRights.checkViewRights('User') === true && checkRights.checkAddRights('User') === true ? (
-                      <Button className="mb-2 mr-2 custom-button" color="primary" onClick={() => this.delleteAllData("You should be Delete user","Yes, Delete it")}>
-                        {constant.button.remove}
-                      </Button>
                     ) : (
                       ""
                     )}
-                    {this.state.userdata.length > 0
-                      ? this.getPageData(
-                          pageIncrementBtn,
-                          renderPageNumbers,
-                          pageDecrementBtn
+                  </Row>
+                </CardHeader>
+                <CardBody>
+                  <div className="filter">
+                    <CustomInput
+                      type="select"
+                      id="onselect"
+                      name="role"
+                      className="custom_text_width bottom_text"
+                      onChange={this.onRoleSelect}
+                    >
+                      <option value="">
+                        {constant.userPage.userTableColumn.roleselect}
+                      </option>
+                      {this.state.userrole.length > 0
+                        ? this.state.userrole.map(
+                            (data: any, index: number) => (
+                              <option key={data.value} value={data.value}>
+                                {data.name}
+                              </option>
+                            )
+                          )
+                        : ""}
+                    </CustomInput>
+                    <input
+                      className="form-control custom_text_width"
+                      type="text"
+                      placeholder="Search"
+                      aria-label="Search"
+                      onKeyUp={this.searchApplicationDataKeyUp}
+                    />
+                  </div>
+                  {this.state.deleteFlag === true &&
+                  checkRights.checkDeleteRights("User") === true ? (
+                    <Button
+                      className="mb-2 mr-2 custom-button"
+                      color="primary"
+                      onClick={() =>
+                        this.delleteAllData(
+                          "You should be Delete user",
+                          "Yes, Delete it"
                         )
-                      : ""}
-                  </CardBody>
-                </Card>
-              </Col>
-              ) : (
-                <h1>You are not authorized</h1>
-              )
-            }
+                      }
+                    >
+                      {constant.button.remove}
+                    </Button>
+                  ) : (
+                    ""
+                  )}
+                  {this.state.userdata.length > 0 ? (
+                    <>{this.getTable(this.state.userdata)}</>
+                  ) : (
+                    <h1 className="text-center mt-5">
+                      {constant.noDataFound.nodatafound}
+                    </h1>
+                  )}
+
+                  {this.state.userdata.length > 0
+                    ? this.getPageData(
+                        pageIncrementBtn,
+                        renderPageNumbers,
+                        pageDecrementBtn
+                      )
+                    : ""}
+                </CardBody>
+              </Card>
+            </Col>
           </div>
         </div>
       </>
