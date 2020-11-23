@@ -34,7 +34,8 @@ class Login extends React.Component<{ history: any }> {
     type: this.loginState.type,
     forgot: this.loginState.forgot,
     disabled: this.loginState.disabled,
-    refreshTokenTimeout:0
+    refreshTokenTimeout:0,
+    disabledForgot:false
   };
 
   /** Consructor call */
@@ -140,6 +141,9 @@ class Login extends React.Component<{ history: any }> {
 
   /** Forgot Password */
   async forgotpassword() {
+    this.setState({
+      disabledForgot:this.state.disabledForgot = true
+    })
     const isValid = this.validatePassword();
     if (isValid) {
       this.setState({
@@ -154,14 +158,25 @@ class Login extends React.Component<{ history: any }> {
         // console.log("forgotPassword", forgotPassword);
 
         if (forgotPassword) {
+          const msg1 = forgotPassword.data.message;
+              utils.showSuccess(msg1);
           this.setState({
+            disabledForgot:this.state.disabledForgot = false,
             forgot: this.state.forgot = false,
           });
         } else {
           // const msg1 = "Internal server error";
           // utils.showError(msg1);
         }
+      } else {
+        this.setState({
+          disabledForgot:this.state.disabledForgot = false
+        })
       }
+    } else {
+      this.setState({
+        disabledForgot:this.state.disabledForgot = false
+      })
     }
   }
 
@@ -545,7 +560,7 @@ class Login extends React.Component<{ history: any }> {
             </Modal.Body>
             <Modal.Footer>
               <div className="button-ct">
-                <Button className="bbg" onClick={this.forgotpassword}>
+                <Button className="bbg" onClick={this.forgotpassword} disabled={this.state.disabledForgot}>
                   {constant.reset}
                 </Button>
               </div>

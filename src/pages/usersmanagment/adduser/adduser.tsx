@@ -545,6 +545,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                             className="form-control"
                             value={this.state.mobilenumber}
                             onChange={this.handleChangeEvent}
+                            maxLength={10}
                             placeholder="Enter your mobile number"
                           />
                           <div className="mb-4 text-danger">
