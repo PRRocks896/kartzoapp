@@ -583,7 +583,7 @@ class SubCategory extends React.Component<{ history: any }> {
                     )}
                   </tr>
                 ) : (
-                  ""
+                  null
                 )
               )}
             </>

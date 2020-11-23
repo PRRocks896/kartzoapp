@@ -567,7 +567,7 @@ class Category extends React.Component<{ history: any }> {
                     )}
                   </tr>
                 ) : (
-                  ""
+                  null
                 )
               )
             : ""}
