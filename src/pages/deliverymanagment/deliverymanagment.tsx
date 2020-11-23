@@ -10,10 +10,7 @@ import {
     CardHeader,
     Col,
     CardTitle,
-  
     CustomInput,
- 
-  
     // Table,
     Row,
 } from 'reactstrap';
