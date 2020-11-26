@@ -258,7 +258,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
   /** Render DOM */
   render() {
     return (
-      <>
+    
         <>
           <div className="ms-content-wrapper">
             <div className="row">
@@ -419,7 +419,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
             </div>
           </div>
         </>
-      </>
+      
     );
   }
 }
