@@ -411,6 +411,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
                         onClick={this.addTax}
                       >
                         {constant.button.Save}
+                        
                       </Button>
                     )}
                   </CardBody>
