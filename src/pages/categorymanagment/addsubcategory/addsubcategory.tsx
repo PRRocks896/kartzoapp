@@ -180,13 +180,18 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
   /** Check valid or not */
   validate() {
     let categorynameerror = "";
+    let selectcategoryerror =  "";
 
     if (!this.state.categoryname) {
       categorynameerror = "please enter category name";
     }
 
-    if (categorynameerror) {
-      this.setState({ categorynameerror });
+    if (!this.state.selectcategory) {
+      selectcategoryerror = "please select category";
+    }
+
+    if (categorynameerror || selectcategoryerror) {
+      this.setState({ categorynameerror,selectcategoryerror });
       return false;
     }
     return true;
@@ -314,13 +319,13 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>
+                          <h1 className="userbutton1">
                             {constant.categoryPage.title.updatesubCategoryTitle}
                           </h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>
+                          <h1 className="userbutton1">
                             {constant.categoryPage.title.addsubCategoryTitle}
                           </h1>
                         </Col>
@@ -332,7 +337,7 @@ class AddSubCategory extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/subcategory">
                           <Button

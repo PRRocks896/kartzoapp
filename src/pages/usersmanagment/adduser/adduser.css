@@ -28,6 +28,14 @@ img.picture {
     margin-left: 20px;
 }
 
+.userbutton1 {
+    text-align: left;
+}
+
+.userbutton {
+    text-align: right;
+}
+
 @media(max-width: 768px)  {
     .form-control.profile_search{
         display: block; 
@@ -38,6 +46,14 @@ img.picture {
     button.mt-0.btn.btn-primary.btn-sm {
         margin-left: 0px;
         margin-top: 5px !important;
+    }
+
+    .userbutton {
+        text-align: center;
+    }
+
+    .userbutton1 {
+        text-align: center;
     }
 }
 

@@ -440,6 +440,7 @@ class ListFee extends React.Component<{ history: any }> {
    */
   getTable(feedata: any) {
     return (
+      <div className="userClass">
       <table
       id="dtBasicExample"
       className="table table-striped table-bordered table_responsive table-sm sortable"
@@ -556,6 +557,7 @@ class ListFee extends React.Component<{ history: any }> {
           )}
         </tbody>
       </table>
+      </div>
     );
   }
 
@@ -575,7 +577,7 @@ class ListFee extends React.Component<{ history: any }> {
         <CustomInput
           type="select"
           id="item"
-          className="custom_text_width"
+          className="r-per-page"
           name="customSelect"
           onChange={this.onItemSelect}
         >

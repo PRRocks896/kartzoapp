@@ -443,11 +443,11 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue == true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.userPage.title.editUser}</h1>
+                          <h1  className="userbutton1">{constant.userPage.title.editUser}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.userPage.title.addUser}</h1>
+                          <h1  className="userbutton1">{constant.userPage.title.addUser}</h1>
                         </Col>
                       )}
                       <Col
@@ -456,7 +456,8 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        style={{ textAlign: "right" }}
+                        className="userbutton"
+                       
                       >
                         <Link to="/users">
                           <Button

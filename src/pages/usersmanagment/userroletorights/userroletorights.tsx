@@ -443,6 +443,7 @@ class UserRoleToRights extends React.Component {
                                   </CardTitle>
                                 </CardHeader>
                                 <CardBody>
+                                <div className="userClass">
                                   <Table
                                     hover
                                     className="mb-0 table_responsive"
@@ -714,6 +715,7 @@ class UserRoleToRights extends React.Component {
                                       )}
                                     </tbody>
                                   </Table>
+                                  </div>
                                 </CardBody>
                               </Card>
                             </Col>

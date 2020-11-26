@@ -322,7 +322,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>
+                          <h1 className="userbutton1">
                             {
                               constant.homesliderPage.title
                                 .updateHomesliderTitle
@@ -331,7 +331,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
                         </Col>
                       ) : (
                           <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                            <h1>
+                            <h1 className="userbutton1">
                               {constant.homesliderPage.title.addHomesliderTitle}
                             </h1>
                           </Col>
@@ -343,7 +343,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-slider">
                           <Button
