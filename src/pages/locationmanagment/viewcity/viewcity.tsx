@@ -75,7 +75,7 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-    <h1>{constant.cityPage.viewcitydetails.viewcity}</h1>
+    <h1 className="userbutton1">{constant.cityPage.viewcitydetails.viewcity}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -83,7 +83,7 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                       className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/city">
                           <Button
