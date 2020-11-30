@@ -5,3 +5,13 @@
     color: #fff;
     margin-left: 20px;
 }
+
+.genrate{
+    position: relative;
+}
+
+.c-code{
+    position: absolute;
+    top: 10px;
+    right: 17px;
+}

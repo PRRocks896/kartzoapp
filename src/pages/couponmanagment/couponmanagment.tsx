@@ -63,6 +63,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     this.editCoupon = this.editCoupon.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleChangeEventDiscount = this.handleChangeEventDiscount.bind(this);
+    this.autoGenerate = this.autoGenerate.bind(this);
   }
 
   /** Checked boolean */
@@ -380,6 +381,18 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  autoGenerate() {
+    const length = 6;
+    const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+    var retVal = "";
+    for (var i = 0, n = charset.length; i < length; i++) {
+      retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+  this.setState({
+    couponcode:this.state.couponcode = retVal ? retVal : ''
+  })
+  }
+
   /** Render DOM */
   render() {
     return (
@@ -428,6 +441,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                           <Label htmlFor="coupon_code">
                             {constant.couponPage.couponTableColumn.couponCode}
                           </Label>
+                          <div className="genrate">
                           <Input
                             type="text"
                             id="coupon_code"
@@ -438,10 +452,13 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                             placeholder="Enter your coupon code"
                             required
                           />
+                        <i className="fas fa-user c-code" onClick={this.autoGenerate}></i>
+                          </div>
                           <div className="mb-4 text-danger">
                             {this.state.couponcodeerror}
                           </div>
                         </FormGroup>
+                      
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                           <FormGroup>
