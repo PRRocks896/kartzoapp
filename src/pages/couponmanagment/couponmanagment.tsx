@@ -458,7 +458,6 @@ class Coupon extends React.Component<{ history: any; location: any }> {
                             {this.state.couponcodeerror}
                           </div>
                         </FormGroup>
-                      
                       </Col>
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
                           <FormGroup>
