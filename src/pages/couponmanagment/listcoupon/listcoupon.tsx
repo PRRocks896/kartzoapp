@@ -66,6 +66,7 @@ class ListCoupon extends React.Component<{ history: any }> {
       constant.couponPage.title.counponTitle + utils.getAppName();
       utils.dataTable();
     this.getCoupon();
+    
   }
 
   /**
