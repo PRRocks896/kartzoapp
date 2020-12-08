@@ -381,6 +381,7 @@ class Coupon extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Random Generate */
   autoGenerate() {
     const length = 6;
     const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";

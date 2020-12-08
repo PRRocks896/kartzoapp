@@ -86,7 +86,7 @@ const apiUrl = {
         editMerchant:'merchant/',
         deleteMerchant:'merchant/',
         getMerchantById:'merchant/',
-        gettoken:'token/get-merchant-token',
+        gettoken:'token/get-common-token',
         getList:'merchant/get-merchant-list-dropdown',
         getRole:'roles/get-role-list-dropdown'
     },

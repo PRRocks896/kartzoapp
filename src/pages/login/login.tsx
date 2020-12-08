@@ -281,35 +281,18 @@ class Login extends React.Component<{ history: any }> {
                 const ipaddress = await publicIp.v4();
                 const users: any = localStorage.getItem("user");
                 let user = JSON.parse(users);
-                const obj: loginCreateRequest = {
-                  deviceType: 1,
-                  deviceId: "deviceId",
-                  ipAddress: await ipaddress,
-                  loginToken: user.token,
-                  refreshToken: user.refreshToken,
+                const obj = {
+                  Id: "2120d758-b8bd-42cd-a265-a3ca30845e2f",
+                  userName: "b3EB+9LJEVMrXNFQ6ZekiPGVTSAirzq1xcYlUViCxic=",
+                  Password: "O8QziWH1Sq75LO+lH9Q9AqB/HbgvlglvDYPUXykFRvM=",
+                  Key: "digitalvicharcommonkartzoapi"
                 };
                 var getToken = await API.getToken(obj);
-                // console.log("getToken", getToken);
+                console.log("getToken", getToken);
                 if (getToken) {
-                  localStorage.setItem("merchantToken", getToken.token);
+                  localStorage.setItem("merchantToken", getToken.data.token);
                 }
-                // const rightdata: getDataByIdRequest = {
-                //   id: user.roleId,
-                // };
-                // var getRightsData = await RoleAPI.getRolePreveliges(rightdata);
-                // // console.log("getRightsData", getRightsData);
-                // if (getRightsData) {
-                //   if (getRightsData.resultObject) {
-                //     const menu = getRightsData.resultObject.menuItems;
-                //     const rights = getRightsData.resultObject.roleprivileges;
-                //     // // console.log("rigths",JSON.stringify(rights));
-                //     localStorage.setItem("menuItems", JSON.stringify(menu));
-                //     localStorage.setItem(
-                //       "rolePreveliges",
-                //       JSON.stringify(rights)
-                //     );
-                //   }
-                // }
+               
                 this.props.history.push("/dashboard");
               } else {
                 this.setState({

@@ -120,10 +120,7 @@ export default {
      * 
      * @param data : token data
      */
-    getToken: async function (data:loginCreateRequest) {
-        return await WebReqUrl.post(Constant.apiUrl + apiUrl.merchantController.gettoken,data,false);
-    },
-    
-   
-    
+    getToken: async function (data:any) {
+        return await axios.post(Constant.apiUrl + apiUrl.merchantController.gettoken,data);
+    }
 }
