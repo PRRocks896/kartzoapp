@@ -742,6 +742,28 @@ class Main extends React.Component<{ history: any }> {
               ""
             )}
 
+{checkRights.checkViewRights("Merchant Management") === true &&
+            checkRights.checkViewRights("Review") === true &&
+            checkRights.checkAddRights("Review") === true ? (
+              <Route
+                path="/list-review"
+                render={(props: any) => <ListMerchantReview {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
+{checkRights.checkViewRights("Merchant Management") === true &&
+            checkRights.checkViewRights("Review") === true &&
+            checkRights.checkAddRights("Review") === true ? (
+              <Route
+                path="/view-merchant-review"
+                render={(props: any) => <ViewMerchantReview {...props} />}
+              />
+            ) : (
+              ""
+            )}
+
             {checkRights.checkViewRights("Merchant Management") === true &&
             checkRights.checkViewRights("Merchant") === true &&
             checkRights.checkAddRights("Merchant") === true ? (

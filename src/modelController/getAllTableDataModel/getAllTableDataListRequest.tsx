@@ -3,6 +3,7 @@ export interface getAllTableDataListRequest {
     searchText?: string,
     page?: number,
     size?: number,
+    isActive?:boolean
 }
 
 

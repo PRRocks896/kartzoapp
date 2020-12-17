@@ -88,7 +88,9 @@ const apiUrl = {
         getMerchantById:'merchant/',
         gettoken:'token/get-common-token',
         getList:'merchant/get-merchant-list-dropdown',
-        getRole:'roles/get-role-list-dropdown'
+        getRole:'roles/get-role-list-dropdown',
+        getMerchantReview:'MerchantReview/get-merchantreview-list',
+        getMerchantReviewById:'MerchantReview/'
     },
     payoutController: {
         addPayout:'payout',

@@ -24,6 +24,7 @@ export default {
   fileMerchantpath: "http://api-merchant.kartzoapp.com/",
   mainUrl: "http://api.kartzoapp.com/v1/api/",
   apiUrl: "http://api.kartzoapp.com/v1/api/",
+  apiCustomerUrl: "http://api-customer.kartzoapp.com/v1/api/",
   apiMerchantUrl: "http://api-merchant.kartzoapp.com/v1/api/",
   productURL:'http://demo.kartzoapp.com/#/view-product',
   headers: {
@@ -654,9 +655,11 @@ export default {
   merchantPage: {
     title: {
       merchantTitle: "Merchant Management",
+      merchantReviewTitle: "Merchant Review Management",
       updateMerchantTitle: "Update Merchant",
       addMerchantTitle: "Add Merchant",
       viewMerchantTitle: "View Merchant",
+      viewMerchantReviewTitle: "View Merchant Review",
     },
     state: {
       count: "10",
@@ -671,6 +674,7 @@ export default {
       isStatus: false,
       merchantdata: [],
       categorydata:[],
+      merchantreviewdata:[],
 
       selectedFile: "",
       selectedProofFile: "",
@@ -766,7 +770,11 @@ export default {
       cityname:'City Name',
       merchantname:'Merchant Name',
       selectcategory:'Select Category',
-      category:'Category Name'
+      category:'Category Name',
+      ratingdetails:'Rating Details',
+      rating:'Rating',
+      customername:'Customer Name'
+
     },
     viewmerchanrpagedetails: {
       viewmerchant: "View Merchant Details",

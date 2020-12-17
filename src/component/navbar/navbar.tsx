@@ -168,14 +168,14 @@ class NavBar extends React.Component {
                   </span>
                 </a>
               </div>
-              {user_right.map((menu: any, index: any) =>
-                menu.type === "header" ? (
+              {user_menu.map((menu: any, index: any) =>
+                menu.menuItemView === "header" ? (
                   <div key={index} className="menu_name">
-                    {user_menu.map((data: any, index: number) =>
-                      data.menuItem === menu.name &&
-                      checkRights.checkViewRights(data.menuItem) === true ? (
+                    {user_right.map((data: any, index: number) =>
+                      data.name === menu.menuItem &&
+                      checkRights.checkViewRights(data.name) === true ? (
                         <span key={index} className="header_side">
-                          {menu.name}
+                          {menu.menuItem}
                         </span>
                       ) : (
                         ""
@@ -183,24 +183,24 @@ class NavBar extends React.Component {
                     )}
                   </div>
                 ) : (
-                  user_menu.map((data: any, index: number) =>
-                    data.menuItem === menu.name &&
-                    checkRights.checkViewRights(data.menuItem) ===
+                  user_right.map((data: any, index: number) =>
+                    data.name === menu.menuItem &&
+                    checkRights.checkViewRights(data.name) ===
                       true ? (
                       <a
                         key={index}
                         href="#"
                       
-                        className={this.activeRoute(menu.url)}
+                        className={this.activeRoute(data.url)}
                         data-toggle="collapse"
                        
                         aria-expanded="false"
                      
-                        onClick={() => this.handleClick(menu.url)}
+                        onClick={() => this.handleClick(data.url)}
                       >
                         <span key={index}>
-                          <i className={menu.icon}></i>
-                          {menu.name}{" "}
+                          <i className={data.icon}></i>
+                          {data.name}{" "}
                         </span>
                       </a>
                     ) : (

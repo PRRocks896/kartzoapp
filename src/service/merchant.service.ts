@@ -55,4 +55,18 @@ export default {
     getMerchantRole: async function () {
         return await WebReqUrl.get(Constant.apiMerchantUrl + apiUrl.merchantController.getRole,true);
     },
+
+      /** get merchant role */
+      getMerchantReviewData: async function (data:any) {
+        return await WebReqUrl.post(Constant.apiCustomerUrl + apiUrl.merchantController.getMerchantReview,data,true);
+    },
+
+      /** get merchant role */
+      getMerchantReviewById: async function (data:any) {
+        return await WebReqUrl.get(Constant.apiCustomerUrl + apiUrl.merchantController.getMerchantReviewById + data,true);
+    },
+
+    
+
+    
 }
