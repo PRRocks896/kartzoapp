@@ -57,7 +57,7 @@ class ViewMerchantReview extends React.Component<{
    */
   async getMerchantReviewById(id: getDataByIdRequest) {
     const getMerchantReviewById: any = await MerchantAPI.getMerchantReviewById(id);
-    console.log("getMerchantReviewById", getMerchantReviewById);
+    // console.log("getMerchantReviewById", getMerchantReviewById);
 
     if (getMerchantReviewById) {
       if(getMerchantReviewById.status === 200) {
