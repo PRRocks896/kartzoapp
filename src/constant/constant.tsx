@@ -20,12 +20,12 @@ export default {
   about: "About",
   service: "Service",
   logout: "Logout",
-  filepath: "http://api.kartzoapp.com/",
-  fileMerchantpath: "http://api-merchant.kartzoapp.com/",
-  mainUrl: "http://api.kartzoapp.com/v1/api/",
-  apiUrl: "http://api.kartzoapp.com/v1/api/",
-  apiCustomerUrl: "http://api-customer.kartzoapp.com/v1/api/",
-  apiMerchantUrl: "http://api-merchant.kartzoapp.com/v1/api/",
+  filepath: "https://api-wildebeest-admin.techhoody.com/",
+  fileMerchantpath: "https://api-wildebeest-merchant.techhoody.com/",
+  mainUrl: "https://api-wildebeest-admin.techhoody.com/v1/api/",
+  apiUrl: "https://api-wildebeest-admin.techhoody.com/v1/api/",
+  apiCustomerUrl: "https://api-wildebeest-customer.techhoody.com/v1/api/",
+  apiMerchantUrl: "https://api-wildebeest-merchant.techhoody.com/v1/api/",
   productURL:'http://demo.kartzoapp.com/#/view-product',
   headers: {
     Authorization:
