@@ -19,6 +19,8 @@ import { ProductAPI } from "../../../service/index.service";
 import { addProductStateRequest } from "../../../modelController";
 
 class ViewProduct extends React.Component<{ history: any; location: any }> {
+
+  /** Product state */
   productState:addProductStateRequest = constant.productPage.state;
   state = {
     merchantid: this.productState.merchantid,
@@ -36,12 +38,14 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
     subcategory: this.productState.subcategory
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.getProductById = this.getProductById.bind(this);
     this.createMarkup = this.createMarkup.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.productPage.title.viewProductTitle + utils.getAppName();
@@ -51,6 +55,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** product descripion details */
   createMarkup()  { 
     if(this.state.productdescription) {
       return {__html: this.state.productdescription}; 
@@ -59,6 +64,10 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
     }
 };
 
+/**
+ * 
+ * @param id : product id
+ */
   async getProductById(id: any) {
     const getProductById: any = await ProductAPI.getProductById(id);
     // console.log("getProductById", getProductById);
@@ -100,6 +109,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -111,7 +121,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>
+                        <h1 className="userbutton1">
                           {constant.productPage.viewproductdetails.viewproduct}
                         </h1>
                       </Col>
@@ -121,7 +131,7 @@ class ViewProduct extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-product">
                           <Button

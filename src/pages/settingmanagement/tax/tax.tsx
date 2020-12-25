@@ -18,8 +18,11 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, taxStateRequest,allStateRequest, deleteAllDataRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListTax extends React.Component<{ history: any }> {
+
+  /** Tax state */
   taxState:taxStateRequest = constant.taxPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -38,6 +41,7 @@ class ListTax extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.editTax = this.editTax.bind(this);
@@ -60,6 +64,7 @@ class ListTax extends React.Component<{ history: any }> {
     this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** Page render call */
   async componentDidMount() {
     document.title =
       constant.taxPage.title.taxTitle + utils.getAppName();
@@ -67,6 +72,12 @@ class ListTax extends React.Component<{ history: any }> {
     this.getTaxData();
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page : page number
+   * @param size : per page value
+   */
   async getTaxData(
     searchText: string = "",
     page: number = 1,
@@ -98,6 +109,7 @@ class ListTax extends React.Component<{ history: any }> {
     }
   }
 
+  /** button increment */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -109,6 +121,7 @@ class ListTax extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** button decrement */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -120,10 +133,18 @@ class ListTax extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : tax id
+   */
   editTax(id: any) {
     this.props.history.push("/edit-tax/" + id);
   }
 
+  /**
+   * 
+   * @param id : tax id
+   */
   viewTax(id: any) {
     this.props.history.push("/view-tax/" + id);
   }
@@ -148,6 +169,11 @@ class ListTax extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param text : text message
+   * @param btext : button message
+   */
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -179,6 +205,10 @@ class ListTax extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : record per page
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: 
@@ -192,6 +222,10 @@ class ListTax extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param event : click on next page event
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -207,6 +241,10 @@ class ListTax extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : tax search data event
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -217,6 +255,10 @@ class ListTax extends React.Component<{ history: any }> {
     this.getTaxData(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting data
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -228,6 +270,12 @@ class ListTax extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : data
+   * @param text : message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -257,6 +305,11 @@ class ListTax extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.taxId;
     let ind: any = this.state.taxdata.findIndex(
@@ -303,6 +356,10 @@ class ListTax extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.taxdata.forEach((element: any) => {
@@ -335,6 +392,10 @@ class ListTax extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param pageNumbers : page  number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -377,8 +438,10 @@ class ListTax extends React.Component<{ history: any }> {
     return res;
   }
 
+  /** Get table data */
   getTable(taxdata: any) {
     return (
+      <div className="userClass">
       <table
       id="dtBasicExample"
       className="table table-striped table-bordered table_responsive table-sm sortable"
@@ -399,10 +462,19 @@ class ListTax extends React.Component<{ history: any }> {
           <th>{constant.taxPage.taxTableColumn.categoryname}</th>
             <th>{constant.taxPage.taxTableColumn.taxname}</th>
             <th>{constant.taxPage.taxTableColumn.percentage}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Tax") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Tax") === true ||
+            checkRights.checkEditRights("Tax") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -424,6 +496,7 @@ class ListTax extends React.Component<{ history: any }> {
                     <td>{data.categoryName}</td>
                   <td>{data.taxName}</td>
                   <td>{data.percentage}%</td>
+                  {checkRights.checkEditRights("Tax") === true ? (
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -453,28 +526,33 @@ class ListTax extends React.Component<{ history: any }> {
                       </button>
                     )}
                   </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewTax(data.taxId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editTax(data.taxId)}
-                      ></i>
-                      {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteTax(
-                            data,
-                            "You should be Delete Tax",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  ) : ('') }
+
+{checkRights.checkViewRights("Tax") === true ||
+                  checkRights.checkEditRights("Tax") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Tax") === true ? (
+                           <i
+                           className="fa fa-eye"
+                           onClick={() => this.viewTax(data.taxId)}
+                         ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Tax") === true ? (
+                          <i
+                          className="fas fa-edit"
+                          onClick={() => this.editTax(data.taxId)}
+                        ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -483,9 +561,16 @@ class ListTax extends React.Component<{ history: any }> {
           )}
         </tbody>
       </table>
+      </div>
     );
   }
 
+  /**
+   * 
+   * @param pageDecrementBtn : page decrement
+   * @param renderPageNumbers : render page number
+   * @param pageIncrementBtn : page increment
+   */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -496,7 +581,7 @@ class ListTax extends React.Component<{ history: any }> {
         <CustomInput
           type="select"
           id="item"
-          className="custom_text_width"
+          className="r-per-page"
           name="customSelect"
           onChange={this.onItemSelect}
         >
@@ -525,6 +610,7 @@ class ListTax extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,
@@ -568,18 +654,23 @@ class ListTax extends React.Component<{ history: any }> {
                           {constant.taxPage.title.taxTitle}
                         </CardTitle>
                       </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/add-tax">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      {checkRights.checkAddRights("Tax") === true ? (
+                    <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                    <div className="right">
+                      <Link to="/add-tax">
+                        <Button
+                          className="mb-2 mr-2 custom-button"
+                          color="primary"
+                        >
+                          {constant.button.add}
+                        </Button>
+                      </Link>
+                    </div>
+                  </Col>
+                    ) : (
+                      ""
+                    )}
+                     
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -592,7 +683,7 @@ class ListTax extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true &&  checkRights.checkDeleteRights("Tax") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"

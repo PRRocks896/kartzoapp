@@ -25,6 +25,8 @@ import {
 } from "../../../modelController";
 
 class AddCity extends React.Component<{ history: any; location: any }> {
+
+  /** City state */
   cityState:addCityStateRequest = constant.cityPage.state;
   state = {
     stateid: this.cityState.stateid,
@@ -40,6 +42,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     isActive:this.cityState.isActive
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -50,6 +53,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     this.getCityById = this.getCityById.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     this.getState();
     const cityId = this.props.location.pathname.split("/")[2];
@@ -68,6 +72,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Get state */
   async getState() {
     const getState = await LocationAPI.getState();
     // console.log("getState", getState);
@@ -87,6 +92,10 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param cityId : get cityid
+   */
   async getCityById(cityId: any) {
     const obj:getDataByIdRequest = {
       id: cityId,
@@ -114,6 +123,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Check validate or not */
   validate() {
     let citynameerror = "";
     let stateiderror = "";
@@ -133,12 +143,20 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : select state
+   */
   onItemSelect(event: any) {
     this.setState({
       stateid: this.state.stateid = event.target.value,
     });
   }
 
+  /**
+   * 
+   * @param event : update the state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -146,6 +164,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add city */
   async addCity() {
     const isValid = this.validate();
     if (isValid) {
@@ -180,6 +199,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Edit City */
   async editCity() {
     const isValid = this.validate();
     if (isValid) {
@@ -215,6 +235,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -227,11 +248,11 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.cityPage.title.updateCityTitle}</h1>
+                          <h1 className="userbutton1">{constant.cityPage.title.updateCityTitle}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.cityPage.title.addCityTitle}</h1>
+                          <h1 className="userbutton1">{constant.cityPage.title.addCityTitle}</h1>
                         </Col>
                       )}
 
@@ -241,7 +262,7 @@ class AddCity extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/city">
                           <Button

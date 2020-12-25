@@ -18,6 +18,8 @@ import {
 import { getDataByIdRequest, addMatrixStateRequest } from "../../../../modelController";
 
 class ViewMatrix extends React.Component<{ history: any; location: any }> {
+
+  /** matrix state */
   matrixState: addMatrixStateRequest= constant.matrixPage.state;
   state = {
     isActive: this.matrixState.isActive,
@@ -31,12 +33,14 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
     to: this.matrixState.matrix,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.getMatrixById = this.getMatrixById.bind(this);
     // this.getMerchantById = this.getMerchantById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.matrixPage.viewMatrixdetails.viewMatrix + utils.getAppName();
@@ -46,6 +50,10 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param payoutId : payout id
+   */
   async getMatrixById(payoutId: any) {
     const obj:getDataByIdRequest = {
       id: payoutId,
@@ -70,6 +78,7 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -81,7 +90,7 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>{constant.matrixPage.title.viewmatrixTitle}</h1>
+                        <h1 className="userbutton1">{constant.matrixPage.title.viewmatrixTitle}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -89,7 +98,7 @@ class ViewMatrix extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-matrix">
                           <Button

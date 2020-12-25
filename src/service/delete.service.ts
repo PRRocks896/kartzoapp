@@ -5,6 +5,11 @@ import { deleteByIdRequest, deleteAllDataRequest } from '../modelController';
 import axios from 'axios';
 
 export default {
+
+  /**
+   * 
+   * @param data : delete data 
+   */
     deleteAllData: async function (data:deleteAllDataRequest) {
         let queryString = '';
         data.id.map((id: any, index: number) => {
@@ -16,6 +21,11 @@ export default {
             }
           });
     },
+
+    /**
+     * 
+     * @param data : delete merchant functionality data
+     */
     deleteAllMerchantData: async function (data:deleteAllDataRequest) {
       let queryString = '';
       data.id.map((id: any, index: number) => {

@@ -26,6 +26,8 @@ import {
 import { getDataByIdRequest, addProductStateRequest } from "../../../modelController";
 
 class AddProduct extends React.Component<{ history: any; location: any }> {
+
+  /** Product state */
   productState: addProductStateRequest = constant.productPage.state;
   state = {
     merchantid: this.productState.merchantid,
@@ -63,6 +65,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     categoryid: this.productState.categoryid
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.onMainCategorySelect = this.onMainCategorySelect.bind(this);
@@ -81,9 +84,11 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     this.getCategoryDataByMerchantId = this.getCategoryDataByMerchantId.bind(this);
   }
 
+  /** image preview */
   _handleImageChange(e: any) {
     e.preventDefault();
     let images: any = Array.from(e.target.files);
+    console.log("images",images);
     this.setState({
       images: this.state.images = images,
     });
@@ -99,10 +104,15 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  /**
+   * 
+   * @param checked : boolean value
+   */
   handleChange(checked: boolean) {
     this.setState({ isFeatured: this.state.isFeatured = checked });
   }
 
+  /** Page Render call */
   async componentDidMount() {
     // this.getAllCategory();
     
@@ -125,6 +135,10 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param id : product id
+   */
   async getProductById(id: getDataByIdRequest) {
     const getProductById: any = await ProductAPI.getProductById(id);
     // console.log("getProductById", getProductById);
@@ -186,6 +200,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
   //   }
   // }
 
+  /** get all merchant */
   async getAllMerchant() {
     const getAllMerchant = await MerchantAPI.getMerchantList();
     // console.log("getAllMerchant", getAllMerchant);
@@ -203,6 +218,10 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : merchant select
+   */
   onMerchantSelect(event: any) {
     this.setState({
       merchantid: this.state.merchantid = event.target.value,
@@ -210,6 +229,10 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     this.getCategoryDataByMerchantId(this.state.merchantid);
   }
 
+  /**
+   * 
+   * @param id : merchant id
+   */
   async getCategoryDataByMerchantId(id:any) {
     const getCategoryById = await ProductAPI.getCategoryById(id);
     console.log("getCategoryById", getCategoryById);
@@ -232,6 +255,10 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param id : category id
+   */
   async getSubCategory(id:any) {
     const getSubCategory = await ProductAPI.getSubCategory(id);
     console.log("getSubCategory", getSubCategory);
@@ -251,18 +278,32 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : category select
+   */
   onMainCategorySelect(event: any) {
     this.setState({
       maincategoryid: this.state.maincategoryid = event.target.value,
     });
   }
 
+  /**
+   * 
+   * @param content : content
+   * @param editor : editor
+   */
   handleMainChange = (content: any, editor: any) => {
     this.setState({
       productdescription: this.state.productdescription = content,
     });
   };
 
+  /**
+   * 
+   * @param content : content
+   * @param editor : editor
+   */
   handleDescChange = (content: any, editor: any) => {
 
     this.setState({
@@ -270,6 +311,11 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     });
   };
 
+  /**
+   * 
+   * @param content : content
+   * @param editor : editor
+   */
   handleKeywordChange = (content: any, editor: any) => {
 
     this.setState({
@@ -277,6 +323,11 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     });
   };
 
+  /**
+   * 
+   * @param imageList : image list
+   * @param addUpdateIndex : update image 
+   */
   onChange = (imageList: any, addUpdateIndex: any) => {
     // data for submi
     this.setState({
@@ -289,6 +340,11 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     // console.log(errors, files);
   };
 
+  /**
+   * 
+   * @param id : image id
+   * @param index : index
+   */
   deleteImage(id: any, index: number) {
     for(var i = 0;i<this.state.productpreview.length;i++) {
       if(id === this.state.productpreview[i].id) {
@@ -305,6 +361,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
    
   }
 
+  /** check validate or not */
   validate() {
     let merchantiderror = "";
     let maincategoryiderror = "";
@@ -347,6 +404,10 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update state
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -354,6 +415,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add product */
   async addProduct() {
     const isValid = this.validate();
     if (isValid) {
@@ -412,6 +474,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** edit product */
   async editProduct() {
     const isValid = this.validate();
     if (isValid) {
@@ -490,6 +553,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -502,13 +566,13 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>
+                          <h1 className="userbutton1">
                             {constant.productPage.title.updateProductTitle}
                           </h1>
                         </Col>
                       ) : (
                           <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                            <h1>{constant.productPage.title.addProductTitle}</h1>
+                            <h1 className="userbutton1">{constant.productPage.title.addProductTitle}</h1>
                           </Col>
                         )}
 
@@ -518,7 +582,7 @@ class AddProduct extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-product">
                           <Button

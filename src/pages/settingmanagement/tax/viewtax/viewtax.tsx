@@ -16,6 +16,8 @@ import constant from "../../../../constant/constant";
 import { getDataByIdRequest, addTaxRequest } from "../../../../modelController";
 
 class ViewTax extends React.Component<{ history: any; location: any }> {
+
+  /** Tax state */
   taxState : addTaxRequest = constant.taxPage.state;
   state = {
     mainCategoryId: this.taxState.mainCategoryId,
@@ -31,11 +33,13 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
     categoryname: this.taxState.categoryname,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.getTaxById = this.getTaxById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.taxPage.viewtaxdetails.viewtax + utils.getAppName();
@@ -46,6 +50,10 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param taxId : tax id
+   */
   async getTaxById(taxId: any) {
     const obj:getDataByIdRequest = {
       id: taxId
@@ -74,6 +82,7 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -85,7 +94,7 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-    <h1>{constant.taxPage.title.viewtaxTitle}</h1>
+    <h1 className="userbutton1">{constant.taxPage.title.viewtaxTitle}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -93,7 +102,7 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                       className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-tax">
                           <Button
@@ -146,7 +155,6 @@ class ViewTax extends React.Component<{ history: any; location: any }> {
                           <p>{this.state.percentage}%</p>
                         </FormGroup>
                       </Col>
-                
                     </Row>
                   </CardBody>
                 </Card>

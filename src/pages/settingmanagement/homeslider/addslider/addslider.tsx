@@ -21,6 +21,8 @@ import constant from "../../../../constant/constant";
 import { addSliderStateRequest } from "../../../../modelController/sliderModel";
 
 class AddSlider extends React.Component<{ history: any; location: any }> {
+
+  /** Slider state */
   sliderState: addSliderStateRequest = constant.homesliderPage.state;
   state = {
     selectedFile: this.sliderState.selectedFile,
@@ -39,6 +41,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     s1:this.sliderState.s1
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -52,6 +55,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     // this.getSliderDataById = this.getSliderDataById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     this.getAllProduct();
     const sliderId = this.props.location.pathname.split("/")[2];
@@ -72,10 +76,15 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param checked : checked boolean value
+   */
   handleChange(checked: boolean) {
     this.setState({ isActive: this.state.isActive = checked });
   }
 
+  /** Get All Product */
   async getAllProduct() {
     const getAllProduct = await ProductAPI.getAllProduct();
     // console.log("getAllProduct", getAllProduct);
@@ -94,6 +103,10 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param categoryId : slider id
+   */
   async getSliderById(categoryId: any) {
     const obj = {
       id: categoryId
@@ -125,6 +138,10 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : product id
+   */
   onItemSelect(event: any) {
     this.setState({
       productid: this.state.productid =
@@ -132,6 +149,10 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  /**
+   * 
+   * @param event : file upload 
+   */
   onChangeHandler(event: any) {
     if (this.state.filetrue === true) {
       this.setState({
@@ -159,6 +180,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** check validate or not */
   validate() {
     let productiderror = "";
     let sortordererror = "";
@@ -183,6 +205,10 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -190,6 +216,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add slider */
   async addSlider() {
     const isValid = this.validate();
     if (isValid) {
@@ -228,6 +255,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Update slider */
   async updateSlider() {
     const isValid = this.validate();
     if (isValid) {
@@ -273,6 +301,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Remove Icon */
   removeIcon() {
     this.setState({
       file: this.state.file = "",
@@ -280,6 +309,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -292,7 +322,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>
+                          <h1 className="userbutton1">
                             {
                               constant.homesliderPage.title
                                 .updateHomesliderTitle
@@ -301,7 +331,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
                         </Col>
                       ) : (
                           <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                            <h1>
+                            <h1 className="userbutton1">
                               {constant.homesliderPage.title.addHomesliderTitle}
                             </h1>
                           </Col>
@@ -313,7 +343,7 @@ class AddSlider extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-slider">
                           <Button

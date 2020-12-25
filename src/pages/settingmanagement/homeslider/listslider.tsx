@@ -17,8 +17,11 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest, allStateRequest,sliderStateRequest, deleteAllDataRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListSlider extends React.Component<{ history: any }> {
+
+  /** Home slider state */
   homesliderState:sliderStateRequest = constant.homesliderPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -37,6 +40,7 @@ class ListSlider extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.editSlider = this.editSlider.bind(this);
@@ -60,6 +64,7 @@ class ListSlider extends React.Component<{ history: any }> {
     this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** Page render call */
   async componentDidMount() {
     document.title =
       constant.homesliderPage.title.homeSliderTitle + utils.getAppName();
@@ -67,6 +72,12 @@ class ListSlider extends React.Component<{ history: any }> {
     this.getSliderData();
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page : page
+   * @param size : per page 
+   */
   async getSliderData(
     searchText: string = "",
     page: number = 1,
@@ -98,6 +109,7 @@ class ListSlider extends React.Component<{ history: any }> {
     }
   }
 
+  /** button increment */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -109,6 +121,7 @@ class ListSlider extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** button decrement */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -120,10 +133,18 @@ class ListSlider extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : slider id
+   */
   editSlider(id: any) {
     this.props.history.push("/edit-slider/" + id);
   }
 
+  /**
+   * 
+   * @param id : slider id
+   */
   viewSlider(id: any) {
     this.props.history.push("/view-slider/" + id);
   }
@@ -148,6 +169,11 @@ class ListSlider extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param text : text message
+   * @param btext : button message
+   */
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -179,6 +205,10 @@ class ListSlider extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : record per page value
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
@@ -192,6 +222,10 @@ class ListSlider extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -208,6 +242,10 @@ class ListSlider extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : search value
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -218,6 +256,10 @@ class ListSlider extends React.Component<{ history: any }> {
     this.getSliderData(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting table
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -229,6 +271,12 @@ class ListSlider extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : data
+   * @param text : text message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -254,6 +302,11 @@ class ListSlider extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param item : item
+   * @param e  event
+   */
   handleChange(item: any, e: any) {
     let _id = item.homeSliderId;
     let ind: any = this.state.sliderdata.findIndex(
@@ -300,6 +353,10 @@ class ListSlider extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.sliderdata.forEach((element: any) => {
@@ -332,7 +389,10 @@ class ListSlider extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
-
+/**
+ * 
+ * @param pageNumbers : page number
+ */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -375,11 +435,16 @@ class ListSlider extends React.Component<{ history: any }> {
     return res;
   }
 
+  /**
+   * 
+   * @param sliderdata : slider data
+   */
   getTable(sliderdata: any) {
     return (
+      <div className="userClass">
       <table
       id="dtBasicExample"
-      className="table table-striped table-bordered table_responsive table-sm sortable"
+      className="table table-striped table-bordered table-sm sortable"
       width="100%"
       >
         <thead>
@@ -396,7 +461,12 @@ class ListSlider extends React.Component<{ history: any }> {
             </th>
             <th>{constant.homesliderPage.homeSliderTableColumn.sliderimage}</th>
             <th>{constant.homesliderPage.homeSliderTableColumn.alterTag}</th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkViewRights("HomeSlider") === true ||
+            checkRights.checkEditRights("HomeSlider") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -436,28 +506,31 @@ class ListSlider extends React.Component<{ history: any }> {
                     )}
                   </td>
                   <td>{data.alterTag}</td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
+                  {checkRights.checkViewRights("HomeSlider") === true ||
+                  checkRights.checkEditRights("HomeSlider") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("HomeSlider") === true ? (
+                        <i
                         className="fa fa-eye"
                         onClick={() => this.viewSlider(data.homeSliderId)}
                       ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editSlider(data.homeSliderId)}
-                      ></i>
-                        {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteSlider(
-                            data,
-                            "You should be Delete Slider",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("HomeSlider") === true ? (
+                            <i
+                            className="fas fa-edit"
+                            onClick={() => this.editSlider(data.homeSliderId)}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -466,9 +539,16 @@ class ListSlider extends React.Component<{ history: any }> {
           )}
         </tbody>
       </table>
+      </div>
     );
   }
 
+  /**
+   * 
+   * @param pageDecrementBtn : page decrement
+   * @param renderPageNumbers : page number
+   * @param pageIncrementBtn : page incement
+   */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -479,7 +559,7 @@ class ListSlider extends React.Component<{ history: any }> {
         <CustomInput
           type="select"
           id="item"
-          className="custom_text_width"
+          className="r-per-page"
           name="customSelect"
           onChange={this.onItemSelect}
         >
@@ -508,6 +588,7 @@ class ListSlider extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,
@@ -551,18 +632,22 @@ class ListSlider extends React.Component<{ history: any }> {
                           {constant.homesliderPage.title.homeSliderTitle}
                         </CardTitle>
                       </Col>
+                      {checkRights.checkAddRights("HomeSlider") === true ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/add-slider">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      <div className="right">
+                        <Link to="/add-slider">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                    ) : (
+                      ""
+                    )}
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -575,7 +660,7 @@ class ListSlider extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true &&  checkRights.checkDeleteRights("HomeSlider") === true  ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
@@ -588,7 +673,6 @@ class ListSlider extends React.Component<{ history: any }> {
                       ""
                     )}
 
-                    
                     {this.state.sliderdata.length > 0 ? (
                       <>{this.getTable(this.state.sliderdata)}</>
                     ) : (

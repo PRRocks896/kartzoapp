@@ -24,6 +24,8 @@ import {
 } from "../../../../modelController";
 
 class AddTax extends React.Component<{ history: any; location: any }> {
+
+  /** tax state */
   taxState : addTaxRequest= constant.taxPage.state;
   state = {
     mainCategoryId: this.taxState.mainCategoryId,
@@ -39,6 +41,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     categoryname: this.taxState.categoryname,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -49,6 +52,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     this.getTaxById = this.getTaxById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     this.getAllCategory();
     const taxId = this.props.location.pathname.split("/")[2];
@@ -66,6 +70,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** get all caetgory data */
   async getAllCategory() {
     const getAllCategory = await CategoryAPI.getAllCategory();
     // console.log("getAllCategory", getAllCategory);
@@ -83,6 +88,10 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param taxId : tax id
+   */
   async getTaxById(taxId: any) {
     const obj:getDataByIdRequest = {
       id: taxId,
@@ -111,6 +120,10 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : catgeory id
+   */
   onItemSelect(event: any) {
     this.setState({
       mainCategoryId: this.state.mainCategoryId =
@@ -118,6 +131,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  /** validate or not  */
   validate() {
     let mainCategoryIderror = "";
     let taxNameerror = "";
@@ -149,6 +163,10 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -156,6 +174,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add tax */
   async addTax() {
     const isValid = this.validate();
     if (isValid) {
@@ -195,6 +214,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Update tax */
   async updateTax() {
     const isValid = this.validate();
     if (isValid) {
@@ -235,9 +255,10 @@ class AddTax extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
-      <>
+    
         <>
           <div className="ms-content-wrapper">
             <div className="row">
@@ -247,11 +268,11 @@ class AddTax extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.taxPage.title.updatetaxTitle}</h1>
+                          <h1 className="userbutton1">{constant.taxPage.title.updatetaxTitle}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.taxPage.title.addTaxTitle}</h1>
+                          <h1 className="userbutton1">{constant.taxPage.title.addTaxTitle}</h1>
                         </Col>
                       )}
 
@@ -261,7 +282,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-tax">
                           <Button
@@ -390,6 +411,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
                         onClick={this.addTax}
                       >
                         {constant.button.Save}
+                        
                       </Button>
                     )}
                   </CardBody>
@@ -398,7 +420,7 @@ class AddTax extends React.Component<{ history: any; location: any }> {
             </div>
           </div>
         </>
-      </>
+      
     );
   }
 }

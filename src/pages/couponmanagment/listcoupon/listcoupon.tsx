@@ -14,8 +14,11 @@ import {
 import {StatusAPI, CouponAPI, DeleteAPI} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest, couponStateRequest, allStateRequest, deleteAllDataRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListCoupon extends React.Component<{ history: any }> {
+
+  /** Coupon state */
   couponState:couponStateRequest = constant.couponPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -34,6 +37,7 @@ class ListCoupon extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.editCoupon = this.editCoupon.bind(this);
@@ -56,13 +60,21 @@ class ListCoupon extends React.Component<{ history: any }> {
     this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     document.title =
       constant.couponPage.title.counponTitle + utils.getAppName();
       utils.dataTable();
     this.getCoupon();
+    
   }
 
+  /**
+   * 
+   * @param searchText : Search value
+   * @param page : page number
+   * @param size : per page value
+   */
   async getCoupon(
     searchText: string = "",
     page: number = 1,
@@ -93,6 +105,7 @@ class ListCoupon extends React.Component<{ history: any }> {
     }
   }
 
+  /** Button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -104,6 +117,7 @@ class ListCoupon extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** Button previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -115,10 +129,18 @@ class ListCoupon extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : edit coupon
+   */
   editCoupon(id: any) {
     this.props.history.push("/edit-coupon/" + id);
   }
 
+  /**
+   * 
+   * @param id : view coupon id
+   */
   viewCoupon(id: any) {
     this.props.history.push("/view-coupon/" + id);
   }
@@ -139,6 +161,11 @@ class ListCoupon extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param text : message
+   * @param btext : button message
+   */
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -166,6 +193,10 @@ class ListCoupon extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : record per page
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page:
@@ -175,6 +206,10 @@ class ListCoupon extends React.Component<{ history: any }> {
     this.getCoupon('',parseInt(this.state.currentPage),parseInt(this.state.items_per_page));
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
 
     this.setState({
@@ -202,6 +237,10 @@ class ListCoupon extends React.Component<{ history: any }> {
     this.getCoupon(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting table
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -213,6 +252,12 @@ class ListCoupon extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : data 
+   * @param text : message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -238,7 +283,11 @@ class ListCoupon extends React.Component<{ history: any }> {
     }
   }
 
-  
+  /**
+   * 
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.couponId;
     let ind: any = this.state.coupondata.findIndex(
@@ -285,6 +334,10 @@ class ListCoupon extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.coupondata.forEach((element: any) => {
@@ -317,6 +370,10 @@ class ListCoupon extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -359,8 +416,13 @@ class ListCoupon extends React.Component<{ history: any }> {
     return res;
   }
 
+  /**
+   * 
+   * @param coupondata : get couponTable list
+   */
   getTable(coupondata: any) {
     return (
+      <div className="userClass">
       <table
       id="dtBasicExample"
       className="table table-striped table-bordered table_responsive table-sm sortable"
@@ -382,10 +444,19 @@ class ListCoupon extends React.Component<{ history: any }> {
             <th>{constant.couponPage.couponTableColumn.title}</th>
             <th>{constant.couponPage.couponTableColumn.percentage}</th>
             {/* <th>{constant.couponPage.couponTableColumn.percentage}</th> */}
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Coupon") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Coupon") === true ||
+            checkRights.checkEditRights("Coupon") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -411,6 +482,7 @@ class ListCoupon extends React.Component<{ history: any }> {
                     (((data.minAmountOrder) - (data.sellingPrice))/data.minAmountOrder * 100).toFixed(2)
                   }%</td>
                   {/* <td>{data.percentage}%</td> */}
+                  {checkRights.checkEditRights("Coupon") === true ? (
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -440,28 +512,33 @@ class ListCoupon extends React.Component<{ history: any }> {
                       </button>
                     )}
                   </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewCoupon(data.couponId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editCoupon(data.couponId)}
-                      ></i>
-                     {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteCoupon(
-                            data,
-                            "You should be Delete Coupon",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  ) : ('') }
+                   {checkRights.checkViewRights("Coupon") === true ||
+                  checkRights.checkEditRights("Coupon") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Coupon") === true ? (
+                           <i
+                           className="fa fa-eye"
+                           onClick={() => this.viewCoupon(data.couponId)}
+                         ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Coupon") === true ? (
+                           <i
+                           className="fas fa-edit"
+                           onClick={() => this.editCoupon(data.couponId)}
+                         ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
+                 
                 </tr>
               ))}
             </>
@@ -470,9 +547,11 @@ class ListCoupon extends React.Component<{ history: any }> {
           )}
         </tbody>
       </table>
+      </div>
     );
   }
 
+  /** Get Page Data */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -483,7 +562,7 @@ class ListCoupon extends React.Component<{ history: any }> {
         <CustomInput
           type="select"
           id="item"
-          className="custom_text_width"
+          className="r-per-page"
           name="customSelect"
           onChange={this.onItemSelect}
         >
@@ -512,6 +591,7 @@ class ListCoupon extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,
@@ -555,18 +635,23 @@ class ListCoupon extends React.Component<{ history: any }> {
                           {constant.couponPage.title.counponTitle}
                         </CardTitle>
                       </Col>
+                      {checkRights.checkAddRights("Coupon") === true ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/add-coupon">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      <div className="right">
+                        <Link to="/add-coupon">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                    ) : (
+                      ""
+                    )}
+                     
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -579,7 +664,7 @@ class ListCoupon extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true && checkRights.checkDeleteRights("Coupon") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"

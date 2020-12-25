@@ -21,6 +21,8 @@ import { MenuAPI } from "../../../service/index.service";
 // import { getDataByIdRequest, addCategoryStateRequest } from "../../../modelController";
 
 class AddMenu extends React.Component<{ history: any; location: any }> {
+
+  /** menu state */
   menuState: addMenuStateRequest = constant.menuPage.state;
   state = {
     menuitemname: this.menuState.menuitemname,
@@ -33,9 +35,12 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     isActive: this.menuState.isActive,
     updateTrue: this.menuState.updateTrue,
     menuid: this.menuState.menuid,
-    menudata: this.menuState.menudata
+    menudata: this.menuState.menudata,
+    menuicon: this.menuState.menuicon,
+    menuiconerror: this.menuState.menuiconerror
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -46,6 +51,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     this.getAllMenu = this.getAllMenu.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     this.getAllMenu();
     const menuId = this.props.location.pathname.split("/")[2];
@@ -64,6 +70,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** get all menu */
   async getAllMenu() {
     const getAllMenu = await MenuAPI.getAllMenu();
     // console.log("getAllMenu", getAllMenu);
@@ -79,6 +86,10 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param id : menu id
+   */
   async getMenuDataById(id: any) {
     const obj: getDataByIdRequest = {
       id: id,
@@ -106,7 +117,10 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     }
   }
 
-
+/**
+ * 
+ * @param event : parent menu id
+ */
   onItemSelect(event: any) {
     this.setState({
       parentid:this.state.parentid = 
@@ -115,7 +129,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
   }
 
 
-
+/** validare check or not */
   validate() {
     let menuitemnameerror = "";
     let sortordererror = "";
@@ -136,6 +150,10 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -143,6 +161,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add menu */
   async addMenu() {
     const isValid = this.validate();
     if (isValid) {
@@ -157,7 +176,8 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
           menuItemView: this.state.menuitemview,
           sortOrder: parseInt(this.state.sortorder),
           parentID: this.state.parentid,
-          isActive: this.state.isActive
+          isActive: this.state.isActive,
+          iconImage: this.state.menuicon
         }
         const addMenu = await MenuAPI.addMenu(obj);
         // console.log("addMenu", addMenu);
@@ -178,6 +198,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** update menu */
   async updateMenu() {
     const isValid = this.validate();
     if (isValid) {
@@ -193,7 +214,8 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
           menuItemView: this.state.menuitemview,
           sortOrder: parseInt(this.state.sortorder),
           parentID: this.state.parentid,
-          isActive: this.state.isActive
+          isActive: this.state.isActive,
+          iconImage:this.state.menuicon
         }
         const editMenu = await MenuAPI.editMenu(obj);
         // console.log("editMenu", editMenu);
@@ -214,6 +236,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -226,11 +249,11 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.menuPage.title.updatemenuTitle}</h1>
+                          <h1 className="userbutton1">{constant.menuPage.title.updatemenuTitle}</h1>
                         </Col>
                       ) : (
                           <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                            <h1>{constant.menuPage.title.addmenuTitle}</h1>
+                            <h1 className="userbutton1">{constant.menuPage.title.addmenuTitle}</h1>
                           </Col>
                         )}
 
@@ -240,7 +263,7 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/listmenu">
                           <Button
@@ -379,7 +402,30 @@ class AddMenu extends React.Component<{ history: any; location: any }> {
                         </FormGroup>
                       </Col>
                     </Row>
-
+                    <Row>
+                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                        <FormGroup>
+                          <Label htmlFor="menuname">
+                            {
+                              constant.menuPage.menuTableColumn.menuicon
+                            }
+                          </Label>
+                          <Input
+                            type="text"
+                            id="menuicon"
+                            name="menuicon"
+                            className="form-control"
+                            value={this.state.menuicon}
+                            onChange={this.handleChangeEvent}
+                            placeholder="Enter your menu icon"
+                            required
+                          />
+                          <div className="mb-4 text-danger">
+                            {this.state.menuiconerror}
+                          </div>
+                        </FormGroup>
+                      </Col>
+                    </Row>
 
 
                     {this.state.updateTrue === true ? (

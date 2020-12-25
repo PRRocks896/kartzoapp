@@ -17,8 +17,11 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, productStateRequest, allStateRequest , deleteAllDataRequest} from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListProduct extends React.Component<{ history: any }> {
+
+  /** Product state */
   productState:productStateRequest = constant.productPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -37,6 +40,7 @@ class ListProduct extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.editProduct = this.editProduct.bind(this);
@@ -59,6 +63,7 @@ class ListProduct extends React.Component<{ history: any }> {
     this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** Page render call */
   async componentDidMount() {
     document.title =
       constant.productPage.title.productTitle + utils.getAppName();
@@ -66,6 +71,12 @@ class ListProduct extends React.Component<{ history: any }> {
     this.getProductData();
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page : page
+   * @param size : per page value
+   */
   async getProductData(
     searchText: string = "",
     page: number = 1,
@@ -97,6 +108,7 @@ class ListProduct extends React.Component<{ history: any }> {
     }
   }
 
+  /** Button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -108,6 +120,7 @@ class ListProduct extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** Butoon previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -119,10 +132,18 @@ class ListProduct extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : product id
+   */
   editProduct(id: any) {
     this.props.history.push("/edit-product/" + id);
   }
 
+  /**
+   * 
+   * @param id : product id
+   */
   viewProduct(id: any) {
     this.props.history.push("/view-product/" + id);
   }
@@ -147,6 +168,11 @@ class ListProduct extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   * 
+   * @param text : text
+   * @param btext : button message
+   */
   async deleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -178,6 +204,10 @@ class ListProduct extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : record per page
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page:
@@ -191,6 +221,10 @@ class ListProduct extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -206,6 +240,10 @@ class ListProduct extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : search data value
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -216,6 +254,10 @@ class ListProduct extends React.Component<{ history: any }> {
     this.getProductData(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting table list
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -227,6 +269,12 @@ class ListProduct extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : data
+   * @param text : message
+   * @param btext : button messge
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -256,6 +304,11 @@ class ListProduct extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.productId;
     let ind: any = this.state.productdata.findIndex(
@@ -302,6 +355,10 @@ class ListProduct extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.productdata.forEach((element: any) => {
@@ -334,6 +391,10 @@ class ListProduct extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -376,8 +437,10 @@ class ListProduct extends React.Component<{ history: any }> {
     return res;
   }
 
+  /** Get Table List */
   getTable(coupondata: any) {
     return (
+      <div className="userClass">
       <table
       id="dtBasicExample"
       className="table table-striped table-bordered table_responsive table-sm sortable"
@@ -398,10 +461,19 @@ class ListProduct extends React.Component<{ history: any }> {
             <th>{constant.productPage.productTableColumn.prodctname}</th>
             <th>{constant.productPage.productTableColumn.price}</th>
             <th>{constant.productPage.productTableColumn.discountPrice}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Product") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Product") === true ||
+            checkRights.checkEditRights("Product") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -423,6 +495,7 @@ class ListProduct extends React.Component<{ history: any }> {
                   <td>{data.productName}</td>
                   <td>{data.price}</td>
                   <td>{data.discountPrice}</td>
+                  {checkRights.checkEditRights("Product") === true ? (
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -452,28 +525,32 @@ class ListProduct extends React.Component<{ history: any }> {
                       </button>
                     )}
                   </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewProduct(data.productId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editProduct(data.productId)}
-                      ></i>
-                       {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteProduct(
-                            data,
-                            "You should be Delete Product",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  ) : ('') }
+                  {checkRights.checkViewRights("Product") === true ||
+                  checkRights.checkEditRights("Product") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Product") === true ? (
+                         <i
+                         className="fa fa-eye"
+                         onClick={() => this.viewProduct(data.productId)}
+                       ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Product") === true ? (
+                         <i
+                         className="fas fa-edit"
+                         onClick={() => this.editProduct(data.productId)}
+                       ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -482,9 +559,16 @@ class ListProduct extends React.Component<{ history: any }> {
           )}
         </tbody>
       </table>
+      </div>
     );
   }
 
+  /**
+   * 
+   * @param pageDecrementBtn : page decrement
+   * @param renderPageNumbers : page number
+   * @param pageIncrementBtn : page increment
+   */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -495,7 +579,7 @@ class ListProduct extends React.Component<{ history: any }> {
         <CustomInput
           type="select"
           id="item"
-          className="custom_text_width"
+          className="r-per-page"
           name="customSelect"
           onChange={this.onItemSelect}
         >
@@ -524,6 +608,7 @@ class ListProduct extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,
@@ -567,18 +652,22 @@ class ListProduct extends React.Component<{ history: any }> {
                           {constant.productPage.title.productTitle}
                         </CardTitle>
                       </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/product">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      {checkRights.checkAddRights("Product") === true ? (
+                    <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                    <div className="right">
+                      <Link to="/product">
+                        <Button
+                          className="mb-2 mr-2 custom-button"
+                          color="primary"
+                        >
+                          {constant.button.add}
+                        </Button>
+                      </Link>
+                    </div>
+                  </Col>
+                    ) : (
+                      ""
+                    )}
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -591,7 +680,7 @@ class ListProduct extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true &&  checkRights.checkDeleteRights("Product") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"

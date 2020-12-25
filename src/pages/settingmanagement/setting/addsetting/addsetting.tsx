@@ -22,6 +22,8 @@ import {
 } from "../../../../modelController";
 
 class AddSetting extends React.Component<{ history: any; location: any }> {
+
+  /** setting state */
   settingState: addSettingStateRequest = constant.settingPage.state;
   state = {
     identifier: this.settingState.identifier,
@@ -33,6 +35,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
     settingid: this.settingState.settingid
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -42,6 +45,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
     this.getSettingById = this.getSettingById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     const settingId = this.props.location.pathname.split("/")[2];
     if (settingId !== undefined) {
@@ -59,6 +63,10 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param settingId : setting id
+   */
   async getSettingById(settingId: any) {
     const obj: getDataByIdRequest = {
       id: settingId,
@@ -90,6 +98,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
   //     this.setState({ isOpen: this.state.isOpen = checked });
   //   }
 
+  /** validate or not */
   validate() {
     let identifiererror = "";
     let valueerror = "";
@@ -109,6 +118,10 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update the value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -116,6 +129,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** add setting */
   async addSetting() {
     const isValid = this.validate();
     if (isValid) {
@@ -150,6 +164,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** update setting */
   async updateSetting() {
     const isValid = this.validate();
     if (isValid) {
@@ -185,6 +200,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -197,11 +213,11 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.settingPage.title.updatesettingTitle}</h1>
+                          <h1 className="userbutton1">{constant.settingPage.title.updatesettingTitle}</h1>
                         </Col>
                       ) : (
                           <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                            <h1>{constant.settingPage.title.addSettingTitle}</h1>
+                            <h1 className="userbutton1">{constant.settingPage.title.addSettingTitle}</h1>
                           </Col>
                         )}
                       <Col
@@ -210,7 +226,7 @@ class AddSetting extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-setting">
                           <Button

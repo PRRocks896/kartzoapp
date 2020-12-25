@@ -20,11 +20,12 @@ export default {
   about: "About",
   service: "Service",
   logout: "Logout",
-  filepath: "http://api.kartzoapp.com/",
-  fileMerchantpath: "http://api-merchant.kartzoapp.com/",
-  mainUrl: "http://api.kartzoapp.com/v1/api/",
-  apiUrl: "http://api.kartzoapp.com/v1/api/",
-  apiMerchantUrl: "http://api-merchant.kartzoapp.com/v1/api/",
+  filepath: "https://api-wildebeest-admin.techhoody.com/",
+  fileMerchantpath: "https://api-wildebeest-merchant.techhoody.com/",
+  mainUrl: "https://api-wildebeest-admin.techhoody.com/v1/api/",
+  apiUrl: "https://api-wildebeest-admin.techhoody.com/v1/api/",
+  apiCustomerUrl: "https://api-wildebeest-customer.techhoody.com/v1/api/",
+  apiMerchantUrl: "https://api-wildebeest-merchant.techhoody.com/v1/api/",
   productURL:'http://demo.kartzoapp.com/#/view-product',
   headers: {
     Authorization:
@@ -115,7 +116,8 @@ export default {
       file:'',
       firstName:'',
       lastName:'',
-      classshow:'collapsed sidebar-manage'
+      classshow:'collapsed sidebar-manage',
+      sidebar:[]
     }
   },
 
@@ -165,7 +167,9 @@ export default {
       isButton: false,
       type: "password",
       forgot:false,
-      disabled:false
+      disabled:false,
+      forgotemail:'',
+      forgotemailerror:''
     },
   },
 
@@ -333,7 +337,9 @@ export default {
       parentid:0,
       isActive:true,
       updateTrue:false,
-      menuid:''
+      menuid:'',
+      menuicon:'',
+      menuiconerror:''
     },
     menuTableColumn: {
       menuname: "Menu Name",
@@ -344,6 +350,7 @@ export default {
       select:'Select ParentID',
       isActive:'IsActive',
       isadminrole: "IsAdminRole",
+      menuicon:'Menu Icon'
     },
     viewmenu: {
       menuview: "View Menu",
@@ -365,6 +372,7 @@ export default {
       _deletecheck: false,
       _detailcheck: false,
       show: false,
+      rolename:''
     },
     title: {
       title: "Select Role To Manage The All Rights:",
@@ -647,9 +655,11 @@ export default {
   merchantPage: {
     title: {
       merchantTitle: "Merchant Management",
+      merchantReviewTitle: "Merchant Review Management",
       updateMerchantTitle: "Update Merchant",
       addMerchantTitle: "Add Merchant",
       viewMerchantTitle: "View Merchant",
+      viewMerchantReviewTitle: "View Merchant Review",
     },
     state: {
       count: "10",
@@ -664,6 +674,7 @@ export default {
       isStatus: false,
       merchantdata: [],
       categorydata:[],
+      merchantreviewdata:[],
 
       selectedFile: "",
       selectedProofFile: "",
@@ -759,7 +770,11 @@ export default {
       cityname:'City Name',
       merchantname:'Merchant Name',
       selectcategory:'Select Category',
-      category:'Category Name'
+      category:'Category Name',
+      ratingdetails:'Rating Details',
+      rating:'Rating',
+      customername:'Customer Name'
+
     },
     viewmerchanrpagedetails: {
       viewmerchant: "View Merchant Details",
@@ -887,9 +902,13 @@ export default {
   settingPage: {
     title: {
       addSettingTitle: "Add Setting",
+      addpopularcityTitle: "Add Popular City",
       settingTitle: "Setting Management",
       viewsettingTitle: "View Setting",
+      viewpopularcityTitle: "View Popular City",
       updatesettingTitle: "Update Setting",
+      updatepopularcityTitle: "Update Popular City",
+      popularcitytitle:'Popular City'
     },
     state: {
       count: "10",
@@ -917,6 +936,7 @@ export default {
     },
     viewsettingdetails: {
       viewsetting: "View Setting Details",
+      viewpopularcity:"View Popular City"
     },
   },
   feePage: {

@@ -17,6 +17,8 @@ import { addUserModelRequest, getDataByIdRequest } from "../../../modelControlle
 import './viewuser.css';
 
 class ViewUser extends React.Component<{ history: any; location: any }> {
+
+  /** User state */
   userState : addUserModelRequest = constant.userPage.state;
   state = {
       firstname: this.userState.firstname,
@@ -27,10 +29,12 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
    
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
   }
 
+  /** Page Render call */
   async componentDidMount() {
     document.title = constant.userPage.title.viewUserTitle + utils.getAppName();
     const usderId = this.props.location.pathname.split("/")[2];
@@ -39,6 +43,10 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param usderId : user id
+   */
   async getUser(usderId:any) {
     const obj: getDataByIdRequest = {
       id: usderId,
@@ -63,6 +71,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -74,7 +83,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>{constant.userPage.viewuser.viewdetails}</h1>
+                        <h1 className="userbutton1">{constant.userPage.viewuser.viewdetails}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -82,7 +91,7 @@ class ViewUser extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/users">
                           <Button

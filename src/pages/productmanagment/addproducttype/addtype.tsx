@@ -21,6 +21,8 @@ import {
 } from "../../../modelController";
 
 class AddProductType extends React.Component<{ history: any; location: any }> {
+
+  /** Product customise state */
     productCustomiseState : addProdcutTypeStateRequest = constant.productCustomisePage.state;
   state = {
    typeName:this.productCustomiseState.typeName,
@@ -30,6 +32,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
     isActive: this.productCustomiseState.isActive
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -39,6 +42,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
     this.getCustomiseTypeById = this.getCustomiseTypeById.bind(this);
   }
 
+  /** Page Render call */
   async componentDidMount() {
     const profuctCustomiseTypeId = this.props.location.pathname.split("/")[2];
     if (profuctCustomiseTypeId !== undefined) {
@@ -56,6 +60,10 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param profuctCustomiseTypeId : product customise type id
+   */
   async getCustomiseTypeById(profuctCustomiseTypeId: any) {
     const obj:getDataByIdRequest = {
       id: profuctCustomiseTypeId,
@@ -81,10 +89,15 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param checked : boolean value
+   */
   handleChange(checked: boolean) {
     this.setState({ isActive: this.state.isActive = checked });
   }
 
+  /** check validate or not */
   validate() {
     let typeNameerror = "";
 
@@ -99,6 +112,10 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update the state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -106,6 +123,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add customise type */
   async addCustomiseType() {
     const isValid = this.validate();
     if (isValid) {
@@ -137,6 +155,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Update customise type */
   async updateCustomiseType() {
     const isValid = this.validate();
     if (isValid) {
@@ -169,6 +188,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -181,11 +201,11 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.productCustomisePage.title.updateTypeTitle}</h1>
+                          <h1 className="userbutton1">{constant.productCustomisePage.title.updateTypeTitle}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.productCustomisePage.title.addTypeTitle}</h1>
+                          <h1 className="userbutton1">{constant.productCustomisePage.title.addTypeTitle}</h1>
                         </Col>
                       )}
                       <Col
@@ -194,7 +214,7 @@ class AddProductType extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-type">
                           <Button

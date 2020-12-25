@@ -17,8 +17,11 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest,deleteByIdRequest, allStateRequest,payoutStateRequest, deleteAllDataRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListPayout extends React.Component<{ history: any }> {
+
+  /** payout state */
   payoutState:payoutStateRequest = constant.payoutPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -37,6 +40,7 @@ class ListPayout extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.editPayout = this.editPayout.bind(this);
@@ -59,6 +63,7 @@ class ListPayout extends React.Component<{ history: any }> {
     // this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.payoutPage.title.payoutTitle + utils.getAppName();
@@ -66,6 +71,7 @@ class ListPayout extends React.Component<{ history: any }> {
     this.getPayoutData();
   }
 
+  /** get payout data */
   async getPayoutData(
     searchText: string = "",
     page: number = 1,
@@ -97,6 +103,7 @@ class ListPayout extends React.Component<{ history: any }> {
     }
   }
 
+  /** button increment */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -108,6 +115,7 @@ class ListPayout extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** button decrement */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -119,10 +127,18 @@ class ListPayout extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : payout id
+   */
   editPayout(id: any) {
     this.props.history.push("/edit-payout/" + id);
   }
 
+  /**
+   * 
+   * @param id : payout id
+   */
   viewPayout(id: any) {
     this.props.history.push("/view-payout/" + id);
   }
@@ -366,6 +382,7 @@ class ListPayout extends React.Component<{ history: any }> {
 
   getTable(payoutdata: any) {
     return (
+      <div className="userClass">
       <table
       id="dtBasicExample"
       className="table table-striped table-bordered table_responsive table-sm sortable"
@@ -385,7 +402,12 @@ class ListPayout extends React.Component<{ history: any }> {
             </th> */}
             <th>{constant.payoutPage.payoutTableColumn.merchantamount}</th>
             <th>{constant.payoutPage.payoutTableColumn.merchantpayamount}</th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkViewRights("Payout") === true ||
+            checkRights.checkEditRights("Payout") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -406,28 +428,31 @@ class ListPayout extends React.Component<{ history: any }> {
                   </td> */}
                   <td>{data.merchantOrderAmount}</td>
                   <td>{data.merchantPayAmount}</td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() => this.viewPayout(data.payoutId)}
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() => this.editPayout(data.payoutId)}
-                      ></i>
-                       {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deletePayout(
-                            data,
-                            "You should be Delete Payout",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  {checkRights.checkViewRights("Payout") === true ||
+                  checkRights.checkEditRights("Payout") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Payout") === true ? (
+                         <i
+                         className="fa fa-eye"
+                         onClick={() => this.viewPayout(data.payoutId)}
+                       ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Payout") === true ? (
+                         <i
+                         className="fas fa-edit"
+                         onClick={() => this.editPayout(data.payoutId)}
+                       ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -436,6 +461,7 @@ class ListPayout extends React.Component<{ history: any }> {
           )}
         </tbody>
       </table>
+      </div>
     );
   }
 
@@ -449,7 +475,7 @@ class ListPayout extends React.Component<{ history: any }> {
         <CustomInput
           type="select"
           id="item"
-          className="custom_text_width"
+          className="r-per-page"
           name="customSelect"
           onChange={this.onItemSelect}
         >
@@ -521,18 +547,22 @@ class ListPayout extends React.Component<{ history: any }> {
                           {constant.payoutPage.title.payoutTitle}
                         </CardTitle>
                       </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/add-payout">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      {checkRights.checkAddRights("Payout") === true ? (
+                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                       <div className="right">
+                         <Link to="/add-payout">
+                           <Button
+                             className="mb-2 mr-2 custom-button"
+                             color="primary"
+                           >
+                             {constant.button.add}
+                           </Button>
+                         </Link>
+                       </div>
+                     </Col>
+                    ) : (
+                      ""
+                    )}
                     </Row>
                   </CardHeader>
                   <CardBody>

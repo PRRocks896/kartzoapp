@@ -19,6 +19,8 @@ import constant from "../../../../constant/constant";
 import {getDataByIdRequest ,payoutCreateRequest, payoutUpdateRequest, addPayoutStateRequest } from "../../../../modelController";
 
 class AddPayout extends React.Component<{ history: any; location: any }> {
+
+  /** Add Payout state */
   payoutState : addPayoutStateRequest = constant.payoutPage.state;
   state = {
     merchant: this.payoutState.merchant,
@@ -38,6 +40,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     shopname:this.payoutState.shopname
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -49,6 +52,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     this.getMerchantById = this.getMerchantById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     const payoutId = this.props.location.pathname.split("/")[2];
     if (payoutId !== undefined) {
@@ -67,12 +71,17 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     this.getMerchant();
   }
 
+  /**
+   * 
+   * @param event : merchant select
+   */
   onItemSelect(event: any) {
     this.setState({
       merchant: this.state.merchant = event.target.value
     });
   }
 
+  /** Get merchant */
  async getMerchant() {
     const getMerchantList: any = await MerchantAPI.getMerchantList();
     // console.log("getMerchantList", getMerchantList);
@@ -91,7 +100,10 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     }
     }
  
-
+/**
+ * 
+ * @param payoutId : payout id
+ */
   async getPayoutById(payoutId: any) {
     const obj:getDataByIdRequest = {
       id: payoutId,
@@ -123,6 +135,10 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param id : merchant id
+   */
   async getMerchantById(id: any) {
     const getMerchantById: any = await MerchantAPI.getMerchantById(id);
     // console.log("getMerchantById", getMerchantById);
@@ -144,7 +160,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     }
   }
 
-
+/** validate or not */
   validate() {
     let merchanterror = "";
     let merchantOrderAmounterror = "";
@@ -183,6 +199,10 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update stae value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -190,6 +210,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add payout */
   async addPayout() {
     const isValid = this.validate();
     if (isValid) {
@@ -227,6 +248,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Update payout */
   async updatePayout() {
     const isValid = this.validate();
     if (isValid) {
@@ -265,6 +287,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -277,11 +300,11 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.payoutPage.title.updatepayoutTitle}</h1>
+                          <h1 className="userbutton1">{constant.payoutPage.title.updatepayoutTitle}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                            <h1>{constant.payoutPage.title.addPayoutTitle}</h1>
+                            <h1 className="userbutton1">{constant.payoutPage.title.addPayoutTitle}</h1>
                         </Col>
                       )}
                       <Col
@@ -290,7 +313,7 @@ class AddPayout extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-payout">
                           <Button

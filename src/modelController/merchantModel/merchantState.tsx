@@ -7,6 +7,7 @@ export interface merchantStateRequest {
     pageBound: number,
     onItemSelect: string,
     merchantdata: any,
+    merchantreviewdata:any,
     switchSort: boolean,
     isStatus: boolean
 }

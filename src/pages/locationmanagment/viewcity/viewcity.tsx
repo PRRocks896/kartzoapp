@@ -18,12 +18,15 @@ import constant from "../../../constant/constant";
 import { addCityStateRequest, getDataByIdRequest } from "../../../modelController";
 
 class ViewCity extends React.Component<{ history: any; location: any }> {
+
+  /** City state */
   cityState:addCityStateRequest = constant.cityPage.state;
   state  = {
     statename: this.cityState.statename,
     cityname: this.cityState.cityname,
   };
 
+  /** Page Render Call */
   async componentDidMount() {
     document.title = constant.cityPage.title.viewCityTitle + utils.getAppName();
     const cityId = this.props.location.pathname.split("/")[2];
@@ -32,6 +35,10 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param cityId : city id
+   */
   async getCity(cityId:any){
     const obj:getDataByIdRequest = {
       id: cityId,
@@ -56,6 +63,7 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -67,7 +75,7 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-    <h1>{constant.cityPage.viewcitydetails.viewcity}</h1>
+    <h1 className="userbutton1">{constant.cityPage.viewcitydetails.viewcity}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -75,7 +83,7 @@ class ViewCity extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                       className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/city">
                           <Button

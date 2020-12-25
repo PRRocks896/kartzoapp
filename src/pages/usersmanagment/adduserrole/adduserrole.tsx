@@ -23,6 +23,8 @@ import {
 } from "../../../modelController";
 
 class AddUserRole extends React.Component<{ history: any; location: any }> {
+
+  /** user role state */
   userState : addUserRoleState = constant.userRolePage.state;
   state = {
     rolename: this.userState.rolename,
@@ -35,6 +37,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
     isActive: this.userState.isActive
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -44,6 +47,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
     this.getRoleById = this.getRoleById.bind(this);
   }
 
+  /** Page render call */
   async componentDidMount() {
     const roleId = this.props.location.pathname.split("/")[2];
     if (roleId !== undefined) {
@@ -61,6 +65,10 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param roleId : role  id
+   */
   async getRoleById(roleId: any) {
     const obj:getDataByIdRequest = {
       id: roleId,
@@ -89,10 +97,15 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param checked : boolean checked
+   */
   handleChange(checked: boolean) {
     this.setState({ isOpen: this.state.isOpen = checked });
   }
 
+  /** validate or not */
   validate() {
     let rolenameerror = "";
 
@@ -107,6 +120,10 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -114,6 +131,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add user role */
   async addUserRole() {
     const isValid = this.validate();
     if (isValid) {
@@ -150,6 +168,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** update user role */
   async updateUserRole() {
     const isValid = this.validate();
     if (isValid) {
@@ -186,6 +205,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -198,11 +218,11 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.userRolePage.title.updateRoleTitle}</h1>
+                          <h1 className="userbutton1">{constant.userRolePage.title.updateRoleTitle}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.userRolePage.title.updateRoleTitle}</h1>
+                          <h1 className="userbutton1">{constant.userRolePage.title.updateRoleTitle}</h1>
                         </Col>
                       )}
                       <Col
@@ -211,7 +231,7 @@ class AddUserRole extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/userrole">
                           <Button

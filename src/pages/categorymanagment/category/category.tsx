@@ -24,8 +24,10 @@ import {
   categoryStateRequest,
   deleteAllDataRequest,
 } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class Category extends React.Component<{ history: any }> {
+  /** Category State */
   categoryState: categoryStateRequest = constant.categoryPage.state;
   userState: allStateRequest = constant.userPage.state;
   state = {
@@ -44,6 +46,7 @@ class Category extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.editCategory = this.editCategory.bind(this);
@@ -66,6 +69,7 @@ class Category extends React.Component<{ history: any }> {
     this.delleteAllData = this.delleteAllData.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     document.title =
       constant.categoryPage.title.categoryTitle + utils.getAppName();
@@ -73,6 +77,7 @@ class Category extends React.Component<{ history: any }> {
     this.getCategory();
   }
 
+  /** Get Category */
   async getCategory(
     searchText: string = "",
     page: number = 1,
@@ -90,8 +95,9 @@ class Category extends React.Component<{ history: any }> {
     if (getCategory) {
       if (getCategory.status === 200) {
         this.setState({
-          categorydata: this.state.categorydata = getCategory.resultObject.data,
-          count: this.state.count = getCategory.resultObject.totalcount,
+          categorydata: (this.state.categorydata =
+            getCategory.resultObject.data),
+          count: (this.state.count = getCategory.resultObject.totalcount),
         });
       } else {
         const msg1 = getCategory.message;
@@ -103,6 +109,7 @@ class Category extends React.Component<{ history: any }> {
     }
   }
 
+  /** Button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -114,6 +121,7 @@ class Category extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** Button previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -125,10 +133,18 @@ class Category extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   *
+   * @param id : edit category
+   */
   editCategory(id: any) {
     this.props.history.push("/editcategory/" + id);
   }
 
+  /**
+   *
+   * @param id : view category
+   */
   viewCategory(id: any) {
     this.props.history.push("/viewcategory/" + id);
   }
@@ -153,6 +169,11 @@ class Category extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   *
+   * @param text : message
+   * @param btext : buton message
+   */
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -171,7 +192,7 @@ class Category extends React.Component<{ history: any }> {
             parseInt(this.state.items_per_page)
           );
           this.setState({
-            deleteFlag: this.state.deleteFlag = false,
+            deleteFlag: (this.state.deleteFlag = false),
           });
         } else {
           const msg1 = deleteAllData.data.message;
@@ -184,10 +205,14 @@ class Category extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   *
+   * @param event : record par page select
+   */
   onItemSelect(event: any) {
     this.setState({
-      items_per_page: this.state.items_per_page =
-        event.target.options[event.target.selectedIndex].value,
+      items_per_page: (this.state.items_per_page =
+        event.target.options[event.target.selectedIndex].value),
     });
 
     this.getCategory(
@@ -197,9 +222,13 @@ class Category extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   *
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
-      currentPage: this.state.currentPage = event.target.id,
+      currentPage: (this.state.currentPage = event.target.id),
     });
     const obj: getAllTableDataListRequest = {
       searchText: "",
@@ -210,6 +239,10 @@ class Category extends React.Component<{ history: any }> {
     this.getCategory(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   *
+   * @param e : search category
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj: getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -220,6 +253,10 @@ class Category extends React.Component<{ history: any }> {
     this.getCategory(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   *
+   * @param key : sorting table list
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -227,10 +264,16 @@ class Category extends React.Component<{ history: any }> {
     let copyTableData = [...this.state.categorydata];
     copyTableData.sort(utils.compareByDesc(key, this.state.switchSort));
     this.setState({
-      categorydata: this.state.categorydata = copyTableData,
+      categorydata: (this.state.categorydata = copyTableData),
     });
   }
 
+  /**
+   *
+   * @param data : status change data
+   * @param text : message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: statusChangeRequest = {
@@ -260,6 +303,11 @@ class Category extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   *
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.categoryId;
     let ind: any = this.state.categorydata.findIndex(
@@ -270,7 +318,7 @@ class Category extends React.Component<{ history: any }> {
       let newState: any = !item._rowChecked;
       data[ind]._rowChecked = newState;
       this.setState({
-        categorydata: this.state.categorydata = data,
+        categorydata: (this.state.categorydata = data),
       });
     }
     if (
@@ -292,20 +340,24 @@ class Category extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newarray,
+      deleteuserdata: (this.state.deleteuserdata = newarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   *
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.categorydata.forEach((element: any) => {
@@ -324,20 +376,24 @@ class Category extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newmainarray,
+      deleteuserdata: (this.state.deleteuserdata = newmainarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   *
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -380,8 +436,10 @@ class Category extends React.Component<{ history: any }> {
     return res;
   }
 
+  /** Table List */
   getTable(categorydata: any) {
     return (
+      <div className="userClass">
       <table
         id="dtBasicExample"
         className="table table-striped table-bordered table_responsive table-sm sortable"
@@ -401,10 +459,19 @@ class Category extends React.Component<{ history: any }> {
             </th>
             <th>{constant.categoryPage.caetgoryTableColumn.categoryName}</th>
             <th>{constant.categoryPage.caetgoryTableColumn.image}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Category") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Category") === true ||
+            checkRights.checkEditRights("Category") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -423,7 +490,8 @@ class Category extends React.Component<{ history: any }> {
                       />
                     </td>
                     <td>{data.category}</td>
-                    <td>{data.imagePath != null ? (
+                    <td>
+                      {data.imagePath != null ? (
                         <div className="img-size">
                           {data.imagePath ? (
                             <div>
@@ -438,59 +506,79 @@ class Category extends React.Component<{ history: any }> {
                         <div>
                           <i className="fa fa-user picture"></i>
                         </div>
-                      )}</td>
-                    <td style={{ textAlign: "center" }}>
-                      {data.isActive === true ? (
-                        <button
-                          className="status_active_color"
-                          onClick={() =>
-                            this.statusChange(
-                              data,
-                              "You should be Inactive category",
-                              "Yes, Inactive it"
-                            )
-                          }
-                        >
-                          Active
-                        </button>
-                      ) : (
-                        <button
-                          className="status_Inactive_color"
-                          onClick={() =>
-                            this.statusChange(
-                              data,
-                              "You should be Active category",
-                              "Yes, Active it"
-                            )
-                          }
-                        >
-                          Inactive
-                        </button>
                       )}
                     </td>
-                    <td className="action">
-                      <span className="padding">
-                        <i
-                          className="fa fa-eye"
-                          onClick={() => this.viewCategory(data.categoryId)}
-                        ></i>
-                        <i
-                          className="fas fa-edit"
-                          onClick={() => this.editCategory(data.categoryId)}
-                        ></i>
-                      </span>
-                    </td>
+                    {checkRights.checkEditRights("Category") === true ? (
+                      <td style={{ textAlign: "center" }}>
+                        {data.isActive === true ? (
+                          <button
+                            className="status_active_color"
+                            onClick={() =>
+                              this.statusChange(
+                                data,
+                                "You should be Inactive category",
+                                "Yes, Inactive it"
+                              )
+                            }
+                          >
+                            Active
+                          </button>
+                        ) : (
+                          <button
+                            className="status_Inactive_color"
+                            onClick={() =>
+                              this.statusChange(
+                                data,
+                                "You should be Active category",
+                                "Yes, Active it"
+                              )
+                            }
+                          >
+                            Inactive
+                          </button>
+                        )}
+                      </td>
+                    ) : (
+                      ""
+                    )}
+                    {checkRights.checkViewRights("Category") === true ||
+                    checkRights.checkEditRights("Category") === true ? (
+                      <td className="action">
+                        <span className="padding">
+                          {checkRights.checkViewRights("Category") === true ? (
+                            <i
+                              className="fa fa-eye"
+                              onClick={() => this.viewCategory(data.categoryId)}
+                            ></i>
+                          ) : (
+                            ""
+                          )}
+                          {checkRights.checkEditRights("Category") === true ? (
+                            <i
+                              className="fas fa-edit"
+                              onClick={() => this.editCategory(data.categoryId)}
+                            ></i>
+                          ) : (
+                            ""
+                          )}
+                        </span>
+                      </td>
+                    ) : (
+                      ""
+                    )}
                   </tr>
                 ) : (
-                  ""
+                  null
                 )
               )
             : ""}
         </tbody>
       </table>
+      </div>
     );
   }
 
+  /** Get Page Data */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -501,7 +589,7 @@ class Category extends React.Component<{ history: any }> {
         <CustomInput
           type="select"
           id="item"
-          className="custom_text_width"
+          className="r-per-page"
           name="customSelect"
           onChange={this.onItemSelect}
         >
@@ -530,6 +618,7 @@ class Category extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,
@@ -569,18 +658,22 @@ class Category extends React.Component<{ history: any }> {
                       {constant.categoryPage.title.categoryTitle}
                     </CardTitle>
                   </Col>
-                  <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                    <div className="right">
-                      <Link to="/addcategory">
-                        <Button
-                          className="mb-2 mr-2 custom-button"
-                          color="primary"
-                        >
-                          {constant.button.add}
-                        </Button>
-                      </Link>
-                    </div>
-                  </Col>
+                  {checkRights.checkAddRights("Category") === true ? (
+                    <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                      <div className="right">
+                        <Link to="/addcategory">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                  ) : (
+                    ""
+                  )}
                 </Row>
               </CardHeader>
               <CardBody>
@@ -593,7 +686,8 @@ class Category extends React.Component<{ history: any }> {
                     onKeyUp={this.searchApplicationDataKeyUp}
                   />
                 </div>
-                {this.state.deleteFlag === true ? (
+                {this.state.deleteFlag === true &&
+                checkRights.checkDeleteRights("Category") === true ? (
                   <Button
                     className="mb-2 mr-2 custom-button"
                     color="primary"

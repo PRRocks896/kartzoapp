@@ -17,12 +17,15 @@ import constant from "../../../constant/constant";
 import { getDataByIdRequest, stateStatesRequest } from "../../../modelController";
 
 class ViewState extends React.Component<{ history: any; location: any }> {
+
+  /** State state */
   stateState : stateStatesRequest = constant.statePage.state;
   state = {
     statename: this.stateState.statename,
     countryname: this.stateState.countryname,
   };
 
+  /** Page Render DOM */
   async componentDidMount() {
     document.title =
       constant.statePage.title.viewStateTitle + utils.getAppName();
@@ -32,6 +35,10 @@ class ViewState extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param stateId : state id
+   */
   async getState(stateId:any) {
     const obj:getDataByIdRequest = {
       id: stateId,
@@ -57,6 +64,7 @@ class ViewState extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -68,7 +76,7 @@ class ViewState extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-    <h1>{constant.statePage.title.stateTitle}</h1>
+    <h1 className="userbutton1">{constant.statePage.title.stateTitle}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -76,7 +84,7 @@ class ViewState extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/state">
                           <Button

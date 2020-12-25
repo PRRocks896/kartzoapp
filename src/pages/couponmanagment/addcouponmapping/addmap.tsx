@@ -80,6 +80,8 @@ class AddCouponMapping extends React.Component<{
   history: any;
   location: any;
 }> {
+
+  /** Coupon State */
   couponState: addCouponStateRequest = constant.couponPage.state;
   state: any = {
     items: this.couponState.items,
@@ -113,6 +115,7 @@ class AddCouponMapping extends React.Component<{
     droppable4: "selectedmerchantdata",
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.onDragEnd = this.onDragEnd.bind(this);
@@ -124,6 +127,7 @@ class AddCouponMapping extends React.Component<{
     this.editCouponMapping = this.editCouponMapping.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     this.getCouponList();
     this.getMerchantList();
@@ -144,6 +148,10 @@ class AddCouponMapping extends React.Component<{
     }
   }
 
+ /**
+  * 
+  * @param id : coupon mapping id
+  */
   async getCouponMappingById(id: any) {
     const obj: getDataByIdRequest = {
       id: id,
@@ -236,6 +244,10 @@ class AddCouponMapping extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -243,6 +255,7 @@ class AddCouponMapping extends React.Component<{
     this.setState(state);
   }
 
+  /** Get Coupon List */
   async getCouponList() {
     var getCouponList = await CouponAPI.getCouponList();
     // console.log("getCouponList", getCouponList);
@@ -265,6 +278,7 @@ class AddCouponMapping extends React.Component<{
     }
   }
 
+  /** Get Merchant List */
   async getMerchantList() {
     var getMerchantList = await MerchantAPI.getMerchantList();
     // console.log("getMerchantList", getMerchantList);
@@ -290,6 +304,10 @@ class AddCouponMapping extends React.Component<{
 
   getMerchantListdata = (id: any) => this.state[this.id4List[id]];
 
+  /**
+   * 
+   * @param result : coupon drag event
+   */
   onDragEnd = (result: any) => {
     const { source, destination } = result;
 
@@ -431,6 +449,10 @@ class AddCouponMapping extends React.Component<{
     }
   };
 
+  /**
+   * 
+   * @param result : merchant drag event
+   */
   onDragMerchantEnd = (result: any) => {
     const { source, destination } = result;
 
@@ -566,6 +588,7 @@ class AddCouponMapping extends React.Component<{
     }
   };
 
+  /** Check valid or not */
   validate() {
     let offernameerror = "";
 
@@ -581,6 +604,7 @@ class AddCouponMapping extends React.Component<{
     return true;
   }
 
+  /** Add coupon mapping */
   async addCouponMapping() {
     const isValid = this.validate();
     if (isValid) {
@@ -617,6 +641,7 @@ class AddCouponMapping extends React.Component<{
     }
   }
 
+  /** Edit coupon mapping */
   async editCouponMapping() {
     const isValid = this.validate();
     if (isValid) {
@@ -656,6 +681,7 @@ class AddCouponMapping extends React.Component<{
     }
   }
 
+  /** Render DOM */
   render() {
     let { selected, selectedmerchantdata } = this.state;
     return (
@@ -669,13 +695,13 @@ class AddCouponMapping extends React.Component<{
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>
+                          <h1 className="userbutton1">
                             {constant.couponPage.title.updateCouponMappingTitle}
                           </h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>
+                          <h1 className="userbutton1">
                             {constant.couponPage.title.addCouponMappingTitle}
                           </h1>
                         </Col>
@@ -686,7 +712,7 @@ class AddCouponMapping extends React.Component<{
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-coupon-map">
                           <Button

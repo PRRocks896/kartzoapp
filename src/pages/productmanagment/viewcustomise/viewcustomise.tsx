@@ -19,6 +19,8 @@ class ViewProductCustomise extends React.Component<{
   history: any;
   location: any;
 }> {
+
+  /** Product customise state */
   productCustomiseState : addProdcutCustomiseStateRequest= constant.productCustomPage.state;
   state = {
     amount: this.productCustomiseState.amount,
@@ -27,12 +29,15 @@ class ViewProductCustomise extends React.Component<{
     productdata: this.productCustomiseState.productdata,
     productdatatype: this.productCustomiseState.productdatatype,
   };
+
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.getCustomiseById = this.getCustomiseById.bind(this);
     this.createMarkup = this.createMarkup.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.productCustomPage.title.viewcustomiseTitle + utils.getAppName();
@@ -42,6 +47,10 @@ class ViewProductCustomise extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param profuctCustomiseTypeId : customise type id
+   */
   async getCustomiseById(profuctCustomiseTypeId: any) {
     const obj:getDataByIdRequest = {
       id: profuctCustomiseTypeId,
@@ -72,10 +81,12 @@ class ViewProductCustomise extends React.Component<{
     }
   }
 
+  /** description add on details */
   createMarkup() {
     return { __html: this.state.addondetails };
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -87,7 +98,7 @@ class ViewProductCustomise extends React.Component<{
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>
+                        <h1 className="userbutton1">
                           {
                             constant.productCustomPage
                               .viewProductCustomisedetails
@@ -101,7 +112,7 @@ class ViewProductCustomise extends React.Component<{
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-product-customise">
                           <Button

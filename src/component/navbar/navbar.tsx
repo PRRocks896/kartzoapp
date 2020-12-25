@@ -4,8 +4,11 @@ import nav from "../../navbar.service";
 import constant from "../../constant/constant";
 import EventEmitter from "../../event";
 import { navBarStateRequest } from "../../modelController";
+import checkRights from "../../rights";
 
 class NavBar extends React.Component {
+
+  /** Navbar State */
   navbarState = constant.navbarPage.state;
   state: navBarStateRequest = {
     isOpen: this.navbarState.isOpen,
@@ -14,8 +17,10 @@ class NavBar extends React.Component {
     firstName: this.navbarState.firstName,
     lastName: this.navbarState.lastName,
     classshow: this.navbarState.classshow,
+    sidebar:''
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.activeRoute = this.activeRoute.bind(this);
@@ -37,6 +42,7 @@ class NavBar extends React.Component {
     });
   }
 
+  /** Page render call */
   componentDidMount() {
     var user = localStorage.getItem("user");
     if (user) {
@@ -49,6 +55,10 @@ class NavBar extends React.Component {
     }
   }
 
+  /**
+   * 
+   * @param routeName : routename
+   */
   activeRoute(routeName: any) {
     const route = window.location.hash.split("#")[1];
     return route === routeName
@@ -56,36 +66,48 @@ class NavBar extends React.Component {
       : `collapsed sidebar-manage`;
   }
 
+  /**
+   * 
+   * @param url : url
+   */
   handleClick(url: any) {
     window.location.href = `/#${url}`;
   }
 
+  /** Toggle Collapse */
   toggleCollapse = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };
 
+  /** Toggle Collapse */
   toggleCollapseRight = () => {
     this.setState({ side: !this.state.side });
   };
 
+  /** Close Nav */
   closeNav = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };
 
+  /** Logout */
   logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("merchantToken");
     localStorage.removeItem("rolePreveliges");
     localStorage.removeItem("menuItems");
-    localStorage.removeItem('refreshtoken');
+    localStorage.removeItem("refreshtoken");
     // this.props.history.push('/login');
     window.location.href = "/#/login";
   }
 
+  /** Render DOM */
   render() {
     var rightdata: any = localStorage.getItem("menuItems");
     var user_right = JSON.parse(rightdata);
+
+    var rights: any = localStorage.getItem("rolePreveliges");
+    var user_menu = JSON.parse(rights);
 
     return (
       <div
@@ -131,43 +153,64 @@ class NavBar extends React.Component {
             <li className="menu-item">
               {/** User role rights Impelement */}
 
-              {/* <div className="menu_name">
-                           <span className="header_side">General</span>
-                           <a href="#" id={`dropdown`} className={this.activeRoute('/dashboard')} data-toggle="collapse" aria-expanded="false"  onClick={() => this.handleClick('/dashboard')}>
-                           <span><i className='fa fa-desktop fs-16'></i>Dashboard</span>
-                            </a>
-                            </div> */}
-              {/* {
-                                   nav.items.map((menu:any,index:any) => (
-                                    menu.type === 'header' ? (
-                                        <div key={index} className="menu_name">
-                                  
-                                            {
-                                                user_right.map((data:any,index:number) => (
-                                                    data.menuItemName === menu.name ? (
-                                                        <span key={index} className="header_side">{menu.name}</span>
-                                                    ) : ('')
-                                                ))
-                                            }
-                                        </div>
-                                    ): (
+              <div className="menu_name">
+                <span className="header_side">General</span>
+                <a
+                  href="#"
+                  id={`dropdown`}
+                  className={this.activeRoute("/dashboard")}
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  onClick={() => this.handleClick("/dashboard")}
+                >
+                  <span>
+                    <i className="fa fa-desktop fs-16"></i>Dashboard
+                  </span>
+                </a>
+              </div>
+              {user_menu.map((menu: any, index: any) =>
+                menu.menuItemView === "header" ? (
+                  <div key={index} className="menu_name">
+                    {user_right.map((data: any, index: number) =>
+                      data.name === menu.menuItem &&
+                      checkRights.checkViewRights(data.name) === true ? (
+                        <span key={index} className="header_side">
+                          {menu.menuItem}
+                        </span>
+                      ) : (
+                        ""
+                      )
+                    )}
+                  </div>
+                ) : (
+                  user_right.map((data: any, index: number) =>
+                    data.name === menu.menuItem &&
+                    checkRights.checkViewRights(data.name) ===
+                      true ? (
+                      <a
+                        key={index}
+                        href="#"
+                      
+                        className={this.activeRoute(data.url)}
+                        data-toggle="collapse"
+                       
+                        aria-expanded="false"
+                     
+                        onClick={() => this.handleClick(data.url)}
+                      >
+                        <span key={index}>
+                          <i className={data.icon}></i>
+                          {data.name}{" "}
+                        </span>
+                      </a>
+                    ) : (
+                      ""
+                    )
+                  )
+                )
+              )}
 
-                                        <a key={index} href="#" id={`dropdown-${menu.id}`} className={this.activeRoute(menu.url)} data-toggle="collapse" data-target={`#${menu.id}`} aria-expanded="false" aria-controls={`${menu.id}`}  onClick={() => this.handleClick(menu.url)}>
-                                             
-                                              {
-                                                user_right.map((data:any,index:number) => (
-                                                    data.menuItemController === menu.name  ? (
-                                                        <span key={index}><i className={menu.icon}></i>{menu.name} </span>
-                                                    ) : ('')
-                                                ))
-                                            }
-                                        </a>
-                                    )
-                                   ))
-                                   
-                               } */}
-
-              {nav.items.map((menu: any, index: any) =>
+              {/* {user_right.map((menu: any, index: any) =>
                 menu.type === "header" ? (
                   <div key={index} className="menu_name">
                     <span key={index} className="header_side">
@@ -178,12 +221,12 @@ class NavBar extends React.Component {
                   <a
                     key={index}
                     href="#"
-                    id={`dropdown-${menu.id}`}
+                 
                     className={this.activeRoute(menu.url)}
                     data-toggle="collapse"
-                    data-target={`#${menu.id}`}
+                 
                     aria-expanded="false"
-                    aria-controls={`${menu.id}`}
+       
                     onClick={() => this.handleClick(menu.url)}
                   >
                     <span key={index}>
@@ -192,7 +235,7 @@ class NavBar extends React.Component {
                     </span>
                   </a>
                 )
-              )}
+              )} */}
             </li>
 
             {/* <li className="menu-item">

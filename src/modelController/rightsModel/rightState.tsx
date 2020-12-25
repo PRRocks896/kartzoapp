@@ -12,4 +12,5 @@ export interface rightStateRequest {
     _deletecheck: boolean,
     _detailcheck: boolean,
     show: boolean,
+    rolename:string
 }

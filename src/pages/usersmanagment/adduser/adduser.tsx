@@ -19,6 +19,7 @@ import constant from "../../../constant/constant";
 import { addUserModelRequest } from "../../../modelController";
 
 class AddUser extends React.Component<{ history: any; location: any }> {
+  /** Add user state */
   userState : addUserModelRequest= constant.userPage.state;
   state = {
     selectedFile: this.userState.selectedFile,
@@ -48,6 +49,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     s1:this.userState.s1
   };
 
+  /** constructor props */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -60,6 +62,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     this.getUserById = this.getUserById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     this.getUserRole();
     const usderId = this.props.location.pathname.split("/")[2];
@@ -78,10 +81,18 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param checked : check value
+   */
   handleChange(checked: boolean) {
     this.setState({ checked });
   }
 
+  /**
+   * 
+   * @param usderId : user id
+   */
   async getUserById(usderId: any) {
     const obj = {
       id: usderId,
@@ -121,6 +132,10 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : file uploadx
+   */
   onChangeHandler(event: any) {
     if (this.state.filetrue === true) {
       this.setState({
@@ -148,6 +163,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** get user role */
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
 
@@ -166,6 +182,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** validate or not */
   validate() {
     let firstnameerror = "";
     let lastnameerror = "";
@@ -225,6 +242,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /** validate update */
   validateUpdate() {
     let firstnameerror = "";
     let lastnameerror = "";
@@ -270,6 +288,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /** role select */
   onItemSelect(event: any) {
     this.setState({
       roleid: this.state.roleid =
@@ -279,6 +298,10 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -286,11 +309,13 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** password type */
   handleClick = () =>
     this.setState(({ type }: any) => ({
       type: type === "password" ? "text" : "password",
     }));
 
+  /** add user */
   async addUser() {
     const isValid = this.validate();
     if (isValid) {
@@ -342,6 +367,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** edit user */
   async editUser() {
     const isValid = this.validateUpdate();
     if (isValid) {
@@ -396,6 +422,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Remove icon */
   removeIcon() {
     this.setState({
       file: this.state.file = "",
@@ -403,6 +430,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -415,11 +443,11 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue == true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.userPage.title.editUser}</h1>
+                          <h1  className="userbutton1">{constant.userPage.title.editUser}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.userPage.title.addUser}</h1>
+                          <h1  className="userbutton1">{constant.userPage.title.addUser}</h1>
                         </Col>
                       )}
                       <Col
@@ -428,7 +456,8 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        style={{ textAlign: "right" }}
+                        className="userbutton"
+                       
                       >
                         <Link to="/users">
                           <Button
@@ -517,6 +546,7 @@ class AddUser extends React.Component<{ history: any; location: any }> {
                             className="form-control"
                             value={this.state.mobilenumber}
                             onChange={this.handleChangeEvent}
+                            maxLength={10}
                             placeholder="Enter your mobile number"
                           />
                           <div className="mb-4 text-danger">

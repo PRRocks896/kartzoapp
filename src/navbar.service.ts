@@ -1,15 +1,15 @@
 export default {
     items: [
-      {
-        name:'General',
-        type:'header'
-      },
-      {
-        name: 'Dashboard',
-        url: '/dashboard',
-        icon: 'fa fa-desktop fs-16',
-        type: 'link',
-      },
+      // {
+      //   name:'General',
+      //   type:'header'
+      // },
+      // {
+      //   name: 'Dashboard',
+      //   url: '/dashboard',
+      //   icon: 'fa fa-desktop fs-16',
+      //   type: 'link',
+      // },
       {
         name:'User Management',
         type:'header'
@@ -139,6 +139,11 @@ export default {
         name: 'Distance-Matrix',
          icon: 'fa fa-cog fs-16',
         url: '/list-matrix'
+      },
+      {
+        name: 'Popular-City',
+         icon: 'fa fa-cog fs-16',
+        url: '/list-popular-city'
       },
       {
         name:'Merchant Management',

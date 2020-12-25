@@ -17,6 +17,8 @@ import constant from "../../../constant/constant";
 import { addUserRoleState, getDataByIdRequest } from "../../../modelController";
 
 class ViewUserRole extends React.Component<{ history: any; location: any }> {
+
+  /** User Role state */
   userState : addUserRoleState = constant.userRolePage.state;
   state = {
       rolename: this.userState.rolename,
@@ -24,10 +26,12 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
   
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.userRolePage.title.viewUserRoleTitle + utils.getAppName();
@@ -37,6 +41,10 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param roleId : role id
+   */
   async getUserRole(roleId: any) {
     const obj: getDataByIdRequest = {
       id: roleId,
@@ -62,6 +70,7 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -73,7 +82,7 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>{constant.userRolePage.viewrole.roleview}</h1>
+                        <h1 className="userbutton1">{constant.userRolePage.viewrole.roleview}</h1>
                       </Col>
                       <Col
                         xs="12"
@@ -81,7 +90,7 @@ class ViewUserRole extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/userrole">
                           <Button

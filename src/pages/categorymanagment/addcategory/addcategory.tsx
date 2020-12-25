@@ -7,8 +7,6 @@ import {
   CardBody,
   CardHeader,
   Input,
-  Form,
-  CustomInput,
   Col,
   FormGroup,
   Label,
@@ -19,6 +17,8 @@ import constant from "../../../constant/constant";
 import { getDataByIdRequest, addCategoryStateRequest } from "../../../modelController";
 
 class AddCategory extends React.Component<{ history: any; location: any }> {
+
+  /** Category State */
   categoryState: addCategoryStateRequest = constant.categoryPage.state;
   state = {
     selectedFile: this.categoryState.selectedFile,
@@ -40,6 +40,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     s1:this.categoryState.s1
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -52,6 +53,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     this.getCategoryById = this.getCategoryById.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     this.getAllCategory();
     const categoryId = this.props.location.pathname.split("/")[2];
@@ -70,6 +72,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Get All Category */
   async getAllCategory() {
     const getAllCategory = await CategoryAPI.getAllCategory();
     // console.log("getAllCategory", getAllCategory);
@@ -88,6 +91,10 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
   }
   }
 
+  /**
+   * 
+   * @param categoryId : category id
+   */
   async getCategoryById(categoryId: any) {
     const obj: getDataByIdRequest = {
       id: categoryId
@@ -121,6 +128,10 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : category select
+   */
   onItemSelect(event: any) {
     this.setState({
       selectcategory:
@@ -128,6 +139,10 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  /**
+   * 
+   * @param event : File upload event
+   */
   onChangeHandler(event: any) {
     if (this.state.filetrue === true) {
       this.setState({
@@ -155,6 +170,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Check Validate or not */
   validate() {
     let categorynameerror = "";
 
@@ -170,6 +186,10 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -177,6 +197,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add Category */
   async addCategory() {
     const isValid = this.validate();
     if (isValid) {
@@ -211,6 +232,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Update Category */
   async updateCategory() {
     const isValid = this.validate();
     if (isValid) {
@@ -255,6 +277,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Remove Icon */
   removeIcon() {
     this.setState({
       file: this.state.file = "",
@@ -262,6 +285,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -274,11 +298,11 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.categoryPage.title.updateCategoryTitle}</h1>
+                          <h1 className="userbutton1">{constant.categoryPage.title.updateCategoryTitle}</h1>
                         </Col>
                       ) : (
                           <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                            <h1>{constant.categoryPage.title.addCategoryTitle}</h1>
+                            <h1 className="userbutton1">{constant.categoryPage.title.addCategoryTitle}</h1>
                           </Col>
                         )}
 
@@ -288,7 +312,7 @@ class AddCategory extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/category">
                           <Button

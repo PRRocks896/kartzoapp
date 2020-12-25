@@ -23,6 +23,8 @@ interface resetPasswordState {
 }
 
 class ResetPassword extends React.Component<{ location: any; history: any }> {
+
+  /** Reset Password */
   state : resetPasswordState = {
     password: "",
     passwordError: "",
@@ -76,7 +78,7 @@ class ResetPassword extends React.Component<{ location: any; history: any }> {
 
     if (resetPassword) {
       if(resetPassword.status === 200) {
-        const msg1 = resetPassword.message;
+        const msg1 = resetPassword.data.message;
         utils.showSuccess(msg1);
       this.props.history.push("/login");
     } else {
@@ -89,6 +91,7 @@ class ResetPassword extends React.Component<{ location: any; history: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <div className="mainclass">

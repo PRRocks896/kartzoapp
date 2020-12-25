@@ -29,6 +29,8 @@ import {
 } from "../../../modelController";
 
 class Merchant extends React.Component<{ history: any; location: any }> {
+
+  /** Merchant State */
   merchantState: addMerchantStateRequest = constant.merchantPage.state;
   state = {
     selectedFile: this.merchantState.selectedFile,
@@ -97,6 +99,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     categoryiderror: this.merchantState.categoryiderror,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.onItemSelect = this.onItemSelect.bind(this);
@@ -124,10 +127,15 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     this.onItemSelectCategory = this.onItemSelectCategory.bind(this);
   }
 
+  /**
+   * 
+   * @param checked : checked boolean 
+   */
   handleChange(checked: boolean) {
     this.setState({ isOpen: checked });
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     this.getCity();
     this.getRole();
@@ -148,6 +156,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param id : merchant id
+   */
   async getMerchantById(id: getDataByIdRequest) {
     const getMerchantById: any = await MerchantAPI.getMerchantById(id);
     // console.log("getMerchantById", getMerchantById);
@@ -224,6 +236,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param id : city id
+   */
   async getCityById(id: any) {
     const obj: getDataByIdRequest = {
       id: id,
@@ -248,6 +264,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Get city data */
   async getCity() {
     const getCity = await LocationAPI.getCity();
     // console.log("getCity", getCity);
@@ -267,6 +284,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Get category */
   async getCategory() {
     const getCategory = await CategoryAPI.getAllCategory();
     // console.log("getCategory", getCategory);
@@ -286,6 +304,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Get Role */
   async getRole() {
     const getMerchantRole = await MerchantAPI.getMerchantRole();
     // console.log("getMerchantRole", getMerchantRole);
@@ -305,30 +324,50 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : select user
+   */
   onUserSelect(event: any) {
     this.setState({
       user: this.state.user = event.target.value,
     });
   }
 
+  /**
+   * 
+   * @param event : city select
+   */
   onItemSelect(event: any) {
     this.setState({
       city: this.state.city = event.target.value,
     });
   }
 
+  /**
+   * 
+   * @param event : role select
+   */
   onItemSelectRole(event: any) {
     this.setState({
       roleid: this.state.roleid = event.target.value,
     });
   }
 
+  /**
+   * 
+   * @param event : select category
+   */
   onItemSelectCategory(event: any) {
     this.setState({
       categoryid: this.state.categoryid = event.target.value,
     });
   }
 
+  /**
+   * 
+   * @param event : change profile picture
+   */
   onChangeProfilePicture(event: any) {
     if (this.state.file4true === true) {
       this.setState({
@@ -358,6 +397,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : change profile picture
+   */
   onChangeHandler(event: any) {
     if (this.state.filetrue === true) {
       this.setState({
@@ -385,6 +428,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : change id proof
+   */
   onChangeIDProof(event: any) {
     if (this.state.file1true === true) {
       this.setState({
@@ -412,6 +459,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : change document proof
+   */
   onChangeDocumentHandler(event: any) {
     if (this.state.file2true === true) {
       this.setState({
@@ -441,29 +492,46 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** click on next page */
   handleClick = () =>
     this.setState(({ type }: any) => ({
       type: type === "password" ? "text" : "password",
     }));
 
+  /**
+   * 
+   * @param content : content
+   * @param editor : editor
+   */
   handleEditorChange = (content: any, editor: any) => {
     this.setState({
       refundpolicy: this.state.refundpolicy = content,
     });
   };
 
+  /**
+   * 
+   * @param content : content
+   * @param editor : editor
+   */
   handleEditorMainChange = (content: any, editor: any) => {
     this.setState({
       shoppingpolicy: this.state.shoppingpolicy = content,
     });
   };
 
+  /**
+   * 
+   * @param content : content
+   * @param editor : editor
+   */
   handleEditorUpChange = (content: any, editor: any) => {
     this.setState({
       cancellationpolicy: this.state.cancellationpolicy = content,
     });
   };
 
+  /** Validate */
   validate() {
     let firstnameerror = "";
     let lastnameerror = "";
@@ -575,6 +643,10 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -582,6 +654,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add merchant */
   async addMerchant() {
     const isValid = this.validate();
     if (isValid) {
@@ -674,6 +747,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Edit merchant */
   async editMerchant() {
     const isValid = this.validate();
     if (isValid) {
@@ -808,30 +882,35 @@ class Merchant extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Remove icon */
   removeIcon() {
     this.setState({
       file: this.state.file = "",
     });
   }
 
+  /** Remove document icon */
   removeDocumentIcon() {
     this.setState({
       file2: this.state.file2 = "",
     });
   }
 
+  /** Remove proof icon */
   removeProofIcon() {
     this.setState({
       file1: this.state.file1 = "",
     });
   }
 
+  /** Remove profile picture */
   removeProfilePhotoIcon() {
     this.setState({
       file4: this.state.file4 = "",
     });
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -843,13 +922,13 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                   <Row>
                     {this.state.updateTrue === true ? (
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>
+                        <h1 className="userbutton1">
                           {constant.merchantPage.title.updateMerchantTitle}
                         </h1>
                       </Col>
                     ) : (
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>{constant.merchantPage.title.addMerchantTitle}</h1>
+                        <h1 className="userbutton1">{constant.merchantPage.title.addMerchantTitle}</h1>
                       </Col>
                     )}
 
@@ -859,7 +938,7 @@ class Merchant extends React.Component<{ history: any; location: any }> {
                       md="3"
                       lg="3"
                       xl="3"
-                      className="search_right"
+                      className="userbutton"
                     >
                       <Link to="/list-merchant">
                         <Button

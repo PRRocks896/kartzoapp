@@ -6,8 +6,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardTitle,
-  Table,
   Input,
   Col,
   FormGroup,
@@ -20,6 +18,8 @@ import constant from "../../../constant/constant";
 import { getDataByIdRequest, addCountryStateRequest } from "../../../modelController";
 
 class AddCountry extends React.Component<{ history: any; location: any }> {
+
+  /** Country State */
   countryState:addCountryStateRequest = constant.countryPage.state;
   state = {
     selectedFile: this.countryState.selectedFile,
@@ -36,6 +36,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     s1:this.countryState.s1
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);
@@ -46,6 +47,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     this.getCountryById = this.getCountryById.bind(this);
   }
 
+  /** Page Render call */
   async componentDidMount() {
     const countryId = this.props.location.pathname.split("/")[2];
     if (countryId !== undefined) {
@@ -64,6 +66,10 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param countryId : country id
+   */
   async getCountryById(countryId:any) {
     const obj:getDataByIdRequest = {
       id: countryId,
@@ -96,6 +102,10 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : file upload
+   */
   onChangeHandler(event: any) {
     if (this.state.filetrue === true) {
       this.setState({
@@ -123,6 +133,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Validate or not */
   validate() {
     let countrynameerror = "";
     let countrycodeerror = "";
@@ -143,6 +154,10 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param event : update the state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -150,6 +165,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     this.setState(state);
   }
 
+  /** Add country */
   async addCountry() {
     const isValid = this.validate();
     if (isValid) {
@@ -188,6 +204,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Edit Country */
   async editCountry() {
     const isValid = this.validate();
     if (isValid) {
@@ -235,6 +252,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Remove Icon */
   removeIcon() {
     this.setState({
       file: this.state.file = "",
@@ -242,6 +260,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
     });
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -254,11 +273,11 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.countryPage.title.updateCountryTitle}</h1>
+                          <h1 className="userbutton1">{constant.countryPage.title.updateCountryTitle}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.countryPage.title.addCountryTitle}</h1>
+                          <h1 className="userbutton1">{constant.countryPage.title.addCountryTitle}</h1>
                         </Col>
                       )}
                       <Col
@@ -267,7 +286,7 @@ class AddCountry extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/country">
                           <Button

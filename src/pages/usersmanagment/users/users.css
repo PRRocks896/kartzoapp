@@ -7,6 +7,9 @@
 .custom_text_width {
     width: 20% !important;
 }
+.r-per-page{
+    width: 182px !important;
+}
 @media(max-width:400px){
     .filter{
       display: block;
@@ -16,6 +19,31 @@
     }
     .bottom_text{
         margin-bottom: 10px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+
+      .userClass {
+          display: block !important;
+          overflow: hidden;
+          overflow-x: scroll;
+      }
+
+      .filter{
+        display: block;
+        text-align: center;
+        padding-top: 20px;
+      }
+      .custom-select {
+        margin-bottom: 15px;
+      }
+      .pagination {
+        justify-content: center;
+        
+      }
+      .right, .card-title {
+        text-align: center;
     }
   }
   @media(max-width:1024px){

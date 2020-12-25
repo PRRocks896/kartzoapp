@@ -193,11 +193,11 @@ class AddFee extends React.Component<{ history: any; location: any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>{constant.feePage.title.updatefeeTitle}</h1>
+                          <h1 className="userbutton1">{constant.feePage.title.updatefeeTitle}</h1>
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                            <h1>{constant.feePage.title.addFeeTitle}</h1>
+                            <h1 className="userbutton1">{constant.feePage.title.addFeeTitle}</h1>
                         </Col>
                       )}
                       <Col
@@ -206,7 +206,7 @@ class AddFee extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-fee">
                           <Button

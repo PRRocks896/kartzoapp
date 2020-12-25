@@ -21,6 +21,8 @@ import "./userroletorights.css";
 import { getDataByIdRequest, updateRightsRequest, rightStateRequest } from "../../../modelController";
 
 class UserRoleToRights extends React.Component {
+
+  /** role state */
   roleState = constant.rolePrivileges.state
   state:rightStateRequest = {
     userrole: this.roleState.userrole,
@@ -36,8 +38,10 @@ class UserRoleToRights extends React.Component {
     _deletecheck: this.roleState._deletecheck,
     _detailcheck: this.roleState._detailcheck,
     show: this.roleState.show,
+    rolename:this.roleState.rolename
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.getUserRole = this.getUserRole.bind(this);
@@ -53,11 +57,13 @@ class UserRoleToRights extends React.Component {
     this.handleEditChange = this.handleEditChange.bind(this);
   }
 
+  /** page render call */
   componentDidMount() {
     document.title = constant.rolePrivilegesTitle + utils.getAppName();
     this.getUserRole();
   }
 
+  /** get user role */
   async getUserRole() {
     const getUserRole = await RoleAPI.getUserRole();
 
@@ -76,11 +82,16 @@ class UserRoleToRights extends React.Component {
     }
   }
 
+  /**
+   * 
+   * @param event : select role
+   */
   async onItemSelect(event: any) {
     this.setState({
       roleid: this.state.roleid =
-        event.target.options[event.target.selectedIndex].value,
+        event.target.value,
       show: this.state.show = true,
+      rolename: this.state.rolename = event.target.options[event.target.selectedIndex].text
     });
     const obj:getDataByIdRequest = {
       id: this.state.roleid,
@@ -124,6 +135,10 @@ class UserRoleToRights extends React.Component {
     }
   }
 
+  /**
+   * 
+   * @param data : main check box data
+   */
   checkMaster(data: any) {
     let count = 0;
     data.forEach((element: any) => {
@@ -154,6 +169,12 @@ class UserRoleToRights extends React.Component {
     });
   }
 
+  /**
+   * 
+   * @param item : item
+   * @param type : item type
+   * @param e : event
+   */
   handleChange(item: any, type: any, e: any) {
     let _id = item.menuItemID;
     let _type = type;
@@ -195,6 +216,10 @@ class UserRoleToRights extends React.Component {
     this.checkMaster(data);
   }
 
+  /**
+   * 
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.roleprivileges.forEach((element: any) => {
@@ -213,6 +238,10 @@ class UserRoleToRights extends React.Component {
     });
   }
 
+  /**
+   * 
+   * @param e : view change event
+   */
   handleViewChange(e: any) {
     let _val = e.target.checked;
     this.state.roleprivileges.forEach((element: any) => {
@@ -226,6 +255,10 @@ class UserRoleToRights extends React.Component {
     });
   }
 
+  /**
+   * 
+   * @param e : add change event
+   */
   handleAddChange(e: any) {
     let _val = e.target.checked;
     this.state.roleprivileges.forEach((element: any) => {
@@ -239,6 +272,10 @@ class UserRoleToRights extends React.Component {
     });
   }
 
+  /**
+   * 
+   * @param e : edit change event
+   */
   handleEditChange(e: any) {
     let _val = e.target.checked;
     this.state.roleprivileges.forEach((element: any) => {
@@ -252,6 +289,10 @@ class UserRoleToRights extends React.Component {
     });
   }
 
+  /**
+   * 
+   * @param e : delete change event
+   */
   handleDeleteChange(e: any) {
     let _val = e.target.checked;
     this.state.roleprivileges.forEach((element: any) => {
@@ -265,6 +306,10 @@ class UserRoleToRights extends React.Component {
     });
   }
 
+  /**
+   * 
+   * @param e : detail change event
+   */
   handleDetailChange(e: any) {
     let _val = e.target.checked;
     this.state.roleprivileges.forEach((element: any) => {
@@ -278,6 +323,7 @@ class UserRoleToRights extends React.Component {
     });
   }
 
+  /** Update rights */
   async updateRights() {
     // console.log("userdata", this.state.roleprivileges);
     let privilegesArray = [];
@@ -302,6 +348,17 @@ class UserRoleToRights extends React.Component {
 
     if (updateRolePreveliges) {
       if (updateRolePreveliges.resultObject !== null) {
+        const users: any = localStorage.getItem("user");
+        let user = JSON.parse(users);
+        if(this.state.rolename === user.role) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          localStorage.removeItem("merchantToken");
+          localStorage.removeItem("rolePreveliges");
+          localStorage.removeItem("menuItems");
+          localStorage.removeItem("refreshtoken");
+          window.location.href = "/#/login";
+        }
         const msg = "Role privileges Updated Successfully";
         utils.showSuccess(msg);
       } else {
@@ -314,9 +371,9 @@ class UserRoleToRights extends React.Component {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
-      <>
         <>
           <div className="ms-content-wrapper">
             <div className="row">
@@ -346,12 +403,23 @@ class UserRoleToRights extends React.Component {
                                 {this.state.userrole.length > 0
                                   ? this.state.userrole.map(
                                       (data: any, index:number) => (
+                                        data.name !== "Admin" ? (
                                         <option
-                                          key={data.value}
+                                          key={index}
+                                          id={data.name}
                                           value={data.value}
                                         >
                                           {data.name}
                                         </option>
+                                        ) : (
+                                          <option
+                                          key={index}
+                                          id={data.name}
+                                          value={data.value}
+                                        >
+                                          {data.name}
+                                        </option>
+                                        )
                                       )
                                     )
                                   : ""}
@@ -383,6 +451,7 @@ class UserRoleToRights extends React.Component {
                                   </CardTitle>
                                 </CardHeader>
                                 <CardBody>
+                                <div className="userClass">
                                   <Table
                                     hover
                                     className="mb-0 table_responsive"
@@ -654,6 +723,7 @@ class UserRoleToRights extends React.Component {
                                       )}
                                     </tbody>
                                   </Table>
+                                  </div>
                                 </CardBody>
                               </Card>
                             </Col>
@@ -680,7 +750,6 @@ class UserRoleToRights extends React.Component {
             </div>
           </div>
         </>
-      </>
     );
   }
 }

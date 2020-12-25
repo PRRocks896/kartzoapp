@@ -17,6 +17,7 @@ import { addMenuStateRequest, getDataByIdRequest } from "../../../modelControlle
 
 class ViewMenuItem extends React.Component<{ history: any; location: any }> {
 
+    /** Menu state */
     menuState: addMenuStateRequest = constant.menuPage.state;
     state = {
         menuitemname: this.menuState.menuitemname,
@@ -31,11 +32,13 @@ class ViewMenuItem extends React.Component<{ history: any; location: any }> {
         menudata: this.menuState.menudata
     };
 
+    /** constructor call */
     constructor(props: any) {
         super(props);
         this.getMenuDataById = this.getMenuDataById.bind(this);
     }
 
+    /** Page render call */
     async componentDidMount() {
         document.title = constant.menuPage.title.viewMenuTitle + utils.getAppName();
         const menuId = this.props.location.pathname.split("/")[2];
@@ -44,6 +47,10 @@ class ViewMenuItem extends React.Component<{ history: any; location: any }> {
         }
     }
 
+    /**
+     * 
+     * @param id : merchant id
+     */
     async getMenuDataById(id: any) {
         const obj: getDataByIdRequest = {
             id: id,
@@ -69,6 +76,7 @@ class ViewMenuItem extends React.Component<{ history: any; location: any }> {
         }
     }
 
+    /** Render DOM */
     render() {
         return (
             <>
@@ -80,7 +88,7 @@ class ViewMenuItem extends React.Component<{ history: any; location: any }> {
                                 <CardHeader>
                                     <Row>
                                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                                            <h1>{constant.menuPage.viewmenu.menuview}</h1>
+                                            <h1 className="userbutton1">{constant.menuPage.viewmenu.menuview}</h1>
                                         </Col>
                                         <Col
                                             xs="12"
@@ -88,7 +96,7 @@ class ViewMenuItem extends React.Component<{ history: any; location: any }> {
                                             md="3"
                                             lg="3"
                                             xl="3"
-                                            className="search_right"
+                                            className="userbutton"
                                         >
                                             <Link to="/listmenu">
                                                 <Button

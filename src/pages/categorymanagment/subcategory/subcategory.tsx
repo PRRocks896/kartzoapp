@@ -11,18 +11,25 @@ import {
   CustomInput,
   Row,
 } from "reactstrap";
-import { CategoryAPI, DeleteAPI, StatusAPI } from "../../../service/index.service";
+import {
+  CategoryAPI,
+  DeleteAPI,
+  StatusAPI,
+} from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import {
   getAllTableDataListRequest,
   statusChangeRequest,
   allStateRequest,
-  categoryStateRequest,deleteAllDataRequest
+  categoryStateRequest,
+  deleteAllDataRequest,
 } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class SubCategory extends React.Component<{ history: any }> {
-  categoryState:categoryStateRequest = constant.categoryPage.state;
-  userState:allStateRequest = constant.userPage.state;
+  /** Subcategory List */
+  categoryState: categoryStateRequest = constant.categoryPage.state;
+  userState: allStateRequest = constant.userPage.state;
   state = {
     count: this.categoryState.count,
     currentPage: this.categoryState.currentPage,
@@ -39,6 +46,7 @@ class SubCategory extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.editCategory = this.editCategory.bind(this);
@@ -61,6 +69,7 @@ class SubCategory extends React.Component<{ history: any }> {
     this.delleteAllData = this.delleteAllData.bind(this);
   }
 
+  /** Page Render */
   async componentDidMount() {
     document.title =
       constant.categoryPage.title.subcategoryTitle + utils.getAppName();
@@ -68,6 +77,7 @@ class SubCategory extends React.Component<{ history: any }> {
     this.getSubCategory();
   }
 
+  /** Get Sub category */
   async getSubCategory(
     searchText: string = "",
     page: number = 1,
@@ -83,21 +93,23 @@ class SubCategory extends React.Component<{ history: any }> {
     // console.log("getSubCategory", getSubCategory);
 
     if (getSubCategory) {
-      if(getSubCategory.status === 200) {
-      this.setState({
-        categorydata: this.state.categorydata = getSubCategory.resultObject.data,
-        count: this.state.count = getSubCategory.resultObject.totalcount,
-      });
-    } else {
-      const msg1 = getSubCategory.message;
-      utils.showError(msg1);
-    }
+      if (getSubCategory.status === 200) {
+        this.setState({
+          categorydata: (this.state.categorydata =
+            getSubCategory.resultObject.data),
+          count: (this.state.count = getSubCategory.resultObject.totalcount),
+        });
+      } else {
+        const msg1 = getSubCategory.message;
+        utils.showError(msg1);
+      }
     } else {
       // const msg1 = "Internal server error";
       // utils.showError(msg1);
     }
   }
 
+  /** Button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -109,6 +121,7 @@ class SubCategory extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** Button previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -120,10 +133,18 @@ class SubCategory extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   *
+   * @param id : edit category
+   */
   editCategory(id: any) {
     this.props.history.push("/editsubcategory/" + id);
   }
 
+  /**
+   *
+   * @param id : view category
+   */
   viewCategory(id: any) {
     this.props.history.push("/viewsubcategory/" + id);
   }
@@ -148,11 +169,16 @@ class SubCategory extends React.Component<{ history: any }> {
   //   }
   // }
 
+  /**
+   *
+   * @param text : message
+   * @param btext : button message
+   */
   async delleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
         moduleName: "Category",
-        id: this.state.deleteuserdata
+        id: this.state.deleteuserdata,
       };
       var deleteAllData = await DeleteAPI.deleteAllData(obj);
       // console.log("deleteAllData", deleteAllData);
@@ -160,18 +186,18 @@ class SubCategory extends React.Component<{ history: any }> {
         if (deleteAllData.data.status === 200) {
           const msg1 = deleteAllData.data.message;
           utils.showSuccess(msg1);
-        this.getSubCategory(
-          "",
-          parseInt(this.state.currentPage),
-          parseInt(this.state.items_per_page)
-        );
-        this.setState({
-          deleteFlag:this.state.deleteFlag = false
-        })
-      } else {
-        const msg1 = deleteAllData.data.message;
-        utils.showError(msg1);
-      }
+          this.getSubCategory(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+          this.setState({
+            deleteFlag: (this.state.deleteFlag = false),
+          });
+        } else {
+          const msg1 = deleteAllData.data.message;
+          utils.showError(msg1);
+        }
       } else {
         // const msg1 = "Internal server error";
         // utils.showError(msg1);
@@ -179,10 +205,14 @@ class SubCategory extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   *
+   * @param event : record per page value
+   */
   onItemSelect(event: any) {
     this.setState({
-      items_per_page: this.state.items_per_page =
-        event.target.options[event.target.selectedIndex].value,
+      items_per_page: (this.state.items_per_page =
+        event.target.options[event.target.selectedIndex].value),
     });
 
     this.getSubCategory(
@@ -192,9 +222,13 @@ class SubCategory extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   *
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
-      currentPage: this.state.currentPage = event.target.id,
+      currentPage: (this.state.currentPage = event.target.id),
     });
     const obj: getAllTableDataListRequest = {
       searchText: "",
@@ -202,11 +236,13 @@ class SubCategory extends React.Component<{ history: any }> {
       size: parseInt(this.state.items_per_page),
     };
 
-  
     this.getSubCategory(obj.searchText, obj.page, obj.size);
-    
   }
 
+  /**
+   *
+   * @param e : search sub category data
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj: getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -217,17 +253,27 @@ class SubCategory extends React.Component<{ history: any }> {
     this.getSubCategory(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   *
+   * @param key : sorting table
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
     });
     let copyTableData = [...this.state.categorydata];
-    copyTableData.sort(utils.compareByDesc(key,this.state.switchSort));
+    copyTableData.sort(utils.compareByDesc(key, this.state.switchSort));
     this.setState({
-      categorydata: this.state.categorydata = copyTableData,
+      categorydata: (this.state.categorydata = copyTableData),
     });
   }
 
+  /**
+   *
+   * @param data : status change data
+   * @param text : message
+   * @param btext : button message
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: statusChangeRequest = {
@@ -241,22 +287,27 @@ class SubCategory extends React.Component<{ history: any }> {
         if (getStatusChange.status === 200) {
           const msg1 = getStatusChange.message;
           utils.showSuccess(msg1);
-        this.getSubCategory(
-          "",
-          parseInt(this.state.currentPage),
-          parseInt(this.state.items_per_page)
-        );
+          this.getSubCategory(
+            "",
+            parseInt(this.state.currentPage),
+            parseInt(this.state.items_per_page)
+          );
+        } else {
+          const msg1 = getStatusChange.message;
+          utils.showError(msg1);
+        }
       } else {
-        const msg1 = getStatusChange.message;
-        utils.showError(msg1);
-      }
-      } else {
-      //   const msg1 = "Internal server error";
-      // utils.showError(msg1);
+        //   const msg1 = "Internal server error";
+        // utils.showError(msg1);
       }
     }
   }
 
+  /**
+   *
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.categoryId;
     let ind: any = this.state.categorydata.findIndex(
@@ -267,7 +318,7 @@ class SubCategory extends React.Component<{ history: any }> {
       let newState: any = !item._rowChecked;
       data[ind]._rowChecked = newState;
       this.setState({
-        categorydata: this.state.categorydata = data,
+        categorydata: (this.state.categorydata = data),
       });
     }
     if (
@@ -289,20 +340,24 @@ class SubCategory extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newarray,
+      deleteuserdata: (this.state.deleteuserdata = newarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   *
+   * @param e : main check box event
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.categorydata.forEach((element: any) => {
@@ -321,20 +376,24 @@ class SubCategory extends React.Component<{ history: any }> {
       }
     });
     this.setState({
-      deleteuserdata: this.state.deleteuserdata = newmainarray,
+      deleteuserdata: (this.state.deleteuserdata = newmainarray),
     });
     if (this.state.deleteuserdata.length > 0) {
       this.setState({
-        deleteFlag: this.state.deleteFlag = true,
+        deleteFlag: (this.state.deleteFlag = true),
       });
     } else {
       this.setState({
-        deleteFlag: this.state.deleteFlag = false,
+        deleteFlag: (this.state.deleteFlag = false),
       });
     }
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   *
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -377,12 +436,17 @@ class SubCategory extends React.Component<{ history: any }> {
     return res;
   }
 
+  /**
+   *
+   * @param categorydata : Table List
+   */
   getTable(categorydata: any) {
     return (
+      <div className="userClass">
       <table
-      id="dtBasicExample"
-      className="table table-striped table-bordered table_responsive table-sm sortable"
-      width="100%"
+        id="dtBasicExample"
+        className="table table-striped table-bordered table_responsive table-sm sortable"
+        width="100%"
       >
         <thead>
           <tr onClick={() => this.handleSort("category")}>
@@ -399,18 +463,27 @@ class SubCategory extends React.Component<{ history: any }> {
             <th>{constant.categoryPage.caetgoryTableColumn.subCategoryName}</th>
             <th>{constant.categoryPage.caetgoryTableColumn.categoryName}</th>
             <th>{constant.categoryPage.caetgoryTableColumn.image}</th>
-            <th style={{ textAlign: "center" }}>
-              {constant.tableAction.status}
-            </th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("User") === true ? (
+              <th style={{ textAlign: "center" }}>
+                {constant.tableAction.status}
+              </th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("User") === true ||
+            checkRights.checkEditRights("User") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
           {this.state.categorydata.length > 0 ? (
             <>
-              {this.state.categorydata.map((data: any, index: any) => (
-                  data.parentCategoryId !== 0 ? (
-                    <tr key={index}>
+              {this.state.categorydata.map((data: any, index: any) =>
+                data.parentCategoryId !== 0 ? (
+                  <tr key={index}>
                     <td className="centers">
                       <CustomInput
                         // name="name"
@@ -428,8 +501,7 @@ class SubCategory extends React.Component<{ history: any }> {
                       <td>N/A</td>
                     )}
                     <td>{data.parentCategory}</td>
-  
-  
+
                     <td>
                       {data.imagePath != null ? (
                         <div className="img-size">
@@ -450,70 +522,82 @@ class SubCategory extends React.Component<{ history: any }> {
                         </div>
                       )}
                     </td>
-                    <td style={{ textAlign: "center" }}>
-                      {data.isActive === true ? (
-                        <button
-                          className="status_active_color"
-                          onClick={() =>
-                            this.statusChange(
-                              data,
-                              "You should be Inactive subcategory",
-                              "Yes, Inactive it"
-                            )
-                          }
-                        >
-                          Active
-                        </button>
-                      ) : (
-                        <button
-                          className="status_Inactive_color"
-                          onClick={() =>
-                            this.statusChange(
-                              data,
-                              "You should be Active subcategory",
-                              "Yes, Active it"
-                            )
-                          }
-                        >
-                          Inactive
-                        </button>
-                      )}
-                    </td>
-                    <td className="action">
-                      <span className="padding">
-                        <i
-                          className="fa fa-eye"
-                          onClick={() => this.viewCategory(data.categoryId)}
-                        ></i>
-                        <i
-                          className="fas fa-edit"
-                          onClick={() => this.editCategory(data.categoryId)}
-                        ></i>
-                        {/* <i
-                          className="fa fa-trash"
-                          onClick={() =>
-                            this.deleteCategory(
-                              data,
-                              "You should be Delete Category",
-                              "Yes, Category it"
-                            )
-                          }
-                        ></i> */}
-                      </span>
-                    </td>
+                    {checkRights.checkEditRights("Sub Category") === true ? (
+                      <td style={{ textAlign: "center" }}>
+                        {data.isActive === true ? (
+                          <button
+                            className="status_active_color"
+                            onClick={() =>
+                              this.statusChange(
+                                data,
+                                "You should be Inactive subcategory",
+                                "Yes, Inactive it"
+                              )
+                            }
+                          >
+                            Active
+                          </button>
+                        ) : (
+                          <button
+                            className="status_Inactive_color"
+                            onClick={() =>
+                              this.statusChange(
+                                data,
+                                "You should be Active subcategory",
+                                "Yes, Active it"
+                              )
+                            }
+                          >
+                            Inactive
+                          </button>
+                        )}
+                      </td>
+                    ) : (
+                      ""
+                    )}
+                    {checkRights.checkViewRights("Sub Category") === true ||
+                    checkRights.checkEditRights("Sub Category") === true ? (
+                      <td className="action">
+                        <span className="padding">
+                          {checkRights.checkViewRights("Sub Category") ===
+                          true ? (
+                            <i
+                              className="fa fa-eye"
+                              onClick={() => this.viewCategory(data.categoryId)}
+                            ></i>
+                          ) : (
+                            ""
+                          )}
+                          {checkRights.checkEditRights("Sub Category") ===
+                          true ? (
+                            <i
+                              className="fas fa-edit"
+                              onClick={() => this.editCategory(data.categoryId)}
+                            ></i>
+                          ) : (
+                            ""
+                          )}
+                        </span>
+                      </td>
+                    ) : (
+                      ""
+                    )}
                   </tr>
-                  ) : ('')
-              
-              ))}
+                ) : (
+                  null
+                )
+              )}
             </>
           ) : (
             ""
           )}
         </tbody>
       </table>
+      </div>
     );
   }
 
+  /** Get Page Data */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -524,7 +608,7 @@ class SubCategory extends React.Component<{ history: any }> {
         <CustomInput
           type="select"
           id="item"
-          className="custom_text_width"
+          className="r-per-page"
           name="customSelect"
           onChange={this.onItemSelect}
         >
@@ -553,6 +637,7 @@ class SubCategory extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,
@@ -596,18 +681,22 @@ class SubCategory extends React.Component<{ history: any }> {
                           {constant.categoryPage.title.subcategoryTitle}
                         </CardTitle>
                       </Col>
-                      <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/addsubcategory">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      {checkRights.checkAddRights("Sub Category") === true ? (
+                        <Col xs="12" sm="12" md="6" lg="6" xl="6">
+                          <div className="right">
+                            <Link to="/addsubcategory">
+                              <Button
+                                className="mb-2 mr-2 custom-button"
+                                color="primary"
+                              >
+                                {constant.button.add}
+                              </Button>
+                            </Link>
+                          </div>
+                        </Col>
+                      ) : (
+                        ""
+                      )}
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -620,12 +709,17 @@ class SubCategory extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true &&
+                    checkRights.checkDeleteRights("Sub Category") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"
-                        onClick={() => this.delleteAllData( "You should be Delete Sub Category",
-                        "Yes, Delete it")}
+                        onClick={() =>
+                          this.delleteAllData(
+                            "You should be Delete Sub Category",
+                            "Yes, Delete it"
+                          )
+                        }
                       >
                         {constant.button.remove}
                       </Button>
@@ -635,9 +729,11 @@ class SubCategory extends React.Component<{ history: any }> {
                     {this.state.categorydata.length > 0 ? (
                       <>{this.getTable(this.state.categorydata)}</>
                     ) : (
-                    <h1 className="text-center mt-5">{constant.noDataFound.nodatafound}</h1>
+                      <h1 className="text-center mt-5">
+                        {constant.noDataFound.nodatafound}
+                      </h1>
                     )}
-                  
+
                     {this.state.categorydata.length > 0
                       ? this.getPageData(
                           pageIncrementBtn,

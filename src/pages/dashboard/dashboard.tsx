@@ -17,6 +17,8 @@ interface User {
 }
 
 class Dashboard extends React.Component {
+
+  /** Dashboard */
   state = {
     isOpen: true,
     side: true,
@@ -24,6 +26,7 @@ class Dashboard extends React.Component {
     lastName: "",
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     EventEmitter.subscribe("firstname", (data: any) => {
@@ -38,18 +41,22 @@ class Dashboard extends React.Component {
     });
   }
 
+  /** Toggle collapse */
   toggleCollapse = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };
 
+  /** Toggle Right Collapse */
   toggleCollapseRight = () => {
     this.setState({ side: !this.state.side });
   };
 
+  /** Close nav */
   closeNav = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };
 
+  /** Page Render Call */
   componentDidMount() {
     document.title = Constant.dashboardTitle + utils.getAppName();
     var user = localStorage.getItem("user");
@@ -62,6 +69,7 @@ class Dashboard extends React.Component {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <div className="ms-content-wrapper">

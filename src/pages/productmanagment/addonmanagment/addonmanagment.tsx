@@ -23,6 +23,8 @@ import { ProductAPI } from "../../../service/index.service";
 import { getDataByIdRequest } from "../../../modelController";
 
 class AddOnProduct extends React.Component<{ history: any,location:any }> {
+
+  /** addProductCustomise State */
   productCustomiseState : addProdcutCustomiseStateRequest = constant.productCustomPage.state;
   state = {
     productid: this.productCustomiseState.productid,
@@ -40,6 +42,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
     productdatatype: this.productCustomiseState.productdatatype,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
 
@@ -53,6 +56,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
     this.updateaddOnProduct = this.updateaddOnProduct.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
       this.getAllProduct();
       this.getAllProductType();
@@ -73,6 +77,10 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
     }
   }
 
+  /**
+   * 
+   * @param profuctCustomiseTypeId : product cutsomise type id
+   */
   async getCustomiseById(profuctCustomiseTypeId: any) {
     const obj:getDataByIdRequest = {
       id: profuctCustomiseTypeId,
@@ -100,10 +108,15 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
     }
   }
 
+  /**
+   * 
+   * @param checked : boolean checked
+   */
   handleChange(checked: boolean) {
     this.setState({ isActive: this.state.isActive = checked });
   }
 
+  /** Get all product */
   async getAllProduct() {
     const getAllProduct = await ProductAPI.getAllProduct();
     // console.log("getAllProduct", getAllProduct);
@@ -119,6 +132,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
     }
   }
 
+  /** Get all product type */
   async getAllProductType() {
     const getAllProductType = await ProductAPI.getAllProductTypeType();
     // console.log("getAllProductType", getAllProductType);
@@ -135,18 +149,27 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : product select
+   */
   onProductSelect(event: any) {
     this.setState({
       productid: this.state.productid = event.target.value,
     });
   }
 
+  /**
+   * 
+   * @param event : product type select
+   */
   onProductTypeSelect(event: any) {
     this.setState({
       producttypeid: this.state.producttypeid = event.target.value,
     });
   }
 
+  /** Checked valid or not */
   validate() {
     let productiderror = "";
     let producttypeiderror = "";
@@ -189,12 +212,21 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
     return true;
   }
 
+  /**
+   * 
+   * @param content : content
+   * @param editor : editor
+   */
   handleEditorMainChange = (content: any, editor: any) => {
     this.setState({
       addondetails: this.state.addondetails = content,
     });
   };
 
+  /**
+   * 
+   * @param event : update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -202,6 +234,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
     this.setState(state);
   }
 
+  /** Add on product */
     async addOnProduct() {
       const isValid = this.validate();
       if (isValid) {
@@ -240,6 +273,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
       }
     }
 
+    /** update add on product */
     async updateaddOnProduct() {
         const isValid = this.validate();
         if (isValid) {
@@ -279,6 +313,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
         }
       }
 
+      /** Render DOM */
   render() {
     return (
       <>
@@ -291,7 +326,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
                     <Row>
                       {this.state.updateTrue === true ? (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>
+                          <h1 className="userbutton1">
                             {
                               constant.productCustomPage.title
                                 .updatecustomiseTitle
@@ -300,7 +335,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
                         </Col>
                       ) : (
                         <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                          <h1>
+                          <h1 className="userbutton1">
                             {constant.productCustomPage.title.addcustomiseTitle}
                           </h1>
                         </Col>
@@ -312,7 +347,7 @@ class AddOnProduct extends React.Component<{ history: any,location:any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="text-right"
+                        className="userbutton"
                       >
                         <Link to="/list-product-customise">
                           <Button

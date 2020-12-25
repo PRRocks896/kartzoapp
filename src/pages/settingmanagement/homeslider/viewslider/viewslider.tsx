@@ -18,6 +18,8 @@ import {
 import { getDataByIdRequest, addSliderStateRequest } from "../../../../modelController";
 
 class ViewSlider extends React.Component<{ history: any; location: any }> {
+
+  /** slider state */
   sliderState: addSliderStateRequest = constant.homesliderPage.state;
   state = {
     selectedFile: this.sliderState.selectedFile,
@@ -30,12 +32,14 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
     productLink: "",
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.getSliderById = this.getSliderById.bind(this);
     // this.getMerchantById = this.getMerchantById.bind(this);
   }
 
+  /** page render call */
   async componentDidMount() {
     document.title =
       constant.homesliderPage.title.viewHomesliderTitle + utils.getAppName();
@@ -45,6 +49,10 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /**
+   * 
+   * @param sliderId : slider id
+   */
   async getSliderById(sliderId: any) {
     const obj: getDataByIdRequest = {
       id: sliderId,
@@ -76,6 +84,7 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -87,7 +96,7 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
                   <CardHeader>
                     <Row>
                       <Col xs="12" sm="6" md="9" lg="9" xl="9">
-                        <h1>
+                        <h1 className="userbutton1">
                           {
                             constant.homesliderPage.viewHomesliderdetails
                               .viewHomeslider
@@ -100,7 +109,7 @@ class ViewSlider extends React.Component<{ history: any; location: any }> {
                         md="3"
                         lg="3"
                         xl="3"
-                        className="search_right"
+                        className="userbutton"
                       >
                         <Link to="/list-slider">
                           <Button

@@ -17,8 +17,11 @@ import {
 } from "../../../service/index.service";
 import constant from "../../../constant/constant";
 import { getAllTableDataListRequest, statusChangeRequest, deleteByIdRequest, addOnStateRequest,allStateRequest,deleteAllDataRequest } from "../../../modelController";
+import checkRights from "../../../rights";
 
 class ListProductAddOn extends React.Component<{ history: any }> {
+
+  /** Product customise state */
   productCustomiseState:addOnStateRequest = constant.productCustomPage.state;
   userState:allStateRequest = constant.userPage.state;
   state = {
@@ -37,6 +40,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     deleteFlag: this.userState.deleteFlag,
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     this.editCustomise = this.editCustomise.bind(this);
@@ -62,6 +66,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     this.handleMainChange = this.handleMainChange.bind(this);
   }
 
+  /** Page Render Call */
   async componentDidMount() {
     document.title =
       constant.productCustomPage.title.customiseTitle + utils.getAppName();
@@ -69,6 +74,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     this.getProductCustomiseData();
   }
 
+  /** Product customise data */
   async getProductCustomiseData(
     searchText: string = "",
     page: number = 1,
@@ -100,6 +106,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     }
   }
 
+  /** Button next */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -111,6 +118,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /** Button previous */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -122,10 +130,18 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     this.setState({ currentPage: listid });
   }
 
+  /**
+   * 
+   * @param id : customise id
+   */
   editCustomise(id: any) {
     this.props.history.push("/edit-customise/" + id);
   }
 
+  /**
+   * 
+   * @param id : view customise id
+   */
   viewCustomise(id: any) {
     this.props.history.push("/view-customise/" + id);
   }
@@ -149,7 +165,11 @@ class ListProductAddOn extends React.Component<{ history: any }> {
   //     }
   //   }
   // }
-
+/**
+ * 
+ * @param text : text message
+ * @param btext : button message
+ */
   async deleteAllData(text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj: deleteAllDataRequest = {
@@ -181,6 +201,10 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     }
   }
 
+  /**
+   * 
+   * @param event : record per page value
+   */
   onItemSelect(event: any) {
     this.setState({
       items_per_page: this.state.items_per_page =
@@ -194,6 +218,10 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     );
   }
 
+  /**
+   * 
+   * @param event : click on next page
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -209,6 +237,10 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     
   }
 
+  /**
+   * 
+   * @param e : search list value
+   */
   async searchApplicationDataKeyUp(e: any) {
     const obj:getAllTableDataListRequest = {
       searchText: e.target.value,
@@ -219,6 +251,10 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     this.getProductCustomiseData(obj.searchText, obj.page, obj.size);
   }
 
+  /**
+   * 
+   * @param key : sorting table
+   */
   handleSort(key: any) {
     this.setState({
       switchSort: !this.state.switchSort,
@@ -230,6 +266,12 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     });
   }
 
+  /**
+   * 
+   * @param data : data 
+   * @param text : text 
+   * @param btext : button text
+   */
   async statusChange(data: any, text: string, btext: string) {
     if (await utils.alertMessage(text, btext)) {
       const obj:statusChangeRequest = {
@@ -255,7 +297,11 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     }
   }
 
-  
+  /**
+   * 
+   * @param item : item
+   * @param e : event
+   */
   handleChange(item: any, e: any) {
     let _id = item.productCustomizeId;
     let ind: any = this.state.addondata.findIndex(
@@ -302,6 +348,10 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param e : main check box checked or not
+   */
   handleMainChange(e: any) {
     let _val = e.target.checked;
     this.state.addondata.forEach((element: any) => {
@@ -334,6 +384,10 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     // console.log("deleteuserdata array", this.state.deleteuserdata);
   }
 
+  /**
+   * 
+   * @param pageNumbers : page number
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -376,8 +430,13 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     return res;
   }
 
+  /**
+   * 
+   * @param addondata : add on data
+   */
   getTable(addondata: any) {
     return (
+      <div className="userClass">
       <table
       id="dtBasicExample"
       className="table table-striped table-bordered table_responsive table-sm sortable"
@@ -410,8 +469,17 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                 constant.productCustomPage.productCustomiseTableColumn.customisetype
               }
             </th>
-            <th className="text-center">{constant.tableAction.status}</th>
-            <th className="action">{constant.tableAction.action}</th>
+            {checkRights.checkEditRights("Customise") === true ? (
+               <th className="text-center">{constant.tableAction.status}</th>
+            ) : (
+              ""
+            )}
+            {checkRights.checkViewRights("Customise") === true ||
+            checkRights.checkEditRights("Customise") === true ? (
+              <th className="action">{constant.tableAction.action}</th>
+            ) : (
+              ""
+            )}
           </tr>
         </thead>
         <tbody>
@@ -433,6 +501,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                   <td>{data.product}</td>
                   <td>{data.amount}</td>
                   <td>{data.productCustomizeType}</td>
+                  {checkRights.checkEditRights("Customise") === true ? (
                   <td style={{ textAlign: "center" }}>
                     {data.isActive === true ? (
                       <button
@@ -462,32 +531,37 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                       </button>
                     )}
                   </td>
-                  <td className="action">
-                    <span className="padding">
-                      <i
-                        className="fa fa-eye"
-                        onClick={() =>
-                          this.viewCustomise(data.productCustomizeId)
-                        }
-                      ></i>
-                      <i
-                        className="fas fa-edit"
-                        onClick={() =>
-                          this.editCustomise(data.productCustomizeId)
-                        }
-                      ></i>
-                       {/* <i
-                        className="fa fa-trash"
-                        onClick={() =>
-                          this.deleteCustomise(
-                            data,
-                            "You should be Delete Customise",
-                            "Yes, Delete it"
-                          )
-                        }
-                      ></i> */}
-                    </span>
-                  </td>
+                  ) : ('') }
+
+{checkRights.checkViewRights("Customise") === true ||
+                  checkRights.checkEditRights("Customise") === true ? (
+                    <td className="action">
+                      <span className="padding">
+                        {checkRights.checkViewRights("Customise") === true ? (
+                          <i
+                          className="fa fa-eye"
+                          onClick={() =>
+                            this.viewCustomise(data.productCustomizeId)
+                          }
+                        ></i>
+                        ) : (
+                          ""
+                        )}
+                        {checkRights.checkEditRights("Customise") === true ? (
+                          <i
+                          className="fas fa-edit"
+                          onClick={() =>
+                            this.editCustomise(data.productCustomizeId)
+                          }
+                        ></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </td>
+                  ) : (
+                    ""
+                  )}
                 </tr>
               ))}
             </>
@@ -496,9 +570,16 @@ class ListProductAddOn extends React.Component<{ history: any }> {
           )}
         </tbody>
       </table>
+      </div>
     );
   }
 
+  /**
+   * 
+   * @param pageDecrementBtn : page previous
+   * @param renderPageNumbers : page render page
+   * @param pageIncrementBtn : page next
+   */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -509,7 +590,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
         <CustomInput
           type="select"
           id="item"
-          className="custom_text_width"
+          className="r-per-page"
           name="customSelect"
           onChange={this.onItemSelect}
         >
@@ -538,6 +619,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = utils.pageNumber(
       this.state.count,
@@ -581,18 +663,23 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                           {constant.productCustomPage.title.customiseTitle}
                         </CardTitle>
                       </Col>
+                      {checkRights.checkAddRights("Customise") === true ? (
                       <Col xs="12" sm="12" md="6" lg="6" xl="6">
-                        <div className="right">
-                          <Link to="/product-addondetail">
-                            <Button
-                              className="mb-2 mr-2 custom-button"
-                              color="primary"
-                            >
-                              {constant.button.add}
-                            </Button>
-                          </Link>
-                        </div>
-                      </Col>
+                      <div className="right">
+                        <Link to="/product-addondetail">
+                          <Button
+                            className="mb-2 mr-2 custom-button"
+                            color="primary"
+                          >
+                            {constant.button.add}
+                          </Button>
+                        </Link>
+                      </div>
+                    </Col>
+                    ) : (
+                      ""
+                    )}
+                      
                     </Row>
                   </CardHeader>
                   <CardBody>
@@ -605,7 +692,7 @@ class ListProductAddOn extends React.Component<{ history: any }> {
                         onKeyUp={this.searchApplicationDataKeyUp}
                       />
                     </div>
-                    {this.state.deleteFlag === true ? (
+                    {this.state.deleteFlag === true && checkRights.checkDeleteRights("Customise") === true ? (
                       <Button
                         className="mb-2 mr-2 custom-button"
                         color="primary"

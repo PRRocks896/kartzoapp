@@ -1883,7 +1883,7 @@ textarea{
   background-color: #ebebed;
 }
 .input-group{
-  margin-bottom: 1rem;
+  margin-bottom:0px;
 }
 .custom-file-label{
   color: #778087;
@@ -7661,7 +7661,7 @@ cursor: pointer;
 .img-nt{
 width: 50px;
 }
-.table_responsive {
+/* .table_responsive {
 display: table;
 }
 @media screen and (max-width: 768px) {
@@ -7670,7 +7670,7 @@ display: table;
   overflow: hidden;
   overflow-x: scroll;
 }
-}
+} */
 .table_responsive2 {
 display: table;
 }
